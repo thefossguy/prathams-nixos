@@ -6,13 +6,13 @@
     ./hardware-configuration.nix
 
     # system packages (for all users)
-    ./system-packages.nix
+    ./packages-system.nix
 
     # users, password-less-sudo and groups config
     ./users-configuration.nix
 
     # services to enable
-    ./services-configuration.nix
+    ./services-system.nix
 
     # zfs
     ./zfs-configuration.nix
