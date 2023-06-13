@@ -132,4 +132,6 @@
       memtest86.enable = true;
     };
   };
+
+  hardware.enableRedistributableFirmware = true;
 }
