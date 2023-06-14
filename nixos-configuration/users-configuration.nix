@@ -35,6 +35,7 @@
           "systemd-journal"
           "thefossguy"
           "uucp"
+          "video"
           "wheel"
           "zfs-read"
         ];
