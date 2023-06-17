@@ -15,8 +15,8 @@ if [[ ! -d "rpi-firmware/${EFI_FIRM_DIR}" && ! -d "rpi-firmware/${EFI_FIRM_DIR}"
 
     # get firmware
     echo "Downloading firmware for Raspberry Pi..."
-    wget "https://github.com/raspberrypi/firmware/archive/refs/tags/${RPI_FIRM_TAG}.tar.gz" 2> /dev/null
-    wget "https://github.com/pftf/RPi4/releases/download/${EFI_FIRM_TAG}/RPi4_UEFI_Firmware_${EFI_FIRM_TAG}.zip" 2> /dev/null
+    wget "https://github.com/raspberrypi/firmware/archive/refs/tags/${RPI_FIRM_TAG}.tar.gz"
+    wget "https://github.com/pftf/RPi4/releases/download/${EFI_FIRM_TAG}/RPi4_UEFI_Firmware_${EFI_FIRM_TAG}.zip"
 
     # verify
     echo "${RPI_FIRM_HASH} *${RPI_FIRM_TAG}.tar.gz" | shasum --check || exit 1
