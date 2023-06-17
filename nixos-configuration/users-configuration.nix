@@ -43,7 +43,8 @@
           fish
           fishPlugins.async-prompt
           fishPlugins.colored-man-pages
-          fishPlugins.puffer
+          fishPlugins.puffer # expand stuff like '....' to '../..', '!!' to prev cmd and more
+          fishPlugins.sponge # only saves commands in history that exited with 0
         ];
       };
       thefossguy = {
