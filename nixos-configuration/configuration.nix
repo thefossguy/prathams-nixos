@@ -27,8 +27,9 @@
 
     autoUpgrade = {
       enable = true;
-      dates = "daily";
+      dates = "weekly";
       allowReboot = true;
+      operation = "boot";
       rebootWindow = {
         lower = "12:00";
         upper = "14:00";
@@ -38,8 +39,8 @@
 
   nix.gc = {
     automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 1d";
+    dates = "weekly";
+    options = "--delete-older-than 14d";
   };
 
   networking = {
