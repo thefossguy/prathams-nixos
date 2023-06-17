@@ -1,5 +1,5 @@
 ```
-nix-env -iA btop git tmux wget
+nix-shell -p btop git tmux wget
 git clone --depth 1 https://git.thefossguy.com/thefossguy/prathams-nixos
 cd prathams-nixos
 
