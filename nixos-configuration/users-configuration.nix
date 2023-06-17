@@ -79,6 +79,10 @@
           options = [ "NOPASSWD" ];
         }
         {
+          command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
+          options = [ "NOPASSWD" ];
+        }
+        {
           command = "${pkgs.picocom}/bin/picocom";
           options = [ "NOPASSWD" ];
         }
