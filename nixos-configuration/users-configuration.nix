@@ -60,6 +60,8 @@
         ];
       };
     };
+    groups.pratham.name = "pratham";
+    groups.thefossguy.name = "thefossguy";
   };
 
   programs.fish.enable = true;
