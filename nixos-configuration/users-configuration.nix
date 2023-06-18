@@ -90,6 +90,10 @@
           options = [ "NOPASSWD" ];
         }
         {
+          command = "${pkgs.nix}/bin/nix-collect-garbage";
+          options = [ "NOPASSWD" ];
+        }
+        {
           command = "${pkgs.hdparm}/bin/hdparm";
           options = [ "NOPASSWD" ];
         }
