@@ -80,6 +80,8 @@
     };
   };
 
+  documentation.man.enable = true;
+
   security = {
     #virtualisation.flushL1DataCache = true;
   };
