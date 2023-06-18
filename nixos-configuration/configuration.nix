@@ -100,6 +100,7 @@
       EDITOR = "nvim";
       VISUAL = "nvim";
       SYSTEMD_EDITOR = "nvim";
+      TERM = "xterm-256color";
     };
   };
 
