@@ -87,6 +87,7 @@
     cargo-watch # run cargo commands when the src changes
     clang
     gcc
+    libcxx
     python311
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
