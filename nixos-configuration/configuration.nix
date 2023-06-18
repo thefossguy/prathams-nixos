@@ -91,6 +91,16 @@
 
   programs.dconf.enable = true;
 
+  environment = {
+    homeBinInPath = true;
+    localBinInPath = true;
+    variables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      SYSTEMD_EDITOR = "nvim";
+    };
+  };
+
   virtualisation = {
     libvirtd = {
       enable = true;
