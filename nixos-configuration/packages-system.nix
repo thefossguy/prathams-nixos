@@ -21,6 +21,7 @@
     linux-firmware
     lsof
     mlocate
+    mtr
     openssh
     openssl
     pciutils # provides lspci and setpci
