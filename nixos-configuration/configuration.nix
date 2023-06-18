@@ -84,6 +84,11 @@
     #virtualisation.flushL1DataCache = true;
   };
 
+  console = {
+    enable = true;
+    earlySetup = true;
+  };
+
   programs.dconf.enable = true;
 
   virtualisation = {
