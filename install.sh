@@ -52,10 +52,11 @@ cp -v nixos-configuration/*.nix /mnt/etc/nixos/
 # install nixos
 nixos-install --no-root-password
 
+mkdir -vp /mnt/home/pratham/.config/fish
 cat << EOF > /mnt/home/pratham/.config/fish/config.fish
 # get dotfiles
 git clone --depth 1 --bare https://git.thefossguy.com/thefossguy/dotfiles.git $HOME/.dotfiles
-git --get-dir=$HOME/.dotfiles --work-tree=$HOME checkout -f
+git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout -f
 rm -rf $HOME/.dotfiles
 
 # generate SSH keys
