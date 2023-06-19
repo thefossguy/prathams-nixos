@@ -52,23 +52,13 @@ cp -v nixos-configuration/*.nix /mnt/etc/nixos/
 # install nixos
 nixos-install --no-root-password
 
-mkdir -vp /mnt/home/pratham/.config/fish
-cat << EOF > /mnt/home/pratham/.config/fish/config.fish
-# get dotfiles
-git clone --depth 1 --bare https://git.thefossguy.com/thefossguy/dotfiles.git $HOME/.dotfiles
-git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout -f
-rm -rf $HOME/.dotfiles
-
-# generate SSH keys
-mkdir $HOME/.ssh
-chmod 700 $HOME/.ssh
-pushd $HOME/.ssh
-ssh-keygen -t ed25519 -f ssh
-ssh-keygen -t ed25519 -f git
-ssh-keygen -t ed25519 -f virt
-ssh-keygen -t ed25519 -f zfs
-popd
-EOF
+# very very initial setup for 'pratham'
+mount -o bind /dev /mnt/dev
+mount -o bind /proc /mnt/proc
+mount -o bind /sys /mnt/sys
+chroot /mnt /nix/var/nix/profiles/system/activate
+cp scripts/chroot-as-pratham.sh /mnt/home/pratham/
+chroot /mnt /run/current-system/sw/bin/sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh
 
 # done!
 umount -R /mnt
