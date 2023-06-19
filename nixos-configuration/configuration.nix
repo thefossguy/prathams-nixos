@@ -143,12 +143,15 @@
     memoryPercent = 75;
   };
 
-  boot.loader = {
-    efi.canTouchEfiVariables = true;
-    timeout = 5;
-    systemd-boot = {
-      enable = true;
-      memtest86.enable = true;
+  boot = {
+    kernelParams = [ "ignore_loglevel" "audit=0" ];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      timeout = 5;
+      systemd-boot = {
+        enable = true;
+        memtest86.enable = true;
+      };
     };
   };
 
