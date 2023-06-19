@@ -45,11 +45,11 @@ sync; sync; sync; sync;
 fdisk -l ${OS_DRIVE}
 
 # formatting
-mkfs.fat -F 32 -n raspefi ${RASP_PART}
-mkfs.fat -F 32 -n boot    ${BOOT_PART}
-mkfs.ext4 -F -L nixos     ${ROOT_PART}
-mkfs.ext4 -F -L home      ${HOME_PART}
-mkfs.ext4 -F -L varpart   ${VARL_PART}
+mkfs.fat -F 32 -n raspuefi ${RASP_PART}
+mkfs.fat -F 32 -n nixuefi  ${BOOT_PART}
+mkfs.ext4 -F -L nixos      ${ROOT_PART}
+mkfs.ext4 -F -L home       ${HOME_PART}
+mkfs.ext4 -F -L varpart    ${VARL_PART}
 
 # mounting
 mount         ${ROOT_PART} /mnt
