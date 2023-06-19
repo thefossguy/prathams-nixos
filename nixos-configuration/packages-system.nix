@@ -180,4 +180,6 @@
     #wmctrl
     #xdg-desktop-portal-kde
   ];
+
+  programs.gnupg.agent.enable = true;
 }
