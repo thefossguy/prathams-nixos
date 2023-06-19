@@ -14,7 +14,4 @@ if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
     ssh-keygen -t ed25519 -f ssh
     ssh-keygen -t ed25519 -f git
     popd
-
-    # cleanup
-    rm $HOME/chroot-as-pratham.sh
 fi

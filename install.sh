@@ -56,9 +56,11 @@ nixos-install --no-root-password
 mount -o bind /dev /mnt/dev
 mount -o bind /proc /mnt/proc
 mount -o bind /sys /mnt/sys
+mount -o bind,ro /etc/resolv.conf /mnt/etc/resolv.conf
 chroot /mnt /nix/var/nix/profiles/system/activate
 cp scripts/chroot-as-pratham.sh /mnt/home/pratham/
 chroot /mnt /run/current-system/sw/bin/sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh
+rm /mnt/home/pratham/chroot-as-pratham.sh
 
 # done!
 umount -R /mnt
