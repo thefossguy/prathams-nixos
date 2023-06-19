@@ -14,6 +14,7 @@
     gettext # for translation (human lang; Eng <-> Hindi)
     git
     gnugrep
+    gnupg
     gnused
     hdparm
     iproute
@@ -25,6 +26,7 @@
     openssh
     openssl
     pciutils # provides lspci and setpci
+    pinentry
     procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
     psmisc # provides killall, fuser, pslog, pstree, etc
     rsync
