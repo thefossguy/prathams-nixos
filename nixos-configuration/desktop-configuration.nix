@@ -75,6 +75,8 @@
 
     light # for backlight
 
+    mediainfo-gui
+
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
 
     flatpak

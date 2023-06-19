@@ -109,7 +109,6 @@
     ffmpeg
     imagemagick
     mediainfo
-    mediainfo-gui
 
     # system monitoring
     btop
