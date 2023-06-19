@@ -94,6 +94,7 @@
     clang-tools # provides clangd
     lldb # provides lldb-vscode
     lua-language-server
+    nil # language server for Nix
     python311Packages.python-lsp-server
     tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
 
