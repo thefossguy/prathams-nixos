@@ -42,7 +42,6 @@
     vim
 
     # shells
-    #fishPlugins.
     bash
     dash
     zsh
