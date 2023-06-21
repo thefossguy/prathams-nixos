@@ -147,6 +147,9 @@
 
   boot = {
     kernelParams = [ "ignore_loglevel" "audit=0" ];
+    kernel.sysctl = {
+      "net.ipv4.ping_group_range" = "0 165536";
+    };
     loader = {
       efi.canTouchEfiVariables = true;
       timeout = 5;
