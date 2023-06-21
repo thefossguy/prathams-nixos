@@ -125,6 +125,7 @@
       enable = true;
       dockerCompat = true;
       dockerSocket.enable = true;
+      networkSocket.openFirewall = true;
       defaultNetwork.settings = {
         dns_enabled = true;
       };
