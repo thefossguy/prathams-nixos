@@ -126,6 +126,7 @@
       dockerCompat = true;
       dockerSocket.enable = true;
       networkSocket.openFirewall = true;
+      extraPackages = [ pkgs.zfs ];
       defaultNetwork.settings = {
         dns_enabled = true;
       };
