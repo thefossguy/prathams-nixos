@@ -111,6 +111,12 @@ in
     }];
   };
 
+  # temporary hack until official lingering support is added to `users.users`
+  systemd.tmpfiles.rules = [
+    "f /var/lib/systemd/linger/pratham"
+    "f /var/lib/systemd/linger/thefossguy"
+  ];
+
   home-manager.users.pratham = { pkgs, ... }: {
     home.stateVersion = "23.05";
   };
