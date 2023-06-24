@@ -22,24 +22,16 @@
 
     displayManager = {
       hiddenUsers = [ "thefossguy" "root" ];
+      defaultSession = "plasmawayland";
       sddm = {
         enable = true;
         enableHidpi = true;
-        defaultSession = "plasmawayland";
         #autologin = {
         #  enable = true;
         #  user = "pratham";
         #};
       };
     };
-
-    environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-      ##pkgs.plasma5Packages.ark # DO NOT REMOVE THIS
-      ##pkgs.plasma5Packages.okular # DO NOT REMOVE THIS
-      pkgs.plasma5Packages.elisa # music player, use mpv
-      pkgs.plasma5Packages.gwenview # image viewer, use mpv
-      pkgs.plasma5Packages.khelpcenter
-    ];
 
     #windowManager = {
     #  default = "bspwm";
@@ -50,6 +42,13 @@
     #  };
     #};
   };
+  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    ##pkgs.plasma5Packages.ark # DO NOT REMOVE THIS
+    ##pkgs.plasma5Packages.okular # DO NOT REMOVE THIS
+    pkgs.plasma5Packages.elisa # music player, use mpv
+    pkgs.plasma5Packages.gwenview # image viewer, use mpv
+    pkgs.plasma5Packages.khelpcenter
+  ];
 
   sound.enable = true;
   security.rtkit.enable = true;
