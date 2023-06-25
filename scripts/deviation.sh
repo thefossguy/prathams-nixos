@@ -42,7 +42,7 @@ if [[ ${GPU_INFO} =~ "VGA" && ${GPU_INFO} =~ "NVIDIA" ]]; then
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elm (lib.getName pkg) [
+    builtins.elem (lib.getName pkg) [
       "nvidia-x11"
     ];
 
@@ -61,7 +61,6 @@ if [[ ${NETWORKING_HOSTNAME} == "flameboi" || ${NETWORKING_HOSTNAME} =~ "vm" || 
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   imports = [
-    # desktop stuff
     ./desktop-configuration.nix
   ];
 EOF
