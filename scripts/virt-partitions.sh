@@ -28,7 +28,7 @@ sync; sync; sync; sync;
 fdisk -l ${OS_DRIVE}
 
 # formatting
-mkfs.fat -F 32 -n raspuefi ${RASP_PART}
+mkfs.fat -F 32 -n raspuefi ${BOOT_PART}
 mkfs.ext4 -F -L nixos      ${ROOT_PART}
 mkfs.ext4 -F -L home       ${HOME_PART}
 
