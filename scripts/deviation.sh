@@ -10,7 +10,7 @@ GPU_INFO=$(lspci -vvv)
 touch ${CUSTOM_HOST_CONFIG}
 
 cat << EOF > ${CUSTOM_HOST_CONFIG}
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   networking = {
