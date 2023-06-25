@@ -46,7 +46,7 @@ if [[ ${GPU_INFO} =~ "VGA" && ${GPU_INFO} =~ "NVIDIA" ]]; then
       "nvidia-x11"
     ];
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     open = true;
