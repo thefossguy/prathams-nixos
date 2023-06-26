@@ -36,11 +36,6 @@ fi
 if [[ ${GPU_INFO} =~ "VGA" && ${GPU_INFO} =~ "NVIDIA" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-  };
-
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
       "nvidia-x11"
