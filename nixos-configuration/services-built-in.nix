@@ -6,6 +6,13 @@
 
     fwupd.enable = true;
 
+    locate = {
+      enable = true;
+      locate = pkgs.mlocate;
+      interval = "daily";
+      prunePaths = [ "/nix/store" ];
+    };
+
     openssh = {
       enable = true;
       extraConfig = "PermitEmptyPasswords no";
