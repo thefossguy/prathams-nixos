@@ -9,6 +9,7 @@
     locate = {
       enable = true;
       locate = pkgs.mlocate;
+      localuser = "pratham";
       interval = "daily";
       prunePaths = [ "/nix/store" ];
     };
