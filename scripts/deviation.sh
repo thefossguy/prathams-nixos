@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 NETWORKING_HOSTNAME=$1
+PARTITION_LAYOUT_TYPE=$2
 CUSTOM_HOST_CONFIG='/mnt/etc/nixos/host-specific-configuration.nix'
 NETWORKING_HOSTID=$(head -c4 /dev/urandom | od -A none -t x4 | xargs)
 CPU_INFO=$(cat /proc/cpuinfo)
@@ -57,6 +58,17 @@ if [[ ${NETWORKING_HOSTNAME} == "flameboi" || ${NETWORKING_HOSTNAME} =~ "vm" || 
 
   imports = [
     ./desktop-configuration.nix
+    ./kde-plasma-wayland-configuration.nix
+  ];
+EOF
+fi
+
+if [[ ${PARTITION_LAYOUT_TYPE} == "rpi" ]]; then
+    cat << EOF >> ${CUSTOM_HOST_CONFIG}
+
+  imports = [
+    ./desktop-configuration.nix
+    ./bspwm-x11-configuration.nix
   ];
 EOF
 fi

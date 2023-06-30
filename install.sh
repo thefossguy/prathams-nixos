@@ -47,7 +47,7 @@ cp -v nixos-configuration/*.nix /mnt/etc/nixos/
 
 # generate 'networking.hostId' for ZFS
 # and other host-specific configurations
-./scripts/deviation.sh ${NETWORKING_HOSTNAME}
+./scripts/deviation.sh ${NETWORKING_HOSTNAME} ${PARTITION_LAYOUT_TYPE}
 
 # install nixos
 nixos-install --no-root-password
