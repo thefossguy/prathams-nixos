@@ -12,17 +12,10 @@
         mode = "max"; # center, fill, scale, max, tile
         combineScreens = false; # same wallpaper for all screens
       };
-      plasma5 = {
-        enable = true;
-        runUsingSystemd = true;
-        useQtScaling = true; # for HiDPI
-        bigscreen.enable = false; # enable this for HTPC
-      };
     };
 
     displayManager = {
       hiddenUsers = [ "thefossguy" "root" ];
-      defaultSession = "plasmawayland";
       sddm = {
         enable = true;
         enableHidpi = true;
@@ -32,23 +25,7 @@
         #};
       };
     };
-
-    #windowManager = {
-    #  default = "bspwm";
-    #  bspwm = {
-    #    enable = true;
-    #    configFile = "/home/pratham/.config/bspwm/bspwmrc";
-    #    sxhkd.configFile = "/home/pratham/.config/sxhkd/sxhkdrc";
-    #  };
-    #};
   };
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    ##pkgs.plasma5Packages.ark # DO NOT REMOVE THIS
-    ##pkgs.plasma5Packages.okular # DO NOT REMOVE THIS
-    pkgs.plasma5Packages.elisa # music player, use mpv
-    pkgs.plasma5Packages.gwenview # image viewer, use mpv
-    pkgs.plasma5Packages.khelpcenter
-  ];
 
   sound.enable = true;
   security.rtkit.enable = true;
