@@ -66,6 +66,8 @@ fi
 if [[ ${PARTITION_LAYOUT_TYPE} == "rpi" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
+  boot.kernelParams = [ "nomodeset" ];
+
   imports = [
     ./desktop-configuration.nix
     ./bspwm-x11-configuration.nix
