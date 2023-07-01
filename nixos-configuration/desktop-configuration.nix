@@ -57,7 +57,8 @@
     mpv
     neovide
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
-    wl-clipboard-x11 # provides xsel and xclip
+    xclip
+    xsel
   ];
 
   fonts = {
