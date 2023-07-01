@@ -15,7 +15,7 @@
     };
 
     displayManager = {
-      hiddenUsers = [ "thefossguy" "root" ];
+      hiddenUsers = [ "root" ];
       sddm = {
         enable = true;
         enableHidpi = true;

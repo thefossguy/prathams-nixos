@@ -39,7 +39,6 @@ in
           "rfkill"
           "sys"
           "systemd-journal"
-          "thefossguy"
           "uucp"
           "video"
           "wheel"
@@ -54,21 +53,8 @@ in
           fishPlugins.sponge # only saves commands in history that exited with 0
         ];
       };
-      thefossguy = {
-        isNormalUser = true;
-        description = "The F. Guy";
-        createHome = true;
-        home = "/home/thefossguy";
-        group = "thefossguy";
-        hashedPassword = "$6$8YXuC06/uXEs.ZrP$6MbED.kQ8rM/ry2f6tofn13uN5gNiQBtXuAjrxpCjo.ztohPgUg3oH8o0ZThF3j18Uh3oHFJY4hjG9M0tC8Sa/";
-        extraGroups = [
-          "podman"
-          "zfs-read"
-        ];
-      };
     };
     groups.pratham.name = "pratham";
-    groups.thefossguy.name = "thefossguy";
   };
 
   programs.fish.enable = true;
@@ -115,7 +101,6 @@ in
   # temporary hack until official lingering support is added to `users.users`
   systemd.tmpfiles.rules = [
     "f /var/lib/systemd/linger/pratham"
-    "f /var/lib/systemd/linger/thefossguy"
   ];
 
   home-manager.users.pratham = { pkgs, ... }: {
