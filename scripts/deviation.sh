@@ -53,7 +53,7 @@ if [[ ${GPU_INFO} =~ "VGA" && ${GPU_INFO} =~ "NVIDIA" ]]; then
 EOF
 fi
 
-if [[ ${NETWORKING_HOSTNAME} == "flameboi" || ${NETWORKING_HOSTNAME} =~ "vm" || ${NETWORKING_HOSTNAME} =~ "virt" ]]; then
+if [[ ${PARTITION_LAYOUT_TYPE} == "desktop" || ${PARTITION_LAYOUT_TYPE} == "virt" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   imports = [
