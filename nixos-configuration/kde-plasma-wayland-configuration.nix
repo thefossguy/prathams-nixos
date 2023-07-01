@@ -24,6 +24,4 @@
     plasma5Packages.gwenview # image viewer, use mpv
     plasma5Packages.khelpcenter
   ];
-
-  xdg.portal.enable = true;
 }

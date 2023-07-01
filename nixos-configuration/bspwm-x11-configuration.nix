@@ -4,7 +4,7 @@
   # BSPWM on X11
   services.xserver = {
     displayManager = {
-      defaultSession = "bspwm";
+      defaultSession = "none+bspwm";
     };
 
     windowManager = {
@@ -15,4 +15,17 @@
       };
     };
   };
+  environment.systemPackages = with pkgs; [
+    dunst
+    feh
+    jq
+    libnotify # provides notify-send
+    lxde.lxsession
+    picom
+    polybarFull
+    rofi
+    socat
+    wmctrl
+    xsecurelock
+  ];
 }

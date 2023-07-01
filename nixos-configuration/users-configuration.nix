@@ -46,10 +46,6 @@ in
           "zfs-read"
         ];
         packages = with pkgs; [
-          bitwarden
-          firefox
-          mpv
-
           fish
           fishPlugins.async-prompt
           fishPlugins.colored-man-pages

@@ -50,17 +50,21 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+    firefox
+    flatpak
+    light # for backlight
+    mediainfo-gui
+    mpv
     neovide
     nerdfonts # provides (Sauce|Source)CodePro Nerd Font
-
-    light # for backlight
-
-    mediainfo-gui
-
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
-
-    flatpak
+    wl-clipboard-x11 # provides xsel and xclip
   ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
+  };
 
   services.flatpak.enable = true;
 }
