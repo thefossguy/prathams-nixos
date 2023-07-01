@@ -53,7 +53,7 @@ if [[ ${GPU_INFO} =~ "VGA" && ${GPU_INFO} =~ "NVIDIA" ]]; then
 EOF
 fi
 
-if [[ ${PARTITION_LAYOUT_TYPE} == "desktop" || ${PARTITION_LAYOUT_TYPE} == "virt" ]]; then
+if [[ ${PARTITION_LAYOUT_TYPE} =~ "desktop" || ${PARTITION_LAYOUT_TYPE} =~ "virt" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   imports = [
@@ -63,7 +63,7 @@ if [[ ${PARTITION_LAYOUT_TYPE} == "desktop" || ${PARTITION_LAYOUT_TYPE} == "virt
 EOF
 fi
 
-if [[ ${PARTITION_LAYOUT_TYPE} == "rpi" ]]; then
+if [[ ${PARTITION_LAYOUT_TYPE} =~ "raspberry-pi" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   boot.kernelParams = [ "nomodeset" ];
