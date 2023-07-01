@@ -146,7 +146,7 @@
   };
 
   boot = {
-    kernelParams = [ "ignore_loglevel" "audit=0" ];
+    kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
     kernel.sysctl = {
       "net.ipv4.ping_group_range" = "0 165536";
     };
