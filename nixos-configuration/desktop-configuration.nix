@@ -56,10 +56,22 @@
     mediainfo-gui
     mpv
     neovide
-    nerdfonts # provides (Sauce|Source)CodePro Nerd Font
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
     wl-clipboard-x11 # provides xsel and xclip
   ];
+
+  fonts = {
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "SourceCodePro"
+          "Overpass"
+        ];
+      })
+    ];
+  };
 
   xdg.portal = {
     enable = true;
