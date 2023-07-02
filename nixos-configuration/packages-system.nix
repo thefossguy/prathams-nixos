@@ -141,6 +141,7 @@
 
     # other utilities
     android-tools
+    fzf
     picocom
     shellcheck
 
