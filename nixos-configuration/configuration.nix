@@ -27,19 +27,19 @@
 
     autoUpgrade = {
       enable = true;
-      dates = "weekly";
+      dates = "OnCalendar=Sat *-*-* 00:00:00";
       allowReboot = true;
       operation = "boot";
       rebootWindow = {
-        lower = "12:00";
-        upper = "14:00";
+        lower = "04:00";
+        upper = "05:00";
       };
     };
   };
 
   nix.gc = {
     automatic = true;
-    dates = "weekly";
+    dates = "OnCalendar=Sun *-*-* 00:00:00";
     options = "--delete-older-than 14d";
   };
 
