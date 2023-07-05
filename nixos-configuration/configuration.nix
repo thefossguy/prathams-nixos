@@ -80,8 +80,6 @@
     };
   };
 
-  documentation.man.enable = true;
-
   security = {
     #virtualisation.flushL1DataCache = true;
   };
@@ -101,6 +99,17 @@
       VISUAL = "nvim";
       SYSTEMD_EDITOR = "nvim";
       TERM = "xterm-256color";
+    };
+  };
+
+  documentation = {
+    enable = true;
+    dev.enable = true;
+    doc.enable = true;
+    info.enable = true;
+    man = {
+      enable = true;
+      generateCaches = true;
     };
   };
 
