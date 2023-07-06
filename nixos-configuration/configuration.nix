@@ -27,7 +27,7 @@
 
     autoUpgrade = {
       enable = true;
-      dates = "OnCalendar=Sat *-*-* 00:00:00";
+      dates = "Sat *-*-* 00:00:00";
       allowReboot = true;
       operation = "boot";
       rebootWindow = {
@@ -39,7 +39,7 @@
 
   nix.gc = {
     automatic = true;
-    dates = "OnCalendar=Sun *-*-* 00:00:00";
+    dates = "Sun *-*-* 00:00:00";
     options = "--delete-older-than 14d";
   };
 
