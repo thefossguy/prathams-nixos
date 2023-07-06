@@ -37,6 +37,8 @@
     };
   };
 
+  nix.settings.auto-optimise-store = true;
+
   nix.gc = {
     automatic = true;
     dates = "Sun *-*-* 00:00:00";
