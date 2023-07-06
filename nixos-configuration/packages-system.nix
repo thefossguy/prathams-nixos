@@ -90,6 +90,7 @@
     clang
     gcc
     python311
+    ruff
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # language servers and other related packages
@@ -98,7 +99,7 @@
     lua-language-server
     nil # language server for Nix
     nodePackages.bash-language-server
-    python311Packages.python-lsp-server
+    python311Packages.ruff-lsp
     tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
 
     # power management
