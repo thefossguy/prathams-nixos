@@ -61,3 +61,4 @@ mount --mkdir ${RASP_PART} /mnt/raspberry-pi/firmware
 # get firmware
 ./scripts/get-raspi-4-firmware.sh
 cp -r out/* /mnt/raspberry-pi/firmware/
+umount /mnt/raspberry-pi/firmware
