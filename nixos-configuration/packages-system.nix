@@ -125,6 +125,8 @@
 
     # podman
     aardvark-dns
+    conmon
+    crun
     #dnsname-cni #idk if this is important or not
     fuse-overlayfs
     iproute
