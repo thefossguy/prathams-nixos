@@ -57,8 +57,8 @@ if [[ ${PARTITION_LAYOUT_TYPE} =~ "desktop" || ${PARTITION_LAYOUT_TYPE} =~ "virt
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   imports = [
-    ./desktop-configuration.nix
-    ./kde-plasma-wayland-configuration.nix
+    ./desktop-env/desktop-configuration.nix
+    ./desktop-env/kde-plasma-wayland-configuration.nix
   ];
 EOF
 fi
@@ -69,8 +69,8 @@ if [[ ${PARTITION_LAYOUT_TYPE} =~ "raspberry-pi" ]]; then
   boot.kernelParams = [ "nomodeset" ];
 
   imports = [
-    ./desktop-configuration.nix
-    ./bspwm-x11-configuration.nix
+    ./desktop-env/desktop-configuration.nix
+    ./desktop-env/bspwm-x11-configuration.nix
   ];
 EOF
 fi

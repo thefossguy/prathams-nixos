@@ -12,7 +12,7 @@
     ./users-configuration.nix
 
     # services to enable
-    ./services-built-in.nix
+    ./root-services.nix
 
     # zfs
     ./zfs-configuration.nix
