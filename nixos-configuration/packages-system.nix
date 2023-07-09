@@ -17,6 +17,7 @@
     gnupg
     gnused
     hdparm
+    inotify-tools
     iproute
     iputils
     linux-firmware
