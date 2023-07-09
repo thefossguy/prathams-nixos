@@ -12,7 +12,7 @@
         Unit = {
           Description = "Container service for the reverse proxy";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
-          Requires = [ "podman-init.service" ];
+          Wants = [ "podman-init.service" ];
           After = [ "podman-init.service" ];
           RequiresMountsFor = "%t/containers";
         };
@@ -33,11 +33,11 @@
               --publish 8002:443 \
               --network-alias ${container_name} \
               --name ${container_name} \
-              --volume ${universal_container_path}/caddy/Caddyfile:/etc/caddy/Caddyfile:Z \
-              --volume ${universal_container_path}/caddy/site:/srv:Z \
-              --volume ${universal_container_path}/caddy/caddy_data:/data:Z \
-              --volume ${universal_container_path}/caddy/caddy_config:/config:Z \
-              --volume ${universal_container_path}/caddy/ssl:/etc/ssl:Z \
+              --volume ${universal_container_path}/caddy/Caddyfile:/etc/caddy/Caddyfile \
+              --volume ${universal_container_path}/caddy/site:/srv \
+              --volume ${universal_container_path}/caddy/caddy_data:/data \
+              --volume ${universal_container_path}/caddy/caddy_config:/config \
+              --volume ${universal_container_path}/caddy/ssl:/etc/ssl \
               docker.io/library/caddy:latest \
               caddy run --config /etc/caddy/Caddyfile
           '';
@@ -54,14 +54,14 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";
           TimeoutStopSec = 60;
         };
         Install = {
-          WantedBy = [ "podman-init.service" ];
+          WantedBy = [ "default.target" ];
         };
       };
     };

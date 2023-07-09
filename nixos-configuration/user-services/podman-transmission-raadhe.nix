@@ -12,6 +12,7 @@
         Unit = {
           Description = "Container service for Transmission web server";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
+          Wants = [ "container-caddy-vishwambhar.service" ];
           After = [ "container-caddy-vishwambhar.service" ];
           RequiresMountsFor = "%t/containers";
         };
@@ -33,8 +34,8 @@
               --publish 8011:51413/udp \
               --network-alias ${container_name} \
               --name ${container_name} \
-              --volume ${universal_container_path}/torrents/downloads:/downloads:Z \
-              --volume ${universal_container_path}/torrents/config:/config:Z \
+              --volume ${universal_container_path}/torrents/downloads:/downloads \
+              --volume ${universal_container_path}/torrents/config:/config \
               lscr.io/linuxserver/transmission:latest
           '';
           ExecStop = ''
@@ -50,7 +51,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";

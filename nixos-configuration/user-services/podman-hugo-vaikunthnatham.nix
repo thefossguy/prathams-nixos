@@ -12,6 +12,7 @@
         Unit = {
           Description = "Container service for Pratham Patel's personal blog'";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
+          Wants = [ "container-caddy-vishwambhar.service" ];
           After = [ "container-caddy-vishwambhar.service" ];
           RequiresMountsFor = "%t/containers";
         };
@@ -25,7 +26,7 @@
               --replace \
               --detach \
               --env TZ=Asia/Kolkata \
-              --volume ${universal_container_path}/blog:/src:Z \
+              --volume ${universal_container_path}/blog:/src \
               --label io.containers.autoupdate=registry \
               --net containers_default \
               --pull newer \
@@ -48,7 +49,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";

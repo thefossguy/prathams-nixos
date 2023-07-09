@@ -12,7 +12,8 @@
         Unit = {
           Description = "Container service for ";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
-          After = [ "container-caddy-vishwambhar.service" ];
+          Wants = []; # put "container-caddy-vishwambhar.service" here if it is a web service
+          After = []; # otherwise, depend on "podman-init.service"
           RequiresMountsFor = "%t/containers";
         };
         Service = {
@@ -48,7 +49,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";

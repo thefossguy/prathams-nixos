@@ -13,14 +13,11 @@
             "man:podman-network-exists(1)"
             "man:podman-network-create(1)"
           ];
-          Requires = [ "default.target" ];
-          After = [ "default.target" ];
         };
         Service = {
-          #Environment = [ "PATH='${pkgs.dash}/bin:${pkgs.podman}/bin:${pkgs.openssl}/bin'" ];
-          Environment = [ "PATH='${pkgs.dash}/bin:${pkgs.coreutils}/bin:${pkgs.gnugrep}/bin'" ];
-          Type = "oneshot";
           ExecStart = "/home/pratham/.local/scripts/other-common-scripts/podman-initialization.sh";
+          Environment = [ "\"PATH=${pkgs.dash}/bin:${pkgs.coreutils}/bin:${pkgs.gnugrep}/bin\"" ];
+          Type = "oneshot";
         };
         Install = {
           WantedBy = [ "default.target" ];

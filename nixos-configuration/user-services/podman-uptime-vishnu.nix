@@ -5,12 +5,14 @@
     systemd.user.services =
     let
       universal_container_path = "/trayimurti/containers/volumes";
+      container_name = "uptime-vishnu";
     in
     {
-      "container-uptime-vishnu" = {
+      "container-${container_name}" = {
         Unit = {
           Description = "Container service for Uptime Kuma";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
+          Wants = [ "container-caddy-vishwambhar.service" ];
           After = [ "container-caddy-vishwambhar.service" ];
           RequiresMountsFor = "%t/containers";
         };
@@ -28,9 +30,9 @@
               --net containers_default \
               --pull newer \
               --publish 8008:3001 \
-              --network-alias uptime-vishnu \
-              --name uptime-vishnu \
-              --volume ${universal_container_path}/uptimekuma:/app/data:Z \
+              --network-alias ${container_name} \
+              --name ${container_name} \
+              --volume ${universal_container_path}/uptimekuma:/app/data \
               docker.io/louislam/uptime-kuma:debian
           '';
           ExecStop = ''
@@ -46,7 +48,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";

@@ -13,7 +13,8 @@
         Unit = {
           Description = "Container service for Gitea's database (PGSQL)";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
-          After = [ "container-caddy-vishwambhar.service" ];
+          Wants = [ "podman-init.service" ];
+          After = [ "podman-init.service" ];
           RequiresMountsFor = "%t/containers";
         };
         Service = {
@@ -32,7 +33,7 @@
               --secret gitea_database_user_password \
               --network-alias ${db_container_name} \
               --name ${db_container_name} \
-              --volume ${universal_container_path}/gitea/database:/var/lib/postgresql/data:Z \
+              --volume ${universal_container_path}/gitea/database:/var/lib/postgresql/data \
               docker.io/library/postgres:15-alpine
           '';
           ExecStop = ''
@@ -48,7 +49,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";
@@ -64,6 +65,7 @@
           Description = "Container service for Gitea";
           Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
           Requires = [ "container-${db_container_name}.service" ];
+          Wants = [ "container-caddy-vishwambhar.service" ];
           After = [ "container-caddy-vishwambhar.service" "container-${web_container_name}.service" ];
           RequiresMountsFor = "%t/containers";
         };
@@ -98,8 +100,8 @@
               --publish 8006:22 \
               --network-alias ${web_container_name} \
               --name ${web_container_name} \
-              --volume ${universal_container_path}/gitea/web:/data:Z \
-              --volume ${universal_container_path}/gitea/ssh:/data/git/.ssh:Z \
+              --volume ${universal_container_path}/gitea/web:/data \
+              --volume ${universal_container_path}/gitea/ssh:/data/git/.ssh \
               docker.io/gitea/gitea:latest
               #--env GITEA__database__PASSWD=/run/secrets/gitea_database_user_password \
           '';
@@ -116,7 +118,7 @@
               --time 10 \
               --force
           '';
-          Environment = "PODMAN_SYSTEMD_UNIT=%n";
+          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";
