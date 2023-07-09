@@ -103,7 +103,6 @@
               --volume ${universal_container_path}/gitea/web:/data \
               --volume ${universal_container_path}/gitea/ssh:/data/git/.ssh \
               docker.io/gitea/gitea:latest
-              #--env GITEA__database__PASSWD=/run/secrets/gitea_database_user_password \
           '';
           ExecStop = ''
             ${pkgs.podman}/bin/podman stop \
