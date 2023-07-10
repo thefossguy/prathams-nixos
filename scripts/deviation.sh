@@ -63,7 +63,18 @@ if [[ ${PARTITION_LAYOUT_TYPE} =~ "desktop" || ${PARTITION_LAYOUT_TYPE} =~ "virt
 EOF
 fi
 
-if [[ ${PARTITION_LAYOUT_TYPE} =~ "raspberry-pi" ]]; then
+if [[ ${NETWORKING_HOSTNAME} =~ "reddish" ]]; then
+    cat << EOF >> ${CUSTOM_HOST_CONFIG}
+
+  boot.zfs.extraPools = [ "trayimurti" ];
+
+  imports = [
+    ./user-services/podman-master.nix
+  ];
+EOF
+fi
+
+if [[ ${NETWORKING_HOSTNAME} =~ "sentinel" ]]; then
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   boot.kernelParams = [ "nomodeset" ];
