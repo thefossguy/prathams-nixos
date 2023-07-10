@@ -25,8 +25,8 @@ in
         group = "pratham";
         shell = pkgs.fish;
         uid = 1000;
-        subUidRanges = [ { startUid = 100000; count = 65536; } ];
-        subGidRanges = [ { startGid = 100000; count = 65536; } ];
+        subUidRanges = [ { startUid = 10000; count = 65536; } ];
+        subGidRanges = [ { startGid = 10000; count = 65536; } ];
         hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
         extraGroups = [
           "adm"
