@@ -43,7 +43,7 @@ ${PARTITION_LAYOUT_TYPE} ${OS_DRIVE}
 # prepare installation
 mkdir -p /mnt/etc/nixos
 nixos-generate-config --root /mnt
-cp -v nixos-configuration/*.nix /mnt/etc/nixos/
+cp -vR nixos-configuration/* /mnt/etc/nixos
 
 # generate 'networking.hostId' for ZFS
 # and other host-specific configurations
