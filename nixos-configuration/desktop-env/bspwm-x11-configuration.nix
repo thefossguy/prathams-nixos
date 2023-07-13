@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./desktop-configuration.nix ];
+
   # BSPWM on X11
   services.xserver = {
     displayManager = {

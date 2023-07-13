@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./desktop-configuration.nix ];
+
   # KDE Plasma 5 on Wayland
   services.xserver = {
     desktopManager = {

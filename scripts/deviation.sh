@@ -57,7 +57,6 @@ if [[ ${PARTITION_LAYOUT_TYPE} =~ "desktop" || ${PARTITION_LAYOUT_TYPE} =~ "virt
     cat << EOF >> ${CUSTOM_HOST_CONFIG}
 
   imports = [
-    ./desktop-env/desktop-configuration.nix
     ./desktop-env/kde-plasma-wayland-configuration.nix
   ];
 EOF
@@ -80,7 +79,6 @@ if [[ ${NETWORKING_HOSTNAME} =~ "sentinel" ]]; then
   boot.kernelParams = [ "nomodeset" ];
 
   imports = [
-    ./desktop-env/desktop-configuration.nix
     ./desktop-env/bspwm-x11-configuration.nix
   ];
 EOF
