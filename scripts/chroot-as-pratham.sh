@@ -2,7 +2,7 @@
 
 if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
     # get dotfiles
-    git clone --depth 1 --bare https://github.com/thefossguy/dotfiles.git $HOME/.dotfiles
+    git clone --depth 1 --bare https://gitlab.com/thefossguy/dotfiles.git $HOME/.dotfiles
     git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout -f
     rm -rf $HOME/.dotfiles
 
