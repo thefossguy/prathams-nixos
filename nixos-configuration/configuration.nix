@@ -51,6 +51,11 @@
     };
   };
 
+  systemd.network.wait-online = {
+    enable = true;
+    anyInterface = true;
+  };
+
   networking = {
     networkmanager.enable = true;
     wireless.enable = false;
@@ -210,6 +215,7 @@
       ## Allow rootless containers to get pinged and/or ping each other
       "net.ipv4.ping_group_range" = "0 165536";
     };
+
     loader = {
       efi.canTouchEfiVariables = true;
       timeout = 5;
