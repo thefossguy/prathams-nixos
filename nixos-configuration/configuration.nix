@@ -39,10 +39,16 @@
 
   nix.settings.auto-optimise-store = true;
 
-  nix.gc = {
-    automatic = true;
-    dates = "Sun *-*-* 00:00:00";
-    options = "--delete-older-than 14d";
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "Sun *-*-* 00:00:00";
+      options = "--delete-older-than 14d";
+    };
+    settings = {
+      trusted-users = [ "root" "pratham" ];
+      auto-optimise-store = true;
+    };
   };
 
   networking = {
