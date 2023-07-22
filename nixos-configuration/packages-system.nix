@@ -69,6 +69,7 @@
     # programming
     #cargo-deb # generate .deb packages solely based on Cargo.toml
     #cargo-ndk # extension for building Android NDK projects
+    binutils
     cargo-audit # audit crates for security vulnerabilities
     #cargo-benchcmp # compare Rust micro-benchmarks # available after 23.05
     cargo-binstall # install Rust binaries instead of building them from src
@@ -88,7 +89,6 @@
     cargo-valgrind
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
     cargo-watch # run cargo commands when the src changes
-    clang
     gcc
     python311
     ruff
