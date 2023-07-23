@@ -26,6 +26,7 @@
     mtr
     openssh
     openssl
+    parallel
     pciutils # provides lspci and setpci
     pinentry
     procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
