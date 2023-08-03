@@ -74,12 +74,14 @@
     cargo-audit # audit crates for security vulnerabilities
     #cargo-benchcmp # compare Rust micro-benchmarks # available after 23.05
     cargo-binstall # install Rust binaries instead of building them from src
+    cargo-bisect-rustc # find exactly which rustc commit/release-version which prevents your code from building now
     cargo-bloat # find what takes the most space in the executable
     cargo-cache # manage cargo cache (${CARGO_HOME}); print and remove dirs selectively
     cargo-chef # for speeding up container builds using layer caching
     cargo-deps # build dependency graph of Rust projects
     cargo-dist # distribute on crates.io
     cargo-flamegraph # flamegraphs without Perl or pipes
+    cargo-hack # build project with all the possible variations of options/flags and check which ones fail and/or succeed
     cargo-outdated # show outdated deps
     cargo-profiler # profile Rust binaries
     cargo-public-api # detect breaking API changes and semver violations
