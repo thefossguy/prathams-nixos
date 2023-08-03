@@ -13,6 +13,7 @@
             "man:podman-network-exists(1)"
             "man:podman-network-create(1)"
           ];
+          Requires = [ "podman-restart.service" ];
         };
         Service = {
           ExecStart = "/home/pratham/.local/scripts/other-common-scripts/podman-initialization.sh";
