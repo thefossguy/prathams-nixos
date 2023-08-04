@@ -14,6 +14,7 @@
             "man:podman-network-create(1)"
           ];
           Requires = [ "podman-restart.service" ];
+          After = [ "podman-restart.service" ];
         };
         Service = {
           ExecStart = "/home/pratham/.local/scripts/other-common-scripts/podman-initialization.sh";
@@ -28,11 +29,11 @@
   };
 
   imports = [
-    ./podman-hugo-vaikunthnatham.nix
-    ./podman-hugo-mahayogi.nix
-    ./podman-uptime-vishnu.nix
-    ./podman-transmission-raadhe.nix
-    ./podman-gitea-nandini.nix
-    #./podman-nextcloud-nandini.nix
+    ./services/podman-gitea-chitragupta.nix
+    ./services/podman-gitea-govinda.nix
+    ./services/podman-hugo-mahayogi.nix
+    ./services/podman-hugo-vaikunthnatham.nix
+    ./services/podman-transmission-raadhe.nix
+    ./services/podman-uptime-vishnu.nix
   ];
 }
