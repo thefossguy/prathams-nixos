@@ -18,7 +18,7 @@
         };
         Service = {
           ExecStart = "/home/pratham/.local/scripts/other-common-scripts/podman-initialization.sh";
-          Environment = [ "\"PATH=${pkgs.dash}/bin:${pkgs.coreutils}/bin:${pkgs.gnugrep}/bin\"" ];
+          Environment = [ "\"PATH=${pkgs.nix}/bin\"" ];
           Type = "oneshot";
         };
         Install = {
