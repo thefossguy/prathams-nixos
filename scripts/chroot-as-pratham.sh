@@ -14,4 +14,18 @@ if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
     ssh-keygen -t ed25519 -f ssh
     ssh-keygen -t ed25519 -f git
     popd
+
+    if command -v podman; then
+        systemctl --user enable \
+            podman-restart.service \
+            podman-init.service \
+            container-caddy-vishwambhar.service \
+            container-hugo-vaikunthnatham.service \
+            container-gitea-chitragupta.service \
+            container-gitea-govinda.service \
+            container-hugo-mahayogi.service \
+            container-uptime-vishnu.service \
+            container-transmission-raadhe.service \
+            #EOF
+    fi
 fi
