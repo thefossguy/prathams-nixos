@@ -7,7 +7,6 @@ if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
     rm -rf $HOME/.dotfiles
 
     # generate SSH keys
-    mkdir $HOME/.ssh
     chmod 700 $HOME/.ssh
     pushd $HOME/.ssh
     clear -x
@@ -17,15 +16,6 @@ if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
 
     if command -v podman; then
         systemctl --user enable \
-            podman-restart.service \
-            podman-init.service \
-            container-caddy-vishwambhar.service \
-            container-hugo-vaikunthnatham.service \
-            container-gitea-chitragupta.service \
-            container-gitea-govinda.service \
-            container-hugo-mahayogi.service \
-            container-uptime-vishnu.service \
-            container-transmission-raadhe.service \
-            #EOF
+            podman-restart.service
     fi
 fi
