@@ -73,6 +73,7 @@
               --env GITEA__openid__ENABLE_OPENID_SIGNIN=false \
               --env GITEA__cron__ENABLED=true \
               --env GITEA__cron__RUN_AT_START=true \
+              --env GITEA__actions__ENABLED=false \
               --env GITEA__security__LOGIN_REMEMBER_DAYS=14 \
               --secret gitea_database_user_password \
               --publish 8005:3000 \
