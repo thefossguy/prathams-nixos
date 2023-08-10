@@ -60,6 +60,7 @@
               --env GITEA__server__DOMAIN=git.thefossguy.com \
               --env GITEA__server__ROOT_URL=https://git.thefossguy.com \
               --env GITEA__server__SSH_DOMAIN=git.thefossguy.com \
+              --env GITEA__server__SSH_EXPOSE_ANONYMOUS=true \
               --env GITEA__server__SSH_LISTEN_PORT=22 \
               --env GITEA__server__SSH_PORT=22 \
               --env GITEA__server__START_SSH_SERVER=true \
