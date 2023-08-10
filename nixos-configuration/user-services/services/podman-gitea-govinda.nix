@@ -49,21 +49,21 @@
         Service = {
           ExecStart = ''
             ${exec_start} \
-              --env GITEA__repository__DEFAULT_BRANCH=master \
-              --env GITEA__server__DISABLE_SSH=false \
-              --env GITEA__server__DOMAIN=git.thefossguy.com \
               --env GITEA__database__DB_TYPE=postgres \
               --env GITEA__database__HOST=gitea-chitragupta:5432 \
               --env GITEA__database__NAME=gitea \
               --env GITEA__database__PASSWD=/run/secrets/gitea_database_user_password \
               --env GITEA__database__USER=gitea \
-              --env GITEA__service__DISABLE_REGISTRATION=true \
-              --env GITEA__server__ROOT_URL=https://git.thefossguy.com \
+              --env GITEA__repository__DEFAULT_BRANCH=master \
               --env GITEA__RUN_MODE=prod \
+              --env GITEA__server__DISABLE_SSH=false \
+              --env GITEA__server__DOMAIN=git.thefossguy.com \
+              --env GITEA__server__ROOT_URL=https://git.thefossguy.com \
               --env GITEA__server__SSH_DOMAIN=git.thefossguy.com \
               --env GITEA__server__SSH_LISTEN_PORT=22 \
               --env GITEA__server__SSH_PORT=22 \
               --env GITEA__server__START_SSH_SERVER=true \
+              --env GITEA__service__DISABLE_REGISTRATION=true \
               --secret gitea_database_user_password \
               --publish 8005:3000 \
               --publish 8006:22 \
