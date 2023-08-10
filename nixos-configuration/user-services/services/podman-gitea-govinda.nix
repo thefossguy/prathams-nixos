@@ -68,6 +68,7 @@
               --env GITEA__service__DEFAULT_KEEP_EMAIL_PRIVATE=true \
               --env GITEA__repository__DEFAULT_PRIVATE=public \
               --env GITEA__repository__DEFAULT_PUSH_CREATE_PRIVATE=false \
+              --env GITEA__repository__DEFAULT_REPO_UNITS="repo.code,repo.releases" \
               --env GITEA__security__LOGIN_REMEMBER_DAYS=14 \
               --secret gitea_database_user_password \
               --publish 8005:3000 \
