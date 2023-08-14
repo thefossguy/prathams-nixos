@@ -71,7 +71,6 @@
               --env GITEA__server__SSH_DOMAIN=git.thefossguy.com \
               --env GITEA__server__SSH_EXPOSE_ANONYMOUS=true \
               --env GITEA__server__SSH_LISTEN_PORT=3001 \
-              --env GITEA__server__SSH_PORT=3001 \
               --env GITEA__server__START_SSH_SERVER=true \
               --env GITEA__service__DEFAULT_KEEP_EMAIL_PRIVATE=true \
               --env GITEA__service__DISABLE_REGISTRATION=true \
