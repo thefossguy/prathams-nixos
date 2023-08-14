@@ -70,14 +70,14 @@
               --env GITEA__server__ROOT_URL=https://git.thefossguy.com \
               --env GITEA__server__SSH_DOMAIN=git.thefossguy.com \
               --env GITEA__server__SSH_EXPOSE_ANONYMOUS=true \
-              --env GITEA__server__SSH_LISTEN_PORT=22 \
-              --env GITEA__server__SSH_PORT=22 \
+              --env GITEA__server__SSH_LISTEN_PORT=3001 \
+              --env GITEA__server__SSH_PORT=3001 \
               --env GITEA__server__START_SSH_SERVER=true \
               --env GITEA__service__DEFAULT_KEEP_EMAIL_PRIVATE=true \
               --env GITEA__service__DISABLE_REGISTRATION=true \
               --secret gitea_database_user_password \
               --publish 8005:3000 \
-              --publish 8006:22 \
+              --publish 8006:3001 \
               --volume ${container_volume_path}/web:/data:U \
               --volume ${container_volume_path}/ssh:/data/git/.ssh:U \
               ${container_image}
