@@ -5,7 +5,7 @@
     systemd.user.services =
     let
       container_name = "gitea-govinda";
-      container_image = "docker.io/gitea/gitea:latest";
+      container_image = "docker.io/gitea/gitea:latest-rootless";
       container_volume_path = "/home/pratham/container-data/volumes/gitea";
       db_container_service = "container-gitea-chitragupta.service";
       exec_start = ''
