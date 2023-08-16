@@ -20,6 +20,9 @@
       ports = [ 22 ];
       openFirewall = true;
       settings = {
+        Protocol = 2;
+        MaxAuthTries = 2;
+        PermitEmptyPasswords = false;
         PasswordAuthentication = false;
         PermitRootLogin = "prohibit-password";
         X11Forwarding = false;

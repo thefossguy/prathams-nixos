@@ -40,6 +40,7 @@ in
           "networkmanager"
           "podman"
           "rfkill"
+          "sshusers"
           "sys"
           "systemd-journal"
           "uucp"
