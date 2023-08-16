@@ -73,15 +73,4 @@ if [[ ${NETWORKING_HOSTNAME} =~ "reddish" ]]; then
 EOF
 fi
 
-if [[ ${NETWORKING_HOSTNAME} =~ "sentinel" ]]; then
-    cat << EOF >> ${CUSTOM_HOST_CONFIG}
-
-  boot.kernelParams = [ "nomodeset" ];
-
-  imports = [
-    ./desktop-env/bspwm-x11-configuration.nix
-  ];
-EOF
-fi
-
 echo '}' >> ${CUSTOM_HOST_CONFIG}
