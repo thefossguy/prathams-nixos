@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash --packages bash git
 
 if [[ ${USER} == "pratham" && ${HOME} = "/home/pratham" ]]; then
     # get dotfiles

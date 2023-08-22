@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash --packages bash wget
 
 EFI_FIRM_TAG='v1.35'
 RPI_FIRM_TAG='1.20230405'

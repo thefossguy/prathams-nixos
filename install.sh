@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash --packages bash
 
 if [[ ${EUID} -ne 0 ]]; then
     >&2 echo "$0: please run this script as root"
@@ -23,10 +24,6 @@ PARTITION_LAYOUT_TYPE=$3
 if [[ ${PARTITION_LAYOUT_TYPE} == "desktop" ]]; then
     PARTITION_LAYOUT_TYPE="$(pwd)/scripts/desktop-partitions.sh"
 elif [[ ${PARTITION_LAYOUT_TYPE} == "rpi" ]]; then
-    if [[ $(command -v wget &> /dev/null) ]]; then
-        >&2 echo "$0: binary 'wget' not found"
-        exit 1
-    fi
     PARTITION_LAYOUT_TYPE="$(pwd)/scripts/raspberry-pi-partitions.sh"
 elif [[ ${PARTITION_LAYOUT_TYPE} == "virt"  ]]; then
     PARTITION_LAYOUT_TYPE="$(pwd)/scripts/virt-partitions.sh"

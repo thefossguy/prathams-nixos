@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash --packages bash
 
 OS_DRIVE=$1
 RASP_PART="${OS_DRIVE}p1"
