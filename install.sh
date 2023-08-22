@@ -28,7 +28,8 @@ elif [[ ${PARTITION_LAYOUT_TYPE} == "rpi" ]]; then
 elif [[ ${PARTITION_LAYOUT_TYPE} == "virt"  ]]; then
     PARTITION_LAYOUT_TYPE="$(pwd)/scripts/virt-partitions.sh"
 else
-    >&2 echo "$0: invalid arg for 'disk partition layout'; possible values are 'desktop', 'rpi', 'virt'"
+    >&2 echo "$0: invalid arg for 'disk partition layout'"
+    >&2 echo "$0: possible values are 'desktop', 'rpi', 'virt'"
     exit 1
 fi
 
