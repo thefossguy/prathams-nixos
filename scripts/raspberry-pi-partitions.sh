@@ -46,11 +46,11 @@ sync; sync; sync; sync;
 fdisk -l "${OS_DRIVE}"
 
 # formatting
-mkfs.fat -F 32 -n  rpiuefi "${RASP_PART}"
-mkfs.fat -F 32 -n  nixboot "${BOOT_PART}"
-mkfs.ext4 -F -L -v nixroot "${ROOT_PART}"
-mkfs.ext4 -F -L -v nixhome "${HOME_PART}"
-mkfs.ext4 -F -L -v nixvarp "${VARL_PART}"
+mkfs.fat -F 32 -n rpiuefi "${RASP_PART}"
+mkfs.fat -F 32 -n nixboot "${BOOT_PART}"
+mkfs.ext4 -F -L   nixroot "${ROOT_PART}"
+mkfs.ext4 -F -L   nixhome "${HOME_PART}"
+mkfs.ext4 -F -L   nixvarp "${VARL_PART}"
 
 # mounting
 mount         "${ROOT_PART}" /mnt
