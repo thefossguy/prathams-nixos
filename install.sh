@@ -36,7 +36,7 @@ fi
 umount -R /mnt &> /dev/null
 
 # partition, format and mount
-${PARTITION_LAYOUT_TYPE} ${OS_DRIVE}
+"${PARTITION_LAYOUT_TYPE}" "${OS_DRIVE}"
 
 # prepare installation
 mkdir -p /mnt/etc/nixos
@@ -45,7 +45,7 @@ cp -vR nixos-configuration/* /mnt/etc/nixos
 
 # generate 'networking.hostId' for ZFS
 # and other host-specific configurations
-./scripts/deviation.sh ${NETWORKING_HOSTNAME} ${PARTITION_LAYOUT_TYPE}
+./scripts/deviation.sh "${NETWORKING_HOSTNAME}" "${PARTITION_LAYOUT_TYPE}"
 
 # install nixos
 nixos-install --no-root-password
