@@ -29,7 +29,7 @@ sync; sync; sync; sync;
 fdisk -l "${OS_DRIVE}"
 
 # formatting
-mkfs.fat -F 32 -n nixboot  "${BOOT_PART}"
+mkfs.fat -F 32 -n  nixboot "${BOOT_PART}"
 mkfs.ext4 -F -L -v nixroot "${ROOT_PART}"
 mkfs.ext4 -F -L -v nixhome "${HOME_PART}"
 
