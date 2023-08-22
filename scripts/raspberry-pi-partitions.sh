@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash --packages bash
 
+set -x
 OS_DRIVE="${1}"
 RASP_PART="${OS_DRIVE}p1"
 BOOT_PART="${OS_DRIVE}p2"

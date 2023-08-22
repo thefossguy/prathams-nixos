@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash --packages bash
 
+set -x
 if [[ ${EUID} -ne 0 ]]; then
     >&2 echo "$0: please run this script as root"
     exit 1

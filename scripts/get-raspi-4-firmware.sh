@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash --packages bash wget
 
+set -x
 EFI_FIRM_TAG='v1.35'
 RPI_FIRM_TAG='1.20230405'
 EFI_FIRM_FILE="${RPI_FIRM_TAG}.tar.gz"

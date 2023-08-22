@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash --packages bash findutils
 
+set -x
 NETWORKING_HOSTNAME="${1}"
 PARTITION_LAYOUT_TYPE="${2}"
 CUSTOM_HOST_CONFIG='/mnt/etc/nixos/host-specific-configuration.nix'

@@ -1,6 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash --packages bash git
 
+set -x
 if [[ "${USER}" == 'pratham' && "${HOME}" = '/home/pratham' ]]; then
     # get dotfiles
     git clone --depth 1 --bare https://gitlab.com/thefossguy/dotfiles.git "${HOME}/.dotfiles"
