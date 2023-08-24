@@ -127,18 +127,6 @@
     iotop-c
     usbtop
 
-    # podman
-    aardvark-dns
-    conmon
-    crun
-    #dnsname-cni #idk if this is important or not
-    fuse-overlayfs
-    iproute
-    podman
-    podman-compose
-    podman-tui
-    slirp4netns
-
     # network monitoring
     bandwhich
     iperf # this is iperf3
