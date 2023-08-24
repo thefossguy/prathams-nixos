@@ -24,6 +24,7 @@
     lsof
     mlocate
     mtr
+    nvme-cli
     openssh
     openssl
     parallel
