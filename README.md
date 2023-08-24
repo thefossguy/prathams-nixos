@@ -1,5 +1,5 @@
 ```
-nix-env -iA nixos.{btop,git,ripgrep,tmux,wget}
+nix-env -iA nixos.{bat,btop,choose,git,pciutils,ripgrep,tmux,wget}
 git clone --depth 1 https://gitlab.com/thefossguy/prathams-nixos
 cd prathams-nixos
 
