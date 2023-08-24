@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages bash findutils
+#!nix-shell -i bash --packages bash findutils pciutils
 
 set -x
 NETWORKING_HOSTNAME="${1}"
