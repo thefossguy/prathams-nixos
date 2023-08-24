@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   # packages to be installed _system wide_
@@ -156,21 +156,6 @@
 
     # virtualisation
     virt-manager
-
-    # window manager
-    #bspwm
-    #dunst
-    #feh
-    #i3lock-fancy-rapid
-    #jq
-    #lxsession
-    #picom
-    #polybarFull
-    #rofi
-    #socat
-    #sxhkd
-    #wmctrl
-    #xdg-desktop-portal-kde
   ];
 
   programs.gnupg.agent.enable = true;
