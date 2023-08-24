@@ -130,6 +130,7 @@
 
     # podman
     aardvark-dns
+    buildah
     conmon
     crun
     dnsname-cni #idk if this is important or not
