@@ -99,6 +99,10 @@ in
           command = "${pkgs.hdparm}/bin/hdparm";
           options = [ "NOPASSWD" ];
         }
+        {
+          command = "${pkgs.nvme-cli}/bin/nvme";
+          options = [ "NOPASSWD" ];
+        }
         #{
         #  command = "ALL";
         #  options = [ "NOPASSWD" ];
