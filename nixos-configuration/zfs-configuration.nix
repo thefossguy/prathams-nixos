@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   boot = {
@@ -19,6 +19,10 @@
       interval = "Sat *-*-01..07 08:00:00";
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    linuxKernel.packages.linux_6_1.zfs
+  ];
 
   virtualisation.lxd.zfsSupport = true;
 }

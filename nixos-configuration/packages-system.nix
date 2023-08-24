@@ -157,10 +157,6 @@
     # virtualisation
     virt-manager
 
-    # zfs
-    zfs
-    linuxKernel.packages.linux_6_1.zfs
-
     # window manager
     #bspwm
     #dunst
