@@ -30,6 +30,7 @@ in
         hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
         extraGroups = [
           "adm"
+          "dialout"
           "ftp"
           "games"
           "http"
