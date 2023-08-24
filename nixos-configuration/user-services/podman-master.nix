@@ -1,19 +1,6 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    aardvark-dns
-    conmon
-    crun
-    dnsname-cni #idk if this is important or not
-    fuse-overlayfs
-    iproute
-    podman
-    podman-compose
-    podman-tui
-    slirp4netns
-  ];
-
   home-manager.users.pratham = { pkgs, ... }: {
     systemd.user.services = {
       "podman-init" = {
