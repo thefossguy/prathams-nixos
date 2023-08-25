@@ -1,40 +1,42 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages bash
+#!nix-shell -i dash --packages dash
 
 set -x
-OS_DRIVE="${1}"
-BOOT_PART="${OS_DRIVE}1"
-ROOT_PART="${OS_DRIVE}2"
-HOME_PART="${OS_DRIVE}3"
+BOOT_PART="${INTERMEDIATE_PART}1"
+ROOT_PART="${INTERMEDIATE_PART}2"
+HOME_PART="${INTERMEDIATE_PART}3"
+BOOT_PART_SIZE='1G'
+ROOT_PART_SIZE='64G'
 
-# partitioning
 cat << EOF | fdisk --wipe always "${OS_DRIVE}"
 g
 n
 1
 
-+1G
++${BOOT_PART_SIZE}
 n
 2
 
-+64G
++${ROOT_PART_SIZE}
 n
 3
 
 
 w
+t
+1
+1
 EOF
-parted -s "${OS_DRIVE}" -- set 1 esp on
+sync; sync; sync; sync;
+sleep 10
 sync; sync; sync; sync;
 
 fdisk -l "${OS_DRIVE}"
 
-# formatting
-mkfs.fat -F 32 -n nixboot "${BOOT_PART}"
-mkfs.ext4 -F -L   nixroot "${ROOT_PART}"
-mkfs.ext4 -F -L   nixhome "${HOME_PART}"
+mkfs.fat  -F 32 -n nixboot "${BOOT_PART}"
+mkfs.ext4 -F -L    nixroot "${ROOT_PART}"
+mkfs.ext4 -F -L    nixhome "${HOME_PART}"
 
-# mounting
-mount         "${ROOT_PART}" /mnt
-mount --mkdir "${BOOT_PART}" /mnt/boot
-mount --mkdir "${HOME_PART}" /mnt/home
+mount         "${ROOT_PART}" "${MOUNT_PATH}"
+mount --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
+mount --mkdir "${HOME_PART}" "${MOUNT_PATH}/home"
