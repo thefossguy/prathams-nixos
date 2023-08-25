@@ -156,6 +156,7 @@
 
     # utilities written in Rust
     bat
+    broot
     choose
     dog
     du-dust
@@ -164,6 +165,7 @@
     hyperfine
     procs
     ripgrep
+    sd
     skim
     tealdeer
     tre-command
