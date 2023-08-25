@@ -32,7 +32,7 @@ export NETWORKING_HOSTID
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
 umount --recursive --force "${MOUNT_PATH}"
-mount | grep "${MOUNT_PATH}" && exit 1
+mount | grep "${OS_DRIVE}" && exit 1
 
 if echo "${OS_DRIVE}" | grep "sd\|vd"; then
     export INTERMEDIATE_PART="${OS_DRIVE}"
