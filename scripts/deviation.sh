@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages bash
+#!nix-shell -i dash --packages dash
 
 set -x
 
