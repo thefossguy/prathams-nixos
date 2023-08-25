@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash
+#!nix-shell -i dash --packages dash parted
 
 set -x
 BOOT_PART="${INTERMEDIATE_PART}1"
@@ -23,9 +23,6 @@ n
 
 
 w
-t
-1
-1
 EOF
 sync; sync; sync; sync;
 sleep 10
@@ -34,6 +31,7 @@ sync; sync; sync; sync;
 fdisk -l "${OS_DRIVE}"
 
 mkfs.fat  -F 32 -n nixboot "${BOOT_PART}"
+parted -s "${OS_DRIVE}" -- set 1 esp on
 mkfs.ext4 -F -L    nixroot "${ROOT_PART}"
 mkfs.ext4 -F -L    nixhome "${HOME_PART}"
 
