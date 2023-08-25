@@ -77,4 +77,22 @@ if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
 EOF
 fi
 
+if [ -n "${SPECIAL_IP_ADDR}" ]; then
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  networking = {
+    interfaces = {
+      enP4p1s0.ipv4.addresses = [{
+        address = "10.0.0.169";
+        prefixLength = 24;
+      }];
+    };
+    defaultGateway = {
+      address = "10.0.0.1";
+      interface = "enP4p1s0";
+    };
+  };
+EOF
+fi
+
 echo '}' >> "${CUSTOM_HOST_CONFIG}"

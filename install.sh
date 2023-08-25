@@ -21,6 +21,7 @@ fi
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
+dmesg | grep 'can'\''t read MAC address, setting random one' && export SPECIAL_IP_ADDR="hehe"
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 export OS_DRIVE="${1}"
 export MACHINE_HOSTNAME="${2}"
