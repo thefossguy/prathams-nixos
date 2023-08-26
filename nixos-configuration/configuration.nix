@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -112,10 +112,32 @@
     homeBinInPath = true;
     localBinInPath = true;
     variables = {
+      # for 'sudo -e'
       EDITOR = "nvim";
       VISUAL = "nvim";
+      # systemd
+      SYSTEMD_PAGER = "";
       SYSTEMD_EDITOR = "nvim";
       TERM = "xterm-256color";
+      # set locale manually because even though NixOS handles the 'en_IN' locale
+      # it doesn't append the string '.UTF-8' to LC_*
+      # but, UTF-8 **is supported**, so just go ahead and set it manually
+      LANG = lib.mkDefault "en_IN.UTF-8";
+      LC_ADDRESS = lib.mkDefault "en_IN.UTF-8";
+      LC_COLLATE = "en_IN.UTF-8";
+      LC_CTYPE = "en_IN.UTF-8";
+      LC_IDENTIFICATION = lib.mkDefault "en_IN.UTF-8";
+      LC_MEASUREMENT = lib.mkDefault "en_IN.UTF-8";
+      LC_MESSAGES = "en_IN.UTF-8";
+      LC_MONETARY = lib.mkDefault "en_IN.UTF-8";
+      LC_NAME = lib.mkDefault "en_IN.UTF-8";
+      LC_NUMERIC = lib.mkDefault "en_IN.UTF-8";
+      LC_PAPER = lib.mkDefault "en_IN.UTF-8";
+      LC_TELEPHONE = lib.mkDefault "en_IN.UTF-8";
+      LC_TIME = lib.mkDefault "en_IN.UTF-8";
+      LC_ALL = "";
+      # idk why, but XDG_DATA_HOME isn't set...
+      XDG_DATA_HOME = "$HOME/.local/share";
     };
   };
 
