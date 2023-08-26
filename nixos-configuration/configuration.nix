@@ -19,6 +19,9 @@
 
     # specific to this host
     ./host-specific-configuration.nix
+
+    # user services
+    ./user-services/services-master.nix
   ];
 
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
