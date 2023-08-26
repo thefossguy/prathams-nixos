@@ -136,8 +136,12 @@
       LC_TELEPHONE = lib.mkDefault "en_IN.UTF-8";
       LC_TIME = lib.mkDefault "en_IN.UTF-8";
       LC_ALL = "";
-      # idk why, but XDG_DATA_HOME isn't set...
+      # idk why, but some XDG vars aren't set, the missing ones are now set according to the
+      # spec: (https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
       XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_STATE_HOME = "$HOME/.local/state";
+      XDG_CACHE_HOME = "$HOME/.cache";
     };
   };
 
