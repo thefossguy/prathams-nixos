@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash git
+#!nix-shell -i dash --packages dash bash git
 
 set -x
 if [ "${USER}" = 'pratham' ] && [ -n "${HOME}" ]; then
