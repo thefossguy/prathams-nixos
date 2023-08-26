@@ -72,7 +72,7 @@ if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
   boot.zfs.extraPools = [ "trayimurti" ];
 
   imports = [
-    ./user-services/podman-master.nix
+    ./user-services/podman/podman-master.nix
   ];
 EOF
 fi
