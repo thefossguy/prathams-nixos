@@ -173,6 +173,9 @@
 
     # virtualisation
     virt-manager
+
+    # tools specific to NixOS
+    nix-output-monitor
   ];
 
   programs.gnupg.agent.enable = true;
