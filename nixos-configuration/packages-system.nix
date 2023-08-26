@@ -142,11 +142,9 @@
     slirp4netns
 
     # network monitoring
-    bandwhich
     iperf # this is iperf3
     iperf2 # this is what is usually 'iperf' on other distros
     nload
-    sniffnet
 
     # other utilities
     android-tools
@@ -155,6 +153,7 @@
     shellcheck
 
     # utilities written in Rust
+    bandwhich
     bat
     bottom
     broot
@@ -168,6 +167,7 @@
     ripgrep
     sd
     skim
+    sniffnet
     tealdeer
     tre-command
 
