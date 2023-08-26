@@ -171,6 +171,11 @@
   boot = {
     kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
     kernel.sysctl = {
+      # Using zramswap, penalty shouldn't be that high, since if you are under
+      # high memory pressure, you likeky are under high CPU load too
+      # at which point, you are performing computations and latency goes moot
+      "vm.swappiness" = 180;
+
       # The Magic SysRq key is a key combo that allows users connected to the
       # system console of a Linux kernel to perform some low-level commands.
       # Disable it, since we don't need it, and is a potential security concern.
