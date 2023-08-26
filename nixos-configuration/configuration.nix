@@ -171,10 +171,32 @@
   boot = {
     kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
     kernel.sysctl = {
+      ## Z-RAM-Swap
+      # Kernel docs: https://docs.kernel.org/admin-guide/sysctl/vm.html
+      # Pop!_OS "docs": https://github.com/pop-os/default-settings/pull/163/files
       # Using zramswap, penalty shouldn't be that high, since if you are under
       # high memory pressure, you likeky are under high CPU load too
-      # at which point, you are performing computations and latency goes moot
+      # at which point, you are performing computations and latency goes moot.
       "vm.swappiness" = 180;
+      # Since zramSwap.algorithm is set to 'zstd', it is recommeded to set the
+      # 'vm.page-cluster' paramater to '0'.
+      "vm.page-cluster" = 0;
+      # Ensure that at-least 512MBytes of total memory is free to avoid system freeze.
+      # Not sure about the 512MBytes value since Pop!_OS sets it to 0.01% of total memory,
+      # which is roughly equal to 3.7MBytes on a 3700MBytes RPi4. The value of 512MBytes
+      # also does not leave lee-way for a 512M RPi Zero.
+      # A value too LOW  will result in system freeze.
+      # A value too HIGH will result in OOM faster.
+      "vm.min_free_kbytes"= 512000;
+      # Disable 'vm.wwatermark_scale_factoratermark_boost_factor'.
+      # https://groups.google.com/g/linux.debian.user/c/YcDYu-jM-to
+      "vm.watermark_boost_factor" = 0;
+      # Start swapping when 70% of memory is full (30% of memory is left).
+      # 3000 is the MAX
+      "vm.watermark_scale_factor" = 3000;
+      # Increase the number of maximum mmaps a process may have (ZFS).
+      # 2147483642 = 1.99-ish GiB
+      "vm.max_map_count" = 2147483642;
 
       # The Magic SysRq key is a key combo that allows users connected to the
       # system console of a Linux kernel to perform some low-level commands.
