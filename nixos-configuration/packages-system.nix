@@ -156,6 +156,7 @@
 
     # utilities written in Rust
     bat
+    bottom
     broot
     choose
     dog
