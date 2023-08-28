@@ -151,6 +151,7 @@
     fzf
     picocom
     shellcheck
+    ventoy
 
     # utilities written in Rust
     bandwhich
