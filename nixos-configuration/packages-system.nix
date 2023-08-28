@@ -176,6 +176,7 @@
     virt-manager
 
     # tools specific to NixOS
+    nvd # diff between NixOS generations
     nix-output-monitor
   ];
 
