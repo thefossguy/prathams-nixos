@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash parted
 
-set -x
+set -xeu
 BOOT_PART="${INTERMEDIATE_PART}1"
 ROOT_PART="${INTERMEDIATE_PART}2"
 STRG_PART="${INTERMEDIATE_PART}3"
