@@ -86,4 +86,7 @@ chroot "${MOUNT_PATH}" /run/current-system/sw/bin/sudo -i -u pratham bash /home/
 rm "${MOUNT_PATH}/home/pratham/chroot-as-pratham.sh"
 
 # done!
+sync; sync; sync; sync;
+sleep 10
+sync; sync; sync; sync;
 umount -R "${MOUNT_PATH}"
