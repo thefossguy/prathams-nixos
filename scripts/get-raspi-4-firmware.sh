@@ -19,12 +19,12 @@ mkdir "${TMP_OUT_DIR}"
 
 while ! sha512sum "${RPI4_EFI_FIRMWARE_FILE}" | grep "${RPI4_EFI_FIRMWARE_HASH}"; do
     rm -f "${RPI4_EFI_FIRMWARE_FILE}"
-    wget "https://github.com/pftf/RPi4/releases/download/${RPI4_EFI_FIRMWARE_TAG}/RPi4_UEFI_Firmware_${RPI4_EFI_FIRMWARE_TAG}.zip" --output-document "${RPI4_EFI_FIRMWARE_FILE}" || exit 1
+    wget --secure-protocol=TLSv1_3 "https://github.com/pftf/RPi4/releases/download/${RPI4_EFI_FIRMWARE_TAG}/RPi4_UEFI_Firmware_${RPI4_EFI_FIRMWARE_TAG}.zip" --output-document "${RPI4_EFI_FIRMWARE_FILE}" || exit 1
 done
 
 while ! sha512sum "${RPI_VNDR_FIRMWARE_FILE}" | grep "${RPI_VNDR_FIRMWARE_HASH}"; do
     rm -f "${RPI_VNDR_FIRMWARE_FILE}"
-    wget "https://github.com/raspberrypi/firmware/archive/refs/tags/${RPI_VNDR_FIRMWARE_TAG}.tar.gz" --output-document "${RPI_VNDR_FIRMWARE_FILE}" || exit 1
+    wget --secure-protocol=TLSv1_3 "https://github.com/raspberrypi/firmware/archive/refs/tags/${RPI_VNDR_FIRMWARE_TAG}.tar.gz" --output-document "${RPI_VNDR_FIRMWARE_FILE}" || exit 1
 done
 
 rm -rf "${RPI4_EFI_FIRMWARE_DIR}"
