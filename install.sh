@@ -56,7 +56,7 @@ else
 fi
 
 # partition, format and mount
-"${PARTITIONING_SCRIPT}" || exit 1
+"${PARTITIONING_SCRIPT}"
 
 # prepare installation
 mkdir -p "${MOUNT_PATH}/etc/nixos"
@@ -70,10 +70,10 @@ cp -vR nixos-configuration/* "${MOUNT_PATH}/etc/nixos"
 # - enabling KDE if the machine if $PARTITION_LAYOUT is either 'desktop'
 # - enabling BSPWM if the machine if $PARTITION_LAYOUT is either 'virt'
 # - enabling Podman containers if $MACHINE_HOSTNAME is 'reddish' (Raspberry Pi 4 Model B 8GB)
-"$(pwd)/scripts/deviation.sh" || exit 1
+"$(pwd)/scripts/deviation.sh"
 
 # install NixOS
-nixos-install --no-root-password --root "${MOUNT_PATH}" || exit 1
+nixos-install --no-root-password --root "${MOUNT_PATH}"
 
 # very very initial setup for 'pratham'
 mount -o bind /dev "${MOUNT_PATH}/dev"
@@ -82,7 +82,7 @@ mount -o bind /sys "${MOUNT_PATH}/sys"
 mount -o bind,ro /etc/resolv.conf "${MOUNT_PATH}/etc/resolv.conf"
 chroot "${MOUNT_PATH}" /nix/var/nix/profiles/system/activate
 cp "$(pwd)/scripts/chroot-as-pratham.sh" "${MOUNT_PATH}/home/pratham"
-chroot "${MOUNT_PATH}" /run/current-system/sw/bin/sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh || exit 1
+chroot "${MOUNT_PATH}" /run/current-system/sw/bin/sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh
 rm "${MOUNT_PATH}/home/pratham/chroot-as-pratham.sh"
 
 # done!
