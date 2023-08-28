@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.05.tar.gz";
@@ -8,7 +8,8 @@ in
   imports = [ (import "${home-manager}/nixos") ];
 
   users = {
-    mutableUsers = true;
+    # do not allow any more users on the system than what is defined here
+    mutableUsers = false;
     allowNoPasswordLogin = false;
     defaultUserShell = pkgs.bash;
     enforceIdUniqueness = true;
