@@ -199,7 +199,7 @@
 
   boot = {
     kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
-    supportedFilesystems = lib.mkForce [
+    supportedFilesystems = [
       "ext4"
       "f2fs"
       "vfat"
