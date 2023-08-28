@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash findutils pciutils wget
 
-set -xeu
+set -xe
 date +%Y/%m/%d\ %H:%M:%S
 if [ "$(id -u)" -ne 0 ]; then
     >&2 echo "$0: please run this script as root"
