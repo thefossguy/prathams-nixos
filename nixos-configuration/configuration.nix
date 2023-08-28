@@ -199,6 +199,12 @@
 
   boot = {
     kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
+    supportedFilesystems = lib.mkForce [
+      "ext4"
+      "f2fs"
+      "vfat"
+      "xfs"
+    ];
     kernel.sysctl = {
       ## Z-RAM-Swap
       # Kernel docs: https://docs.kernel.org/admin-guide/sysctl/vm.html
