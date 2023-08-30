@@ -56,6 +56,7 @@
     mediainfo-gui
     mpv
     neovide
+    virt-manager
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
     xclip
     xsel
