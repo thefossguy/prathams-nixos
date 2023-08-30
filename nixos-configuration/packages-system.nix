@@ -151,6 +151,7 @@
     fzf
     picocom
     shellcheck
+    ubootTools
     ventoy
 
     # utilities written in Rust
