@@ -173,6 +173,9 @@
     tre-command
 
     # virtualisation
+    OVMFFull
+    qemu
+    qemu-utils
 
     # tools specific to NixOS
     nvd # diff between NixOS generations
