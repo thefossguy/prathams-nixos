@@ -80,5 +80,12 @@
     extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
   };
 
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = ["qemu:///system"];
+      uris = ["qemu:///system"];
+    };
+  };
+
   services.flatpak.enable = true;
 }
