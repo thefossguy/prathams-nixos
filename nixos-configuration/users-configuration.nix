@@ -119,5 +119,11 @@ in
 
   home-manager.users.pratham = { pkgs, ... }: {
     home.stateVersion = "23.05";
+    dconf.settings = {
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
+    };
   };
 }
