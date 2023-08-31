@@ -174,7 +174,7 @@
     tre-command
 
     # virtualisation
-    OVMFFull
+    OVMF
     qemu
     qemu-utils
 
