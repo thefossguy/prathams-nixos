@@ -97,13 +97,14 @@
     ruff
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
-    # language servers and other related packages
+    # language servers, parsers and other related packages
     clang-tools # provides clangd
     lldb # provides lldb-vscode
     lua-language-server
     nil # language server for Nix
     nodePackages.bash-language-server
     python311Packages.ruff-lsp
+    shellcheck
     tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
 
     # power management
@@ -149,7 +150,6 @@
     android-tools
     fzf
     picocom
-    shellcheck
     ubootTools
     ventoy
 
