@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ./nixos-config-pull.nix
     ./dotfiles-pull.nix
+    ./nixos-config-pull.nix
+    ./update-rust.nix
   ];
 }
