@@ -33,8 +33,8 @@ parted -s "${OS_DRIVE}" -- set 1 esp on
 mkfs.ext4 -F -L    nixroot "${ROOT_PART}"
 mkfs.ext4 -F -L    nixhome "${HOME_PART}"
 
-mount -o noatime "${ROOT_PART}" "${MOUNT_PATH}"
-mount --mkdir    "${BOOT_PART}" "${MOUNT_PATH}/boot"
-mount --mkdir    "${HOME_PART}" "${MOUNT_PATH}/home"
+mount -o async,lazytime,noatime "${ROOT_PART}" "${MOUNT_PATH}"
+mount -o async,lazytime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
+mount -o async,lazytime --mkdir "${HOME_PART}" "${MOUNT_PATH}/home"
 
 fdisk -l "${OS_DRIVE}"
