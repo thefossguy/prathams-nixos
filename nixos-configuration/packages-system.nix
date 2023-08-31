@@ -49,7 +49,6 @@
     # shells
     bash
     dash
-    zsh
 
     # download clients
     aria2

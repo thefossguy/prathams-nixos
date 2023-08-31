@@ -68,7 +68,6 @@ in
   };
 
   programs.fish.enable = true;
-  programs.zsh.enable = true;
 
   security.sudo = {
     enable = true;
