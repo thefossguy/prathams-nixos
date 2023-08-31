@@ -18,7 +18,7 @@ if [ "${USER}" = 'pratham' ] && [ -n "${HOME}" ]; then
     # get nixos config
     mkdir -vp "${HOME}/my-git-repos/pratham"
     pushd "${HOME}/my-git-repos/pratham"
-    git clone https://git.thefossguy.com/thefossguy/prathams-nixos
+    git clone https://gitlab.com/thefossguy/prathams-nixos
     popd
 else
     >&2 echo "$0: You are not me"
