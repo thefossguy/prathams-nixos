@@ -88,10 +88,6 @@ in
           options = [ "NOPASSWD" ];
         }
         {
-          command = "${pkgs.picocom}/bin/picocom";
-          options = [ "NOPASSWD" ];
-        }
-        {
           command = "${pkgs.nix}/bin/nix-collect-garbage";
           options = [ "NOPASSWD" ];
         }
