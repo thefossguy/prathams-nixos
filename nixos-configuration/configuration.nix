@@ -105,6 +105,7 @@
   };
 
   programs = {
+    ccache.enable = true;
     dconf.enable = true;
     adb.enable = true;
   };
