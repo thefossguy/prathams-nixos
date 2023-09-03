@@ -176,6 +176,8 @@
     OVMF
     qemu
     qemu-utils
+    qemu_kvm
+    ubootQemuAarch64
 
     # tools specific to NixOS
     nvd # diff between NixOS generations
