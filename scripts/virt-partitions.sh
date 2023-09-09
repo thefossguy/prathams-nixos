@@ -30,8 +30,8 @@ sync; sync; sync; sync;
 
 mkfs.fat  -F 32 -n nixboot "${BOOT_PART}"
 parted -s "${OS_DRIVE}" -- set 1 esp on
-mkfs.ext4 -F -L    nixroot "${ROOT_PART}"
-mkfs.ext4 -F -L    nixhome "${HOME_PART}"
+mkfs.xfs  -f -L    nixroot "${ROOT_PART}"
+mkfs.xfs  -f -L    nixhome "${HOME_PART}"
 
 mount -o async,lazytime,noatime "${ROOT_PART}" "${MOUNT_PATH}"
 mount -o async,lazytime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
