@@ -111,6 +111,10 @@ in
           command = "${pkgs.systemd}/bin/shutdown";
           options = [ "NOPASSWD" ];
         }
+        {
+          command = "${pkgs.coreutils}/bin/sync";
+          options = [ "NOPASSWD" ];
+        }
         #{
         #  command = "ALL";
         #  options = [ "NOPASSWD" ];
