@@ -179,8 +179,9 @@
     qemu_kvm
 
     # tools specific to NixOS
-    nvd # diff between NixOS generations
+    direnv
     nix-output-monitor
+    nvd # diff between NixOS generations
   ];
 
   programs.gnupg.agent.enable = true;
