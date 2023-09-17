@@ -32,6 +32,7 @@
     pinentry
     procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
     psmisc # provides killall, fuser, pslog, pstree, etc
+    pv
     rsync
     shadow
     smartmontools
