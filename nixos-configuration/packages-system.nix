@@ -29,10 +29,11 @@
     openssl
     parallel
     pciutils # provides lspci and setpci
-    pinentry
+    pinentry # pkg summary: GnuPG’s interface to passphrase input
     procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
     psmisc # provides killall, fuser, pslog, pstree, etc
     pv
+    python3Minimal
     rsync
     shadow
     smartmontools
@@ -68,10 +69,10 @@
     zip
     zstd
 
-    # programming
+    # programming tools + compilers
     #cargo-deb # generate .deb packages solely based on Cargo.toml
     #cargo-ndk # extension for building Android NDK projects
-    binutils
+    binutils # provides readelf, objdump, strip, as, objcopy (GNU; not LLVM)
     cargo-audit # audit crates for security vulnerabilities
     #cargo-benchcmp # compare Rust micro-benchmarks # available after 23.05
     cargo-binstall # install Rust binaries instead of building them from src
@@ -94,8 +95,6 @@
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
     cargo-watch # run cargo commands when the src changes
     gcc
-    python311
-    ruff
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # language servers, parsers and other related packages
@@ -104,7 +103,7 @@
     lua-language-server
     nil # language server for Nix
     nodePackages.bash-language-server
-    python311Packages.ruff-lsp
+    ruff
     shellcheck
     tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
 
@@ -130,17 +129,17 @@
     usbtop
 
     # podman
-    aardvark-dns
-    buildah
-    conmon
-    crun
-    dnsname-cni #idk if this is important or not
-    fuse-overlayfs
-    iproute
-    podman
-    podman-compose
-    podman-tui
-    slirp4netns
+    #aardvark-dns
+    #buildah
+    #conmon
+    #crun
+    #dnsname-cni #idk if this is important or not
+    #fuse-overlayfs
+    #iproute
+    #podman
+    #podman-compose
+    #podman-tui
+    #slirp4netns
 
     # network monitoring
     iperf # this is iperf3
@@ -174,13 +173,12 @@
     tre-command
 
     # virtualisation
-    OVMF
-    qemu
-    qemu-utils
+    #OVMF
+    #qemu
+    #qemu-utils
     qemu_kvm
 
     # tools specific to NixOS
-    direnv
     nix-output-monitor
     nvd # diff between NixOS generations
   ];

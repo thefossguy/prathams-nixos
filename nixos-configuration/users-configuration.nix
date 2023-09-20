@@ -130,6 +130,16 @@ in
 
   home-manager.users.pratham = { pkgs, ... }: {
     home.stateVersion = "23.05";
+    programs.nix-index = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+    };
+    programs.direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+    };
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
