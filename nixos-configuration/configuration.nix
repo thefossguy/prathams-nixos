@@ -200,7 +200,17 @@
   };
 
   boot = {
-    kernelParams = [ "ignore_loglevel" "audit=0" "boot.shell_on_fail" ];
+    kernelParams = [
+      "audit=0"
+      "ignore_loglevel"
+
+      "boot.shell_on_fail"
+
+      "fsck.mode=auto"
+
+      "plymouth.enable=0"
+      "rd.plymouth=0"
+    ];
     supportedFilesystems = [
       "ext4"
       "f2fs"
