@@ -92,6 +92,11 @@ if [ -n "${SPECIAL_IP_ADDR}" ]; then
       interface = "enP4p1s0";
     };
   };
+
+  boot.tmp = {
+    useTmpfs = true; # whether to mount a tmpfs on /tmp during boot
+    tmpfsSize = "69%";
+  };
 EOF
 fi
 
