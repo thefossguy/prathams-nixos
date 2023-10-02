@@ -95,6 +95,7 @@
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
     cargo-watch # run cargo commands when the src changes
     gcc
+    linux.dev
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # language servers, parsers and other related packages
@@ -159,7 +160,6 @@
     bottom
     broot
     choose
-    dog
     du-dust
     dua
     fd
