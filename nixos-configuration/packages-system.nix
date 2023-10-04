@@ -171,6 +171,7 @@
     sniffnet
     tealdeer
     tre-command
+    zoxide
 
     # virtualisation
     #OVMF
