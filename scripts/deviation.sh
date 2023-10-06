@@ -95,4 +95,14 @@ if [ -n "${SPECIAL_IP_ADDR}" ]; then
 EOF
 fi
 
+if [ ${TOTAL_MEM_GIB} -gt 30 ]; then
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  boot.tmp = {
+    useTmpfs = true; # mount a tmpfs on /tmp during boot
+    tmpfsSize = "50%";
+  };
+EOF
+fi
+
 echo '}' >> "${CUSTOM_HOST_CONFIG}"
