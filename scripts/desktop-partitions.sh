@@ -1,7 +1,8 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash parted
 
-set -xe
+set -xeuf -o pipefail
+
 BOOT_PART="${INTERMEDIATE_PART}1"
 ROOT_PART="${INTERMEDIATE_PART}2"
 HOME_PART="${INTERMEDIATE_PART}3"

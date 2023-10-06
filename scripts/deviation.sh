@@ -1,7 +1,7 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash
 
-set -xe
+set -xeuf -o pipefail
 
 # always make sure that the file exists because it is included in the master config
 touch "${CUSTOM_HOST_CONFIG}"

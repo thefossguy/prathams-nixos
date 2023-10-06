@@ -1,7 +1,8 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash gnutar perl unzip wget
 
-set -xe
+set -xeuf -o pipefail
+
 TMP_FIRMWARE_DIR="$(pwd)/rpi-firmware"
 TMP_OUT_DIR="$(pwd)/out"
 RPI4_EFI_FIRMWARE_TAG='v1.35'

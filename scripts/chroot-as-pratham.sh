@@ -1,7 +1,8 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i dash --packages dash bash git
 
-set -xe
+set -xeuf -o pipefail
+
 if [ "${USER}" = 'pratham' ] && [ -n "${HOME}" ]; then
     # get dotfiles
     git clone --bare https://gitlab.com/thefossguy/dotfiles.git "${HOME}/.dotfiles"
