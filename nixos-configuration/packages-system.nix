@@ -138,6 +138,7 @@
     android-tools
     asciinema
     fzf
+    parted
     picocom
     ubootTools
 
