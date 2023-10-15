@@ -129,19 +129,6 @@
     iotop-c
     usbtop
 
-    # podman
-    #aardvark-dns
-    #buildah
-    #conmon
-    #crun
-    #dnsname-cni #idk if this is important or not
-    #fuse-overlayfs
-    #iproute
-    #podman
-    #podman-compose
-    #podman-tui
-    #slirp4netns
-
     # network monitoring
     iperf # this is iperf3
     iperf2 # this is what is usually 'iperf' on other distros
@@ -149,9 +136,11 @@
 
     # other utilities
     android-tools
+    asciinema
     fzf
     picocom
     ubootTools
+
     ventoy
 
     # utilities written in Rust

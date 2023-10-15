@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   home-manager.users.pratham = { pkgs, ... }: {
@@ -27,6 +27,12 @@
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    ctop
+    podman-compose
+    podman-tui
+  ];
 
   imports = [
     ./services/podman-gitea-chitragupta.nix
