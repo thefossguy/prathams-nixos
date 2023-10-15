@@ -82,20 +82,20 @@ if [ -n "${SPECIAL_IP_ADDR}" ]; then
 
   networking = {
     interfaces = {
-      enP4p1s0.ipv4.addresses = [{
+      ${NETWORKING_INTERFACE}.ipv4.addresses = [{
         address = "10.0.0.169";
         prefixLength = 24;
       }];
     };
     defaultGateway = {
       address = "10.0.0.1";
-      interface = "enP4p1s0";
+      interface = "${NETWORKING_INTERFACE}";
     };
   };
 EOF
 fi
 
-if [ ${TOTAL_MEM_GIB} -gt 30 ]; then
+if [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
     cat << EOF >> "${CUSTOM_HOST_CONFIG}"
 
   boot.tmp = {

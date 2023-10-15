@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash choose findutils pciutils wget
+#!nix-shell -i dash --packages dash choose findutils networkmanager pciutils wget
 
 set -xeuf -o pipefail
 
@@ -24,6 +24,7 @@ grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
 dmesg | grep 'can'\''t read MAC address, setting random one' && export SPECIAL_IP_ADDR="hehe"
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
+NETWORKING_INTERFACE="$(nmcli con show | grep ethernet | choose -1)"
 TOTAL_MEM_KIB=$(grep 'MemTotal' /proc/meminfo | choose 1)
 export OS_DRIVE="${1}"
 export MACHINE_HOSTNAME="${2}"
@@ -32,6 +33,7 @@ export MOUNT_PATH='/mnt'
 export CUSTOM_HOST_CONFIG="${MOUNT_PATH}/etc/nixos/host-specific-configuration.nix"
 export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
 export NETWORKING_HOSTID
+export NETWORKING_INTERFACE
 
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
