@@ -124,7 +124,6 @@
     # system monitoring
     btop
     htop
-    htop-vim
     iotop
     iotop-c
     usbtop
