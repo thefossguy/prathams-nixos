@@ -136,11 +136,11 @@
     # other utilities
     android-tools
     asciinema
+    buildah
     fzf
     parted
     picocom
     ubootTools
-
     ventoy
 
     # utilities written in Rust
