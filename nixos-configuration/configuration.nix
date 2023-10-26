@@ -210,6 +210,8 @@
 
       "plymouth.enable=0"
       "rd.plymouth=0"
+
+      "no_console_suspend"
     ];
     supportedFilesystems = [
       "ext4"
