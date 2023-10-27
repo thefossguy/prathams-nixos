@@ -72,6 +72,7 @@
     # programming tools + compilers
     #cargo-deb # generate .deb packages solely based on Cargo.toml
     #cargo-ndk # extension for building Android NDK projects
+    b4 # applying patches from mailing lists
     binutils # provides readelf, objdump, strip, as, objcopy (GNU; not LLVM)
     cargo-audit # audit crates for security vulnerabilities
     #cargo-benchcmp # compare Rust micro-benchmarks # available after 23.05
