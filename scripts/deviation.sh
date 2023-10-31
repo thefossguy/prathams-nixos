@@ -56,8 +56,6 @@ fi
 
 if [ "${PARTITION_LAYOUT}" = 'desktop' ]; then
     IMPORT_MODULES+=('./desktop-env/kde-plasma-wayland-configuration.nix')
-elif [ "${PARTITION_LAYOUT}" = 'virt' ]; then
-    IMPORT_MODULES+=('./desktop-env/bspwm-x11-configuration.nix')
 fi
 
 if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
