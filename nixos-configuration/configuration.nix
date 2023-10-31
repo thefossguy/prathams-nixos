@@ -14,9 +14,6 @@
     # services to enable
     ./root-services.nix
 
-    # zfs
-    ./zfs-configuration.nix
-
     # specific to this host
     ./host-specific-configuration.nix
 

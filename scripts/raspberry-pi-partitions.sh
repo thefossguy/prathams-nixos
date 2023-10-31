@@ -1,8 +1,9 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash parted
+#!nix-shell -i bash --packages
 
 set -xeuf -o pipefail
 
+export RPI_FIRMWARE_PATH="${MOUNT_PATH}/raspberry-pi/firmware"
 RASP_PART="${INTERMEDIATE_PART}1"
 BOOT_PART="${INTERMEDIATE_PART}2"
 ROOT_PART="${INTERMEDIATE_PART}3"
@@ -62,7 +63,6 @@ mount -o async,lazytime --mkdir "${VARL_PART}" "${MOUNT_PATH}/var"
 mount -o async,lazytime --mkdir "${RASP_PART}" "${MOUNT_PATH}/raspberry-pi/firmware"
 
 "$(pwd)/scripts/get-raspi-4-firmware.sh"
-cp -r "$(pwd)"/out/* "${MOUNT_PATH}/raspberry-pi/firmware"
 umount "${MOUNT_PATH}/raspberry-pi/firmware"
 
 fdisk -l "${OS_DRIVE}"

@@ -1,7 +1,8 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash gnutar perl unzip wget
+#!nix-shell -i bash --packages gnutar perl unzip wget
 
-set -xeuf -o pipefail
+# not using 'set -f' because file globbing is necessary
+set -xeu -o pipefail
 
 TMP_FIRMWARE_DIR="$(pwd)/rpi-firmware"
 TMP_OUT_DIR="$(pwd)/out"
@@ -39,3 +40,5 @@ cp -rf "${RPI_VNDR_FIRMWARE_DIR}"/boot/* "${TMP_OUT_DIR}/"
 
 rm -vf "${TMP_OUT_DIR}"/*kernel*
 rm -vf "${TMP_OUT_DIR}"/Readme.md
+
+cp -r "$(pwd)"/out/* "${RPI_FIRMWARE_PATH}"

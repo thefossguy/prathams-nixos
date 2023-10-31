@@ -1,7 +1,9 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash choose findutils networkmanager pciutils wget
+#!nix-shell -i bash --packages parted pciutils
 
-set -xeuf -o pipefail
+# not using 'set -uf' because file globbing is necessary
+# and we will be checking if vars are empty or not, manually
+set -xe -o pipefail
 
 date +%Y/%m/%d\ %H:%M:%S
 if [ "$(id -u)" -ne 0 ]; then
@@ -24,8 +26,8 @@ grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
 dmesg | grep 'can'\''t read MAC address, setting random one' && export SPECIAL_IP_ADDR="hehe"
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
-NETWORKING_INTERFACE="$(nmcli con show | grep ethernet | choose -1)"
-TOTAL_MEM_KIB=$(grep 'MemTotal' /proc/meminfo | choose 1)
+NETWORKING_INTERFACE="$(grep -i "eth\|enp" /proc/net/dev | awk -F : '{print $1}')"
+TOTAL_MEM_KIB=$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')
 export OS_DRIVE="${1}"
 export MACHINE_HOSTNAME="${2}"
 export PARTITION_LAYOUT="${3}"
@@ -39,12 +41,17 @@ export NETWORKING_INTERFACE
 # otherwise, bad things happen
 mount | grep "${OS_DRIVE}" && umount --recursive --force "${MOUNT_PATH}"
 
-if echo "${OS_DRIVE}" | grep "sd\|vd"; then
-    export INTERMEDIATE_PART="${OS_DRIVE}"
-elif echo "${OS_DRIVE}" | grep "mmcblk\|nvme"; then
-    export INTERMEDIATE_PART="${OS_DRIVE}p"
+if [ -b "${OS_DRIVE}" ]; then
+    if echo "${OS_DRIVE}" | grep "sd\|vd"; then
+        export INTERMEDIATE_PART="${OS_DRIVE}"
+    elif echo "${OS_DRIVE}" | grep "mmcblk\|nvme"; then
+        export INTERMEDIATE_PART="${OS_DRIVE}p"
+    else
+        >&2 echo "$0: unable to decide how to partition '${OS_DRIVE}'"
+        exit 1
+    fi
 else
-    >&2 echo "$0: unable to decide how to partition '${OS_DRIVE}'"
+    >&2 echo "$0: no such drive exists"
     exit 1
 fi
 

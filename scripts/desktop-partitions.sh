@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash parted
+#!nix-shell -i bash --packages
 
 set -xeuf -o pipefail
 

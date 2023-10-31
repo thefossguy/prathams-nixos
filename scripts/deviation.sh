@@ -1,10 +1,12 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i dash --packages dash
+#!nix-shell -i bash --packages
 
-set -xeuf -o pipefail
+# not using 'set -u' because 'CPU_VENDOR' **will** be empty on non-x86_64 systems
+set -xef -o pipefail
 
 # always make sure that the file exists because it is included in the master config
 touch "${CUSTOM_HOST_CONFIG}"
+IMPORT_MODULES=('./zfs-configuration.nix')
 
 # setup hostname and hostid
 cat << EOF > "${CUSTOM_HOST_CONFIG}"
@@ -21,13 +23,15 @@ if [ "${CPU_VENDOR}" = 'AMD' ]; then
     cat << EOF > "${CUSTOM_HOST_CONFIG}"
 
     hardware.cpu.amd.updateMicrocode = true;
-    boot.extraModprobeConfig = "options nested=1 kvm_amd";
+    boot.kernelModules = [ "kvm-amd" ];
+    boot.extraModprobeConfig = "options kvm_amd nested=1";
 EOF
 elif [ "${CPU_VENDOR}" = 'Intel' ]; then
     cat << EOF > "${CUSTOM_HOST_CONFIG}"
 
     hardware.cpu.intel.updateMicrocode = true;
-    boot.extraModprobeConfig = "options nested=1 kvm_intel";
+    boot.kernelModules = [ "kvm-intel" ];
+    boot.extraModprobeConfig = "options kvm_intel nested=1";
 EOF
 fi
 
@@ -51,30 +55,13 @@ EOF
 fi
 
 if [ "${PARTITION_LAYOUT}" = 'desktop' ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  imports = [
-    ./desktop-env/kde-plasma-wayland-configuration.nix
-  ];
-EOF
+    IMPORT_MODULES+=('./desktop-env/kde-plasma-wayland-configuration.nix')
 elif [ "${PARTITION_LAYOUT}" = 'virt' ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  imports = [
-    ./desktop-env/bspwm-x11-configuration.nix
-  ];
-EOF
+    IMPORT_MODULES+=('./desktop-env/bspwm-x11-configuration.nix')
 fi
 
 if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  boot.zfs.extraPools = [ "trayimurti" ];
-
-  imports = [
-    ./user-services/podman/podman-master.nix
-  ];
-EOF
+    IMPORT_MODULES+=('./user-services/podman/podman-master.nix')
 fi
 
 if [ -n "${SPECIAL_IP_ADDR}" ]; then
@@ -105,4 +92,20 @@ if [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
 EOF
 fi
 
-echo '}' >> "${CUSTOM_HOST_CONFIG}"
+cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  imports = [
+EOF
+
+for MODULE in "${IMPORT_MODULES[@]}"; do
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+    ${MODULE}
+EOF
+done
+
+cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  ];
+
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+}
+EOF
