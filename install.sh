@@ -84,6 +84,9 @@ cp -vR nixos-configuration/* "${MOUNT_PATH}/etc/nixos"
 # - enabling Podman containers if $MACHINE_HOSTNAME is 'reddish' (Raspberry Pi 4 Model B 8GB)
 "$(pwd)/scripts/deviation.sh"
 
+# wait for the user to verify the contents of '${MOUNT_PATH}/etc/nixos'
+read WAIT_UNCONDITIONALLY
+
 # install NixOS
 nixos-install --no-root-password --root "${MOUNT_PATH}"
 
