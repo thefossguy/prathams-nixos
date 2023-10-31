@@ -79,6 +79,13 @@ if [ -n "${SPECIAL_IP_ADDR}" ]; then
       interface = "${NETWORKING_INTERFACE}";
     };
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+EOF
+else
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
 EOF
 fi
 
@@ -106,6 +113,5 @@ done
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
   ];
 
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
 }
 EOF
