@@ -20,10 +20,18 @@
   };
 
   environment.plasma5.excludePackages = with pkgs; [
-    ##plasma5Packages.ark # DO NOT REMOVE THIS
-    ##plasma5Packages.okular # DO NOT REMOVE THIS
     plasma5Packages.elisa # music player, use mpv
     plasma5Packages.gwenview # image viewer, use mpv
     plasma5Packages.khelpcenter
+
+    # DO NOT REMOVE THESE PACKAGES
+
+    # Ark: https://apps.kde.org/en-gb/ark/
+    # this is the default compression/decompression utility
+    #plasma5Packages.ark # DO NOT REMOVE THIS PACKAGE
+
+    # Okular: https://apps.kde.org/en-gb/okular/
+    # this is the universal document viewer (good for previews)
+    #plasma5Packages.okular # DO NOT REMOVE THIS PACKAGE
   ];
 }
