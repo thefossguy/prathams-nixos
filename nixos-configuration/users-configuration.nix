@@ -28,6 +28,7 @@ in
         uid = 1000;
         subUidRanges = [ { startUid = 10000; count = 65536; } ];
         subGidRanges = [ { startGid = 10000; count = 65536; } ];
+        #linger = true; # 23.11 and later; remove 'systemd.tmpfiles.rules'
         hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
         extraGroups = [
           "adm"
