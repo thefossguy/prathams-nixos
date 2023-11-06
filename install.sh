@@ -21,6 +21,11 @@ if [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ]; then
     exit 1
 fi
 
+if sudo dmesg | grep EFI | grep ' by Das U-Boot'; then
+    BOOT_USING_UBOOT='true'
+else
+    BOOT_USING_UBOOT='false'
+fi
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
@@ -36,6 +41,7 @@ export CUSTOM_HOST_CONFIG="${MOUNT_PATH}/etc/nixos/host-specific-configuration.n
 export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
 export NETWORKING_HOSTID
 export NETWORKING_INTERFACE
+export BOOT_USING_UBOOT
 
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen

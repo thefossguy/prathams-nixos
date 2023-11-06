@@ -97,6 +97,16 @@ if [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
 EOF
 fi
 
+if [ "${BOOT_USING_UBOOT}" = 'true' ]; then
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  boot.loader.efi.canTouchEfiVariables = false;
+EOF
+else
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  boot.loader.efi.canTouchEfiVariables = true;
+EOF
+fi
+
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
 
   imports = [
@@ -110,6 +120,5 @@ done
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
   ];
-
 }
 EOF
