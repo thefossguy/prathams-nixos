@@ -32,7 +32,8 @@
           --cidfile %t/%n.ctr-id \
           --ignore \
           --time 120 \
-          --force
+          --force && \
+          rm -rf ${container_volume_path}/resources
       '';
     in
     {
