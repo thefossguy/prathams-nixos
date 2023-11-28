@@ -17,6 +17,7 @@
     autoScrub = {
       enable = true;
       interval = "Sat *-*-01..07 08:00:00";
+      pools = []; # empty list means all zpools
     };
   };
 
