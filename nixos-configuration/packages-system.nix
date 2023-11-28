@@ -172,6 +172,7 @@
     # tools specific to NixOS
     nix-output-monitor
     nvd # diff between NixOS generations
+    nix-doc
   ];
 
   programs.gnupg.agent.enable = true;
