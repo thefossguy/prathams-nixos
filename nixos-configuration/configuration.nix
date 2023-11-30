@@ -23,7 +23,7 @@
 
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   system = {
-    stateVersion = "23.05"; # release version of NixOS
+    stateVersion = "23.11"; # release version of NixOS
 
     autoUpgrade = {
       enable = true;
