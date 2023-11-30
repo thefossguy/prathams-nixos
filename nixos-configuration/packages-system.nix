@@ -75,7 +75,7 @@
     b4 # applying patches from mailing lists
     binutils # provides readelf, objdump, strip, as, objcopy (GNU; not LLVM)
     cargo-audit # audit crates for security vulnerabilities
-    #cargo-benchcmp # compare Rust micro-benchmarks # available after 23.05
+    cargo-benchcmp # compare Rust micro-benchmarks
     cargo-binstall # install Rust binaries instead of building them from src
     cargo-bisect-rustc # find exactly which rustc commit/release-version which prevents your code from building now
     cargo-bloat # find what takes the most space in the executable
