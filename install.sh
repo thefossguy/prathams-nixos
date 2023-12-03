@@ -43,6 +43,11 @@ export NETWORKING_HOSTID
 export NETWORKING_INTERFACE
 export BOOT_USING_UBOOT
 
+if [ "${TOTAL_MEM_GIB}" -lt 3 ]; then
+    >&2 echo "$0: You might get an OOM with less than 3GiB of RAM."
+    exit 1
+fi
+
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
 mount | grep "${OS_DRIVE}" && umount --recursive --force "${MOUNT_PATH}"
