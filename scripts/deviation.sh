@@ -87,11 +87,19 @@ else
 EOF
 fi
 
-if [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
+if [ "${TOTAL_MEM_GIB}" -lt 4 ]; then
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 8*1024;
+  ]};
+EOF
+elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
     cat << EOF >> "${CUSTOM_HOST_CONFIG}"
 
   boot.tmp = {
-    useTmpfs = true; # mount a tmpfs on /tmp during boot
+    useTmpfs = true; # mount the tmpfs on /tmp during boot
     tmpfsSize = "50%";
   };
 EOF
