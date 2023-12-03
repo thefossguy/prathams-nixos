@@ -97,13 +97,8 @@ read WAIT_UNCONDITIONALLY
 nixos-install --no-root-password --root "${MOUNT_PATH}"
 
 # very very initial setup for 'pratham'
-mount -o bind /dev "${MOUNT_PATH}/dev"
-mount -o bind /proc "${MOUNT_PATH}/proc"
-mount -o bind /sys "${MOUNT_PATH}/sys"
-mount -o bind,ro /etc/resolv.conf "${MOUNT_PATH}/etc/resolv.conf"
-chroot "${MOUNT_PATH}" /nix/var/nix/profiles/system/activate
 cp "$(pwd)/scripts/chroot-as-pratham.sh" "${MOUNT_PATH}/home/pratham"
-chroot "${MOUNT_PATH}" /run/current-system/sw/bin/sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh
+nixos-enter --root "${MOUNT_PATH}" -c 'sudo -i -u pratham bash /home/pratham/chroot-as-pratham.sh'
 rm "${MOUNT_PATH}/home/pratham/chroot-as-pratham.sh"
 
 # done!
