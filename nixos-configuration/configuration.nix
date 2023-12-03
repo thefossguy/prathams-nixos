@@ -294,7 +294,6 @@
       timeout = 5;
       systemd-boot = {
         enable = true;
-        memtest86.enable = true;
       };
     };
   };
