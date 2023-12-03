@@ -42,6 +42,7 @@
   services.printing.enable = true;
 
   programs.light.enable = true;
+  programs.virt-manager.enable = true;
 
   hardware.opengl = {
     enable = true;
@@ -56,7 +57,6 @@
     mediainfo-gui
     mpv
     neovide
-    virt-manager
     wl-clipboard # provides wl-copy and wl-paste (also used by Neovim)
     xclip
     xsel
@@ -64,7 +64,7 @@
 
   fonts = {
     fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       (nerdfonts.override {
         fonts = [
           "FiraCode"
