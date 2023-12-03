@@ -48,9 +48,6 @@
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
     };
-    extraOptions = ''
-      plugin-files = ${pkgs.nix-doc}/lib/libnix_doc_plugin.so
-    '';
   };
 
   systemd.network.wait-online = {
