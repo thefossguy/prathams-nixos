@@ -8,7 +8,7 @@
 
     locate = {
       enable = true;
-      locate = pkgs.mlocate;
+      package = pkgs.mlocate;
       localuser = null;
       interval = "daily";
       prunePaths = [ "/nix/store" ];
