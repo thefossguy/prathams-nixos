@@ -77,6 +77,7 @@
 
   xdg.portal = {
     enable = true;
+    configPackages = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
     extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
   };
 
