@@ -29,7 +29,7 @@ sync; sync; sync; sync;
 sleep 10
 sync; sync; sync; sync;
 
-mkfs.fat  -F 32 -n nixboot "${BOOT_PART}"
+mkfs.fat  -F 32 -n nixboot "${BOOT_PART}" -i "${BOOT_UUID}"
 parted -s "${OS_DRIVE}" -- set 1 esp on
 mkfs.xfs  -f -L    nixroot "${ROOT_PART}"
 mkfs.xfs  -f -L    nixhome "${HOME_PART}"

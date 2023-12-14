@@ -31,6 +31,8 @@ grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
 dmesg | grep 'can'\''t read MAC address, setting random one' && export SPECIAL_IP_ADDR="hehe"
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
+BOOT_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
+RPIF_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 NETWORKING_INTERFACE="$(grep -i "eth\|enp\|enabcm" /proc/net/dev | awk -F : '{print $1}')"
 TOTAL_MEM_KIB=$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')
 export OS_DRIVE="${1}"
@@ -40,6 +42,8 @@ export MOUNT_PATH='/mnt'
 export CUSTOM_HOST_CONFIG="${MOUNT_PATH}/etc/nixos/host-specific-configuration.nix"
 export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
 export NETWORKING_HOSTID
+export BOOT_UUID
+export RPIF_UUID
 export NETWORKING_INTERFACE
 export CAN_TOUCH_EFI_VARS
 
