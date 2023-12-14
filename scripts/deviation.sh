@@ -105,15 +105,9 @@ elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
 EOF
 fi
 
-if [ "${BOOT_USING_UBOOT}" = 'true' ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-  boot.loader.efi.canTouchEfiVariables = false;
+cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  boot.loader.efi.canTouchEfiVariables = ${CAN_TOUCH_EFI_VARS};
 EOF
-else
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-  boot.loader.efi.canTouchEfiVariables = true;
-EOF
-fi
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
 

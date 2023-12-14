@@ -22,9 +22,9 @@ if [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ]; then
 fi
 
 if sudo dmesg | grep EFI | grep ' by Das U-Boot'; then
-    BOOT_USING_UBOOT='true'
+    CAN_TOUCH_EFI_VARS='false'
 else
-    BOOT_USING_UBOOT='false'
+    CAN_TOUCH_EFI_VARS='true'
 fi
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
@@ -41,7 +41,7 @@ export CUSTOM_HOST_CONFIG="${MOUNT_PATH}/etc/nixos/host-specific-configuration.n
 export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
 export NETWORKING_HOSTID
 export NETWORKING_INTERFACE
-export BOOT_USING_UBOOT
+export CAN_TOUCH_EFI_VARS
 
 if [ "${TOTAL_MEM_GIB}" -lt 3 ]; then
     >&2 echo "$0: You might get an OOM with less than 3GiB of RAM."
