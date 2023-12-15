@@ -33,7 +33,7 @@ dmesg | grep 'can'\''t read MAC address, setting random one' && export SPECIAL_I
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 BOOT_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 RPIF_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
-NETWORKING_INTERFACE="$(grep -i "eth\|enp\|enabcm" /proc/net/dev | awk -F : '{print $1}')"
+NETWORKING_INTERFACE="$(grep -i "eth\|enp\|enabcm\|wl" /proc/net/dev | sort | head -n 1 | awk -F : '{print $1}')"
 TOTAL_MEM_KIB=$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')
 export OS_DRIVE="${1}"
 export MACHINE_HOSTNAME="${2}"
