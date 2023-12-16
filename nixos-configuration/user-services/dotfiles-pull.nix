@@ -5,10 +5,6 @@
     systemd.user.timers = {
       "dotfiles-pull" = {
         Unit = {
-          Description = "Timer to routinely pull thefossguy/dotfiles.git";
-          Documentation = [
-            "man:git-pull(1)"
-          ];
         };
         Timer = {
           OnCalendar = "*-*-* 23:00:00";
@@ -22,14 +18,11 @@
     systemd.user.services = {
       "dotfiles-pull" = {
         Unit = {
-          Description = "Service to routinely pull thefossguy/dotfiles.git";
-          Documentation = [
-            "man:git-pull(1)"
-          ];
+          Description = "Pull dotfiles";
         };
         Service = {
-          ExecStart = "/home/pratham/.local/scripts/other-common-scripts/dotfiles-pull.sh";
-          Environment = [ "\"PATH=${pkgs.nix}/bin\"" ];
+          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/other-common-scripts/dotfiles-pull.sh";
+          Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssl}/bin\"" ];
           Type = "oneshot";
         };
         Install = {

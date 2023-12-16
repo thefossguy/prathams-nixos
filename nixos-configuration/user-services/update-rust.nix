@@ -5,7 +5,6 @@
     systemd.user.timers = {
       "update-rust" = {
         Unit = {
-          Description = "Timer to routinely update items in my Rust toolchain";
         };
         Timer = {
           OnBootSec = "now";
@@ -20,11 +19,11 @@
     systemd.user.services = {
       "update-rust" = {
         Unit = {
-          Description = "Service to routinely update items in my Rust toolchain";
+          Description = "Upgrade the Rust toolchain";
         };
         Service = {
-          ExecStart = "/home/pratham/.local/scripts/other-common-scripts/rust-manage.sh";
-          Environment = [ "\"PATH=${pkgs.nix}/bin\"" ];
+          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/other-common-scripts/rust-manage.sh";
+          Environment = [ "\"PATH=${pkgs.procps}/bin:${pkgs.rustup}/bin\"" ];
           Type = "oneshot";
         };
         Install = {
