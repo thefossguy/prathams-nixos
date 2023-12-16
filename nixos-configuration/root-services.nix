@@ -38,6 +38,13 @@
         Unit = "update-nixos-config.service";
       };
     };
+    "upgrade-nixos" = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "*-*-* 00:04:00";
+        Unit = "upgrade-nixos.service";
+      };
+    };
   };
   systemd.services = {
     "update-nixos-config" = {
@@ -45,6 +52,21 @@
         Type = "oneshot";
         User = "root";
         ExecStart = "${pkgs.coreutils}/bin/cp -fR /home/pratham/my-git-repos/pratham/prathams-nixos/nixos-configuration/. /etc/nixos";
+      };
+    };
+    "upgrade-nixos" = {
+      description = "Upgrade NixOS";
+      path = with pkgs; [
+        nix
+        nixos-rebuild
+      ];
+      environment = {
+        inherit (config.environment.sessionVariables) NIX_PATH;
+      };
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        ExecStart = "${pkgs.bash}/bin/bash /home/pratham/.local/scripts/nixos/nixos-upgrade.sh";
       };
     };
   };

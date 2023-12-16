@@ -22,20 +22,7 @@
   ];
 
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
-  system = {
-    stateVersion = "23.11"; # release version of NixOS
-
-    autoUpgrade = {
-      enable = true;
-      dates = "Sat *-*-* 00:00:00";
-      allowReboot = true;
-      operation = "boot";
-      rebootWindow = {
-        lower = "04:00";
-        upper = "05:00";
-      };
-    };
-  };
+  system.stateVersion = "23.11"; # release version of NixOS
 
   nix = {
     gc = {
