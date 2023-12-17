@@ -54,12 +54,12 @@ fi
 
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
-mount | grep "${OS_DRIVE}" && umount --recursive --force "${MOUNT_PATH}"
+mount | grep " on ${MOUNT_PATH}" && umount --recursive --force "${MOUNT_PATH}"
 
 if [ -b "${OS_DRIVE}" ]; then
     if echo "${OS_DRIVE}" | grep "sd\|vd"; then
         export INTERMEDIATE_PART="${OS_DRIVE}"
-    elif echo "${OS_DRIVE}" | grep "mmcblk\|nvme"; then
+    elif echo "${OS_DRIVE}" | grep "mmcblk\|nvme\|loop"; then
         export INTERMEDIATE_PART="${OS_DRIVE}p"
     else
         >&2 echo "$0: unable to decide how to partition '${OS_DRIVE}'"
