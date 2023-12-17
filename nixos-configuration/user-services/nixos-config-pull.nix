@@ -22,7 +22,7 @@
         };
         Service = {
           ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/nixos/nixos-config-pull.sh";
-          Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssl}/bin\"" ];
+          Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssh}/bin\"" ];
           Type = "oneshot";
         };
         Install = {
