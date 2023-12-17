@@ -66,7 +66,7 @@
       serviceConfig = {
         Type = "oneshot";
         User = "root";
-        ExecStart = "${pkgs.bash}/bin/bash /home/pratham/.local/scripts/nixos/nixos-upgrade.sh";
+        ExecStart = "${pkgs.bash}/bin/bash /home/pratham/.local/scripts/nixos/upgrade-nixos.sh";
       };
     };
   };
