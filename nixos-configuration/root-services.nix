@@ -3,8 +3,8 @@
 {
   services = {
     timesyncd.enable = true; # NTP
-
     fwupd.enable = true;
+    journald.storage = "persistent";
 
     locate = {
       enable = true;
