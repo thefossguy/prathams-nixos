@@ -41,6 +41,9 @@ export PARTITION_LAYOUT="${3}"
 export MOUNT_PATH='/mnt'
 export CUSTOM_HOST_CONFIG="${MOUNT_PATH}/etc/nixos/host-specific-configuration.nix"
 export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
+export RASP_PART_SIZE='64M'
+export BOOT_PART_SIZE='1G'
+export VARL_PART_SIZE='6G'
 export NETWORKING_HOSTID
 export BOOT_UUID
 export RPIF_UUID
