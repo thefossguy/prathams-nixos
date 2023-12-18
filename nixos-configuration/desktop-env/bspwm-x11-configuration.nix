@@ -28,6 +28,7 @@
     rofi
     socat
     wmctrl
+    xfce.thunar
     xsecurelock
   ];
 }
