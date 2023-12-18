@@ -71,7 +71,7 @@ if [ "${TOTAL_MEM_GIB}" -lt 4 ]; then
 
   swapDevices = [{
     device = "/var/lib/swapfile";
-    size = 8*1024;
+    size = 1024 * 8;
   }];
 EOF
 elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
