@@ -26,6 +26,11 @@ if sudo dmesg | grep EFI | grep ' by Das U-Boot'; then
 else
     CAN_TOUCH_EFI_VARS='true'
 fi
+if [[ -d '/sys/class/power_supply/BAT0' ]]; then
+    BATTERY_POWERED_DEVICE='true'
+else
+    BATTERY_POWERED_DEVICE='false'
+fi
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
@@ -44,6 +49,7 @@ export TOTAL_MEM_GIB=$(( TOTAL_MEM_KIB / 1024 / 1024 ))
 export RASP_PART_SIZE='64M'
 export BOOT_PART_SIZE='1G'
 export VARL_PART_SIZE='6G'
+export BATTERY_POWERED_DEVICE
 export NETWORKING_HOSTID
 export BOOT_UUID
 export RPIF_UUID
