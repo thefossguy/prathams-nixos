@@ -66,31 +66,6 @@ if [ "${BATTERY_POWERED_DEVICE}" ]; then
     IMPORT_MODULES+=('./battery-and-power-management.nix')
 fi
 
-if [ -n "${SPECIAL_IP_ADDR}" ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  networking = {
-    interfaces = {
-      ${NETWORKING_INTERFACE}.ipv4.addresses = [{
-        address = "10.0.0.169";
-        prefixLength = 24;
-      }];
-    };
-    defaultGateway = {
-      address = "10.0.0.1";
-      interface = "${NETWORKING_INTERFACE}";
-    };
-  };
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-EOF
-else
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-EOF
-fi
-
 if [ "${TOTAL_MEM_GIB}" -lt 4 ]; then
     cat << EOF >> "${CUSTOM_HOST_CONFIG}"
 
@@ -110,6 +85,7 @@ EOF
 fi
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = ${CAN_TOUCH_EFI_VARS};
 EOF
 
