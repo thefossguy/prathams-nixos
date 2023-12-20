@@ -18,6 +18,9 @@
       defaultSession = "plasmawayland";
     };
   };
+  environment.systemPackages = with pkgs; [
+    wl-clipboard
+  ];
 
   environment.plasma5.excludePackages = with pkgs; [
     plasma5Packages.elisa # music player, use mpv

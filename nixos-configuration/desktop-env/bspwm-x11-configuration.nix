@@ -28,7 +28,9 @@
     rofi
     socat
     wmctrl
+    xclip
     xfce.thunar
     xsecurelock
+    xsel
   ];
 }
