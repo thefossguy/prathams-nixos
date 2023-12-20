@@ -19,6 +19,8 @@
     };
   };
   environment.systemPackages = with pkgs; [
+    cliphist
+    wayland-utils
     wl-clipboard
   ];
 
