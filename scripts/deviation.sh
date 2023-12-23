@@ -71,8 +71,28 @@ if [ "${TOTAL_MEM_GIB}" -lt 4 ]; then
 
   swapDevices = [{
     device = "/var/lib/swapfile";
-    size = 1024 * 8;
+    size = 1024 * 2;
   }];
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 10;
+  };
+EOF
+elif [ "${TOTAL_MEM_GIB}" -lt 8 ]; then
+    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 1024 * 4;
+  }];
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 25;
+  };
 EOF
 elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
     cat << EOF >> "${CUSTOM_HOST_CONFIG}"
@@ -80,6 +100,12 @@ elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
   boot.tmp = {
     useTmpfs = true; # mount the tmpfs on /tmp during boot
     tmpfsSize = "50%";
+  };
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 25;
   };
 EOF
 fi

@@ -176,13 +176,6 @@
     };
   };
 
-  # good for perf
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 75;
-  };
-
   boot = {
     kernelParams = [
       "audit=0"
