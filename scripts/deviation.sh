@@ -35,27 +35,22 @@ elif [ "${CPU_VENDOR}" = 'Intel' ]; then
 EOF
 fi
 
-if [ "${GPU_VENDOR}" = 'NVIDIA' ]; then
-    cat << EOF > "${CUSTOM_HOST_CONFIG}"
-
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-    ];
-
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  hardware.nvidia = {
-    open = true;
-    modesetting.enable = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-EOF
-fi
-
 if [ "${PARTITION_LAYOUT}" = 'desktop' ]; then
     IMPORT_MODULES+=('./desktop-env/kde-plasma-wayland-configuration.nix')
+
+    # add GPU drivers only if user selects a DE/WM
+    if [ "${GPU_NVIDIA}" = 'true' ]; then
+        # if an NVIDIA GPU is detected, install only NVIDIA drivers such that
+        # another GPU vendor's drivers aren't loaded and cause headache
+        IMPORT_MODULES+=('./desktop-env/gpu/nvidia-gpu.nix')
+    else
+        if [ "${GPU_AMD}" = 'true' ]; then
+            IMPORT_MODULES+=('./desktop-env/gpu/amd-gpu.nix')
+        fi
+        if [ "${GPU_INTEL}" = 'true' ]; then
+            IMPORT_MODULES+=('./desktop-env/gpu/intel-gpu.nix')
+        fi
+    fi
 fi
 
 if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then

@@ -31,9 +31,12 @@ if [[ -d '/sys/class/power_supply/BAT0' ]]; then
 else
     BATTERY_POWERED_DEVICE='false'
 fi
+# '03' is the class number for Display controllers in PCI ID, so grep for it instead
+(lspci -nn | grep '\[03' | grep -i "AMD\|ATI" > /dev/null) && export GPU_AMD='true'
+(lspci -nn | grep '\[03' | grep -i 'Intel' > /dev/null) && export GPU_INTEL='true'
+(lspci -nn | grep '\[03' | grep -i 'Nvidia' > /dev/null) && export GPU_NVIDIA='true'
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
-lspci | grep -i 'NVIDIA' && export GPU_VENDOR='NVIDIA'
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 BOOT_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
 RPIF_UUID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
