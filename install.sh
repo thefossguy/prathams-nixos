@@ -35,6 +35,11 @@ fi
 (lspci -nn | grep '\[03' | grep -i "AMD\|ATI" > /dev/null) && export GPU_AMD='true'
 (lspci -nn | grep '\[03' | grep -i 'Intel' > /dev/null) && export GPU_INTEL='true'
 (lspci -nn | grep '\[03' | grep -i 'Nvidia' > /dev/null) && export GPU_NVIDIA='true'
+if [[ "${GPU_AMD}" == 'true' || "${GPU_INTEL}" == 'true' ]]; then
+    export OSS_GPU_DRIVERS='true'
+elif [[ "${GPU_NVIDIA}" == 'true' ]]; then
+    export OSS_GPU_DRIVERS='false'
+fi
 grep 'AuthenticAMD' /proc/cmdline && export CPU_VENDOR='AMD'
 grep 'GenuineIntel' /proc/cmdline && export CPU_VENDOR='Intel'
 NETWORKING_HOSTID="$(head -c4 /dev/urandom | od -A none -t x4 | xargs)"
