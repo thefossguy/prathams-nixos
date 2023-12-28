@@ -1,6 +1,9 @@
 { ... }:
 
 {
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot = {
+    initrd.kernelModules = [ "amdgpu" ];
+    blacklistedKernelModules = [ "nvidia" ];
+  };
   services.xserver.videoDrivers = [ "amdgpu" ];
 }
