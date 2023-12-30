@@ -6,7 +6,7 @@
     let
       container_name = "caddy-vishwambhar";
       container_image = "docker.io/library/caddy:latest";
-      container_volume_path = "/home/pratham/container-data/volumes/caddy";
+      container_volume_path = "$HOME/container-data/volumes/caddy";
       exec_start = ''
         ${pkgs.podman}/bin/podman run \
           --cgroups no-conmon \

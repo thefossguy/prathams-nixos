@@ -22,7 +22,7 @@
           Description = "Manage flatpaks on system";
         };
         Service = {
-          ExecStart = "${pkgs.bash}/bin/bash /home/pratham/.local/scripts/other-common-scripts/flatpak-manage.sh";
+          ExecStart = "${pkgs.bash}/bin/bash $HOME/.local/scripts/other-common-scripts/flatpak-manage.sh";
           Type = "oneshot";
         };
         Install = {

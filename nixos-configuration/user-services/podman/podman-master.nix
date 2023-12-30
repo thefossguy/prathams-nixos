@@ -17,7 +17,7 @@
           After = [ "podman-restart.service" ];
         };
         Service = {
-          ExecStart = "${pkgs.nix}/bin/nix-shell /home/pratham/.local/scripts/other-common-scripts/podman-initialization.sh";
+          ExecStart = "${pkgs.nix}/bin/nix-shell $HOME/.local/scripts/other-common-scripts/podman-initialization.sh";
           Type = "oneshot";
         };
         Install = {

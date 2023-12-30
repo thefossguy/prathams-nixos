@@ -6,7 +6,7 @@
     let
       container_name = "gitea-chitragupta";
       container_image = "docker.io/library/postgres:15-bookworm";
-      container_volume_path = "/home/pratham/container-data/volumes/gitea/database";
+      container_volume_path = "$HOME/container-data/volumes/gitea/database";
       exec_start = ''
         ${pkgs.podman}/bin/podman run \
           --cgroups no-conmon \
