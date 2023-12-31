@@ -93,6 +93,7 @@
     ccache.enable = true;
     dconf.enable = true;
     adb.enable = true;
+    command-not-found.enable = true;
   };
 
   environment = {
