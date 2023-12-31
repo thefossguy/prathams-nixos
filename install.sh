@@ -116,6 +116,10 @@ cp -vR nixos-configuration/* "${MOUNT_PATH}/etc/nixos"
 "$(pwd)/scripts/deviation.sh"
 
 # wait for the user to verify the contents of '${MOUNT_PATH}/etc/nixos'
+set +x
+echo 'Every step except for installation has been performed.'
+echo "Please review ${MOUNT_PATH}/etc/nixos/host-specific-configuration.nix"
+set -x
 read WAIT_UNCONDITIONALLY
 
 # install NixOS
