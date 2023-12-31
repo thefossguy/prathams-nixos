@@ -61,53 +61,23 @@ if [ "${BATTERY_POWERED_DEVICE}" = 'true' ]; then
     IMPORT_MODULES+=('./battery-and-power-management.nix')
 fi
 
-if [ "${TOTAL_MEM_GIB}" -lt 4 ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.loader.efi.canTouchEfiVariables = ${CAN_TOUCH_EFI_VARS};
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 1024 * 2;
-  }];
+  #boot.tmp.useTmpfs = true; # mount the tmpfs on /tmp during boot
+  #boot.tmp.tmpfsSize = "10%";
+
+  #swapDevices = [{
+  #  device = "/var/lib/swapfile";
+  #  size = "1024 * 2";
+  #}];
 
   zramSwap = {
     enable = true;
     algorithm = "zstd";
     memoryPercent = 10;
   };
-EOF
-elif [ "${TOTAL_MEM_GIB}" -lt 8 ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 1024 * 4;
-  }];
-
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 25;
-  };
-EOF
-elif [ "${TOTAL_MEM_GIB}" -gt 30 ]; then
-    cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-
-  boot.tmp = {
-    useTmpfs = true; # mount the tmpfs on /tmp during boot
-    tmpfsSize = "50%";
-  };
-
-  zramSwap = {
-    enable = true;
-    algorithm = "zstd";
-    memoryPercent = 25;
-  };
-EOF
-fi
-
-cat << EOF >> "${CUSTOM_HOST_CONFIG}"
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.loader.efi.canTouchEfiVariables = ${CAN_TOUCH_EFI_VARS};
 EOF
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
