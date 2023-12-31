@@ -5,6 +5,7 @@
     timesyncd.enable = true; # NTP
     fwupd.enable = true;
     journald.storage = "persistent";
+    logrotate.enable = true;
 
     locate = {
       enable = true;
