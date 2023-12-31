@@ -6,6 +6,7 @@
     fwupd.enable = true;
     journald.storage = "persistent";
     logrotate.enable = true;
+    udisks2.enable = true;
 
     locate = {
       enable = true;
