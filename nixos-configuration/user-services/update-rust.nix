@@ -22,7 +22,7 @@
           Description = "Upgrade the Rust toolchain";
         };
         Service = {
-          ExecStart = "${pkgs.dash}/bin/dash $HOME/.local/scripts/other-common-scripts/rust-manage.sh";
+          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/other-common-scripts/rust-manage.sh";
           Environment = [ "\"PATH=${pkgs.procps}/bin:${pkgs.rustup}/bin\"" ];
           Type = "oneshot";
         };

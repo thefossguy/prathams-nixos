@@ -21,7 +21,7 @@
           Description = "Pull NixOS configuration";
         };
         Service = {
-          ExecStart = "${pkgs.dash}/bin/dash $HOME/.local/scripts/nixos/nixos-config-pull.sh";
+          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/nixos/nixos-config-pull.sh";
           Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssh}/bin\"" ];
           Type = "oneshot";
         };

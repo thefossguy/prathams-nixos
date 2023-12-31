@@ -6,7 +6,7 @@
     let
       container_name = "hugo-vaikunthnatham";
       container_image = "docker.io/klakegg/hugo:ext-debian";
-      container_volume_path = "$HOME/container-data/volumes/blog";
+      container_volume_path = "/home/pratham/container-data/volumes/blog";
       exec_start = ''
         ${pkgs.podman}/bin/podman run \
           --cgroups no-conmon \

@@ -6,7 +6,7 @@
     let
       container_name = "uptime-vishnu";
       container_image = "docker.io/louislam/uptime-kuma:debian";
-      container_volume_path = "$HOME/container-data/volumes/uptimekuma";
+      container_volume_path = "/home/pratham/container-data/volumes/uptimekuma";
       exec_start = ''
         ${pkgs.podman}/bin/podman run \
           --cgroups no-conmon \
