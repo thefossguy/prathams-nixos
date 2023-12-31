@@ -57,7 +57,7 @@ if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
     IMPORT_MODULES+=('./user-services/podman/podman-master.nix')
 fi
 
-if [ "${BATTERY_POWERED_DEVICE}" ]; then
+if [ "${BATTERY_POWERED_DEVICE}" = 'true' ]; then
     IMPORT_MODULES+=('./battery-and-power-management.nix')
 fi
 
