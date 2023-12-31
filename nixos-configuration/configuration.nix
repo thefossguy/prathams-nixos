@@ -80,6 +80,7 @@
   };
 
   security = {
+    polkit.enable = true;
     #virtualisation.flushL1DataCache = true;
   };
 
