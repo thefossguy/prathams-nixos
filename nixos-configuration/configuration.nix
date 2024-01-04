@@ -28,7 +28,7 @@
     autoUpgrade = {
       enable = true;
       dates = "daily"; # *-*-* 00:00:00
-      allowReboot = true;
+      allowReboot = false;
       operation = "boot";
       persistent = true;
     };
