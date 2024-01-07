@@ -24,7 +24,6 @@ in
         createHome = true;
         home = "/home/pratham";
         group = "pratham";
-        shell = pkgs.fish;
         uid = 1000;
         subUidRanges = [ { startUid = 10000; count = 65536; } ];
         subGidRanges = [ { startGid = 10000; count = 65536; } ];
@@ -51,15 +50,6 @@ in
           "wheel"
           "zfs-read"
         ];
-        packages = with pkgs; [
-          fish
-          fishPlugins.async-prompt
-          fishPlugins.colored-man-pages
-          fishPlugins.z # pure-fish z directory jumping
-          fishPlugins.fzf
-          fishPlugins.puffer # expand stuff like '....' to '../..', '!!' to prev cmd and more
-          fishPlugins.sponge # only saves commands in history that exited with 0
-        ];
       };
     };
     groups.pratham = {
@@ -67,8 +57,6 @@ in
       gid = 1000;
     };
   };
-
-  programs.fish.enable = true;
 
   security.sudo = {
     enable = true;
@@ -134,12 +122,10 @@ in
     programs.nix-index = {
       enable = true;
       enableBashIntegration = true;
-      enableFishIntegration = true;
     };
     programs.direnv = {
       enable = true;
       enableBashIntegration = true;
-      enableFishIntegration = true;
     };
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
