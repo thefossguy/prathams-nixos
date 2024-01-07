@@ -99,13 +99,6 @@
     earlySetup = true;
   };
 
-  programs = {
-    ccache.enable = true;
-    dconf.enable = true;
-    adb.enable = true;
-    command-not-found.enable = true;
-  };
-
   environment = {
     homeBinInPath = true;
     localBinInPath = true;

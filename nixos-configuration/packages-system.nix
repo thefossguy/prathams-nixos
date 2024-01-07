@@ -12,9 +12,7 @@
     findutils
     gawk
     gettext # for translation (human lang; Eng <-> Hindi)
-    git
     gnugrep
-    gnupg
     gnused
     hdparm
     inotify-tools
@@ -23,7 +21,6 @@
     linux-firmware
     lsof
     mlocate
-    mtr
     nvme-cli
     openssh
     openssl
@@ -45,11 +42,9 @@
 
     # text editors
     nano
-    neovim
     vim
 
     # shells
-    bash
     dash
 
     # download clients
@@ -173,5 +168,26 @@
     nvd # diff between NixOS generations
   ];
 
-  programs.gnupg.agent.enable = true;
+  programs = {
+    adb.enable = true;
+    bash = {
+      enableCompletion = true;
+      # notifications when long-running terminal commands complete
+      undistractMe = {
+        enable = true;
+        playSound = true;
+        timeout = 60; # notify only if said command has been running for this many seconds
+      };
+    };
+    ccache.enable = true;
+    command-not-found.enable = true;
+    dconf.enable = true;
+    git = {
+      enable = true;
+      prompt.enable = true; # makes __git_ps1 accessible :)
+    };
+    gnupg.agent.enable = true;
+    mtr.enable = true;
+    neovim.enable = true;
+  };
 }

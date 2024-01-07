@@ -41,8 +41,11 @@
 
   services.printing.enable = true;
 
-  programs.light.enable = true;
-  programs.virt-manager.enable = true;
+  programs = {
+    firefox.enable = true;
+    light.enable = true;
+    virt-manager.enable = true;
+  };
 
   hardware.opengl = {
     enable = true;
@@ -51,7 +54,6 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
-    firefox
     flatpak
     light # for backlight
     mediainfo-gui
