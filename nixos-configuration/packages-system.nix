@@ -61,7 +61,6 @@
     unzip
     xz
     zip
-    zip
     zstd
 
     # programming tools + compilers
