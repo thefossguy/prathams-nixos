@@ -118,9 +118,6 @@
     # system monitoring
     btop
     htop
-    iotop
-    iotop-c
-    usbtop
 
     # network monitoring
     iperf # this is iperf3
@@ -138,7 +135,6 @@
     ventoy
 
     # utilities written in Rust
-    bandwhich
     bat
     bottom
     broot
@@ -151,7 +147,6 @@
     ripgrep
     sd
     skim
-    sniffnet
     tealdeer
     tre-command
     zoxide
@@ -168,7 +163,6 @@
   ];
 
   programs = {
-    adb.enable = true;
     bash = {
       enableCompletion = true;
       # notifications when long-running terminal commands complete
@@ -178,12 +172,16 @@
         timeout = 60; # notify only if said command has been running for this many seconds
       };
     };
+    bandwhich.enable = true;
     ccache.enable = true;
     command-not-found.enable = true;
     dconf.enable = true;
     git.enable = true;
     gnupg.agent.enable = true;
+    iotop.enable = true;
     mtr.enable = true;
     neovim.enable = true;
+    sniffnet.enable = true;
+    usbtop.enable = true;
   };
 }
