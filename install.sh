@@ -32,7 +32,14 @@ else
     BATTERY_POWERED_DEVICE='false'
 fi
 # '03' is the class number for Display controllers in PCI ID, so grep for it instead
-(lspci -nn | grep '\[03' | grep -i "AMD\|ATI" > /dev/null) && export GPU_AMD='true'
+if lspci -nn | grep '\[03' | grep -i 'AMD' > /dev/null; then
+    export GPU_AMD='true'
+
+# we have this because 'grep -i ATI' also matches
+# VGA comp**ati**ble controller [...] Red Hat, Inc. Virtio [...] GPU
+elif lspci -nn | grep '\[03' | grep 'ATI' > /dev/null; then
+    export GPU_AMD='true'
+fi
 (lspci -nn | grep '\[03' | grep -i 'Intel' > /dev/null) && export GPU_INTEL='true'
 (lspci -nn | grep '\[03' | grep -i 'Nvidia' > /dev/null) && export GPU_NVIDIA='true'
 if [[ "${GPU_AMD}" == 'true' || "${GPU_INTEL}" == 'true' ]]; then
