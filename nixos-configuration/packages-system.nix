@@ -181,10 +181,7 @@
     ccache.enable = true;
     command-not-found.enable = true;
     dconf.enable = true;
-    git = {
-      enable = true;
-      prompt.enable = true; # makes __git_ps1 accessible :)
-    };
+    git.enable = true;
     gnupg.agent.enable = true;
     mtr.enable = true;
     neovim.enable = true;
