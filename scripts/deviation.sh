@@ -62,6 +62,7 @@ if [ "${BATTERY_POWERED_DEVICE}" = 'true' ]; then
 fi
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
+
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = ${CAN_TOUCH_EFI_VARS};
 
