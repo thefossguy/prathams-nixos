@@ -77,7 +77,7 @@ cat << EOF >> "${CUSTOM_HOST_CONFIG}"
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 10;
+    memoryPercent = 50;
   };
 EOF
 
