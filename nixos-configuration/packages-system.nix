@@ -125,7 +125,6 @@
     nload
 
     # other utilities
-    android-tools
     asciinema
     buildah
     fzf
@@ -163,6 +162,7 @@
   ];
 
   programs = {
+    adb.enable = true;
     bash = {
       enableCompletion = true;
       # notifications when long-running terminal commands complete
