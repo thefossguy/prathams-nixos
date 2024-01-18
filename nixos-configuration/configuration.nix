@@ -1,8 +1,8 @@
 { lib, pkgs, ... }:
 
 let
-  nixos-release = "23.11";
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-release}.tar.gz";
+  NixOSRelease = "23.11";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${NixOSRelease}.tar.gz";
 in
 
 {
@@ -22,7 +22,7 @@ in
 
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   system = {
-    stateVersion = "${nixos-release}"; # release version of NixOS
+    stateVersion = "${NixOSRelease}"; # release version of NixOS
 
     autoUpgrade = {
       enable = true;
@@ -324,7 +324,7 @@ in
   };
 
   home-manager.users.pratham = { pkgs, ... }: {
-    home.stateVersion = "${nixos-release}";
+    home.stateVersion = "${NixOSRelease}";
     programs.nix-index = {
       enable = true;
       enableBashIntegration = true;
