@@ -3,6 +3,8 @@
 let
   NixOSRelease = "23.11";
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${NixOSRelease}.tar.gz";
+  prathamsHome = "/home/pratham";
+  scriptsDir = "${prathamsHome}/.local/scripts";
 in
 
 {
@@ -232,7 +234,7 @@ in
         isNormalUser = true;
         description = "Pratham Patel";
         createHome = true;
-        home = "/home/pratham";
+        home = "${prathamsHome}";
         group = "pratham";
         uid = 1000;
         subUidRanges = [ { startUid = 10000; count = 65536; } ];
@@ -346,7 +348,7 @@ in
           Description = "Pull dotfiles";
         };
         Service = {
-          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/other-common-scripts/dotfiles-pull.sh";
+          ExecStart = "${pkgs.dash}/bin/dash ${scriptsDir}/other-common-scripts/dotfiles-pull.sh";
           Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssh}/bin\"" ];
           Type = "oneshot";
         };
@@ -360,7 +362,7 @@ in
           Description = "Manage flatpaks on system";
         };
         Service = {
-          ExecStart = "${pkgs.bash}/bin/bash /home/pratham/.local/scripts/other-common-scripts/flatpak-manage.sh";
+          ExecStart = "${pkgs.bash}/bin/bash ${scriptsDir}/other-common-scripts/flatpak-manage.sh";
           Type = "oneshot";
         };
         Install = {
@@ -373,7 +375,7 @@ in
           Description = "Pull NixOS configuration";
         };
         Service = {
-          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/nixos/nixos-config-pull.sh";
+          ExecStart = "${pkgs.dash}/bin/dash ${scriptsDir}/nixos/nixos-config-pull.sh";
           Environment = [ "\"PATH=${pkgs.git}/bin:${pkgs.openssh}/bin\"" ];
           Type = "oneshot";
         };
@@ -387,7 +389,7 @@ in
           Description = "Upgrade the Rust toolchain";
         };
         Service = {
-          ExecStart = "${pkgs.dash}/bin/dash /home/pratham/.local/scripts/other-common-scripts/rust-manage.sh";
+          ExecStart = "${pkgs.dash}/bin/dash ${scriptsDir}/other-common-scripts/rust-manage.sh";
           Environment = [ "\"PATH=${pkgs.procps}/bin:${pkgs.rustup}/bin\"" ];
           Type = "oneshot";
         };
@@ -495,7 +497,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         User = "root";
-        ExecStart = "${pkgs.coreutils}/bin/cp -fR /home/pratham/my-git-repos/pratham/prathams-nixos/nixos-configuration/. /etc/nixos";
+        ExecStart = "${pkgs.coreutils}/bin/cp -fR ${prathamsHome}/my-git-repos/pratham/prathams-nixos/nixos-configuration/. /etc/nixos";
       };
     };
   };
