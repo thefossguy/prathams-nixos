@@ -1,7 +1,8 @@
 { lib, pkgs, ... }:
 
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
+  nixos-release = "23.11";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${nixos-release}.tar.gz";
 in
 
 {
@@ -21,7 +22,7 @@ in
 
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   system = {
-    stateVersion = "23.11"; # release version of NixOS
+    stateVersion = "${nixos-release}"; # release version of NixOS
 
     autoUpgrade = {
       enable = true;
