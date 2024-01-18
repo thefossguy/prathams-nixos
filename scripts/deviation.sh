@@ -41,15 +41,15 @@ if [ "${PARTITION_LAYOUT}" = 'desktop' ]; then
     # add GPU drivers only if user selects a DE/WM
     if [ "${OSS_GPU_DRIVERS}" = 'true' ]; then
         if [ "${GPU_AMD}" = 'true' ]; then
-            IMPORT_MODULES+=('./desktop-env/gpu/amd-gpu.nix')
+            IMPORT_MODULES+=('./gpu/amd-gpu.nix')
         fi
         if [ "${GPU_INTEL}" = 'true' ]; then
-            IMPORT_MODULES+=('./desktop-env/gpu/intel-gpu.nix')
+            IMPORT_MODULES+=('./gpu/intel-gpu.nix')
         fi
-    elif [ "${OSS_GPU_DRIVERS}" = 'true' ]; then
+    elif [ "${OSS_GPU_DRIVERS}" = 'false' ]; then
         # if an NVIDIA GPU is detected, install only NVIDIA drivers such that
         # another GPU vendor's drivers aren't loaded and cause headache
-        IMPORT_MODULES+=('./desktop-env/gpu/nvidia-gpu.nix')
+        IMPORT_MODULES+=('./gpu/nvidia-gpu.nix')
     fi
 fi
 
