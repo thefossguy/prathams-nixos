@@ -324,7 +324,7 @@ in
   };
 
   home-manager.users.pratham = { pkgs, ... }: {
-    home.stateVersion = "23.11";
+    home.stateVersion = "${nixos-release}";
     programs.nix-index = {
       enable = true;
       enableBashIntegration = true;
