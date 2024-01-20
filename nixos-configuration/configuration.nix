@@ -30,7 +30,7 @@ in
     gnused
     hdparm
     inotify-tools
-    iproute
+    iproute2
     iputils
     linux-firmware
     lsof
@@ -672,7 +672,7 @@ in
       # Kernel docs: https://docs.kernel.org/admin-guide/sysctl/vm.html
       # Pop!_OS "docs": https://github.com/pop-os/default-settings/pull/163/files
       # Using zramswap, penalty shouldn't be that high, since if you are under
-      # high memory pressure, you likeky are under high CPU load too
+      # high memory pressure, you likely are under high CPU load too
       # at which point, you are performing computations and latency goes moot.
       "vm.swappiness" = 180;
       # Since zramSwap.algorithm is set to 'zstd', it is recommeded to set the
