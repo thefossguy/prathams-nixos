@@ -299,10 +299,8 @@ in
 
   security = {
     polkit.enable = true;
-    virtualisation = {
-      flushL1DataCache = true;
-      allowSimultaneousMultithreading = true;
-    };
+    virtualisation.flushL1DataCache = true;
+    allowSimultaneousMultithreading = true;
   };
 
   console = {
