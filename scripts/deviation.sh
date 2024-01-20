@@ -6,7 +6,7 @@ set -xef -o pipefail
 
 # always make sure that the file exists because it is included in the master config
 touch "${CUSTOM_HOST_CONFIG}"
-IMPORT_MODULES=('./zfs-configuration.nix')
+IMPORT_MODULES=('./includes/zfs-configuration.nix')
 
 # setup hostname and hostid
 cat << EOF > "${CUSTOM_HOST_CONFIG}"
@@ -58,7 +58,7 @@ if [ "${MACHINE_HOSTNAME}" = 'reddish' ]; then
 fi
 
 if [ "${BATTERY_POWERED_DEVICE}" = 'true' ]; then
-    IMPORT_MODULES+=('./battery-and-power-management.nix')
+    IMPORT_MODULES+=('./includes/battery-and-power-management.nix')
 fi
 
 cat << EOF >> "${CUSTOM_HOST_CONFIG}"
