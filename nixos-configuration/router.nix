@@ -19,6 +19,8 @@ in
   ];
 
   # {{ networking section }}
+  # TODO: migrate to 'systemd.network'
+  # TODO: use 'ID_NET_NAME_MAC' instead of 'ID_NET_NAME_PATH'
   networking = {
     useDHCP = false;
     nameservers = [
