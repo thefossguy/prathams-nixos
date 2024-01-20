@@ -340,6 +340,7 @@ in
         };
         Service = {
           ExecStart = "${pkgs.bash}/bin/bash ${scriptsDir}/other-common-scripts/flatpak-manage.sh";
+          Environment = [ "\"PATH=${pkgs.gnugrep}/bin\"" ];
           Type = "oneshot";
         };
         Install = {
