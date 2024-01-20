@@ -34,13 +34,21 @@ in
         interface = "${WAN_IFACE}";
       };
 
+      # only my devices go here
       pratham_lan = {
         id = 20;
         interface = "${LAN0_IFACE}";
       };
+      # all devices of family members join here
+      home_lan = {
+        id = 50;
+        interface = "${LAN1_IFACE}";
+      };
+      # all unknown devices join here
+      # this includes IoT-shit, freeloaders and guests visiting home
       guest_lan = {
         id = 90;
-        interface = "${LAN1_IFACE}";
+        interface = "${LAN2_IFACE}";
       };
     };
 
@@ -54,14 +62,20 @@ in
       ${LAN4_IFACE}.useDHCP = false;
 
       # handle VLANs now
-      wan.useDHCP = false;
-      lan = {
+      wan.useDHCP = true; # TODO
+      pratham_lan = {
         ipv4.addresses = [{
           address = "10.0.0.1";
           prefixLength = 24;
         }];
       };
-      iot = {
+      home_lan = {
+        ipv4.addresses = [{
+          address = "10.255.254.1";
+          prefixLength = 24;
+        }];
+      };
+      guest_lan = {
         ipv4.addresses = [{
           address = "10.255.255.1";
           prefixLength = 24;
