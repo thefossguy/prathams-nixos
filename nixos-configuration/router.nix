@@ -54,7 +54,7 @@ in
 
     interfaces = {
       # do not request DHCP on physical interfaces
-      ${WAN_IFACE}.useDHCP  = false;
+      ${WAN_IFACE}.useDHCP  = true; # TODO: only for VM
       ${LAN0_IFACE}.useDHCP = false;
       ${LAN1_IFACE}.useDHCP = false;
       ${LAN2_IFACE}.useDHCP = false;
@@ -62,7 +62,7 @@ in
       ${LAN4_IFACE}.useDHCP = false;
 
       # handle VLANs now
-      wan.useDHCP = true; # TODO
+      wan.useDHCP = false;
       pratham_lan = {
         ipv4.addresses = [{
           address = "10.0.0.1";
@@ -392,7 +392,7 @@ in
     libvirtd = {
       enable = true;
       onShutdown = "shutdown";
-      allowedBridges = [ "virbr0" ]; # TODO
+      allowedBridges = [ "virbr0" ]; # TODO: remove or rename to something useful
       qemu = {
         runAsRoot = false; # not sure about this
         verbatimConfig = ''
