@@ -510,6 +510,7 @@ in
 
   # {{ networking section }}
   # DO NOT ENABLE 'systemd.network.enable' because DNS lookup inside container fails
+  systemd.network.enable = true;
   systemd.network.wait-online = {
     enable = true;
     anyInterface = true;

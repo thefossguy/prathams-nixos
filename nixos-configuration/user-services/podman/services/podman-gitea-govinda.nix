@@ -84,7 +84,10 @@
           '';
           ExecStop = "${exec_stop}";
           ExecStopPost = "${exec_stop_post}";
-          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
+          Environment = [
+            "PODMAN_SYSTEMD_UNIT=%n"
+            "PATH=\"$PATH:${pkgs.aardvark-dns}/bin\""
+          ];
           Type = "notify";
           NotifyAccess = "all";
           Restart = "always";
