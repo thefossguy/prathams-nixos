@@ -508,26 +508,25 @@ in
   };
 
   # {{ networking section }}
-  systemd.network.wait-online = {
+  systemd.network = {
     enable = true;
-    anyInterface = true;
+    wait-online = {
+      enable = true;
+      anyInterface = true;
+    };
   };
 
   networking = {
+    firewall.enable = false; # this uses iptables AFAIK, use nftables instead
     networkmanager.enable = true;
-    wireless.enable = false;
+    nftables.enable = true;
+    wireless.enable = false; # this enabled 'wpa_supplicant', use networkmanager instead
     nameservers = [
       "1.1.1.1"
       "1.0.0.1"
       "8.8.8.8"
       "8.8.4.4"
     ];
-    firewall = {
-      enable = true;
-      allowPing = true;
-      #allowedTCPPorts = [];
-      #allowedUDPPorts = [];
-    };
   };
 
   # {{ misc }}
