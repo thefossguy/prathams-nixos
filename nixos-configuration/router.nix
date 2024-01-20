@@ -299,7 +299,7 @@ in
 
   security = {
     polkit.enable = true;
-    virtualisation.flushL1DataCache = true;
+    virtualisation.flushL1DataCache = "always";
     allowSimultaneousMultithreading = true;
   };
 
