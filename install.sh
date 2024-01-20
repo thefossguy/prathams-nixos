@@ -93,17 +93,22 @@ else
     exit 1
 fi
 
-if [ "${PARTITION_LAYOUT}" = 'desktop' ]; then
-    PARTITIONING_SCRIPT="$(pwd)/scripts/desktop-partitions.sh"
-elif [ "${PARTITION_LAYOUT}" = 'rpi' ]; then
+PARTITIONING_SCRIPT="$(pwd)/scripts/standard-partitions.sh"
+if [[ "${PARTITION_LAYOUT}" == 'rpi' ]]; then
+    ROOT_PART_SIZE='80G'
     PARTITIONING_SCRIPT="$(pwd)/scripts/raspberry-pi-partitions.sh"
-elif [ "${PARTITION_LAYOUT}" = 'virt' ]; then
-    PARTITIONING_SCRIPT="$(pwd)/scripts/virt-partitions.sh"
+elif [[ "${PARTITION_LAYOUT}" == 'desktop' ]]; then
+    ROOT_PART_SIZE='256G'
+elif [[ "${PARTITION_LAYOUT}" == 'router' ]]; then
+    ROOT_PART_SIZE='32G'
+elif [[ "${PARTITION_LAYOUT}" == 'virt' ]]; then
+    ROOT_PART_SIZE='48G'
 else
     >&2 echo "$0: invalid argument for 'disk partition layout'"
     >&2 echo "$0: possible values are 'desktop', 'rpi', 'virt'"
     exit 1
 fi
+export ROOT_PART_SIZE
 
 # partition, format and mount
 "${PARTITIONING_SCRIPT}"
@@ -111,7 +116,11 @@ fi
 # prepare installation
 mkdir -p "${MOUNT_PATH}/etc/nixos"
 nixos-generate-config --root "${MOUNT_PATH}"
-cp -vR nixos-configuration/* "${MOUNT_PATH}/etc/nixos"
+if [[ "${PARTITION_LAYOUT}" == 'router' ]]; then
+    cp -v nixos-configuration/router.nix "${MOUNT_PATH}/etc/nixos/configuration.nix"
+else
+    cp -vR nixos-configuration/* "${MOUNT_PATH}/etc/nixos"
+fi
 
 # all host-specific configuration
 # - generate 'networking.hostId' for ZFS

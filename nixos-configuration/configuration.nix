@@ -481,7 +481,7 @@ in
     };
   };
 
-  # {{ configuration options related to Nix and  NixOS }}
+  # {{ configuration options related to Nix and NixOS }}
   nix = {
     gc = {
       automatic = true;

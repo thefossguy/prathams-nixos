@@ -69,11 +69,6 @@ cat << EOF >> "${CUSTOM_HOST_CONFIG}"
   #boot.tmp.useTmpfs = true; # mount the tmpfs on /tmp during boot
   #boot.tmp.tmpfsSize = "10%";
 
-  #swapDevices = [{
-  #  device = "/var/lib/swapfile";
-  #  size = "1024 * 2";
-  #}];
-
   zramSwap = {
     enable = true;
     algorithm = "zstd";
