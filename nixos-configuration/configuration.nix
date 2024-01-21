@@ -20,6 +20,7 @@ in
     # base system packages + packages what I *need*
     cloud-utils # provides growpart
     coreutils
+    dig # provides dig and nslookup
     dmidecode
     doas
     file
