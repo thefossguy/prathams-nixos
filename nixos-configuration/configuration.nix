@@ -431,6 +431,9 @@ in
   };
 
   # {{ system services' "parameters" go here }}
+  environment.etc."resolv.conf".mode = "direct-symlink";
+  services.resolved.enable = true;
+
   services = {
     fwupd.enable = true;
     journald.storage = "persistent";
@@ -509,10 +512,12 @@ in
   };
 
   # {{ networking section }}
-  # DO NOT ENABLE 'systemd.network.enable' because DNS lookup inside container fails
-  systemd.network.wait-online = {
+  systemd.network = {
     enable = true;
-    anyInterface = true;
+    wait-online = {
+      enable = true;
+      anyInterface = true;
+    };
   };
 
   networking = {
