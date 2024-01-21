@@ -432,7 +432,15 @@ in
 
   # {{ system services' "parameters" go here }}
   environment.etc."resolv.conf".mode = "direct-symlink";
-  services.resolved.enable = true;
+  services.resolved = {
+    enable = true;
+    fallbackDns = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
+  };
 
   services = {
     fwupd.enable = true;
@@ -525,12 +533,6 @@ in
     networkmanager.enable = true;
     nftables.enable = true;
     wireless.enable = false; # this enabled 'wpa_supplicant', use networkmanager instead
-    nameservers = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
   };
 
   # {{ misc }}
