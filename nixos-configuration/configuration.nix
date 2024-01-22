@@ -534,6 +534,12 @@ in
     networkmanager.enable = true;
     nftables.enable = true;
     wireless.enable = false; # this enabled 'wpa_supplicant', use networkmanager instead
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
   };
 
   # {{ misc }}
