@@ -35,7 +35,6 @@ in
     iputils
     linux-firmware
     lsof
-    mlocate
     nvme-cli
     openssh
     openssl
@@ -227,6 +226,7 @@ in
         "libvirt"
         "libvirtd"
         "log"
+        "mlocate"
         "networkmanager"
         "podman"
         "rfkill"
@@ -452,10 +452,23 @@ in
 
     locate = {
       enable = true;
-      package = pkgs.mlocate;
+      interval = "hourly";
       localuser = null;
-      interval = "daily";
-      prunePaths = [ "/nix/store" ];
+      package = pkgs.mlocate;
+      pruneBindMounts = true;
+      prunePaths = [
+        "${prathamsHome}/.cache"
+        "${prathamsHome}/.dotfiles"
+        "${prathamsHome}/.local/share"
+        "${prathamsHome}/.local/state"
+        "${prathamsHome}/.nix-defexpr"
+        "${prathamsHome}/.nix-profile"
+        "${prathamsHome}/.nvim/undodir"
+        "${prathamsHome}/.rustup"
+        "${prathamsHome}/.vms"
+        "${prathamsHome}/.zkbd"
+        "/nix"
+      ];
     };
 
     # sshd_config
