@@ -764,6 +764,7 @@ in
       timeout = 5;
       systemd-boot = {
         enable = true;
+        editor = false;
       };
     };
   };
