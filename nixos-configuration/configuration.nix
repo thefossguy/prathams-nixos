@@ -498,7 +498,7 @@ in
   nix = {
     gc = {
       automatic = true;
-      dates = "Sun *-*-* 00:00:00";
+      dates = "*-*-* 23:00:00"; # everyday, at 23:00
       options = "--delete-older-than 14d";
     };
     settings = {
