@@ -107,6 +107,7 @@ in
 
     # language servers, parsers and other related packages
     clang-tools # provides clangd
+    gdb
     lldb # provides lldb-vscode
     lua-language-server
     nil # language server for Nix
