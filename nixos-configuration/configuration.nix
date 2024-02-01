@@ -312,6 +312,7 @@ in
     };
     programs.direnv = {
       enable = true;
+      package = pkgs.nix-direnv;
       enableBashIntegration = true;
     };
     dconf.settings = {
