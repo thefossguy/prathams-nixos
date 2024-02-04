@@ -312,8 +312,8 @@ in
     };
     programs.direnv = {
       enable = true;
-      package = pkgs.nix-direnv;
       enableBashIntegration = true;
+      nix-direnv.enable = true;
     };
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
