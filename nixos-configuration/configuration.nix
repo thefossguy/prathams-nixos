@@ -19,10 +19,8 @@ in
   environment.systemPackages = with pkgs; [
     # base system packages + packages what I *need*
     cloud-utils # provides growpart
-    coreutils
     dig # provides dig and nslookup
     dmidecode
-    doas
     file
     findutils
     gawk
@@ -33,11 +31,8 @@ in
     inotify-tools
     iproute2
     iputils
-    linux-firmware
     lsof
     nvme-cli
-    openssh
-    openssl
     parallel
     pciutils # provides lspci and setpci
     pinentry # pkg summary: GnuPG’s interface to passphrase input
@@ -46,7 +41,6 @@ in
     pv
     python3Minimal
     rsync
-    shadow
     smartmontools
     tmux
     tree
@@ -102,19 +96,8 @@ in
     cargo-valgrind
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
     cargo-watch # run cargo commands when the src changes
-    gcc
+    #gdb
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
-
-    # language servers, parsers and other related packages
-    clang-tools # provides clangd
-    gdb
-    lldb # provides lldb-vscode
-    lua-language-server
-    nil # language server for Nix
-    nodePackages.bash-language-server
-    ruff
-    shellcheck
-    tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
 
     # power management
     acpi
@@ -182,7 +165,20 @@ in
     gnupg.agent.enable = true;
     iotop.enable = true;
     mtr.enable = true;
-    neovim.enable = true;
+    neovim = {
+      enable = true;
+      extraPackages = with pkgs; [
+        clang-tools # provides clangd
+        gcc # for nvim-tree's parsers
+        lldb # provides lldb-vscode
+        lua-language-server
+        nil # language server for Nix
+        nodePackages.bash-language-server
+        ruff
+        shellcheck
+        tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
+      ];
+    };
     sniffnet.enable = true;
     usbtop.enable = true;
 
