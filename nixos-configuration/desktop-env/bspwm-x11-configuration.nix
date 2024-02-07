@@ -17,6 +17,7 @@
       };
     };
   };
+
   environment.systemPackages = with pkgs; [
     dunst
     feh

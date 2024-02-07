@@ -54,8 +54,6 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
-    flatpak
-    light # for backlight
     mediainfo-gui
     mpv
     neovide

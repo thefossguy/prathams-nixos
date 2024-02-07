@@ -42,24 +42,17 @@ in
     python3Minimal
     rsync
     smartmontools
-    tmux
     tree
     usbutils
     util-linux # provides blkid, losetup, lsblk, rfkill, fallocate, dmesg, etc
     wol
 
-    # text editors
-    nano
-    vim
-
     # shells
     dash
 
     # download clients
-    aria2
     curl
     wget
-    yt-dlp
 
     # compression and decompression
     bzip2
@@ -73,8 +66,9 @@ in
     # programming tools + compilers
     #cargo-deb # generate .deb packages solely based on Cargo.toml
     #cargo-ndk # extension for building Android NDK projects
+    #binutils # provides readelf, objdump, strip, as, objcopy (GNU; not LLVM)
+    #gdb
     b4 # applying patches from mailing lists
-    binutils # provides readelf, objdump, strip, as, objcopy (GNU; not LLVM)
     cargo-audit # audit crates for security vulnerabilities
     cargo-benchcmp # compare Rust micro-benchmarks
     cargo-binstall # install Rust binaries instead of building them from src
@@ -96,7 +90,6 @@ in
     cargo-valgrind
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
     cargo-watch # run cargo commands when the src changes
-    #gdb
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # power management
@@ -111,10 +104,6 @@ in
     ffmpeg
     imagemagick
     mediainfo
-
-    # system monitoring
-    btop
-    htop
 
     # network monitoring
     iperf # this is iperf3
@@ -131,21 +120,14 @@ in
     ventoy
 
     # utilities written in Rust
-    bat
-    bottom
-    broot
     choose
     du-dust
     dua
     fd
     hyperfine
     procs
-    ripgrep
     sd
-    skim
-    tealdeer
     tre-command
-    zoxide
 
     # virtualisation
     qemu_kvm
@@ -163,24 +145,16 @@ in
     dconf.enable = true;
     git.enable = true;
     gnupg.agent.enable = true;
+    htop.enable = true;
     iotop.enable = true;
     mtr.enable = true;
-    neovim = {
-      enable = true;
-      extraPackages = with pkgs; [
-        clang-tools # provides clangd
-        gcc # for nvim-tree's parsers
-        lldb # provides lldb-vscode
-        lua-language-server
-        nil # language server for Nix
-        nodePackages.bash-language-server
-        ruff
-        shellcheck
-        tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
-      ];
-    };
+    skim.fuzzyCompletion = true;
     sniffnet.enable = true;
+    tmux.enable = true;
+    traceroute.enable = true;
+    trippy.enable = true;
     usbtop.enable = true;
+    vim.package = pkgs.vim-full;
 
     bash = {
       enableCompletion = true;
@@ -188,8 +162,13 @@ in
       undistractMe = {
         enable = true;
         playSound = true;
-        timeout = 60; # notify only if said command has been running for this many seconds
+        timeout = 300; # notify only if said command has been running for this many seconds
       };
+    };
+
+    nano = {
+      enable = true;
+      syntaxHighlight = true;
     };
   };
 
@@ -250,11 +229,11 @@ in
       users = [ "pratham" ];
       commands = [
         {
-          command = "${pkgs.util-linux}/bin/dmesg";
+          command = "${pkgs.coreutils}/bin/sync";
           options = [ "NOPASSWD" ];
         }
         {
-          command = "${pkgs.systemd}/bin/systemctl";
+          command = "${pkgs.hdparm}/bin/hdparm";
           options = [ "NOPASSWD" ];
         }
         {
@@ -263,10 +242,6 @@ in
         }
         {
           command = "${pkgs.nix}/bin/nix-collect-garbage";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.hdparm}/bin/hdparm";
           options = [ "NOPASSWD" ];
         }
         {
@@ -286,7 +261,11 @@ in
           options = [ "NOPASSWD" ];
         }
         {
-          command = "${pkgs.coreutils}/bin/sync";
+          command = "${pkgs.systemd}/bin/systemctl";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "${pkgs.util-linux}/bin/dmesg";
           options = [ "NOPASSWD" ];
         }
         #{
@@ -302,15 +281,39 @@ in
   # without having to depend on a $HOME/.config/home-manager/{home,flake}.nix
   home-manager.users.pratham = { pkgs, ... }: {
     home.stateVersion = "${NixOSRelease}";
-    programs.nix-index = {
-      enable = true;
-      enableBashIntegration = true;
+    programs = {
+      aria2.enable = true;
+      bat.enable = true;
+      bottom.enable = true;
+      broot.enable = true;
+      btop.enable = true;
+      ripgrep.enable = true;
+      tealdeer.enable = true;
+      yt-dlp.enable = true;
+      zoxide.enable = true;
+
+      direnv = {
+        enable = true;
+        enableBashIntegration = true;
+        nix-direnv.enable = true;
+      };
+
+      neovim = {
+        enable = true;
+        extraPackages = with pkgs; [
+          clang-tools # provides clangd
+          gcc # for nvim-tree's parsers
+          lldb # provides lldb-vscode
+          lua-language-server
+          nil # language server for Nix
+          nodePackages.bash-language-server
+          ruff
+          shellcheck
+          tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
+        ];
+      };
     };
-    programs.direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      nix-direnv.enable = true;
-    };
+
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
@@ -472,7 +475,6 @@ in
     # sshd_config
     openssh = {
       enable = true;
-      extraConfig = "PermitEmptyPasswords no";
       ports = [ 22 ];
       openFirewall = true;
       settings = {
