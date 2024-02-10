@@ -164,6 +164,11 @@ in
         playSound = true;
         timeout = 300; # notify only if said command has been running for this many seconds
       };
+      # aliases for the root user
+      # doesn't affect 'pratham' since there is an `unalias -a` in /home/pratham/.bashrc
+      shellAliases = ''
+        "e" = "${pkgs.vim}/bin/vim";
+      '';
     };
 
     nano = {
