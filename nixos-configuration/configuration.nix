@@ -45,6 +45,7 @@ in
     tree
     usbutils
     util-linux # provides blkid, losetup, lsblk, rfkill, fallocate, dmesg, etc
+    vim # it is a necessity
     wol
 
     # shells
