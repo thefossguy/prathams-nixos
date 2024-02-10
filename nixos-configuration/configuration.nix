@@ -154,7 +154,6 @@ in
     traceroute.enable = true;
     trippy.enable = true;
     usbtop.enable = true;
-    vim.package = pkgs.vim-full;
 
     bash = {
       enableCompletion = true;
