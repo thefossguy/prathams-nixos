@@ -166,9 +166,9 @@ in
       };
       # aliases for the root user
       # doesn't affect 'pratham' since there is an `unalias -a` in /home/pratham/.bashrc
-      shellAliases = ''
+      shellAliases = {
         "e" = "${pkgs.vim}/bin/vim";
-      '';
+      };
     };
 
     nano = {
