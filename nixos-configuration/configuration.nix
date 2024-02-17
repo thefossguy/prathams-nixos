@@ -5,6 +5,16 @@ let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-${NixOSRelease}.tar.gz";
   prathamsHome = "/home/pratham";
   scriptsDir = "${prathamsHome}/.local/scripts";
+
+  OVMFPkg = (pkgs.OVMF.override {
+    secureBoot = true;
+    tpmSupport = true;
+  }).fd;
+  OVMFBinName = if pkgs.stdenv.isAarch64 then "AAVMF"
+    else (
+      if pkgs.stdenv.isx86_64 then "OVMF"
+      else ""
+    );
 in
 
 {
@@ -210,6 +220,7 @@ in
         "mlocate"
         "networkmanager"
         "podman"
+        "qemu-libvirtd"
         "rfkill"
         "sshusers"
         "sys"
@@ -320,6 +331,14 @@ in
       };
     };
 
+    xdg.configFile = {
+      "libvirt/qemu.conf" = {
+        enable = true;
+        text = ''
+          nvram = [ "${OVMFPkg}/FV/${OVMFBinName}_CODE.fd:${OVMFPkg}/FV/${OVMFBinName}_VARS.fd" ]
+        '';
+      };
+    };
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];
@@ -649,10 +668,18 @@ in
       onShutdown = "shutdown";
       allowedBridges = [ "virbr0" ];
       qemu = {
+        package = pkgs.qemu_kvm;
         runAsRoot = false; # not sure about this
+        swtpm.enable = true;
+
+        ovmf = {
+          enable = true;
+          packages = [ OVMFPkg ];
+        };
+
         verbatimConfig = ''
-        user = "pratham"
-        group = "pratham"
+          user = "pratham"
+          group = "pratham"
         '';
       };
     };
