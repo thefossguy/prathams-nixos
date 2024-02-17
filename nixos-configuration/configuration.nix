@@ -295,7 +295,7 @@ in
   # {{ home-manager configuration }}
   # call the home-manager configuration directly
   # without having to depend on a $HOME/.config/home-manager/{home,flake}.nix
-  home-manager.users.pratham = { pkgs, ... }: {
+  home-manager.users.pratham = { lib, pkgs, ... }: {
     home.stateVersion = "${NixOSRelease}";
     programs = {
       aria2.enable = true;
@@ -331,11 +331,35 @@ in
       };
     };
 
+    # for raw QEMU VMs
+    home.activation = {
+      OVMFActivation = lib.hm.dag.entryAfter [ "installPackages" ] (if pkgs.stdenv.isx86_64 then ''
+          EDKII_CODE_NIX="${OVMFPkg}/FV/${OVMFBinName}_CODE.fd"
+          EDKII_VARS_NIX="${OVMFPkg}/FV/${OVMFBinName}_VARS.fd"
+
+          EDKII_DIR_HOME="${prathamsHome}/.local/share/edk2"
+          EDKII_CODE_HOME="$EDKII_DIR_HOME/EDKII_CODE"
+          EDKII_VARS_HOME="$EDKII_DIR_HOME/EDKII_VARS"
+
+          if [ -d "$EDKII_DIR_HOME" ]; then
+              rm -rf "$EDKII_DIR_HOME"
+              mkdir -vp "$EDKII_DIR_HOME"
+          fi
+
+          cp "$EDKII_CODE_NIX" "$EDKII_CODE_HOME"
+          cp "$EDKII_VARS_NIX" "$EDKII_VARS_HOME"
+
+          chown pratham:pratham "$EDKII_CODE_HOME" "$EDKII_VARS_HOME"
+          chmod 644 "$EDKII_CODE_HOME" "$EDKII_VARS_HOME"
+        '' else "");
+    };
+
+    # for libvirt, virt-manager, virsh
     xdg.configFile = {
       "libvirt/qemu.conf" = {
         enable = true;
         text = ''
-          nvram = [ "${OVMFPkg}/FV/${OVMFBinName}_CODE.fd:${OVMFPkg}/FV/${OVMFBinName}_VARS.fd" ]
+          nvram = [ "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd", "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd" ]
         '';
       };
     };
