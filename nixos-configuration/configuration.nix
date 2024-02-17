@@ -337,14 +337,14 @@ in
           EDKII_CODE_NIX="${OVMFPkg}/FV/${OVMFBinName}_CODE.fd"
           EDKII_VARS_NIX="${OVMFPkg}/FV/${OVMFBinName}_VARS.fd"
 
-          EDKII_DIR_HOME="${prathamsHome}/.local/share/edk2"
+          EDKII_DIR_HOME="$HOME/.local/share/edk2"
           EDKII_CODE_HOME="$EDKII_DIR_HOME/EDKII_CODE"
           EDKII_VARS_HOME="$EDKII_DIR_HOME/EDKII_VARS"
 
           if [ -d "$EDKII_DIR_HOME" ]; then
               rm -rf "$EDKII_DIR_HOME"
-              mkdir -vp "$EDKII_DIR_HOME"
           fi
+          mkdir -vp "$EDKII_DIR_HOME"
 
           cp "$EDKII_CODE_NIX" "$EDKII_CODE_HOME"
           cp "$EDKII_VARS_NIX" "$EDKII_VARS_HOME"
