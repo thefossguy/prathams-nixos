@@ -42,6 +42,7 @@ in
     iproute2
     iputils
     lsof
+    minisign
     nvme-cli
     parallel
     pciutils # provides lspci and setpci
