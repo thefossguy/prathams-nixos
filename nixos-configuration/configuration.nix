@@ -6,6 +6,21 @@ let
   prathamsHome = "/home/pratham";
   scriptsDir = "${prathamsHome}/.local/scripts";
 
+  whatIGetForSupportingTheRaspberryPiFoundation = pkgs.writeShellScriptBin "populate-boot-for-raspberry-pi" ''
+    set -xe
+
+    if grep 'Raspberry Pi 4' /proc/device-tree/model > /dev/null; then
+        cp "${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin" /boot
+        cp -r "${pkgs.raspberrypifw}/share/raspberrypi/boot/"* /boot
+        cat << EOF > /boot/config.txt
+        enable_uart=1
+        avoid_warnings=1
+        arm_64bit=1
+        kernel=u-boot.bin
+        EOF
+    fi
+  '';
+
   OVMFPkg = (pkgs.OVMF.override {
     secureBoot = true;
     tpmSupport = true;
@@ -573,6 +588,9 @@ in
 
   system = {
     stateVersion = "${NixOSRelease}"; # release version of NixOS
+    # TODO: after adding `ubootRaspberryPi_64bit` to nixpkgs
+    # also remove: `scripts/{get-raspi-4-firmware,raspberry-pi-partitions}.sh`
+    #build.separateActivationScript = "${whatIGetForSupportingTheRaspberryPiFoundation}/bin/populate-boot-for-raspberry-pi";
 
     autoUpgrade = {
       enable = true;
