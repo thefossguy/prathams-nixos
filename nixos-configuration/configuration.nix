@@ -9,7 +9,7 @@ let
   whatIGetForSupportingTheRaspberryPiFoundation = pkgs.writeShellScriptBin "populate-boot-for-raspberry-pi" ''
     set -xe
 
-    if grep 'Raspberry Pi 4' /proc/device-tree/model > /dev/null; then
+    if grep 'Raspberry Pi' /proc/device-tree/model > /dev/null; then
         cp "${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin" /boot
         cp -r "${pkgs.raspberrypifw}/share/raspberrypi/boot/"* /boot
         cat << EOF > /boot/config.txt
@@ -17,7 +17,9 @@ let
         avoid_warnings=1
         arm_64bit=1
         kernel=u-boot.bin
-        EOF
+        [pi4]
+        #hdmi_enable_4kp60=1
+        arm_boost=1
     fi
   '';
 
