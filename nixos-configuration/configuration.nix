@@ -754,7 +754,7 @@ in
 
       "boot.shell_on_fail"
 
-      "fsck.mode=force"
+      "fsck.mode=auto"
       "fsck.repair=preen"
 
       "plymouth.enable=0"
