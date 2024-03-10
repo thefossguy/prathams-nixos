@@ -139,7 +139,7 @@ set -x
 read WAIT_UNCONDITIONALLY
 
 # install NixOS
-nixos-install --no-root-password --root "${MOUNT_PATH}"
+nixos-install --no-root-password --root "${MOUNT_PATH}" --show-trace
 
 # very very initial setup for 'pratham'
 cp "$(pwd)/scripts/chroot-as-pratham.sh" "${MOUNT_PATH}/home/pratham"
