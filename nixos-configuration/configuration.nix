@@ -54,6 +54,7 @@ in
     inotify-tools
     iproute2
     iputils
+    linux-firmware
     lsof
     minisign
     nvme-cli
