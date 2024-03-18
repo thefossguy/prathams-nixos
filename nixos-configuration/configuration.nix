@@ -23,10 +23,6 @@ let
     fi
   '';
 
-  OVMFPkg = (pkgs.OVMF.override {
-    secureBoot = true;
-    tpmSupport = true;
-  }).fd;
   OVMFBinName = if pkgs.stdenv.isAarch64 then "AAVMF"
     else (
       if pkgs.stdenv.isx86_64 then "OVMF"
@@ -352,8 +348,8 @@ in
     # for raw QEMU VMs
     home.activation = {
       OVMFActivation = lib.hm.dag.entryAfter [ "installPackages" ] (if pkgs.stdenv.isx86_64 then ''
-          EDKII_CODE_NIX="${OVMFPkg}/FV/${OVMFBinName}_CODE.fd"
-          EDKII_VARS_NIX="${OVMFPkg}/FV/${OVMFBinName}_VARS.fd"
+          EDKII_CODE_NIX="${pkgs.OVMF}/FV/${OVMFBinName}_CODE.fd"
+          EDKII_VARS_NIX="${pkgs.OVMF}/FV/${OVMFBinName}_VARS.fd"
 
           EDKII_DIR_HOME="$HOME/.local/share/edk2"
           EDKII_CODE_HOME="$EDKII_DIR_HOME/EDKII_CODE"
@@ -719,7 +715,7 @@ in
 
         ovmf = {
           enable = true;
-          packages = [ OVMFPkg ];
+          packages = [ pkgs.OVMF ];
         };
 
         verbatimConfig = ''
