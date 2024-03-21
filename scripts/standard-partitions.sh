@@ -38,7 +38,7 @@ mkfs.xfs  -f -L    nixroot "${ROOT_PART}"
 mkfs.xfs  -f -L    nixhome "${HOME_PART}"
 mkfs.xfs  -f -L    nixvarp "${VARL_PART}"
 
-mount -o async,lazytime,noatime "${ROOT_PART}" "${MOUNT_PATH}"
+mount -o async,lazytime,relatime "${ROOT_PART}" "${MOUNT_PATH}"
 mount -o async,lazytime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
 mount -o async,lazytime --mkdir "${HOME_PART}" "${MOUNT_PATH}/home"
 mount -o async,lazytime --mkdir "${VARL_PART}" "${MOUNT_PATH}/var"
