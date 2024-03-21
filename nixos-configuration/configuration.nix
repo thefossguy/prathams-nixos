@@ -161,6 +161,9 @@ in
     # tools specific to Nix
     nix-output-monitor
     nvd # diff between NixOS generations
+    nix-prefetch
+    nix-prefetch-git
+    nix-prefetch-github
   ];
 
   programs = {
