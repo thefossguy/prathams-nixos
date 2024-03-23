@@ -796,6 +796,20 @@ in
       # 2147483642 = 1.99-ish GiB
       "vm.max_map_count" = 2147483642;
 
+      # Same as `vm.dirty_ratio` but for background tasks
+      "vm.dirty_background_ratio" = 10;
+      # After how many centiseconds (1 second = 100 centiseconds) is dirty data
+      # committed to the disk
+      "vm.dirty_expire_centisecs" = 3000;
+      # Percentage of memory allowed to be filled with dirty data until it is
+      # committed to the disk
+      "vm.dirty_ratio" = 20;
+      # Interval between the kernel flusher threads that wake up to write old
+      # data to the disk. **Try keeping this less than half of whatever
+      # `vm.dirty_expire_centisecs`.**
+      # Check every N centisecs if data needs to be committed to the disk or not.
+      "vm.dirty_writeback_centisecs" = 1000;
+
       # The Magic SysRq key is a key combo that allows users connected to the
       # system console of a Linux kernel to perform some low-level commands.
       # Disable it, since we don't need it, and is a potential security concern.
