@@ -118,6 +118,10 @@ in
     cargo-watch # run cargo commands when the src changes
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
+    # e-mail
+    protonmail-bridge
+    thunderbird
+
     # power management
     acpi
     lm_sensors
