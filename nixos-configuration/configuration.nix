@@ -119,7 +119,6 @@ in
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # e-mail
-    hydroxide
     protonmail-bridge
     thunderbird
 
