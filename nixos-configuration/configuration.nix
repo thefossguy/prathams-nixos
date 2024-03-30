@@ -589,6 +589,10 @@ in
     settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
+      keep-going = false;
+      log-lines = 9999;
+      sandbox = true;
+      show-trace = true;
       trusted-users = [ "root" "pratham" ];
     };
   };
