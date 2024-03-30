@@ -6,6 +6,26 @@ let
   prathamsHome = "/home/pratham";
   scriptsDir = "${prathamsHome}/.local/scripts";
 
+  sudoRules = with pkgs; [
+    { package = coreutils; command = "sync"; }
+    { package = hdparm; command = "hdparm"; }
+    { package = nix; command = "nix-collect-garbage"; }
+    { package = nixos-rebuild; command = "nixos-rebuild"; }
+    { package = nvme-cli; command = "nvme"; }
+    { package = systemd; command = "poweroff"; }
+    { package = systemd; command = "reboot"; }
+    { package = systemd; command = "shutdown"; }
+    { package = systemd; command = "systemctl"; }
+    { package = util-linux; command = "dmesg"; }
+  ];
+
+  mkSudoRule = rule: {
+    command = "${rule.package}/bin/${rule.command}";
+    options = [ "NOPASSWD" ];
+  };
+
+  sudoCommands = map mkSudoRule sudoRules;
+
   whatIGetForSupportingTheRaspberryPiFoundation = pkgs.writeShellScriptBin "populate-boot-for-raspberry-pi" ''
     set -xe
 
@@ -212,23 +232,26 @@ in
 
   # {{ user configuration }}
   users = {
-    mutableUsers = false; # do not allow any more users on the system than what is defined here
     allowNoPasswordLogin = false;
     defaultUserShell = pkgs.bash;
     enforceIdUniqueness = true;
+    mutableUsers = false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
+
     users.root.hashedPassword = "$6$cxSzljtGpFNLRhx1$0HvOs4faEzUw9FYUF8ifOwBPwHsGVL7HenQMCOBNwqknBFHSlA6NIDO7U36HeQ/C9FN/B.dP.WBg3MzqQcubr0";
 
     users.pratham = {
-      isNormalUser = true;
-      description = "Pratham Patel";
       createHome = true;
-      home = "${prathamsHome}";
+      description = "Pratham Patel";
       group = "pratham";
-      uid = 1000;
-      subUidRanges = [ { startUid = 10000; count = 65536; } ];
-      subGidRanges = [ { startGid = 10000; count = 65536; } ];
-      linger = true;
       hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
+      home = "${prathamsHome}";
+      isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
+      isSystemUser = false;
+      linger = true;
+      subGidRanges = [ { startGid = 10000; count = 65536; } ];
+      subUidRanges = [ { startUid = 10000; count = 65536; } ];
+      uid = 1000;
+
       extraGroups = [
         "adbusers"
         "adm"
@@ -263,55 +286,12 @@ in
   # {{ sudo configuration }}
   security.sudo = {
     enable = true;
+    execWheelOnly = true;
+    keepTerminfo = true;
     wheelNeedsPassword = true;
     extraRules = [{
       users = [ "pratham" ];
-      commands = [
-        {
-          command = "${pkgs.coreutils}/bin/sync";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.hdparm}/bin/hdparm";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.nixos-rebuild}/bin/nixos-rebuild";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.nix}/bin/nix-collect-garbage";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.nvme-cli}/bin/nvme";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.systemd}/bin/poweroff";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.systemd}/bin/reboot";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.systemd}/bin/shutdown";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.systemd}/bin/systemctl";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "${pkgs.util-linux}/bin/dmesg";
-          options = [ "NOPASSWD" ];
-        }
-        #{
-        #  command = "ALL";
-        #  options = [ "NOPASSWD" ];
-        #}
-      ];
+      commands = sudoCommands;
     }];
   };
 
@@ -529,6 +509,7 @@ in
       localuser = null;
       package = pkgs.mlocate;
       pruneBindMounts = true;
+
       prunePaths = [
         "${prathamsHome}/.cache"
         "${prathamsHome}/.dotfiles"
@@ -549,12 +530,13 @@ in
       enable = true;
       ports = [ 22 ];
       openFirewall = true;
+
       settings = {
         Protocol = 2;
         MaxAuthTries = 2;
-        PermitEmptyPasswords = false;
-        PasswordAuthentication = false;
-        PermitRootLogin = "prohibit-password";
+        PermitEmptyPasswords = lib.mkForce false;
+        PasswordAuthentication = lib.mkForce false;
+        PermitRootLogin = lib.mkForce "prohibit-password";
         X11Forwarding = false;
       };
     };
@@ -586,6 +568,7 @@ in
       dates = "*-*-* 23:00:00"; # everyday, at 23:00
       options = "--delete-older-than 14d";
     };
+
     settings = {
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
@@ -717,6 +700,8 @@ in
 
   # {{ virtualisation and container settings }}
   virtualisation = {
+    oci-containers.backend = "podman";
+
     libvirtd = {
       enable = true;
       onShutdown = "shutdown";
@@ -738,7 +723,6 @@ in
       };
     };
 
-    oci-containers.backend = "podman";
     podman = {
       enable = true;
       dockerCompat = true;
@@ -771,12 +755,14 @@ in
 
       "no_console_suspend"
     ];
+
     supportedFilesystems = [
       "ext4"
       "f2fs"
       "vfat"
       "xfs"
     ];
+
     kernel.sysctl = {
       ## Z-RAM-Swap
       # Kernel docs: https://docs.kernel.org/admin-guide/sysctl/vm.html
