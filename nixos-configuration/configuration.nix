@@ -587,9 +587,9 @@ in
       options = "--delete-older-than 14d";
     };
     settings = {
-      trusted-users = [ "root" "pratham" ];
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "pratham" ];
     };
   };
 
