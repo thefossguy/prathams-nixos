@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ ../../includes/display-server/kde-plasma.nix ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/433ba433-7363-49bd-884f-105ef7d44d4d";
     fsType = "xfs";

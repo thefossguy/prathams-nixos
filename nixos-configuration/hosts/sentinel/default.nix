@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ ../../includes/display-server/bspwm.nix ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/a1cd227c-930a-4e7c-a8c8-9079fe21830b";
     fsType = "xfs";

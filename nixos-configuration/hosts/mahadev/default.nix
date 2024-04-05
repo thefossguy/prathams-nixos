@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ ../../includes/display-server/kde-plasma.nix ];
+
   boot.kernelPatches = [{
     name = "revert-of-patch-for-rock-5b";
     patch = ./0001-Revert-of-property-fw_devlink-Fix-stupid-bug-in-remo.patch;
