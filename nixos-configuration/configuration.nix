@@ -71,63 +71,6 @@ in
 
   };
 
-  # {{ system services' "parameters" go here }}
-  environment.etc."resolv.conf".mode = "direct-symlink";
-  services.resolved = {
-    enable = true;
-    fallbackDns = [
-      "1.1.1.1"
-      "1.0.0.1"
-      "8.8.8.8"
-      "8.8.4.4"
-    ];
-  };
-
-  services = {
-    fwupd.enable = true;
-    journald.storage = "persistent";
-    logrotate.enable = true;
-    timesyncd.enable = true; # NTP
-    udisks2.enable = true;
-
-    locate = {
-      enable = true;
-      interval = "hourly";
-      localuser = null;
-      package = pkgs.mlocate;
-      pruneBindMounts = true;
-
-      prunePaths = [
-        "${prathamsHome}/.cache"
-        "${prathamsHome}/.dotfiles"
-        "${prathamsHome}/.local/share"
-        "${prathamsHome}/.local/state"
-        "${prathamsHome}/.nix-defexpr"
-        "${prathamsHome}/.nix-profile"
-        "${prathamsHome}/.nvim/undodir"
-        "${prathamsHome}/.rustup"
-        "${prathamsHome}/.vms"
-        "${prathamsHome}/.zkbd"
-        "/nix"
-      ];
-    };
-
-    # sshd_config
-    openssh = {
-      enable = true;
-      ports = [ 22 ];
-      openFirewall = true;
-
-      settings = {
-        Protocol = 2;
-        MaxAuthTries = 2;
-        PermitEmptyPasswords = lib.mkForce false;
-        PasswordAuthentication = lib.mkForce false;
-        PermitRootLogin = lib.mkForce "prohibit-password";
-        X11Forwarding = false;
-      };
-    };
-  };
 
   systemd.timers = {
     "update-nixos-config" = {
