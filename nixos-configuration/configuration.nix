@@ -105,46 +105,6 @@ in
   # {{ misc }}
 
   # {{ virtualisation and container settings }}
-  virtualisation = {
-    oci-containers.backend = "podman";
-
-    libvirtd = {
-      enable = true;
-      onShutdown = "shutdown";
-      allowedBridges = [ "virbr0" ];
-      qemu = {
-        package = pkgs.qemu_kvm;
-        runAsRoot = false; # not sure about this
-        swtpm.enable = true;
-
-        ovmf = {
-          enable = true;
-          packages = [ pkgs.OVMF ];
-        };
-
-        verbatimConfig = ''
-          user = "pratham"
-          group = "pratham"
-        '';
-      };
-    };
-
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      dockerSocket.enable = true;
-      networkSocket.openFirewall = true;
-      extraPackages = [ pkgs.buildah ];
-      defaultNetwork.settings = {
-        dns_enabled = true;
-      };
-      autoPrune = {
-        enable = true;
-        dates = "weekly";
-        flags = [ "--all" ];
-      };
-    };
-  };
 
   boot = {
     kernelParams = [
