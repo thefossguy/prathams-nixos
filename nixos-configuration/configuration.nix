@@ -72,24 +72,6 @@ in
   };
 
 
-  systemd.timers = {
-    "update-nixos-config" = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "*-*-* 23:30:00";
-        Unit = "update-nixos-config.service";
-      };
-    };
-  };
-  systemd.services = {
-    "update-nixos-config" = {
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-        ExecStart = "${pkgs.coreutils}/bin/cp -fR ${prathamsHome}/my-git-repos/pratham/prathams-nixos/nixos-configuration/. /etc/nixos";
-      };
-    };
-  };
 
   # {{ configuration options related to Nix and NixOS }}
   nix = {
@@ -116,13 +98,6 @@ in
     # also remove: `scripts/{get-raspi-4-firmware,raspberry-pi-partitions}.sh`
     #build.separateActivationScript = "${whatIGetForSupportingTheRaspberryPiFoundation}/bin/populate-boot-for-raspberry-pi";
 
-    autoUpgrade = {
-      enable = true;
-      dates = "daily"; # *-*-* 00:00:00
-      allowReboot = false;
-      operation = "boot";
-      persistent = true;
-    };
   };
 
   # {{ networking section }}
