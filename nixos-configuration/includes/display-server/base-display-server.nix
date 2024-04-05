@@ -6,7 +6,6 @@
 }:
 
 {
-  displayManager.hiddenUsers = [ "root" ];
   security.rtkit.enable = true;
   sound.enable = true;
   xdg.portal.enable = true;
@@ -15,6 +14,7 @@
     enable = true;
     layout = "us";
     xkbVariant = "";
+    displayManager.hiddenUsers = [ "root" ];
 
     desktopManager = {
       wallpaper = {
