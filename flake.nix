@@ -2,17 +2,17 @@
   description = "Machines with Nix/NixOS";
 
   inputs = {
-    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*.tar.gz";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
 
     home-manager = {
-      url = "https://flakehub.com/f/nix-community/home-manager/*.tar.gz";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }:
     let
-      nixpkgsRelease = nixpkgs.lib.versions.majorMinor nixpkgs.lib.version;
+      nixpkgsRelease = "23.11";
 
       mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
