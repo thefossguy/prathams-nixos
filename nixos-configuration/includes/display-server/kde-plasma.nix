@@ -6,7 +6,8 @@
 }:
 
 {
-  imports = [ ./default.nix ];
+  imports = [ ./base-display-server.nix ];
+
   xdg.portal = {
     configPackages = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
     extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
