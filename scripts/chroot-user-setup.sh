@@ -1,27 +1,18 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages git
+#!/usr/bin/env bash
 
 set -xeuf -o pipefail
 
-if [ "${USER}" = 'pratham' ] && [ -n "${HOME}" ]; then
+
+if [[ -n "${HOME}" ]]; then
     # get dotfiles
     git clone --bare https://gitlab.com/thefossguy/dotfiles.git "${HOME}/.dotfiles"
     git --git-dir="${HOME}/.dotfiles" --work-tree="${HOME}" checkout -f
 
-    # generate SSH keys
+    # "generate" SSH keys
     chmod 700 "${HOME}/.ssh"
-    pushd "${HOME}/.ssh"
-    clear -x
-    ssh-keygen -t ed25519 -f git
-    ssh-keygen -t ed25519 -f ssh
-    popd
-
-    # get nixos config
-    mkdir -vp "${HOME}/my-git-repos/pratham"
-    pushd "${HOME}/my-git-repos/pratham"
-    git clone https://gitlab.com/thefossguy/prathams-nixos
-    popd
+    touch "${HOME}/.ssh"/{ssh,git}{,.pub}
 else
-    >&2 echo "$0: You are not me"
+    # shellcheck disable=SC2016
+    echo 'ERROR: For some reason $HOME is not defined...'
     exit 1
 fi

@@ -1,27 +1,27 @@
-#!/usr/bin/env nix-shell
-#!nix-shell -i bash --packages
+#!/usr/bin/env bash
 
 set -xeuf -o pipefail
 
-BOOT_PART="${INTERMEDIATE_PART}1"
-ROOT_PART="${INTERMEDIATE_PART}2"
-HOME_PART="${INTERMEDIATE_PART}3"
-VARL_PART="${INTERMEDIATE_PART}4"
+# do this first to fail early if this `exit 1`s
+BOOT_UUID="$(MOUNT_PATH=boot scripts/get-mount-path-uuid.sh)"
+ROOT_UUID="$(MOUNT_PATH=root scripts/get-mount-path-uuid.sh)"
+HOME_UUID="$(MOUNT_PATH=home scripts/get-mount-path-uuid.sh)"
+VARL_UUID="$(MOUNT_PATH=var  scripts/get-mount-path-uuid.sh)"
 
-cat << EOF | fdisk --wipe always "${OS_DRIVE}"
+cat << EOF | fdisk --wipe always "${TARGET_DRIVE}"
 g
 n
 1
 
-+${BOOT_PART_SIZE}
++1G
 n
 2
 
-+${ROOT_PART_SIZE}
++${ROOT_PART_SIZE}G
 n
 3
 
--${VARL_PART_SIZE}
+-6G
 n
 4
 
@@ -29,18 +29,24 @@ n
 w
 EOF
 sync; sync; sync; sync;
-sleep 10
-sync; sync; sync; sync;
+hdparm -z "${TARGET_DRIVE}"
 
-mkfs.fat  -F 32 -n nixboot "${BOOT_PART}" -i "${BOOT_UUID}"
-parted -s "${OS_DRIVE}" -- set 1 esp on
-mkfs.xfs  -f -L    nixroot "${ROOT_PART}"
-mkfs.xfs  -f -L    nixhome "${HOME_PART}"
-mkfs.xfs  -f -L    nixvarp "${VARL_PART}"
+BOOT_PART="${INTERMEDIATE_PART}1"
+ROOT_PART="${INTERMEDIATE_PART}2"
+HOME_PART="${INTERMEDIATE_PART}3"
+VARL_PART="${INTERMEDIATE_PART}4"
+mkfs.fat -F 32 -n nixboot "${BOOT_PART}" -i "${BOOT_UUID//-/}"
+mkfs.xfs -f -L    nixroot "${ROOT_PART}" -m uuid="${ROOT_UUID}"
+mkfs.xfs -f -L    nixhome "${HOME_PART}" -m uuid="${HOME_UUID}"
+mkfs.xfs -f -L    nixvarp "${VARL_PART}" -m uuid="${VARL_UUID}"
+parted -s "${TARGET_DRIVE}" -- set 1 esp on
 
-mount -o async,lazytime,relatime "${ROOT_PART}" "${MOUNT_PATH}"
-mount -o async,lazytime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
-mount -o async,lazytime --mkdir "${HOME_PART}" "${MOUNT_PATH}/home"
-mount -o async,lazytime --mkdir "${VARL_PART}" "${MOUNT_PATH}/var"
-
-fdisk -l "${OS_DRIVE}"
+BY_UUID_PATH='/dev/disk/by-uuid'
+BOOT_PART="${BY_UUID_PATH}/${BOOT_UUID}"
+ROOT_PART="${BY_UUID_PATH}/${ROOT_UUID}"
+HOME_PART="${BY_UUID_PATH}/${HOME_UUID}"
+VARL_PART="${BY_UUID_PATH}/${VARL_UUID}"
+mount -o async,lazytime,relatime         "${ROOT_PART}" "${MOUNT_PATH}"
+mount -o async,lazytime,relatime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
+mount -o async,lazytime,relatime --mkdir "${HOME_PART}" "${MOUNT_PATH}/home"
+mount -o async,lazytime,relatime --mkdir "${VARL_PART}" "${MOUNT_PATH}/var"
