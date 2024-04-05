@@ -61,69 +61,6 @@ in
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
 
   # {{ user configuration }}
-  users = {
-    allowNoPasswordLogin = false;
-    defaultUserShell = pkgs.bash;
-    enforceIdUniqueness = true;
-    mutableUsers = false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
-
-    users.root.hashedPassword = "$6$cxSzljtGpFNLRhx1$0HvOs4faEzUw9FYUF8ifOwBPwHsGVL7HenQMCOBNwqknBFHSlA6NIDO7U36HeQ/C9FN/B.dP.WBg3MzqQcubr0";
-
-    users.pratham = {
-      createHome = true;
-      description = "Pratham Patel";
-      group = "pratham";
-      hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
-      home = "${prathamsHome}";
-      isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
-      isSystemUser = false;
-      linger = true;
-      subGidRanges = [ { startGid = 10000; count = 65536; } ];
-      subUidRanges = [ { startUid = 10000; count = 65536; } ];
-      uid = 1000;
-
-      extraGroups = [
-        "adbusers"
-        "adm"
-        "dialout"
-        "ftp"
-        "games"
-        "http"
-        "kvm"
-        "libvirt"
-        "libvirtd"
-        "log"
-        "mlocate"
-        "networkmanager"
-        "podman"
-        "qemu-libvirtd"
-        "rfkill"
-        "sshusers"
-        "sys"
-        "systemd-journal"
-        "uucp"
-        "video"
-        "wheel"
-        "zfs-read"
-      ];
-    };
-    groups.pratham = {
-      name = "pratham";
-      gid = 1000;
-    };
-  };
-
-  # {{ sudo configuration }}
-  security.sudo = {
-    enable = true;
-    execWheelOnly = true;
-    keepTerminfo = true;
-    wheelNeedsPassword = true;
-    extraRules = [{
-      users = [ "pratham" ];
-      commands = sudoCommands;
-    }];
-  };
 
   # {{ home-manager configuration }}
   # call the home-manager configuration directly
