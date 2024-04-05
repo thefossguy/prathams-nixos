@@ -43,12 +43,8 @@ if [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 32 ]]; then
     exit 1
 elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 64 ]]; then
     ROOT_PART_SIZE=24
-elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 256 ]]; then
-    ROOT_PART_SIZE=64
-elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 512 ]]; then
-    ROOT_PART_SIZE=128
 else
-    ROOT_PART_SIZE=256
+    ROOT_PART_SIZE=$(( TARGET_DRIVE_SIZE_IN_GIB / 4 ))
 fi
 
 export HOSTNAME
