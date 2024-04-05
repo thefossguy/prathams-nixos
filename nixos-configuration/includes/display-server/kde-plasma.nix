@@ -1,23 +1,39 @@
-{ config, pkgs, ... }:
+{ config
+, lib
+, pkgs
+, systemUser
+, ...
+}:
 
 {
-  imports = [ ./desktop-configuration.nix ];
+  imports = [ ./default.nix ];
+  xdg.portal = {
+    configPackages = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
+    extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
+  };
 
-  # KDE Plasma 5 on Wayland
   services.xserver = {
-    desktopManager = {
-      plasma5 = {
-        enable = true;
-        runUsingSystemd = true;
-        useQtScaling = true; # for HiDPI
-        bigscreen.enable = false; # enable this for HTPC
-      };
+    desktopManager.plasma5 = {
+      enable = true;
+      runUsingSystemd = true;
+      useQtScaling = true; # for HiDPI
+      bigscreen.enable = false; # enable this for HTPC
     };
 
     displayManager = {
       defaultSession = "plasmawayland";
+
+      sddm = {
+        enable = true;
+        enableHidpi = true;
+        #autologin = {
+        #  enable = true;
+        #  user = systemUser.username;
+        #};
+      };
     };
   };
+
   environment.systemPackages = with pkgs; [
     cliphist
     wayland-utils

@@ -10,6 +10,9 @@ let
 in
 
 {
+  # TODO:
+  # 1. updating nixos config
+  # 2. upgrade && rebuild nixos
   services = {
     fwupd.enable = true;
     journald.storage = "persistent";
@@ -59,7 +62,6 @@ in
   # custom upgrade service+timer
   systemd.services = {
     update-my-nixos = {
-      enable = true;
       script = ''
         set -xeuf -o pipefail
 

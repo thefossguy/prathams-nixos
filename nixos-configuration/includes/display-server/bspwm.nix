@@ -1,19 +1,36 @@
-{ config, pkgs, ... }:
+{ config
+, lib
+, pkgs
+, systemUser
+, ...
+}:
 
 {
-  imports = [ ./desktop-configuration.nix ];
+  imports = [ ./default.nix ];
+  xdg.portal = {
+    configPackages = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
+    extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
+  };
 
-  # BSPWM on X11
   services.xserver = {
-    displayManager = {
-      defaultSession = "none+bspwm";
-    };
-
     windowManager = {
       bspwm = {
         enable = true;
-        configFile = "/home/pratham/.config/bspwm/bspwmrc";
-        sxhkd.configFile = "/home/pratham/.config/sxhkd/sxhkdrc";
+        configFile = "/home/${systemUser.username}/.config/bspwm/bspwmrc";
+        sxhkd.configFile = "/home/${systemUser.username}/.config/sxhkd/sxhkdrc";
+      };
+    };
+
+    displayManager = {
+      defaultSession = "none+bspwm";
+
+      sddm = {
+        enable = true;
+        enableHidpi = true;
+        #autologin = {
+        #  enable = true;
+        #  user = systemUser.username;
+        #};
       };
     };
   };

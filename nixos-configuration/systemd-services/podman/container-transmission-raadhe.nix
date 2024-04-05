@@ -1,82 +1,32 @@
-{ ... }:
+{ config
+, lib
+, pkgs
+, osConfig
+, mkContainerService
+, ...
+}:
 
-{
-  home-manager.users.pratham = { pkgs, ... }: {
-    systemd.user.services =
-    let
-      container_name = "transmission-raadhe";
-      container_image = "lscr.io/linuxserver/transmission:latest";
-      container_volume_path = "/trayimurti/torrents";
-      exec_start = ''
-        ${pkgs.podman}/bin/podman run \
-          --cgroups no-conmon \
-          --cidfile %t/%n.ctr-id \
-          --detach \
-          --env TZ=Asia/Kolkata \
-          --label io.containers.autoupdate=registry \
-          --name ${container_name} \
-          --network containers_default \
-          --network-alias ${container_name} \
-          --pull missing \
-          --replace \
-          --rm \
-          --sdnotify conmon'';
-      exec_stop = ''
-        ${pkgs.podman}/bin/podman stop \
-          --cidfile %t/%n.ctr-id \
-          --ignore \
-          --time 120
-      '';
-      exec_stop_post = ''
-        ${pkgs.podman}/bin/podman rm \
-          --cidfile %t/%n.ctr-id \
-          --ignore \
-          --time 120 \
-          --force
-      '';
-    in
-    {
-      "container-${container_name}" = {
-        Unit = {
-          Description = "Container service for Transmission BitTorrent client";
-          Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
-          Wants = [ "container-caddy-vishwambhar.service" ];
-          After = [ "container-caddy-vishwambhar.service" ];
-          RequiresMountsFor = [ "%t/containers" ];
-        };
-        Service = {
-          ExecStart = ''
-            ${exec_start} \
-              --publish 8009:9091 \
-              --publish 8010:5143 \
-              --publish 9001:5143/udp \
-              --volume ${container_volume_path}/downloads:/downloads:U \
-              --volume ${container_volume_path}/config:/config:U \
-              ${container_image}
-          '';
-          ExecStop = "${exec_stop}";
-          ExecStopPost = "${exec_stop_post}";
-          Environment = [ "PODMAN_SYSTEMD_UNIT=%n" ];
-          Type = "notify";
-          NotifyAccess = "all";
-          Restart = "always";
-        };
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-      };
-    };
+let
+  containerImage = "lscr.io/linuxserver/transmission:latest";
+  containerVolumePath = "/trayimurti/torrents";
+
+  containerDescription = "Transmission BitTorrent client";
+  containerName = "transmission-raadhe";
+  unitAfter = [ "container-caddy-vishwambhar.service" ];
+  unitWants = [ "container-caddy-vishwambhar.service" ];
+
+  extraExecStart = ''
+      --publish 8009:9091 \
+        --publish 8010:5143 \
+        --publish 9001:5143/udp \
+        --volume ${containerVolumePath}/downloads:/downloads:U \
+        --volume ${containerVolumePath}/config:/config:U \
+        ${containerImage}
+  '';
+in
+
+lib.mkIf (osConfig.networking.hostName == "reddish") {
+  systemd.user.services."container-${containerName}" = mkContainerService {
+    inherit containerDescription containerName extraExecStart unitAfter unitWants;
   };
-
-  networking.firewall.allowedTCPPorts = [
-    8009 # Transmission web UI
-    8010 # Transmission torrent comm port (TCP)
-  ];
-  networking.firewall.allowedUDPPorts = [
-    9001 # Transmission torrent comm port (UDP)
-  ];
-
-  imports = [
-    ./podman-caddy-vishwambhar.nix
-  ];
 }

@@ -1,18 +1,23 @@
-{ config, lib, ... }:
+{ config
+, lib
+, pkgs
+, systemUser
+, ...
+}:
 
 {
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-    ];
+  boot.blacklistedKernelModules = lib.mkForce [ "nvidia" ];
+  services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "nvidia-x11"
+  ];
 
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
   };
-
-  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -22,7 +27,7 @@
     powerManagement.finegrained = false; # turns off GPU when not in use
 
     # the other OSS driver (**not "nouveau"**)
-    open = false; # TODO: try this out sometime
+    open = true; # TODO: try this out sometime
 
     nvidiaSettings = true;
 

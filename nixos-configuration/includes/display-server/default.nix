@@ -1,7 +1,16 @@
-{ config, pkgs, ... }:
+{ config
+, lib
+, pkgs
+, systemUser
+, ...
+}:
 
 {
-  # KDE Plasma 5 on Wayland
+  displayManager.hiddenUsers = [ "root" ];
+  security.rtkit.enable = true;
+  sound.enable = true;
+  xdg.portal.enable = true;
+
   services.xserver = {
     enable = true;
     layout = "us";
@@ -14,32 +23,27 @@
       };
     };
 
-    displayManager = {
-      hiddenUsers = [ "root" ];
-      sddm = {
+    videoDrivers = [
+      "amdgpu"
+      "xe"
+    ];
+  };
+
+  services = {
+    printing.enable = true;
+    flatpak.enable = true;
+
+    pipewire = {
+      enable = true;
+      audio.enable = true;
+      pulse.enable = true;
+
+      alsa = {
         enable = true;
-        enableHidpi = true;
-        #autologin = {
-        #  enable = true;
-        #  user = "pratham";
-        #};
+        support32Bit = true;
       };
     };
   };
-
-  sound.enable = true;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-    pulse.enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-  };
-
-  services.printing.enable = true;
 
   programs = {
     firefox.enable = true;
@@ -71,12 +75,4 @@
       })
     ];
   };
-
-  xdg.portal = {
-    enable = true;
-    configPackages = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
-    extraPortals = [ pkgs.libsForQt5.xdg-desktop-portal-kde ];
-  };
-
-  services.flatpak.enable = true;
 }
