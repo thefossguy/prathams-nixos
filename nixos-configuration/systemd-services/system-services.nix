@@ -73,6 +73,10 @@ in
         fi
 
         pushd $NIXOS_CONFIG_PATH
+        if [[ ! -f flake.nix ]]; then
+            git checkout flake-transition
+            git pull origin flake-transition
+        fi
         ${pkgs.nix}/bin/nix flake update
         ${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --flake ".#$(hostname)"
         popd
