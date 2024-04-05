@@ -44,7 +44,11 @@ if [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 32 ]]; then
 elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 64 ]]; then
     ROOT_PART_SIZE=24
 else
-    ROOT_PART_SIZE=$(( TARGET_DRIVE_SIZE_IN_GIB / 4 ))
+    BASE=1
+    while [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -gt "${BASE}" ]]; do
+        BASE="$(( BASE * 2))"
+    done
+    ROOT_PART_SIZE=$(( BASE / 4 ))
 fi
 
 export HOSTNAME
