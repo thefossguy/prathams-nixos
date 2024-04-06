@@ -35,7 +35,7 @@ let
     (nerdfonts.override {
       fonts = [
         "FiraCode"
-        "OverPass"
+        "Overpass"
         "SourceCodePro"
       ];
     })
