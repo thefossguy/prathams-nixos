@@ -8,11 +8,6 @@
 {
   imports = [ ../../includes/display-server/kde-plasma.nix ];
 
-  boot.kernelPatches = [{
-    name = "revert-of-patch-for-rock-5b";
-    patch = ./0001-Revert-of-property-fw_devlink-Fix-stupid-bug-in-remo.patch;
-  }];
-
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/8c2b0c8c-3979-4332-855f-f9badf24e86d";
     fsType = "xfs";
