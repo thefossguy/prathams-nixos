@@ -8,11 +8,11 @@ lib.mkIf pkgs.stdenv.isLinux {
   home.activation = {
     OVMFActivation = lib.hm.dag.entryAfter [ "installPackages" ] ''
       if [ "$(uname -m)" = 'aarch64' ]; then
-          EDKII_CODE_NIX="${pkgs.OVMF}/FV/AAVMF_CODE.fd"
-          EDKII_VARS_NIX="${pkgs.OVMF}/FV/AAVMF_VARS.fd"
+          EDKII_CODE_NIX="${pkgs.OVMF.fd}/FV/AAVMF_CODE.fd"
+          EDKII_VARS_NIX="${pkgs.OVMF.fd}/FV/AAVMF_VARS.fd"
       elif [ "$(uname -m)" = 'x86_64' ]; then
-          EDKII_CODE_NIX="${pkgs.OVMF}/FV/OVMF_CODE.fd"
-          EDKII_VARS_NIX="${pkgs.OVMF}/FV/OVMF_VARS.fd"
+          EDKII_CODE_NIX="${pkgs.OVMF.fd}/FV/OVMF_CODE.fd"
+          EDKII_VARS_NIX="${pkgs.OVMF.fd}/FV/OVMF_VARS.fd"
       fi
 
       EDKII_DIR_HOME="$HOME/.local/share/edk2"
