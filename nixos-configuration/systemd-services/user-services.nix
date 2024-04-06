@@ -1,11 +1,12 @@
 { config
 , lib
 , pkgs
+, systemUser
 , ...
 }:
 
 let
-  scriptsDir = "$HOME/.local/scripts";
+  scriptsDir = "/home/${systemUser.username}/.local/scripts";
 in
 
 lib.mkIf pkgs.stdenv.isLinux {
