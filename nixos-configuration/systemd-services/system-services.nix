@@ -78,7 +78,7 @@ in
             git pull origin flake-transition
         fi
         ${pkgs.nix}/bin/nix flake update
-        ${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --flake ".#$(hostname)"
+        ${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-build-logs --show-trace --flake ".#$(hostname)"
         popd
       '';
       serviceConfig = {

@@ -77,8 +77,9 @@ if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
     echo "WARNING: Total memory is less than ${MIN_MEMORY_IN_GIB} GB. You might get an OOM-kill ... "
 fi
 nixos-install \
-    --root ${MOUNT_PATH} \
+    --print-build-logs \
     --show-trace \
+    --root ${MOUNT_PATH} \
     --no-root-password \
     --flake ".#${HOSTNAME}"
 
