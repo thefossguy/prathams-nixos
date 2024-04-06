@@ -156,6 +156,12 @@
         ] ++ (nixosHosts."${hostname}".extraSystemModules or [ ]);
       };
 
+      mkNonNixosHomeManager = pkgs: systemUser: home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        extraSpecialArgs = { inherit systemUser nixpkgsRelease; };
+        modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
+      };
+
       buildNixosSystem = nixosConfigurationName: self.nixosConfigurations."${nixosConfigurationName}".config.system.build.toplevel;
       buildNixosIso = systemArch: self.nixosConfigurations."iso-${systemArch}".config.system.build.isoImage;
       buildHomeOf = system: username: self.homeConfigurations."${system}"."${username}".activationPackage;
@@ -211,15 +217,7 @@
       };
 
       homeConfigurations = forEachSupportedSystem ({ pkgs, ... }: {
-        "${systemUsers.pratham.username}" =
-          let
-            systemUser = systemUsers.pratham;
-          in
-          home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            extraSpecialArgs = { inherit systemUser nixpkgsRelease; };
-            modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
-          };
+        "${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
 
       machines = {
