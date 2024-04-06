@@ -8,23 +8,23 @@
 {
   imports = [ ../../includes/display-server/bspwm.nix ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a1cd227c-930a-4e7c-a8c8-9079fe21830b";
-    fsType = "xfs";
-  };
-
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/BE69-FC51";
+    device = "/dev/disk/by-uuid/0659-9795";
     fsType = "vfat";
   };
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/efea71e0-6154-4fb5-b10b-f84dec50c08f";
+    fsType = "xfs";
+  };
+
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/a1c34270-6725-4e0c-8b13-51ce53b07eb4";
+    device = "/dev/disk/by-uuid/36ed9313-090d-4f24-995a-6c2c008e05fd";
     fsType = "xfs";
   };
 
   fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/676c78ca-249b-46d8-8c98-f6853cf3479c";
+    device = "/dev/disk/by-uuid/1a989d9a-e9d6-4762-b6d4-8c4774ec1d93";
     fsType = "xfs";
   };
 }
