@@ -6,6 +6,27 @@
 , ...
 }:
 
+let
+  getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''
+    set -xeuf -o pipefail
+
+    while ! ping 1.1.1.1 -c 1 1>/dev/null || ! ping 8.8.8.8 -c 1 1>/dev/null; do
+        sleep 1
+    done
+
+    if [[ ! -d "$HOME/.dotfiles" ]]; then
+        git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$HOME/.dotfiles"
+        git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout -f
+        rm -rf "$HOME/.config/nvim"
+    fi
+
+    if [[ ! -d "$HOME/my-git-repos/prathams-nixos" ]]; then
+        mkdir -vp "$HOME/my-git-repos"
+        git clone https://gitlab.com/thefossguy/prathams-nixos.git "$HOME/my-git-repos/prathams-nixos"
+    fi
+  '';
+in
+
 {
   imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
 
@@ -24,6 +45,9 @@
     # monitoring
     btop
     htop
+
+    # ze script
+    getGitRepos
   ];
 
   boot = {
