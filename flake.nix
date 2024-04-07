@@ -246,7 +246,7 @@
           packages = with pkgs; [
             git
             nix-output-monitor
-            nixpkgs-fmt
+            nixfmt
             parted
             pciutils
             tmux
