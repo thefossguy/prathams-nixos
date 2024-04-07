@@ -35,8 +35,9 @@ in
     services."update-nixos-config" = {
       enable = true;
       path = with pkgs; [
-        nix
         gitMinimal
+        nettools
+        nix
       ];
 
       requires = [ "network-online.target" ];
