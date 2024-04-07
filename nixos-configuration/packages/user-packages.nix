@@ -79,6 +79,7 @@ in
     buildah
     choose
     dash
+    dict
     dig # provides dig and nslookup
     dpkg
     du-dust
