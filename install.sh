@@ -78,7 +78,6 @@ if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
 fi
 nix flake update
 nixos-install \
-    --print-build-logs \
     --show-trace \
     --root ${MOUNT_PATH} \
     --no-root-password \
