@@ -57,7 +57,7 @@ in
         git restore flake.lock
         git pull
         nix flake update
-        nix build --print-build-logs --show-trace --flake .#"$(hostname)"
+        nix build --print-build-logs --show-trace .#machines."$(hostname)"
         popd
       '';
     };
