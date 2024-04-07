@@ -1,2 +1,3 @@
-out/
-rpi-firmware/
+*.iso
+*.iso.sha*
+result
