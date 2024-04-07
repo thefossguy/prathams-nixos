@@ -54,6 +54,7 @@ in
         [[ ! -d ${flakeUri} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
 
         pushd ${flakeUri}
+        [[ ! -f flake.nix ]] && git checkout flake-transition
         git restore flake.lock
         git pull
         nix flake update
