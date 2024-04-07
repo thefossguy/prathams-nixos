@@ -10,9 +10,8 @@ let
 in
 
 {
-  # TODO:
-  # 1. updating nixos config
-  # 2. upgrade && rebuild nixos
+  imports = [ ./nixos-update-and-upgrade.nix ];
+
   services = {
     fwupd.enable = true;
     journald.storage = "persistent";
@@ -55,44 +54,6 @@ in
         PasswordAuthentication = lib.mkForce false;
         PermitRootLogin = lib.mkForce "prohibit-password";
         X11Forwarding = false;
-      };
-    };
-  };
-
-  # custom upgrade service+timer
-  systemd.services = {
-    update-my-nixos = {
-      script = ''
-        set -xeuf -o pipefail
-
-        NIXOS_CONFIG_PATH='/root/nixos-config'
-        export PATH="$PATH:${pkgs.openssh}/bin:${pkgs.openssl}/bin"
-
-        if [[ ! -d "$NIXOS_CONFIG_PATH" ]]; then
-            ${pkgs.git}/bin/git clone https://gitlab.com/thefossguy/prathams-nixos $NIXOS_CONFIG_PATH
-        fi
-
-        pushd $NIXOS_CONFIG_PATH
-        if [[ ! -f flake.nix ]]; then
-            git checkout flake-transition
-            git pull origin flake-transition
-        fi
-        ${pkgs.nix}/bin/nix flake update
-        ${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --print-build-logs --show-trace --flake ".#$(hostname)"
-        popd
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        User = "root";
-      };
-    };
-  };
-  systemd.timers = {
-    update-my-nixos = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        Unit = "update-my-nixos.service";
-        OnCalendar = "hourly";
       };
     };
   };
