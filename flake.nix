@@ -164,7 +164,7 @@
 
       buildNixosSystem = nixosConfigurationName: self.nixosConfigurations."${nixosConfigurationName}".config.system.build.toplevel;
       buildNixosIso = systemArch: self.nixosConfigurations."iso-${systemArch}".config.system.build.isoImage;
-      buildHomeOf = system: username: self.homeConfigurations."${system}"."${username}".activationPackage;
+      buildHomeOf = system: username: self.packages."${system}".homeConfigurations."${username}".activationPackage;
     in
     {
       nixosModules = {
@@ -216,10 +216,6 @@
         iso-x86_64 = nixpkgs.lib.nixosSystem { system = linuxSystems.x86_64; modules = [ self.nixosModules.customNixosIsoModule ]; };
       };
 
-      homeConfigurations = forEachSupportedSystem ({ pkgs, ... }: {
-        "${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
-      });
-
       machines = {
         flameboi = buildNixosSystem "flameboi";
         sentinel = buildNixosSystem "sentinel";
@@ -235,6 +231,10 @@
         riscv64 = buildNixosIso "riscv64";
         x86_64 = buildNixosIso "x86_64";
       };
+
+      packages = forEachSupportedSystem ({ pkgs, ... }: {
+        homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
+      });
       # **THE SYSTEM NEEDS TO BE SPECIFIED!**
       # so this would be '.#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}').$(whoami)"
       homeOf = forEachSupportedSystem ({ pkgs, ... }: {
