@@ -588,7 +588,7 @@ in
 
     autoUpgrade = {
       enable = true;
-      dates = "daily"; # *-*-* 00:00:00
+      dates = "hourly"; # *-*-* 00:00:00
       allowReboot = false;
       operation = "boot";
       persistent = true;
