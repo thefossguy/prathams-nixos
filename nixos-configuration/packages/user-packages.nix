@@ -17,6 +17,8 @@ let
 
   linuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
     cargo-valgrind
+    dict
+    imagemagick
     inotify-tools
     rpm
     thunderbird
@@ -79,7 +81,6 @@ in
     buildah
     choose
     dash
-    dict
     dig # provides dig and nslookup
     dpkg
     du-dust
@@ -89,7 +90,6 @@ in
     file
     fzf
     hyperfine
-    imagemagick
     iperf # this is iperf3
     iperf2 # this is what is usually 'iperf' on other distros
     mediainfo
