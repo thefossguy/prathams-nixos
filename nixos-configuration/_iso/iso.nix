@@ -42,6 +42,10 @@ in
     tmux
     vim
 
+    # extra misc
+    dmidecode
+    pciutils
+
     # monitoring
     btop
     htop
