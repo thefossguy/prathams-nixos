@@ -240,19 +240,5 @@
       homeOf = forEachSupportedSystem ({ pkgs, ... }: {
         pratham = buildHomeOf pkgs.system "pratham";
       });
-
-      devShells = forEachSupportedSystem ({ pkgs, ... }: {
-        default = pkgs.mkShell {
-          packages = with pkgs; [
-            git
-            nix-output-monitor
-            nixfmt
-            parted
-            pciutils
-            tmux
-            vim
-          ];
-        };
-      });
     };
 }
