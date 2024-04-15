@@ -18,6 +18,7 @@ in
     logrotate.enable = true;
     timesyncd.enable = true; # NTP
     udisks2.enable = true;
+    #nixos-needsreboot.enable = true; # TODO: after it gets merged in 24.05/24.11
 
     locate = {
       enable = true;
