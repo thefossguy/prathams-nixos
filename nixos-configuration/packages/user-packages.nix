@@ -57,7 +57,6 @@ in
     cargo-bloat # find what takes the most space in the executable
     cargo-cache # manage cargo cache (${CARGO_HOME}); print and remove dirs selectively
     cargo-chef # for speeding up container builds using layer caching
-    cargo-deps # build dependency graph of Rust projects
     cargo-dist # distribute on crates.io
     cargo-flamegraph # flamegraphs without Perl or pipes
     cargo-hack # build project with all the possible variations of options/flags and check which ones fail and/or succeed
@@ -109,6 +108,9 @@ in
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
+
+    # these projects were deleted
+    #cargo-deps # build dependency graph of Rust projects # https://github.com/NixOS/nixpkgs/pull/302970#issuecomment-2046592104
   ]);
 
   programs = {
