@@ -42,10 +42,12 @@ in
       # for 'sudo -e'
       EDITOR = "nvim";
       VISUAL = "nvim";
+
       # systemd
       SYSTEMD_PAGER = "";
       SYSTEMD_EDITOR = "nvim";
       TERM = "xterm-256color";
+
       # set locale manually because even though NixOS handles the 'en_IN' locale
       # it doesn't append the string '.UTF-8' to LC_*
       # but, UTF-8 **is supported**, so just go ahead and set it manually
@@ -63,12 +65,16 @@ in
       LC_TELEPHONE = lib.mkDefault "${envLocale}";
       LC_TIME = lib.mkDefault "${envLocale}";
       LC_ALL = "";
+
       # idk why, but some XDG vars aren't set, the missing ones are now set according to the
       # spec: (https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html)
       XDG_DATA_HOME = "$HOME/.local/share";
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_STATE_HOME = "$HOME/.local/state";
       XDG_CACHE_HOME = "$HOME/.cache";
+
+      # for times when I am more adventurous than usual
+      #KDIR_NIXOS = "${config.boot.kernelPackages.kernel.dev}/lib/modules/${config.boot.kernelPackages.kernel.modDirVersion}/build";
     };
   };
 
