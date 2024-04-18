@@ -232,7 +232,7 @@
         x86_64 = buildNixosIso "x86_64";
       };
 
-      packages = forEachSupportedSystem ({ pkgs, ... }: {
+      legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
       # **THE SYSTEM NEEDS TO BE SPECIFIED!**
