@@ -28,6 +28,7 @@
 
     settings = {
       auto-optimise-store = true;
+      eval-cache = false;
       experimental-features = [ "nix-command" "flakes" ];
       keep-going = false;
       log-lines = 9999;
