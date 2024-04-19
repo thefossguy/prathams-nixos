@@ -38,7 +38,7 @@
     ./services/podman-gitea-govinda.nix
     ./services/podman-hugo-mahayogi.nix
     ./services/podman-hugo-vaikunthnatham.nix
-    ./services/podman-transmission-raadhe.nix
+    #./services/podman-transmission-raadhe.nix
     ./services/podman-uptime-vishnu.nix
   ];
 }
