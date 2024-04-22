@@ -58,6 +58,7 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+    fractal
     mediainfo-gui
     mpv
     neovide
