@@ -21,8 +21,7 @@ nix build .#machines."$hostName"
 ## Standalone installation of home-manager
 
 ```bash
-nix run home-manager/master -- \
-    switch --print-build-logs --show-trace --flake .
+nix run home-manager/master -- switch --flake .
 ```
 
 ### Build a standalone home-manager configuration
