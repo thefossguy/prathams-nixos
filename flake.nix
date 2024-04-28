@@ -235,8 +235,6 @@
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
-      # **THE SYSTEM NEEDS TO BE SPECIFIED!**
-      # so this would be .#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}').$(whoami)"
       homeOf = forEachSupportedSystem ({ pkgs, ... }: {
         pratham = buildHomeOf pkgs.system "pratham";
       });

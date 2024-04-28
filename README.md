@@ -28,7 +28,7 @@ nix run home-manager/master -- \
 ### Build a standalone home-manager configuration
 
 ```bash
-nix build .#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}').$(whoami)"
+nix build .#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}')"."$(whoami)"
 ```
 
 
