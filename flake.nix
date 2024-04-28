@@ -164,7 +164,7 @@
 
       buildNixosSystem = nixosConfigurationName: self.nixosConfigurations."${nixosConfigurationName}".config.system.build.toplevel;
       buildNixosIso = systemArch: self.nixosConfigurations."iso-${systemArch}".config.system.build.isoImage;
-      buildHomeOf = system: username: self.packages."${system}".homeConfigurations."${username}".activationPackage;
+      buildHomeOf = system: username: self.legacyPackages."${system}".homeConfigurations."${username}".activationPackage;
     in
     {
       nixosModules = {
@@ -236,7 +236,7 @@
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
       # **THE SYSTEM NEEDS TO BE SPECIFIED!**
-      # so this would be '.#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}').$(whoami)"
+      # so this would be .#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}').$(whoami)"
       homeOf = forEachSupportedSystem ({ pkgs, ... }: {
         pratham = buildHomeOf pkgs.system "pratham";
       });
