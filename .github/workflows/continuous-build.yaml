@@ -27,18 +27,6 @@ jobs:
       - name: Updating the flake lockfile
         run: |
           nix flake update
-          cp flake.lock{,.new}
-          git restore flake.lock
-
-      - name: Uploading the flake lockfile artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: artifacts
-          path: flake.lock.new
-
-      - name: Delete the new flake lockfile
-        run: |
-          rm flake.lock.new
 
   iso:
     runs-on: ubuntu-latest
@@ -63,27 +51,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binfmt-support qemu-user-static
 
-      - name: Download artifacts from the previous workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_number }} - 1
-          path: prev
-
-      - name: Download artifacts from the current workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_id }}
-          path: curr
-
       - name: Building NixOS ISO for ${{ matrix.linux_arches }}
         run: |
           if [[ '${{ matrix.linux_arches }}' != 'riscv64' ]]; then
-              if ! diff {prev,curr}/artifacts/flake.lock.new > /dev/null; then
-                  mv curr/artifacts/flake.lock.new flake.lock
-                  NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#isos.${{ matrix.linux_arches }}
-              else
-                  echo 'No changes to the flake.lock file from the previous workflow, skipping this workflow.'
-              fi
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#isos.${{ matrix.linux_arches }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -111,27 +82,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binfmt-support qemu-user-static
 
-      - name: Download artifacts from the previous workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_number }} - 1
-          path: prev
-
-      - name: Download artifacts from the current workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_id }}
-          path: curr
-
       - name: Building NixOS configuration for ${{ matrix.machines }}
         run: |
           if [[ "$(nix eval --raw .#nixosConfigurations.${{ matrix.machines }}.pkgs.stdenv.system)" != 'riscv64-linux' ]]; then
-              if ! diff {prev,curr}/artifacts/flake.lock.new > /dev/null; then
-                  mv curr/artifacts/flake.lock.new flake.lock
-                  NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#machines.${{ matrix.machines }}
-              else
-                  echo 'No changes to the flake.lock file from the previous workflow, skipping this workflow.'
-              fi
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#machines.${{ matrix.machines }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -160,27 +114,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y binfmt-support qemu-user-static
 
-      - name: Download artifacts from the previous workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_number }} - 1
-          path: prev
-
-      - name: Download artifacts from the current workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_id }}
-          path: curr
-
       - name: Building home-manager configuration for ${{ matrix.homeOf }}
         run: |
           if [[ '${{ matrix.linux_arches }}' != 'riscv64' ]]; then
-              if ! diff {prev,curr}/artifacts/flake.lock.new > /dev/null; then
-                  mv curr/artifacts/flake.lock.new flake.lock
-                  NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#homeOf.${{ matrix.linux_arches }}-linux.${{ matrix.homeOf }}
-              else
-                  echo 'No changes to the flake.lock file from the previous workflow, skipping this workflow.'
-              fi
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#homeOf.${{ matrix.linux_arches }}-linux.${{ matrix.homeOf }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -200,23 +137,6 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Download artifacts from the previous workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_number }} - 1
-          path: prev
-
-      - name: Download artifacts from the current workflow
-        uses: actions/download-artifact@main
-        with:
-          run-id: ${{ github.run_id }}
-          path: curr
-
       - name: Building home-manager configuration for ${{ matrix.homeOf }}
         run: |
-          if ! diff {prev,curr}/artifacts/flake.lock.new > /dev/null; then
-              mv curr/artifacts/flake.lock.new flake.lock
-              nix build --print-build-logs --show-trace .#homeOf."$(uname -m)"-darwin.${{ matrix.homeOf }}
-          else
-              echo 'No changes to the flake.lock file from the previous workflow, skipping this workflow.'
-          fi
+          nix build --print-build-logs --show-trace .#homeOf."$(uname -m)"-darwin.${{ matrix.homeOf }}
