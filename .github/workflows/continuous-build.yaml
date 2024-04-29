@@ -4,16 +4,13 @@ run-name: Continuous Build
 on:
   workflow_dispatch:
     branches:
-      - '*'
-      - '!legacy' # the 'legacy' branch has non flake nixos config and will be dropped immediately after nixos-24.05
+      - master
   push:
     branches:
-      - '*'
-      - '!legacy' # the 'legacy' branch has non flake nixos config and will be dropped immediately after nixos-24.05
+      - master
   pull_request:
     branches:
-      - '*'
-      - '!legacy' # the 'legacy' branch has non flake nixos config and will be dropped immediately after nixos-24.05
+      - master
   schedule:
     - cron: '30 5 * * *' # Everyday, at 00:00 IST
 
