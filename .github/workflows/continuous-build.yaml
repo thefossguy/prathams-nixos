@@ -139,4 +139,12 @@ jobs:
 
       - name: Building home-manager configuration for ${{ matrix.homeOf }}
         run: |
-          nix build --print-build-logs --show-trace .#homeOf."$(uname -m)"-darwin.${{ matrix.homeOf }}
+          if [[ "$(uname -m)" == 'x86_64' ]]; then
+              system_attr='x86_64-darwin'
+          elif [[ "$(uname -m)" == 'arm64' ]]; then
+              system_attr='aarch64-darwin'
+          else
+              echo "well well well, look what we have... Darwin on $(uname -m)"
+              exit 1
+          fi
+          nix build --print-build-logs --show-trace .#homeOf."${system_attr}".${{ matrix.homeOf }}
