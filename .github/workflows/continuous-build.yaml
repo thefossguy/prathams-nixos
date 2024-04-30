@@ -127,7 +127,7 @@ jobs:
 
   hm-darwin:
     runs-on: macos-latest
-    needs: hm-linux
+    needs: nix-flake-update
     permissions:
       contents: read
       id-token: write
