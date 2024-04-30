@@ -16,6 +16,7 @@ on:
 
 env:
   NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE: https://github.com/nixos/nixpkgs/issues/231537
+  nix-build-cmd: nix build --print-build-logs --show-trace --max-jobs 1 --cores 0
 
 jobs:
   nix-flake-update:
@@ -55,7 +56,7 @@ jobs:
       - name: Building NixOS ISO for ${{ matrix.linux_arches }}
         run: |
           if [[ '${{ matrix.linux_arches }}' != 'riscv64' ]]; then
-              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#isos.${{ matrix.linux_arches }}
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 ${{ env.nix-build-cmd }} --impure .#isos.${{ matrix.linux_arches }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -87,7 +88,7 @@ jobs:
       - name: Building NixOS configuration for ${{ matrix.machines }}
         run: |
           if [[ "$(nix eval --raw .#nixosConfigurations.${{ matrix.machines }}.pkgs.stdenv.system)" != 'riscv64-linux' ]]; then
-              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#machines.${{ matrix.machines }}
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 ${{ env.nix-build-cmd }} --impure .#machines.${{ matrix.machines }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -120,7 +121,7 @@ jobs:
       - name: Building home-manager configuration for ${{ matrix.homeOf }}
         run: |
           if [[ '${{ matrix.linux_arches }}' != 'riscv64' ]]; then
-              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nix build --impure --print-build-logs --show-trace .#homeOf.${{ matrix.linux_arches }}-linux.${{ matrix.homeOf }}
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 ${{ env.nix-build-cmd }} --impure .#homeOf.${{ matrix.linux_arches }}-linux.${{ matrix.homeOf }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
@@ -151,4 +152,4 @@ jobs:
               echo "well well well, look what we have... Darwin on $(uname -m)"
               exit 1
           fi
-          nix build --print-build-logs --show-trace .#homeOf."${system_attr}".${{ matrix.homeOf }}
+          ${{ env.nix-build-cmd }} .#homeOf."${system_attr}".${{ matrix.homeOf }}
