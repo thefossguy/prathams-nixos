@@ -1,5 +1,5 @@
 name: Continuous Build
-run-name: Continuous Build
+run-name: Continuous Build (${{ github.repository }})
 
 on:
   workflow_dispatch:
