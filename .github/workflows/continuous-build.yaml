@@ -18,7 +18,7 @@ env:
   NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE: https://github.com/nixos/nixpkgs/issues/231537
 
 jobs:
-  unconditional_lockfile_update:
+  nix-flake-update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -30,7 +30,7 @@ jobs:
 
   iso:
     runs-on: ubuntu-latest
-    needs: unconditional_lockfile_update
+    needs: nix-flake-update
     permissions:
       contents: read
       id-token: write
@@ -62,7 +62,7 @@ jobs:
 
   nixos:
     runs-on: ubuntu-latest
-    needs: unconditional_lockfile_update
+    needs: nix-flake-update
     permissions:
       contents: read
       id-token: write
@@ -94,7 +94,7 @@ jobs:
 
   hm-linux:
     runs-on: ubuntu-latest
-    needs: unconditional_lockfile_update
+    needs: nix-flake-update
     permissions:
       contents: read
       id-token: write
@@ -127,7 +127,7 @@ jobs:
 
   hm-darwin:
     runs-on: macos-latest
-    needs: unconditional_lockfile_update
+    needs: nix-flake-update
     permissions:
       contents: read
       id-token: write
