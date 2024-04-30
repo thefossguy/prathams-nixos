@@ -1,4 +1,5 @@
 # README
+[![Continuous Build](https://github.com/thefossguy/prathams-nixos/actions/workflows/continuous-build.yaml/badge.svg)](https://github.com/thefossguy/prathams-nixos/actions/workflows/continuous-build.yaml)
 
  1. `$hostName` is the hostname of a host defined in the `nixosHosts` set,
     inside the flake.nix file
