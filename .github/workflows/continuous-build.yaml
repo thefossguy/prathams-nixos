@@ -38,6 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        build_drvs: [ fractal ]
         linux_arches: [ aarch64, riscv64, x86_64 ]
 
     steps:
@@ -47,10 +48,10 @@ jobs:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Caching build for fractal
+      - name: Caching build for ${{ build_drvs }}
         run: |
           if [[ '${{ matrix.linux_arches }}' != 'riscv64' ]]; then
-              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 ${{ env.nix-build-cmd }} --impure nixpkgs#fractal
+              NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 ${{ env.nix-build-cmd }} --impure nixpkgs#${{ build_drvs }}
           else
               echo "RISC-V job for ${{ github.job }} skipped until $NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE is resolved."
           fi
