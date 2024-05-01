@@ -6,15 +6,6 @@
 }:
 
 let
-  packagesInPathForAerc = with pkgs; [ bat catimg pandoc ];
-  aercFull = pkgs.aerc.overrideAttrs (final: prev: {
-    nativeBuildInputs = prev.nativeBuildInputs or [] ++ (with pkgs; [ makeWrapper ]);
-    postInstall = (prev.postInstall or "") + ''
-      wrapProgram $out/bin/aerc \
-          --prefix PATH : ${pkgs.lib.makeBinPath packagesInPathForAerc}
-    '';
-  });
-
   linuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
     cargo-valgrind
     dict
@@ -72,7 +63,7 @@ in
     rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
 
     # e-mail
-    aercFull
+    aerc
     protonmail-bridge
 
     # misc utilities + shells
@@ -109,6 +100,9 @@ in
     nix-prefetch-git
     nix-prefetch-github
 
+    # misc
+    catimg # fur email (aerc); print image on ze terminal
+
     # these projects were deleted
     #cargo-deps # build dependency graph of Rust projects # https://github.com/NixOS/nixpkgs/pull/302970#issuecomment-2046592104
   ]);
@@ -123,6 +117,7 @@ in
     tealdeer.enable = true;
     yt-dlp.enable = true;
     zoxide.enable = true;
+    pandoc.enable = true;
 
     direnv = {
       enable = true;
