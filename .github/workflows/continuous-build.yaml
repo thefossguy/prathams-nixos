@@ -12,7 +12,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: '30 5 * * *' # Everyday, at 00:00 IST
+    - cron: '30 18 * * *' # Everyday, at 00:00 IST
 
 env:
   NIXPKGS_RISCV_GHC_BOOTSTRAP_ISSUE: https://github.com/nixos/nixpkgs/issues/231537
