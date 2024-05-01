@@ -32,17 +32,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+      - uses: thefossguy/gh-action-qemu-binfmt@master
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: taiki-e/install-action@just
-
-      - name: Setting up QEMU
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get install -y binfmt-support qemu-user-static
 
       - name: Building NixOS ISO for ${{ matrix.linux_arches }}
         run: |
@@ -64,17 +59,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+      - uses: thefossguy/gh-action-qemu-binfmt@master
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: taiki-e/install-action@just
-
-      - name: Setting up QEMU
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get install -y binfmt-support qemu-user-static
 
       - name: Building NixOS configuration for ${{ matrix.machines }}
         run: |
@@ -97,17 +87,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+      - uses: thefossguy/gh-action-qemu-binfmt@master
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: taiki-e/install-action@just
-
-      - name: Setting up QEMU
-        run: |
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get install -y binfmt-support qemu-user-static
 
       - name: Building home-manager configuration for ${{ matrix.homeOf }}
         run: |
