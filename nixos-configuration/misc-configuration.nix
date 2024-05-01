@@ -73,6 +73,7 @@ in
       XDG_STATE_HOME = "$HOME/.local/state";
       XDG_CACHE_HOME = "$HOME/.cache";
 
+      NIXOS_MACHINE_HOSTNAME = config.networking.hostName;
       # for times when I am more adventurous than usual
       #KDIR_NIXOS = "${config.boot.kernelPackages.kernel.dev}/lib/modules/${config.boot.kernelPackages.kernel.modDirVersion}/build";
     };
