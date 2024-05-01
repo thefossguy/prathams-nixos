@@ -238,5 +238,17 @@
       homeOf = forEachSupportedSystem ({ pkgs, ... }: {
         pratham = buildHomeOf pkgs.system "pratham";
       });
+
+      devShells = forEachSupportedSystem ({ pkgs, ... }: {
+        default = pkgs.mkShell {
+          packages = with pkgs; [ just ];
+
+          env = {
+            UPDATE_LOCKFILE = 0;
+            USE_NOM_INSTEAD = 1;
+            DO_DRY_RUN = 1;
+          };
+        };
+      });
     };
 }
