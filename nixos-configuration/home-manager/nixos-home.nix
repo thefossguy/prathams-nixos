@@ -79,6 +79,7 @@ in
       ./common-home.nix
       ./virt-ovmf.nix
 
+      # TODO: self-host flakestry.dev so that I don't go over the piddly rate-limit of GitHub
       ../systemd-services/podman/podman-init.nix
       ../systemd-services/podman/container-caddy-vishwambhar.nix
       ../systemd-services/podman/container-gitea-chitragupta.nix
