@@ -69,6 +69,7 @@ in
     # misc utilities + shells
     asciinema
     buildah
+    catimg # fur email (aerc); print image on ze terminal
     choose
     dash
     dig # provides dig and nslookup
@@ -82,6 +83,7 @@ in
     hyperfine
     iperf # this is iperf3
     iperf2 # this is what is usually 'iperf' on other distros
+    just
     mediainfo
     nload
     parallel
@@ -99,9 +101,6 @@ in
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
-
-    # misc
-    catimg # fur email (aerc); print image on ze terminal
 
     # these projects were deleted
     #cargo-deps # build dependency graph of Rust projects # https://github.com/NixOS/nixpkgs/pull/302970#issuecomment-2046592104
