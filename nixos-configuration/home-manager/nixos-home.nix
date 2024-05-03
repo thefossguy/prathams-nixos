@@ -74,11 +74,11 @@ in
 
 {
   home-manager.extraSpecialArgs = { inherit systemUser nixpkgsRelease; };
-  home-manager.users.${systemUser.username} = { config, lib, pkgs, ... }: {
+  home-manager.users.${systemUser.username} = { config, lib, pkgs, osConfig, ... }: {
     imports = [
       ./common-home.nix
       ./virt-ovmf.nix
-
+    ] ++ (lib.optionals (osConfig.networking.hostName == "reddish") [
       # TODO: self-host flakestry.dev so that I don't go over the piddly rate-limit of GitHub
       ../systemd-services/podman/podman-init.nix
       ../systemd-services/podman/container-caddy-vishwambhar.nix
@@ -88,7 +88,7 @@ in
       ../systemd-services/podman/container-hugo-vaikunthnatham.nix
       ../systemd-services/podman/container-transmission-raadhe.nix
       ../systemd-services/podman/container-uptime-vishnu.nix
-    ];
+    ]);
 
     _module.args = { inherit mkContainerService; };
   };

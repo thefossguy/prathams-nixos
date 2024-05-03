@@ -1,12 +1,11 @@
 { config
 , lib
 , pkgs
-, osConfig
 , systemUser
 , ...
 }:
 
-lib.mkIf (osConfig.networking.hostName == "reddish") {
+{
   systemd.user.services = {
     "podman-init" = {
       Unit = {

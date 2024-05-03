@@ -1,7 +1,6 @@
 { config
 , lib
 , pkgs
-, osConfig
 , mkContainerService
 , ...
 }:
@@ -25,7 +24,7 @@ let
   '';
 in
 
-lib.mkIf (osConfig.networking.hostName == "reddish") {
+{
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitWants;
   };
