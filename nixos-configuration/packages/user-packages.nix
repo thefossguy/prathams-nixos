@@ -7,6 +7,7 @@
 
 let
   linuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
+    buildah
     cargo-valgrind
     dict
     imagemagick
@@ -68,7 +69,6 @@ in
 
     # misc utilities + shells
     asciinema
-    buildah
     catimg # fur email (aerc); print image on ze terminal
     choose
     dash
