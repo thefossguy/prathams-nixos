@@ -78,7 +78,7 @@ in
     imports = [
       ./common-home.nix
       ./virt-ovmf.nix
-    ] ++ (lib.optionals (osConfig.networking.hostName == "reddish") [
+    ] ++ (lib.optionals osConfig.custom-options.enableRootlessContainers [
       # TODO: self-host flakestry.dev so that I don't go over the piddly rate-limit of GitHub
       ../systemd-services/podman/podman-init.nix
       ../systemd-services/podman/container-caddy-vishwambhar.nix

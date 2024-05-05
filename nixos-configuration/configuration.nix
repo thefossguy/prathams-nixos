@@ -8,6 +8,7 @@
 {
   imports = [
     ./bootloader-configuration.nix
+    ./custom-options.nix
     ./misc-configuration.nix
     ./network-configuration.nix
     ./packages/system-packages.nix

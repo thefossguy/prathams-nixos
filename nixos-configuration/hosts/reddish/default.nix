@@ -26,6 +26,7 @@
     fsType = "xfs";
   };
 
+  custom-options.enableRootlessContainers = true;
   networking.firewall.allowedTCPPorts = [
     8001 # caddy HTTP
     8002 # caddy HTTPS
