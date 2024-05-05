@@ -98,6 +98,7 @@ in
     zip
 
     # utilities specific to Nix
+    nix-output-monitor
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github

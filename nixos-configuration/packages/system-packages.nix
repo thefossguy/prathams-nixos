@@ -49,7 +49,6 @@
     qemu_kvm
 
     # utilities specific to Nix
-    nix-output-monitor
     nvd # diff between NixOS generations
   ];
 
