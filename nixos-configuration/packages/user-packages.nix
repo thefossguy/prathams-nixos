@@ -98,6 +98,7 @@ in
     zip
 
     # utilities specific to Nix
+    home-manager
     nix-output-monitor
     nix-prefetch
     nix-prefetch-git
