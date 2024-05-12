@@ -18,8 +18,8 @@ if [[ -z "${1:-}" || -z "${2:-}" ]]; then
     echo 'ERROR: Insufficient arguments... $1:hostname, $2:target_disk'
     exit 1
 else
-    HOSTNAME="$1"
-    TARGET_DRIVE="$2"
+    TARGET_DRIVE="$1"
+    HOSTNAME="$2"
 fi
 
 if [ -b "${TARGET_DRIVE}" ]; then
@@ -76,7 +76,7 @@ MIN_MEMORY_IN_GIB='4'
 if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
     echo "WARNING: Total memory is less than ${MIN_MEMORY_IN_GIB} GB. You might get an OOM-kill ... "
 fi
-nix flake update
+
 nixos-install \
     --show-trace \
     --root ${MOUNT_PATH} \
