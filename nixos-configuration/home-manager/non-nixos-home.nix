@@ -7,7 +7,10 @@
 }:
 
 {
-  imports = [ ./common-home.nix ];
+  imports = [
+    ./common-home.nix
+    ../systemd-services/upgrade-my-home.nix
+  ];
 
   nix = {
     package = pkgs.nix;
