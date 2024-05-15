@@ -115,6 +115,15 @@
           system = linuxSystems.aarch64;
         };
 
+        # FriendlyElec CM3588 NAS (16GB; RK3588)
+        chaturvyas = {
+          hostname = "chaturvyas";
+          ipv4Address = "10.0.0.24";
+          networkingIface = "enP4p65s0";
+          hostId = "6e52044b";
+          system = linuxSystems.aarch64;
+        };
+
         # StarFive VisionFive 2 (8GB; JH7110)
         vaaman = {
           hostname = "vaaman";
@@ -208,6 +217,7 @@
         mahadev = mkNixosSystem "mahadev";
         pawandev = mkNixosSystem "pawandev";
         stuti = mkNixosSystem "stuti";
+        chaturvyas = mkNixosSystem "chaturvyas";
         vaaman = mkNixosSystem "vaaman";
         vaayu = mkNixosSystem "vaayu";
 
@@ -223,6 +233,7 @@
         mahadev = buildNixosSystem "mahadev";
         pawandev = buildNixosSystem "pawandev";
         stuti = buildNixosSystem "stuti";
+        chaturvyas = buildNixosSystem "chaturvyas";
         vaaman = buildNixosSystem "vaaman";
         vaayu = buildNixosSystem "vaayu";
       };
