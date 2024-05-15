@@ -14,8 +14,8 @@
     # this is a good default for x86 VMs too
     # so it is always safe to assume that EFI vars cannot be modified
     # but, we can always override it from the host-specific configuration file
-    blacklistedKernelModules = [ "nvidia" ];
     loader.efi.canTouchEfiVariables = false;
+    blacklistedKernelModules = [ "nvidia" ];
     plymouth.enable = lib.mkForce false;
     supportedFilesystems = supportedFilesystemsSansZFS;
 
