@@ -15,7 +15,7 @@ fi
 
 if [[ -z "${1:-}" || -z "${2:-}" ]]; then
     # shellcheck disable=SC2016
-    echo 'ERROR: Insufficient arguments... $1:hostname, $2:target_disk'
+    echo 'ERROR: Insufficient arguments... $1:target_disk, $2:hostname'
     exit 1
 else
     TARGET_DRIVE="$1"
