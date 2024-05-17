@@ -40,6 +40,7 @@
     dunst
     feh
     jq
+    ksnip
     libnotify # provides notify-send
     lxde.lxsession
     picom
