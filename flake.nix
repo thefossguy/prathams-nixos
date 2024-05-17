@@ -121,7 +121,7 @@
           ipv4Address = "10.0.0.24";
           networkingIface = "enP4p65s0";
           hostId = "6e52044b";
-          forceLtskernel = true;
+          forceLtsKernel = true;
           system = linuxSystems.aarch64;
         };
 
