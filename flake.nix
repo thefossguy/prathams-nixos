@@ -154,7 +154,7 @@
       mkNixosSystem = hostname: nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit (nixosHosts."${hostname}") hostname ipv4Address networkingIface hostId system;
-          inherit supportedFilesystemsSansZFS gatewayAddr ipv4PrefixLength nixosHosts;
+          inherit supportedFilesystemsSansZFS gatewayAddr ipv4PrefixLength nixosHosts nixpkgs;
           forceLtsKernel = nixosHosts."${hostname}".forceLtsKernel or false;
           systemUser = nixosHosts."${hostname}".systemUser or systemUsers.pratham;
         };
