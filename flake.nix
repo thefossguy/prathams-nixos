@@ -39,11 +39,13 @@
 
       systemUsers = {
         # generate the `hashedPassword` using `mkpasswd`
-        root.hashedPassword = "$y$j9T$N/Dmz6zTOHaSEoF9o7bKH.$19oxQzf60TQSZN5WCikNX7YBe3zXG0K2SvvVJDJ86ZC";
+        root.hashedPassword     = "$y$j9T$pu6FzqviKwK3OJFd/iRjc.$9AS4GXVkjYhrFKK/apJzQj3a8eTikI2S0jBhRAS/1e8";
+        nixosIso.hashedPassword = "$y$j9T$Cvs/IpcrqGMijUQzTK/QT.$MUR/yeWILyoA8TK/lHGJmA32WR60OOko9WI/z7T0BB9";
+        pratham.hashedPassword  = "$y$j9T$OfCucSHxqUwSKja6tw/K..$ookfkYGconxq6oqeRYMUR2WhjwFxiuDsIe9aCBQTVz8";
+
         nixosIso = {
           username = "nixos";
           fullname = "nixos";
-          hashedPassword = "$y$j9T$8vJKDL2ushoDelwElIBag1$Y764Nh/BZ7wxBQH8ce6ulRYfpLbzKKuZqgsdt2kggx1";
           enableLingering = true;
         };
 
@@ -51,7 +53,6 @@
         pratham = {
           username = "pratham";
           fullname = "Pratham Patel";
-          hashedPassword = "$y$j9T$iMstrboWiMjL1H7spNh9U1$K.copGB3HvxT93Mdm5hrMsZwqAD5Bvehp/6xCby1qE7";
           enableLingering = true;
         };
       };
