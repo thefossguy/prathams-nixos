@@ -237,13 +237,13 @@ in
     enforceIdUniqueness = true;
     mutableUsers = false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
 
-    users.root.hashedPassword = "$6$cxSzljtGpFNLRhx1$0HvOs4faEzUw9FYUF8ifOwBPwHsGVL7HenQMCOBNwqknBFHSlA6NIDO7U36HeQ/C9FN/B.dP.WBg3MzqQcubr0";
+    users.root.hashedPassword = "$y$j9T$1xuD.D6CxvWScFcjS9THO0$3elGBn.W.MV6BQFp.DN.FEu05/2DWcm9s4ukIDCL2S/";
 
     users.pratham = {
       createHome = true;
       description = "Pratham Patel";
       group = "pratham";
-      hashedPassword = "$6$QLxAJcAeYARWFnnh$MaicewslNWkf/D8o6lDAWA1ECLMZLL3KWgIqPKuu/Qgt3iDBCEbEFjt3CUI4ENifvXW/blpze8IYeWhDjaKgS1";
+      hashedPassword = "$y$j9T$uJsRCuZcgc4jIsOuv0NDF.$FlD/0o8GZgk5pour6/.g82WjPd87lAUAreeNGxzgVI8";
       home = "${prathamsHome}";
       isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
       isSystemUser = false;
