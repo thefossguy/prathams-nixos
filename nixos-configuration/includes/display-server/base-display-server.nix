@@ -62,6 +62,7 @@
     mediainfo-gui
     mpv
     neovide
+    ungoogled-chromium
   ];
 
   fonts = {
