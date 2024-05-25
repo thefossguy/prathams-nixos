@@ -66,7 +66,7 @@
         flameboi = {
           hostname = "flameboi";
           ipv4Address = "10.0.0.13";
-          networkingIface = "eth0";
+          networkingIface = "end0";
           hostId = "20c95fe3";
           system = linuxSystems.x86_64;
         };
@@ -75,7 +75,7 @@
         sentinel = {
           hostname = "sentinel";
           ipv4Address = "10.0.0.14";
-          networkingIface = "eth0";
+          networkingIface = "end0";
           hostId = "041d6ae7";
           system = linuxSystems.aarch64;
         };
