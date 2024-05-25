@@ -245,6 +245,32 @@
         x86_64 = buildNixosIso "x86_64";
       };
 
+      packages = forEachSupportedSystem ({ pkgs, ... }: {
+        rpi4UBootInBoot = pkgs.writeShellScriptBin "rpi-4-u-boot-in-boot" ''
+          set -e
+
+          # TODO: "fix" upstream nixpkgs to produce a generic "AIO" U-Boot image that works on all 64-bit RPis
+          # basically enough to uncomment the following lines
+          #if grep -q 'raspberrypi' /proc/device-tree/compatible; then
+          #    cp ''${pkgs.ubootRaspberryPi64bit}/u-boot.bin /boot
+
+          if grep -q 'bcm2711' /proc/device-tree/compatible; then
+              cp ${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin /boot
+              cp -r ${pkgs.raspberrypifw}/share/raspberrypi/boot/* /boot
+              cat << EOF > /boot/config.txt
+                  enable_uart=1
+                  avoid_warnings=1
+                  arm_64bit=1
+                  kernel=u-boot.bin
+
+                  [pi4]
+                  hdmi_enable_4kp60=1
+                  arm_boost=1
+          EOF
+          fi
+        '';
+      });
+
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
