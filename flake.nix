@@ -17,6 +17,7 @@
 
       mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
+        pkgs-0unstable = import nixpkgs-0unstable { inherit system; };
       });
 
       linuxSystems = {
