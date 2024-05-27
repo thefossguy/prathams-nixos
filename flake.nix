@@ -59,6 +59,7 @@
         };
       };
 
+      flakeUri = "/root/prathams-nixos";
       gatewayAddr = "10.0.0.1";
       ipv4PrefixLength = 24;
       nixosHosts = {
@@ -157,7 +158,7 @@
       mkNixosSystem = hostname: nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit (nixosHosts."${hostname}") hostname ipv4Address networkingIface hostId system;
-          inherit supportedFilesystemsSansZFS gatewayAddr ipv4PrefixLength nixosHosts nixpkgs;
+          inherit flakeUri gatewayAddr ipv4PrefixLength nixosHosts nixpkgs supportedFilesystemsSansZFS;
           forceLtsKernel = nixosHosts."${hostname}".forceLtsKernel or false;
           systemUser = nixosHosts."${hostname}".systemUser or systemUsers.pratham;
         };
