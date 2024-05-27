@@ -69,7 +69,7 @@
         flameboi = {
           hostname = "flameboi";
           ipv4Address = "10.0.0.13";
-          networkingIface = "end0";
+          networkingIface = "eth0";
           hostId = "20c95fe3";
           system = linuxSystems.x86_64;
         };
@@ -87,7 +87,7 @@
         reddish = {
           hostname = "reddish";
           ipv4Address = "10.0.0.19";
-          networkingIface = "enabcm6e4ei0";
+          networkingIface = "end0";
           hostId = "996ccb68";
           system = linuxSystems.aarch64;
         };
