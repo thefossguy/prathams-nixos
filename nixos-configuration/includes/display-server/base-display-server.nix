@@ -59,6 +59,9 @@
   environment.systemPackages = with pkgs; [
     alacritty
     fractal
+    libsForQt5.filelight
+    libsForQt5.ghostwriter
+    libsForQt5.keysmith
     mediainfo-gui
     mpv
     neovide
