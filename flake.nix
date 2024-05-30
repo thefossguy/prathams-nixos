@@ -59,13 +59,21 @@
       ipv4PrefixLength = 24;
       nixosHosts = {
         # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`
+        flameboi.hostId   = "20c95fe3";
+        sentinel.hostId   = "041d6ae7";
+        reddish.hostId    = "996ccb68";
+        mahadev.hostId    = "c06c1a49";
+        pawandev.hostId   = "2fefd3b2";
+        stuti.hostId      = "07ca9dd4";
+        chaturvyas.hostId = "6e52044b";
+        vaaman.hostId     = "3c8077f9";
+        vaayu.hostId      = "d81cd923";
 
         # "former" (now dead) "AI" "learning" PC (64GB; R9 3900XT; RTX 3070)
         flameboi = {
           hostname = "flameboi";
           ipv4Address = "10.0.0.13";
           networkingIface = "eth0";
-          hostId = "20c95fe3";
           system = linuxSystems.x86_64;
         };
 
@@ -74,7 +82,6 @@
           hostname = "sentinel";
           ipv4Address = "10.0.0.14";
           networkingIface = "end0";
-          hostId = "041d6ae7";
           system = linuxSystems.aarch64;
         };
 
@@ -83,7 +90,6 @@
           hostname = "reddish";
           ipv4Address = "10.0.0.19";
           networkingIface = "end0";
-          hostId = "996ccb68";
           system = linuxSystems.aarch64;
         };
 
@@ -92,7 +98,6 @@
           hostname = "mahadev";
           ipv4Address = "10.0.0.21";
           networkingIface = "enP4p65s0";
-          hostId = "c06c1a49";
           system = linuxSystems.aarch64;
         };
 
@@ -101,7 +106,6 @@
           hostname = "pawandev";
           ipv4Address = "10.0.0.22";
           networkingIface = "eth0";
-          hostId = "2fefd3b2";
           system = linuxSystems.aarch64;
         };
 
@@ -110,7 +114,6 @@
           hostname = "stuti";
           ipv4Address = "10.0.0.23";
           networkingIface = "enP4p65s0"; # second one from the right
-          hostId = "07ca9dd4";
           system = linuxSystems.aarch64;
         };
 
@@ -119,7 +122,6 @@
           hostname = "chaturvyas";
           ipv4Address = "10.0.0.24";
           networkingIface = "enP4p65s0";
-          hostId = "6e52044b";
           forceLtsKernel = true;
           system = linuxSystems.aarch64;
         };
@@ -129,7 +131,6 @@
           hostname = "vaaman";
           ipv4Address = "10.0.0.41";
           networkingIface = "end0"; # first one from the right
-          hostId = "3c8077f9";
           system = linuxSystems.riscv64;
         };
 
@@ -138,7 +139,6 @@
           hostname = "vaayu";
           ipv4Address = "10.0.0.42";
           networkingIface = "end0"; # first one from the right
-          hostId = "d81cd923";
           system = linuxSystems.riscv64;
         };
       };
