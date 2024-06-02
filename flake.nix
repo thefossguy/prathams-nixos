@@ -244,29 +244,50 @@
       };
 
       packages = forEachSupportedSystem ({ pkgs, ... }: {
-        rpi4UBootInBoot = pkgs.writeShellScriptBin "rpi-4-u-boot-in-boot" ''
-          set -e
+        customRPiUBoot = pkgs.stdenvNoCC.mkDerivation {
+          name = "customRPiUBoot";
+          unpackPhase = "true";
+          buildInputs = with pkgs; [
+            raspberrypifw
+            ubootRaspberryPi3_64bit
+            ubootRaspberryPi4_64bit
+          ];
 
-          # TODO: "fix" upstream nixpkgs to produce a generic "AIO" U-Boot image that works on all 64-bit RPis
-          # basically enough to uncomment the following lines
-          #if grep -q 'raspberrypi' /proc/device-tree/compatible; then
-          #    cp ''${pkgs.ubootRaspberryPi64bit}/u-boot.bin /boot
+          buildPhase = ''
+            set -x
 
-          if grep -q 'bcm2711' /proc/device-tree/compatible; then
-              cp ${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin /boot
-              cp -r ${pkgs.raspberrypifw}/share/raspberrypi/boot/* /boot
-              cat << EOF > /boot/config.txt
-                  enable_uart=1
-                  avoid_warnings=1
-                  arm_64bit=1
-                  kernel=u-boot.bin
+            mkdir $out
+            cp -r ${pkgs.raspberrypifw}/share/raspberrypi/boot/* $out
+            rm -f $out/kernel*.img
 
-                  [pi4]
-                  hdmi_enable_4kp60=1
-                  arm_boost=1
-          EOF
-          fi
-        '';
+            cp ${pkgs.ubootRaspberryPi3_64bit}/u-boot.bin $out/uboot-rpi-3.bin
+            cp ${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin $out/uboot-rpi-4.bin
+            #cp ''${pkgs.ubootRaspberryPi5_64bit}/u-boot.bin $out/uboot-rpi-5.bin
+
+            cat << EOF > $out/config.txt
+            [pi3]
+            kernel=uboot-rpi-3.bin
+
+            [pi4]
+            kernel=uboot-rpi-4.bin
+            arm_boost=1
+            disable_fw_kms_setup=1
+            enable_tvout=0
+            hdmi_enable_4kp60=1 # increases power consumption but at least I can see things clearly
+
+            [pi5]
+            kernel=uboot-rpi-5.bin
+            enable_tvout=0
+
+            [all]
+            arm_64bit=1
+            enable_uart=1
+            disable_splash=0
+            EOF
+
+            set +x
+          '';
+        };
       });
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
