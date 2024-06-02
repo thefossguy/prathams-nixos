@@ -24,7 +24,6 @@
       enable = true;
       path = with pkgs; [
         gitMinimal
-        nettools
         nix
       ];
 
