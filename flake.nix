@@ -246,7 +246,7 @@
       packages = forEachSupportedSystem ({ pkgs, ... }: {
         customRPiUBoot = pkgs.stdenvNoCC.mkDerivation {
           name = "customRPiUBoot";
-          unpackPhase = "true";
+          unpackPhase = true;
           buildInputs = with pkgs; [
             raspberrypifw
             ubootRaspberryPi3_64bit
