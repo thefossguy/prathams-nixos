@@ -27,4 +27,6 @@
     device = "/dev/disk/by-uuid/1a989d9a-e9d6-4762-b6d4-8c4774ec1d93";
     fsType = "xfs";
   };
+
+  environment.systemPackages = [ pkgs.rpiUBootAndFirmware ];
 }

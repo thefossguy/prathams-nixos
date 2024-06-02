@@ -185,6 +185,7 @@
               system.stateVersion = "${nixpkgsRelease}";
               hardware.enableRedistributableFirmware = true;
               nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
+              nixpkgs.overlays = [ (import ./nixos-configuration/packages/rpiUBootAndFirmware.nix) ];
               users.users.root.hashedPassword = "${systemUsers.root.hashedPassword}";
             }
             ./nixos-configuration/configuration.nix
@@ -242,53 +243,6 @@
         riscv64 = buildNixosIso "riscv64";
         x86_64 = buildNixosIso "x86_64";
       };
-
-      packages = forEachSupportedSystem ({ pkgs, ... }: {
-        customRPiUBoot = pkgs.stdenvNoCC.mkDerivation {
-          name = "customRPiUBoot";
-          unpackPhase = true;
-          buildInputs = with pkgs; [
-            raspberrypifw
-            ubootRaspberryPi3_64bit
-            ubootRaspberryPi4_64bit
-          ];
-
-          buildPhase = ''
-            set -x
-
-            mkdir $out
-            cp -r ${pkgs.raspberrypifw}/share/raspberrypi/boot/* $out
-            rm -f $out/kernel*.img
-
-            cp ${pkgs.ubootRaspberryPi3_64bit}/u-boot.bin $out/uboot-rpi-3.bin
-            cp ${pkgs.ubootRaspberryPi4_64bit}/u-boot.bin $out/uboot-rpi-4.bin
-            #cp ''${pkgs.ubootRaspberryPi5_64bit}/u-boot.bin $out/uboot-rpi-5.bin
-
-            cat << EOF > $out/config.txt
-            [pi3]
-            kernel=uboot-rpi-3.bin
-
-            [pi4]
-            kernel=uboot-rpi-4.bin
-            arm_boost=1
-            disable_fw_kms_setup=1
-            enable_tvout=0
-            hdmi_enable_4kp60=1 # increases power consumption but at least I can see things clearly
-
-            [pi5]
-            kernel=uboot-rpi-5.bin
-            enable_tvout=0
-
-            [all]
-            arm_64bit=1
-            enable_uart=1
-            disable_splash=0
-            EOF
-
-            set +x
-          '';
-        };
-      });
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;

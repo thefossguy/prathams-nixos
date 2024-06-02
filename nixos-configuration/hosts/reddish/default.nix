@@ -26,6 +26,8 @@
     fsType = "xfs";
   };
 
+  environment.systemPackages = [ pkgs.rpiUBootAndFirmware ];
+
   custom-options.enableRootlessContainers = true;
   networking.firewall.allowedTCPPorts = [
     8001 # caddy HTTP
