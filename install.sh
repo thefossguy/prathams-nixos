@@ -78,6 +78,11 @@ if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
 fi
 
 nix flake update
+if [[ "$(uname -m)" == 'aarch64' ]]; then
+    nix build .#packages."$(uname -m)-linux".customRPiUBoot
+    cp result/* "${MOUNT_PATH}"/boot
+fi
+
 nixos-install \
     --show-trace \
     --root ${MOUNT_PATH} \
