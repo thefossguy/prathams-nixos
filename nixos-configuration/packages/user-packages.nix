@@ -94,7 +94,7 @@ in
     tre-command
     tree
     unzip
-    wget
+    wget2
     zip
 
     # utilities specific to Nix
