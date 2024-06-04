@@ -55,7 +55,6 @@
   programs = {
     adb.enable = true;
     bandwhich.enable = true;
-    ccache.enable = true;
     command-not-found.enable = true;
     dconf.enable = true;
     git.enable = true;
