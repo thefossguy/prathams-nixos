@@ -2,14 +2,22 @@
   description = "Machines with Nix/NixOS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-1stable.url = "github:NixOS/nixpkgs/nixos-23.11";
+    home-manager-1stable.url = "github:nix-community/home-manager/release-23.11";
+    home-manager-1stable.inputs.nixpkgs.follows = "nixpkgs-1stable";
+
+    nixpkgs-0unstable.url = "github:NixOS/nixpkgs/master";
+    home-manager-0unstable.url = "github:nix-community/home-manager/master";
+    home-manager-0unstable.inputs.nixpkgs.follows = "nixpkgs-0unstable";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs-1stable, home-manager-1stable, nixpkgs-0unstable, home-manager-0unstable, ... }:
     let
       nixpkgsRelease = "23.11";
+      nixpkgs = nixpkgs-1stable;
+      home-manager = home-manager-1stable;
+      #nixpkgs = nixpkgs-0unstable;
+      #home-manager = home-manager-0unstable;
 
       mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
