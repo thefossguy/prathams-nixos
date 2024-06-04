@@ -6,18 +6,35 @@
     home-manager-1stable.url = "github:nix-community/home-manager/release-23.11";
     home-manager-1stable.inputs.nixpkgs.follows = "nixpkgs-1stable";
 
+    nixpkgs-1stable-small.url = "github:NixOS/nixpkgs/nixos-23.11-small";
+    home-manager-1stable-small.url = "github:nix-community/home-manager/release-23.11";
+    home-manager-1stable-small.inputs.nixpkgs.follows = "nixpkgs-1stable-small";
+
     nixpkgs-0unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager-0unstable.url = "github:nix-community/home-manager/master";
     home-manager-0unstable.inputs.nixpkgs.follows = "nixpkgs-0unstable";
+
+    nixpkgs-0unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    home-manager-0unstable-small.url = "github:nix-community/home-manager/master";
+    home-manager-0unstable-small.inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
   };
 
-  outputs = { self, nixpkgs-1stable, home-manager-1stable, nixpkgs-0unstable, home-manager-0unstable, ... }:
+  outputs = { self,
+    nixpkgs-1stable, home-manager-1stable,
+    home-manager-1stable-small, home-manager-0unstable,
+    nixpkgs-0unstable, nixpkgs-1stable-small,
+    nixpkgs-0unstable-small, home-manager-0unstable-small,
+    ... }:
     let
       nixpkgsRelease = "23.11";
       nixpkgs = nixpkgs-1stable;
       home-manager = home-manager-1stable;
+      #nixpkgs = nixpkgs-1stable-small;
+      #home-manager = home-manager-1stable-small;
       #nixpkgs = nixpkgs-0unstable;
       #home-manager = home-manager-0unstable;
+      #nixpkgs = nixpkgs-0unstable-small;
+      #home-manager = home-manager-0unstable-small;
 
       mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f {
         pkgs = import nixpkgs { inherit system; };
