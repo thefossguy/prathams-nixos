@@ -6,7 +6,7 @@
     home-manager-1stable.url = "github:nix-community/home-manager/release-23.11";
     home-manager-1stable.inputs.nixpkgs.follows = "nixpkgs-1stable";
 
-    nixpkgs-0unstable.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-0unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager-0unstable.url = "github:nix-community/home-manager/master";
     home-manager-0unstable.inputs.nixpkgs.follows = "nixpkgs-0unstable";
   };
