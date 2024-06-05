@@ -175,12 +175,21 @@
         "xfs"
       ];
 
-      mkNixosSystem = hostname: nixpkgs.lib.nixosSystem {
+      mkNixosSystem = hostname: let
+        system = nixosHosts."${hostname}".system;
+        mkPkgs = passedNixpkgs: import passedNixpkgs { inherit system; };
+      in
+      nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit (nixosHosts."${hostname}") hostname ipv4Address networkingIface hostId system;
-          inherit flakeUri gatewayAddr ipv4PrefixLength nixosHosts nixpkgs supportedFilesystemsSansZFS;
+          inherit (nixosHosts."${hostname}") hostname ipv4Address networkingIface hostId;
+          inherit flakeUri gatewayAddr ipv4PrefixLength nixosHosts nixpkgs supportedFilesystemsSansZFS system;
           forceLtsKernel = nixosHosts."${hostname}".forceLtsKernel or false;
           systemUser = nixosHosts."${hostname}".systemUser or systemUsers.pratham;
+
+          pkgs1Stable        = mkPkgs nixpkgs-1stable;
+          pkgs1StableSmall   = mkPkgs nixpkgs-1stable-small;
+          pkgs0Unstable      = mkPkgs nixpkgs-0unstable;
+          pkgs0UnstableSmall = mkPkgs nixpkgs-0unstable-small;
         };
 
         modules = [
@@ -203,7 +212,10 @@
     {
       nixosModules = {
         customNixosBaseModule = {
-          _module.args = { inherit home-manager nixpkgsRelease; };
+          _module.args = {
+            inherit home-manager nixpkgsRelease;
+            inherit nixpkgs-1stable nixpkgs-1stable-small nixpkgs-0unstable nixpkgs-0unstable-small;
+          };
 
           imports = [
             {
