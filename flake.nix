@@ -20,9 +20,9 @@
   };
 
   outputs = { self,
-    nixpkgs-1stable, home-manager-1stable,
-    home-manager-1stable-small, home-manager-0unstable,
-    nixpkgs-0unstable, nixpkgs-1stable-small,
+    nixpkgs-1stable,         home-manager-1stable,
+    nixpkgs-1stable-small,   home-manager-1stable-small,
+    nixpkgs-0unstable,       home-manager-0unstable,
     nixpkgs-0unstable-small, home-manager-0unstable-small,
     ... }:
     let
