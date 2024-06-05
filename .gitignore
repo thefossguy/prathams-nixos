@@ -1,4 +1,4 @@
 *.iso
 *.iso.sha*
 .direnv/*
-result
+result*
