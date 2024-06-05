@@ -290,7 +290,7 @@
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
         default = pkgs.mkShell {
-          packages = with pkgs; [ just ];
+          packages = with pkgs; [ just nixfmt ];
 
           env = {
             UPDATE_LOCKFILE = 0;
