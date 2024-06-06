@@ -23,7 +23,6 @@
     services."lookahead-nixos-build" = {
       enable = true;
       path = with pkgs; [
-        gawk
         gitMinimal
         nix
       ];
@@ -40,22 +39,34 @@
       script = ''
         set -xuf -o pipefail
 
-        # we do not _need to_ build hourly on machines with more than 4 GiB of RAM
-        CURRENT_TIME_IN_INDIA="$(TZ='Asia/Kolkata' date +%H:%M)"
-        TOTAL_MEM_IN_KIB="$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')"
-        TOTAL_MEM_IN_GIB="$(( TOTAL_MEM_IN_KIB / 1024 / 1024 ))"
-        if [[ "$TOTAL_MEM_IN_GIB" -gt 4 ]] && [[ "$CURRENT_TIME_IN_INDIA" != '00:00' ]]; then
-            echo 'System has more than 4 GiB of RAM. Will run only at 00:00 IST. Skipping for now.'
-            exit 0
+        [[ ! -d ${flakeUri} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
+        pushd ${flakeUri}
+
+        prev_hash=$(git rev-parse --verify HEAD)
+        git pull
+        if [[ "''${prev_hash}" != "$(git rev-parse --verify HEAD)" ]]; then
+            conf_changed=1
+        else
+            conf_changed=0
         fi
 
-        [[ ! -d ${flakeUri} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
-
-        pushd ${flakeUri}
+        cp flake.lock flake.lock.old
         git restore flake.lock
-        git pull
         nix flake update
-        nix build --print-build-logs --show-trace .#machines.${config.networking.hostName}
+        if ! diff flake.lock.old flake.lock > /dev/null; then
+            lock_updated=1
+        else
+            lock_updated=0
+        fi
+
+        # Aham Brahmaasmi?
+        if [[ "$(( conf_changed + lock_updated ))" -gt 0 ]]; then
+            ${pkgs.bash}/bin/bash ./scripts/nix-ci/nix-build-wrapper.sh machine ${config.networking.hostName}
+        else
+            echo 'DEBUG: no upgrade performed'
+            echo "DEBUG: conf_changed: ''${conf_changed}"
+            echo "DEBUG: lock_updated: ''${lock_updated}"
+        fi
         popd
       '';
     };

@@ -64,5 +64,7 @@ in
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  isoImage.squashfsCompression = "zstd -Xcompression-level 22";
+
+  isoImage.squashfsCompression = "zstd -Xcompression-level 22"; # for prod
+  #isoImage.squashfsCompression = "lz4 -b 32768"; # for dev
 }

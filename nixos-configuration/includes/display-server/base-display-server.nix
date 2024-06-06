@@ -10,11 +10,11 @@
   sound.enable = true;
   xdg.portal.enable = true;
 
+  services.displayManager.hiddenUsers = [ "root" ];
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "";
-    displayManager.hiddenUsers = [ "root" ];
+    xkb.layout = "us";
+    xkb.variant = "";
 
     desktopManager = {
       wallpaper = {
@@ -59,9 +59,9 @@
   environment.systemPackages = with pkgs; [
     alacritty
     fractal
-    libsForQt5.filelight
-    libsForQt5.ghostwriter
-    libsForQt5.keysmith
+    kdePackages.filelight
+    kdePackages.ghostwriter
+    kdePackages.keysmith
     mediainfo-gui
     mpv
     neovide

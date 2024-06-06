@@ -1,4 +1,5 @@
 *.iso
 *.iso.sha*
 .direnv/*
+flake.lock.old
 result*

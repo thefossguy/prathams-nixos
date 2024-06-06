@@ -134,7 +134,7 @@ in
         lldb # provides lldb-vscode
         lua-language-server
         nil # language server for Nix
-        nixfmt
+        nixfmt-classic
         nodePackages.bash-language-server
         ruff
         shellcheck

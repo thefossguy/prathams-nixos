@@ -1,14 +1,10 @@
 { config
 , lib
 , pkgs
-, nixpkgs
+, nixpkgsRelease
 , systemUser
 , ...
 }:
-
-let
-  nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
-in
 
 {
   imports = [
@@ -22,14 +18,15 @@ in
     ./virtualisation-configuration.nix
   ];
 
-  environment.etc."${nixpkgsChannelPath}".source = nixpkgs.outPath;
+  hardware.enableRedistributableFirmware = true;
+  nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
+  nixpkgs.overlays = [ (import ./packages/rpiUBootAndFirmware.nix) ];
+  system.stateVersion = "${nixpkgsRelease}";
 
   nix = {
     checkAllErrors = true;
     checkConfig = true;
 
-    registry.nixpkgs.flake = nixpkgs;
-    nixPath = [ "nixpkgs=/etc/${nixpkgsChannelPath}" "nixos-config=/etc/nixos/configuration.nix" "/nix/var/nix/profiles/per-user/root/channels" ];
 
     gc = {
       automatic = true;

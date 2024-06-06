@@ -7,10 +7,6 @@
 {
   powerManagement.enable = true;
 
-  # Linux 6.4 and later is needed for AMD's 'amd-pstate' driver
-  # But the LTS kernel offered by NixOS 23.11 (1e2e384c5b7c) is 6.1.y
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-
   services = {
     thermald.enable = true;
 
