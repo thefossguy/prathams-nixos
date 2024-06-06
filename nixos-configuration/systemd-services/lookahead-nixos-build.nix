@@ -23,8 +23,10 @@
     services."lookahead-nixos-build" = {
       enable = true;
       path = with pkgs; [
+        diffutils
         gawk
         gitMinimal
+        ncurses
         nix
       ];
 
@@ -62,6 +64,7 @@
 
         # Aham Brahmaasmi?
         if [[ "$(( conf_changed + lock_updated ))" -gt 0 ]]; then
+            export TERM='xterm-256color'
             ${pkgs.bash}/bin/bash ./scripts/nix-ci/nix-build-wrapper.sh machine ${config.networking.hostName}
         else
             echo 'DEBUG: no upgrade performed'
