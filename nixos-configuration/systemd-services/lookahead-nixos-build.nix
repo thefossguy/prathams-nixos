@@ -23,6 +23,7 @@
     services."lookahead-nixos-build" = {
       enable = true;
       path = with pkgs; [
+        gawk
         gitMinimal
         nix
       ];
