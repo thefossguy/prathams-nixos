@@ -95,4 +95,4 @@ fi
 
 set -x
 nix flake update
-$nix_bin build "${build_targets[@]}"
+time $nix_bin build "${build_targets[@]}"
