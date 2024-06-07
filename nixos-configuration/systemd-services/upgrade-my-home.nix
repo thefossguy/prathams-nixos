@@ -1,16 +1,10 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 let
   homeDir = "/home/${systemUser.username}";
   scriptsDir = "${homeDir}/.local/scripts";
-in
 
-lib.mkIf pkgs.stdenv.isLinux {
+in lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.services = {
     "upgrade-my-home" = {
       Service = {

@@ -1,18 +1,6 @@
-{ config
-, lib
-, pkgs
-, hostname
-, forceLtsKernel ? false
-, gatewayAddr
-, hostId
-, ipv4Address
-, ipv4PrefixLength
-, networkingIface
-, supportedFilesystemsSansZFS
-, system
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, hostname, forceLtsKernel ? false, gatewayAddr, hostId
+, ipv4Address, ipv4PrefixLength, networkingIface, supportedFilesystemsSansZFS
+, system, systemUser, ... }:
 
 {
   boot = {

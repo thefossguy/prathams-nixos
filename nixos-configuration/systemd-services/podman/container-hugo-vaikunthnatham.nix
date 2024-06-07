@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/klakegg/hugo:ext-debian";
@@ -21,9 +15,8 @@ let
         ${containerImage} \
         server --disableFastRender --baseURL https://blog.thefossguy.com/ --appendPort=false --port=1313
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitWants;
   };

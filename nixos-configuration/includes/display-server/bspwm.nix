@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 {
   imports = [ ./base-display-server.nix ];
@@ -23,17 +18,18 @@
         };
       };
 
-    displayManager = {
-      defaultSession = "none+bspwm";
+      displayManager = {
+        defaultSession = "none+bspwm";
 
-      sddm = {
-        enable = true;
-        enableHidpi = true;
-        settings.General.DisplayServer = "x11-user";
-        #autologin = {
-        #  enable = true;
-        #  user = systemUser.username;
-        #};
+        sddm = {
+          enable = true;
+          enableHidpi = true;
+          settings.General.DisplayServer = "x11-user";
+          #autologin = {
+          #  enable = true;
+          #  user = systemUser.username;
+          #};
+        };
       };
     };
   };

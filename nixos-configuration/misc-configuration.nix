@@ -1,15 +1,10 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
   userLocale = "en_IN";
   envLocale = "${userLocale}.UTF-8";
-in
 
-{
+in {
   time = {
     timeZone = "Asia/Kolkata";
     hardwareClockInLocalTime = true;

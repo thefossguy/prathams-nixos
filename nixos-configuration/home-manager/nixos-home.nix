@@ -1,21 +1,10 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 let
-  mkContainerService =
-    { containerDescription
-    , containerName
-    , extraExecStart
-    , installServiceRequiredBy ? []
-    , unitAfter
-    , unitRequires ? []
-    , unitWants ? []
-    }:
-    {
+  mkContainerService = { containerDescription, containerName,
+     extraExecStart,
+     installServiceRequiredBy ? [ ],
+     unitAfter, unitRequires ? [ ] , unitWants ? [ ] }: {
       Install = {
         RequiredBy = installServiceRequiredBy;
         WantedBy = [ "default.target" ];
@@ -69,9 +58,8 @@ let
         RequiresMountsFor = [ "%t/containers" ];
       };
     };
-in
 
-{
+in {
   home-manager.extraSpecialArgs = { inherit systemUser; };
   home-manager.useGlobalPkgs = true;
   home-manager.users.${systemUser.username} = { config, lib, pkgs, osConfig, ... }: {

@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/library/caddy:latest";
@@ -26,9 +20,8 @@ let
         ${containerImage} \
         caddy run --config /etc/caddy/Caddyfile
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitRequires;
   };

@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/louislam/uptime-kuma:debian";
@@ -20,9 +14,8 @@ let
         --volume ${containerVolumePath}:/app/data:U \
         ${containerImage}
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitWants;
   };

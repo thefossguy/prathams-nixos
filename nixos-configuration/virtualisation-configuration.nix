@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 {
   virtualisation = {

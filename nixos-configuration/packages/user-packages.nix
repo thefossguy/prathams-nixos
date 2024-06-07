@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, pkgs0UnstableSmall
-, ...
-}:
+{ config, lib, pkgs, systemUser, pkgs0UnstableSmall, ... }:
 
 let
   neovimPackage = if lib.versionAtLeast pkgs.neovim-unwrapped.version "0.10"
@@ -39,9 +33,8 @@ let
       ];
     })
   ]);
-in
 
-{
+in {
   home.packages = linuxPackages ++ darwinPackages ++ (with pkgs; [
     # programming tools + compilers
     #cargo-deb # generate .deb packages solely based on Cargo.toml

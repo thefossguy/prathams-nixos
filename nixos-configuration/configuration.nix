@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 {
   imports = [
@@ -25,7 +20,6 @@
   nix = {
     checkAllErrors = true;
     checkConfig = true;
-
 
     gc = {
       automatic = true;

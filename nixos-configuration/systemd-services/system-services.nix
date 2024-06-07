@@ -1,15 +1,8 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
-let
-  userHome = "/home/${systemUser.username}";
-in
+let userHome = "/home/${systemUser.username}";
 
-{
+in {
   imports = [ ./nixos-update-and-upgrade.nix ];
 
   services = {

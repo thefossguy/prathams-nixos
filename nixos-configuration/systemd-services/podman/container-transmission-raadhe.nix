@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, mkContainerService, ... }:
 
 let
   containerImage = "lscr.io/linuxserver/transmission:latest";
@@ -22,9 +17,8 @@ let
         --volume ${containerVolumePath}/config:/config:U \
         ${containerImage}
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitWants;
   };

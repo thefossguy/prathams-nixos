@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 {
   security.rtkit.enable = true;
@@ -74,8 +69,8 @@
       (nerdfonts.override {
         fonts = [
           "FiraCode"
-          "SourceCodePro"
           "Overpass"
+          "SourceCodePro"
         ];
       })
     ];

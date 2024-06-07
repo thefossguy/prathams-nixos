@@ -1,9 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
 let
   sudoRules = with pkgs; [
@@ -25,9 +20,8 @@ let
   };
 
   sudoCommands = map mkSudoRule sudoRules;
-in
 
-{
+in {
   users = {
     allowNoPasswordLogin = false;
     defaultUserShell = pkgs.bash;

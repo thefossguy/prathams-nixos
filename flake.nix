@@ -30,13 +30,15 @@
       home-manager = home-manager-1stable;
       mkPkgs = { system, passedNixpkgs }: import passedNixpkgs { inherit system; };
 
-      mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f rec {
-        pkgs = pkgs1Stable;
-        pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
-        pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
-        pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
-        pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
-      });
+      mkForEachSupportedSystem = supportedSystems: f:
+        nixpkgs.lib.genAttrs supportedSystems (system:
+          f rec {
+            pkgs = pkgs1Stable;
+            pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
+            pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
+            pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
+            pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
+          });
 
       linuxSystems = {
         aarch64 = "aarch64-linux";
@@ -211,8 +213,7 @@
         };
 
       mkNonNixosHomeManager = pkgs: systemUser:
-        let
-          system = pkgs.stdenv.system;
+        let system = pkgs.stdenv.system;
         in home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
@@ -238,12 +239,9 @@
             inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
           };
 
-          imports = let
-            nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
+          imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
           in [
-            home-manager.nixosModules.home-manager { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
             ./nixos-configuration/configuration.nix
-
             {
               # declare config options that depend on "super sets"
               # which are best not passed to the nixos-configuration/* files
@@ -256,6 +254,8 @@
               ];
               users.users.root.hashedPassword = "${systemUsers.root.hashedPassword}";
             }
+
+            home-manager.nixosModules.home-manager { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
           ];
         };
 
@@ -301,8 +301,7 @@
               (pkg: (pkg == "listOfRealPackages") || (pkg == "listOfRealUsers") || (pkg == "listOfNixosMachines"))
               (pkgs.lib.attrNames self.packages.${pkgs.stdenv.system});
             allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages.wrong;
-          in
-            "all_packages=('${allRealPackagesNames}')";
+          in "all_packages=('${allRealPackagesNames}')";
         };
       });
 

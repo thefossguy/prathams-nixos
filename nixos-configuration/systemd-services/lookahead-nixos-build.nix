@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, flakeUri
-, ...
-}:
+{ config, lib, pkgs, systemUser, flakeUri, ... }:
 
 {
   systemd = {

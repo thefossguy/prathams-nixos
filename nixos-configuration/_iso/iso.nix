@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, supportedFilesystemsSansZFS
-, ...
-}:
+{ config, lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
 
 let
   getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''
@@ -25,9 +19,8 @@ let
         git clone https://gitlab.com/thefossguy/prathams-nixos.git "$HOME/my-git-repos/prathams-nixos"
     fi
   '';
-in
 
-{
+in {
   imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
 
   environment.systemPackages = with pkgs; [

@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/library/postgres:15-bookworm";
@@ -24,9 +18,8 @@ let
         --volume ${containerVolumePath}:/var/lib/postgresql/data:U \
         ${containerImage}
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitRequires installServiceRequiredBy;
   };

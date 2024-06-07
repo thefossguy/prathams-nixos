@@ -1,15 +1,8 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, ...
-}:
+{ config, lib, pkgs, systemUser, ... }:
 
-let
-  scriptsDir = "/home/${systemUser.username}/.local/scripts";
-in
+let scriptsDir = "/home/${systemUser.username}/.local/scripts";
 
-lib.mkIf pkgs.stdenv.isLinux {
+in lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.services = {
     "dotfiles-pull" = {
       Service = {

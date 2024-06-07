@@ -1,10 +1,4 @@
-{ config
-, lib
-, pkgs
-, systemUser
-, mkContainerService
-, ...
-}:
+{ config, lib, pkgs, systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/gitea/gitea:latest";
@@ -50,9 +44,8 @@ let
         --volume ${containerVolumePath}/ssh:/data/git/.ssh:U \
         ${containerImage}
   '';
-in
 
-{
+in {
   systemd.user.services."container-${containerName}" = mkContainerService {
     inherit containerDescription containerName extraExecStart unitAfter unitRequires unitWants;
   };
