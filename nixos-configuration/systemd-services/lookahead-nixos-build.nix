@@ -54,7 +54,6 @@
         fi
 
         cp flake.lock flake.lock.old
-        git restore flake.lock
         nix flake update
         if ! diff flake.lock.old flake.lock > /dev/null; then
             lock_updated=1
