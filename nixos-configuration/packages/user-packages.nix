@@ -2,10 +2,15 @@
 , lib
 , pkgs
 , systemUser
+, pkgs0UnstableSmall
 , ...
 }:
 
 let
+  neovimPackage = if lib.versionAtLeast pkgs.neovim-unwrapped.version "0.10"
+    then pkgs.neovim-unwrapped
+    else pkgs0UnstableSmall.neovim-unwrapped;
+
   linuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
     buildah
     cargo-valgrind
@@ -128,6 +133,7 @@ in
 
     neovim = {
       enable = true;
+      package = neovimPackage;
       extraPackages = with pkgs; [
         clang-tools # provides clangd
         gcc # for nvim-tree's parsers
