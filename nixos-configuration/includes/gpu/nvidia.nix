@@ -4,10 +4,6 @@
   boot.blacklistedKernelModules = lib.mkForce [ "nvidia" ];
   services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "nvidia-x11"
-  ];
-
   hardware.opengl = {
     enable = true;
     driSupport = true;
