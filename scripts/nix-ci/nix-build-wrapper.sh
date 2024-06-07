@@ -92,7 +92,14 @@ else
 
 fi
 
+if [[ "$(( "$(( "$(date +%s)" - "$(stat flake.lock -c %Y)" ))" / 3600 ))" -gt 0 ]]; then
+    touch flake.lock
+    nix_flake_update='nix flake update'
+else
+    nix_flake_update=''
+fi
+
 
 set -x
-nix flake update
+$nix_flake_update
 time $nix_bin build "${build_targets[@]}"
