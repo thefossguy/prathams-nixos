@@ -21,7 +21,7 @@ in {
     firewall.enable = false; # this uses iptables AFAIK, use nftables instead
     networkmanager.enable = true;
     nftables.enable = true;
-    wireless.enable = false; # this enabled 'wpa_supplicant', use networkmanager instead
+    wireless.enable = lib.mkForce false; # this enabled 'wpa_supplicant', use networkmanager instead
     nameservers = domainNameServers;
   };
 }
