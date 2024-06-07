@@ -1,7 +1,6 @@
 { config
 , lib
 , pkgs
-, nixpkgsRelease
 , systemUser
 , ...
 }:
@@ -73,7 +72,7 @@ let
 in
 
 {
-  home-manager.extraSpecialArgs = { inherit systemUser nixpkgsRelease; };
+  home-manager.extraSpecialArgs = { inherit systemUser; };
   home-manager.useGlobalPkgs = true;
   home-manager.users.${systemUser.username} = { config, lib, pkgs, osConfig, ... }: {
     imports = [

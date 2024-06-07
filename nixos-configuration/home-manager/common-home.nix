@@ -1,7 +1,6 @@
 { config
 , lib
 , pkgs
-, nixpkgsRelease
 , systemUser
 , ...
 }:
@@ -14,6 +13,6 @@
     ./linux.nix
   ];
 
-  home.stateVersion = "${nixpkgsRelease}";
+  home.stateVersion = lib.versions.majorMinor lib.version;
   home.username = "${systemUser.username}";
 }

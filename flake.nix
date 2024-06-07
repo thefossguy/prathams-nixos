@@ -26,7 +26,6 @@
     nixpkgs-0unstable-small, home-manager-0unstable-small,
     ... }:
     let
-      nixpkgsRelease = nixpkgs.lib.versions.majorMinor nixpkgs.lib.version;
       nixpkgs = nixpkgs-1stable;
       home-manager = home-manager-1stable;
       mkPkgs = { system, passedNixpkgs }: import passedNixpkgs { inherit system; };
@@ -217,7 +216,7 @@
         in home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit systemUser nixpkgsRelease;
+            inherit systemUser;
             pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
             pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
             pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
@@ -235,7 +234,7 @@
       nixosModules = {
         customNixosBaseModule = {
           _module.args = {
-            inherit home-manager nixpkgsRelease;
+            inherit home-manager;
             inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
           };
 
