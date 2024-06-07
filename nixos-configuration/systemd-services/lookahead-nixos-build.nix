@@ -67,6 +67,7 @@
             export TERM='xterm-256color'
             ${pkgs.bash}/bin/bash ./scripts/nix-ci/nix-build-wrapper.sh machine ${config.networking.hostName}
         else
+            set +x
             echo 'DEBUG: no upgrade performed'
             echo "DEBUG: conf_changed: ''${conf_changed}"
             echo "DEBUG: lock_updated: ''${lock_updated}"
