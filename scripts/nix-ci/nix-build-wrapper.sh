@@ -17,27 +17,38 @@ function emphasize() { echo "${bold_font}${1}${norm_font}"; }
 function nixos_system_expression() { echo ".#nixosConfigurations.${1:-$(hostname)}.config.system.build.toplevel"; }
 function home_manager_expression() { echo ".#legacyPackages.${host_nix_system}.homeConfigurations.${1:-${USER}}.activationPackage"; }
 function nixos_iso_expression()    { echo ".#nixosConfigurations.z-iso-$(uname -m).config.system.build.isoImage"; }
+function package_expression()      { echo ".#packages.${host_nix_system}.$1"; }
 
 function help_text() {
     echo 'I have the following **exclusive** targets:'
     echo "    - [machine]:    \`nix build .#nixosConfigurations.$(emphasize "$(hostname)").config.system.build.toplevel\`"
     echo "    - [home]:       \`nix build .#legacyPackages.$(emphasize "${host_nix_system}").homeConfigurations.$(emphasize "${USER}").activationPackage\`"
     echo "    - [iso]:        \`nix build .#nixosConfigurations.z-iso-$(emphasize "$(uname -m)").config.system.build.isoImage\`"
+    echo "    - [package]:    \`nix build .#packages.$(emphasize "${host_nix_system}").$(emphasize '"$1"')\`"
     echo "    - [machines]:    build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
     echo "    - [homes]:       build \`homeConfigurations\` for all users defined in the \`$(emphasize 'realusers')\` set"
-    echo "    - [everything]:  $(emphasize "machines + homes + iso")"
+    echo "    - [packages]:    build all \`packages\` where \`system\` == '$(emphasize "${host_nix_system}")'"
+    echo "    - [everything]:  $(emphasize "machines + homes + iso + packages")"
 }
 
 function source_nix_vals() {
     pushd "$(dirname "$0")" > /dev/null
+
     nix build --quiet .#listOfNixosMachines 2>/dev/null
     # shellcheck disable=SC1091
     source ./result
     readonly all_nixos_machines
+
     nix build --quiet .#listOfRealUsers 2>/dev/null
     # shellcheck disable=SC1091
     source ./result
     readonly all_users
+
+    nix build --quiet .#listOfRealPackages 2>/dev/null
+    # shellcheck disable=SC1091
+    source ./result
+    readonly all_packages
+
     rm result
     popd > /dev/null
 }
@@ -54,9 +65,15 @@ function build_all_homes() {
         build_targets+=( "$(home_manager_expression "${home_user}")" )
     done
 }
+function build_all_packages() {
+    [[ -z "${all_packages[*]}" ]] && return 0
+    for package in "${all_packages[@]}"; do
+        build_targets+=( "$(package_expression "${package}")" )
+    done
+}
 
 # ugly hack but idk what else to do while still keeping the script "fast enough"
-if [[ "${1:-}" == 'machines' ]] || [[ "${1:-}" == 'homes' ]] || [[ "${1:-}" == 'everything' ]]; then
+if [[ "${1:-}" == 'machines' ]] || [[ "${1:-}" == 'homes' ]] || [[ "${1:-}" == 'packages' ]] || [[ "${1:-}" == 'everything' ]]; then
     source_nix_vals
 fi
 
@@ -79,9 +96,15 @@ elif [[ "$1" == 'homes' ]]; then
 elif [[ "$1" == 'iso' ]]; then
     build_targets+=( "$(nixos_iso_expression)" )
 
+elif [[ "$1" == 'package' ]]; then
+    build_targets+=( "$(package_expression "$2")" )
+elif [[ "$1" == 'packages' ]]; then
+    build_targets+=( "$(build_all_packages)" )
+
 elif [[ "$1" == 'everything' ]]; then
     build_all_machines
     build_all_homes
+    build_all_packages
     build_targets+=( "$(nixos_iso_expression)" )
 
 else

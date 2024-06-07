@@ -295,6 +295,16 @@
           name = "all-users.sh";
           text = "all_users=('${realUsersNames}')";
         };
+        listOfRealPackages = pkgs.writeTextFile {
+          name = "all-packages.sh";
+          text = let
+            allRealPackages = pkgs.lib.lists.partition
+              (pkg: (pkg == "listOfRealPackages") || (pkg == "listOfRealUsers") || (pkg == "listOfNixosMachines"))
+              (pkgs.lib.attrNames self.packages.${pkgs.stdenv.system});
+            allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages.wrong;
+          in
+            "all_packages=('${allRealPackagesNames}')";
+        };
       });
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
