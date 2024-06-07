@@ -29,9 +29,14 @@
       nixpkgsRelease = nixpkgs.lib.versions.majorMinor nixpkgs.lib.version;
       nixpkgs = nixpkgs-1stable;
       home-manager = home-manager-1stable;
+      mkPkgs = { system, passedNixpkgs }: import passedNixpkgs { inherit system; };
 
-      mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f {
-        pkgs = import nixpkgs { inherit system; };
+      mkForEachSupportedSystem = supportedSystems: f: nixpkgs.lib.genAttrs supportedSystems (system: f rec {
+        pkgs = pkgs1Stable;
+        pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
+        pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
+        pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
+        pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
       });
 
       linuxSystems = {
@@ -182,32 +187,42 @@
       mkNixosSystem = hostname:
         let
           system = nixosMachines.hosts."${hostname}".system;
-          mkPkgs = passedNixpkgs: import passedNixpkgs { inherit system; };
+          pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
+          pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
+          pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
+          pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
+            inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall;
 
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
             forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
             systemUser = nixosMachines.hosts."${hostname}".systemUser or systemUsers.pratham;
-
-            pkgs1Stable = mkPkgs nixpkgs-1stable;
-            pkgs1StableSmall = mkPkgs nixpkgs-1stable-small;
-            pkgs0Unstable = mkPkgs nixpkgs-0unstable;
-            pkgs0UnstableSmall = mkPkgs nixpkgs-0unstable-small;
           };
 
           modules = [
             ./nixos-configuration/hosts/${hostname}/default.nix
             ./nixos-configuration/hosts/hosts-common.nix
             self.nixosModules.customNixosBaseModule
+            home-manager.nixosModules.home-manager {
+              home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; };
+            }
           ] ++ (nixosMachines.hosts."${hostname}".extraSystemModules or [ ]);
         };
 
       mkNonNixosHomeManager = pkgs: systemUser:
-        home-manager.lib.homeManagerConfiguration {
+        let
+          system = pkgs.stdenv.system;
+        in home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit systemUser nixpkgsRelease; };
+          extraSpecialArgs = {
+            inherit systemUser nixpkgsRelease;
+            pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
+            pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
+            pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
+            pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
+          };
           modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
         };
 
@@ -221,7 +236,6 @@
         customNixosBaseModule = {
           _module.args = {
             inherit home-manager nixpkgsRelease;
-            inherit nixpkgs-1stable nixpkgs-1stable-small nixpkgs-0unstable nixpkgs-0unstable-small;
             inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
           };
 
