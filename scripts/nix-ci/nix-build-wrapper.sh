@@ -14,17 +14,17 @@ bold_font="$(tput bold)"
 norm_font="$(tput sgr0)"
 function emphasize() { echo "${bold_font}${1}${norm_font}"; }
 
-function nixos_system_expression() { echo ".#nixosConfigurations.${1:-$(hostname)}.config.system.build.toplevel"; }
+function nixos_system_expression() { echo ".#nixosConfigurations.$1.config.system.build.toplevel"; }
 function home_manager_expression() { echo ".#legacyPackages.${host_nix_system}.homeConfigurations.${1:-${USER}}.activationPackage"; }
 function nixos_iso_expression()    { echo ".#nixosConfigurations.z-iso-$(uname -m).config.system.build.isoImage"; }
 function package_expression()      { echo ".#packages.${host_nix_system}.$1"; }
 
 function help_text() {
     echo 'I have the following **exclusive** targets:'
-    echo "    - [machine]:    \`nix build .#nixosConfigurations.$(emphasize "$(hostname)").config.system.build.toplevel\`"
+    echo "    - [machine]:    \`nix build .#nixosConfigurations.$(emphasize '"${2:-$(hostname)}"').config.system.build.toplevel\`"
     echo "    - [home]:       \`nix build .#legacyPackages.$(emphasize "${host_nix_system}").homeConfigurations.$(emphasize "${USER}").activationPackage\`"
     echo "    - [iso]:        \`nix build .#nixosConfigurations.z-iso-$(emphasize "$(uname -m)").config.system.build.isoImage\`"
-    echo "    - [package]:    \`nix build .#packages.$(emphasize "${host_nix_system}").$(emphasize '"$1"')\`"
+    echo "    - [package]:    \`nix build .#packages.$(emphasize "${host_nix_system}").$(emphasize '"$2"')\`"
     echo "    - [machines]:    build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
     echo "    - [homes]:       build \`homeConfigurations\` for all users defined in the \`$(emphasize 'realusers')\` set"
     echo "    - [packages]:    build all \`packages\` where \`system\` == '$(emphasize "${host_nix_system}")'"
@@ -84,7 +84,7 @@ if [[ -z "${1:-}" ]]; then
     exit 1
 
 elif [[ "$1" == 'machine' ]]; then
-    build_targets+=( "$(nixos_system_expression "${2:-}")" )
+    build_targets+=( "$(nixos_system_expression "${2:-$(hostname)}")" )
 elif [[ "$1" == 'machines' ]]; then
     build_all_machines
 
