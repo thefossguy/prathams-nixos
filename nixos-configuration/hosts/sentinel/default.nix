@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ../../includes/display-server/bspwm.nix ];

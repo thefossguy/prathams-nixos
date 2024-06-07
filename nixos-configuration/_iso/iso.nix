@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
+{ lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
 
 let
   getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''

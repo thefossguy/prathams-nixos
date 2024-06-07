@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }:
 
 let
   containerImage = "docker.io/klakegg/hugo:ext-debian";

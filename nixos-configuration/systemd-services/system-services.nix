@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ lib, pkgs, systemUser, ... }:
 
 let userHome = "/home/${systemUser.username}";
 

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ ... }:
 
 {
   imports = [ ../../includes/display-server/kde-plasma.nix ];

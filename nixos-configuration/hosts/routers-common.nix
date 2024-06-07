@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
 
 {
   systemd.network.wait-online.anyInterface = lib.mkForce false;

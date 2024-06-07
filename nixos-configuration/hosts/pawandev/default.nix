@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ ... }:
 
 {
   fileSystems."/boot" = {

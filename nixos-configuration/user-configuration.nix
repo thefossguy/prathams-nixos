@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ pkgs, systemUser, ... }:
 
 let
   sudoRules = with pkgs; [

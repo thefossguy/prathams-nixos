@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ pkgs, systemUser, ... }:
 
 {
   imports = [ ./base-display-server.nix ];

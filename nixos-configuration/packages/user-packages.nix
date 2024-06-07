@@ -1,4 +1,4 @@
-{ config, lib, pkgs, systemUser, pkgs0UnstableSmall, ... }:
+{ lib, pkgs, pkgs0UnstableSmall, ... }:
 
 let
   neovimPackage = if lib.versionAtLeast pkgs.neovim-unwrapped.version "0.10"

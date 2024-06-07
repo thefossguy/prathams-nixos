@@ -1,4 +1,4 @@
-{ config, lib, pkgs, flakeUri, systemUser, ... }:
+{ flakeUri, ... }:
 
 {
   imports = [ ./lookahead-nixos-build.nix ];
