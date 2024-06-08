@@ -1,32 +1,32 @@
-{ config, pkgs, flakeUri, ... }:
+{ config, lib, pkgs, flakeUri, ... }:
 
 {
+  # we disable the systemd service that NixOS ships because we have our own "special sauce"
+  system.autoUpgrade = lib.mkForce false;
+
   systemd = {
-    timers."lookahead-nixos-build" = {
+    timers."custom-nixos-upgrade" = {
       enable = true;
       requiredBy = [ "timers.target" ];
 
       timerConfig = {
-        Unit = "lookahead-nixos-build";
+        Unit = "custom-nixos-upgrade";
 
         OnBootSec = "10m";
         OnCalendar = "hourly";
       };
     };
 
-    services."lookahead-nixos-build" = {
+    services."custom-nixos-upgrade" = {
       enable = true;
       path = with pkgs; [
         diffutils
-        gawk
         gitMinimal
-        ncurses
         nix
+        nixos-rebuild
       ];
 
       requires = [ "network-online.target" ];
-      before = [ "nixos-upgrade.service" ];
-      requiredBy = [ "nixos-upgrade.service" ];
 
       serviceConfig = {
         User = "root";
@@ -57,8 +57,7 @@
 
         # Aham Brahmaasmi?
         if [[ "$(( conf_changed + lock_updated ))" -gt 0 ]]; then
-            export TERM='xterm-256color'
-            ${pkgs.bash}/bin/bash ./scripts/nix-ci/nix-build-wrapper.sh machine ${config.networking.hostName}
+            nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}
         else
             set +x
             echo 'DEBUG: no upgrade performed'

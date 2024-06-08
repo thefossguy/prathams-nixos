@@ -3,7 +3,7 @@
 let userHome = "/home/${systemUser.username}";
 
 in {
-  imports = [ ./nixos-update-and-upgrade.nix ];
+  imports = [ ./custom-nixos-upgrade.nix ];
 
   services = {
     fwupd.enable = true;
