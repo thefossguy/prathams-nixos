@@ -28,16 +28,16 @@
     let
       nixpkgs = nixpkgs-1stable;
       home-manager = home-manager-1stable;
-      mkPkgs = { system, passedNixpkgs }: import passedNixpkgs { inherit system; };
+      mkPkgs = { system, passed-nixpkgs }: import passed-nixpkgs { inherit system; };
 
       mkForEachSupportedSystem = supportedSystems: f:
         nixpkgs.lib.genAttrs supportedSystems (system:
           f rec {
             pkgs = pkgs1Stable;
-            pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
-            pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
-            pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
-            pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
+            pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
+            pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
+            pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
+            pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
           });
 
       linuxSystems = {
@@ -188,10 +188,10 @@
       mkNixosSystem = hostname:
         let
           system = nixosMachines.hosts."${hostname}".system;
-          pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
-          pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
-          pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
-          pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
+          pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
+          pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
+          pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
+          pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
@@ -218,10 +218,10 @@
           inherit pkgs;
           extraSpecialArgs = {
             inherit systemUser;
-            pkgs1Stable        = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable; };
-            pkgs1StableSmall   = mkPkgs { inherit system; passedNixpkgs = nixpkgs-1stable-small; };
-            pkgs0Unstable      = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable; };
-            pkgs0UnstableSmall = mkPkgs { inherit system; passedNixpkgs = nixpkgs-0unstable-small; };
+            pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
+            pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
+            pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
+            pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
           };
           modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
         };
