@@ -21,30 +21,30 @@ function package_expression()      { echo ".#packages.${host_nix_system}.$1"; }
 
 function help_text() {
     echo 'I have the following **exclusive** targets:'
-    echo "    - [machine]:    \`nix build .#nixosConfigurations.$(emphasize '"${2:-$(hostname)}"').config.system.build.toplevel\`"
+    echo "    - [system]:    \`nix build .#nixosConfigurations.$(emphasize '"${2:-$(hostname)}"').config.system.build.toplevel\`"
     echo "    - [home]:       \`nix build .#legacyPackages.$(emphasize "${host_nix_system}").homeConfigurations.$(emphasize "${USER}").activationPackage\`"
     echo "    - [iso]:        \`nix build .#nixosConfigurations.z-iso-$(emphasize "$(uname -m)").config.system.build.isoImage\`"
     echo "    - [package]:    \`nix build .#packages.$(emphasize "${host_nix_system}").$(emphasize '"$2"')\`"
-    echo "    - [machines]:    build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
+    echo "    - [systems]:    build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
     echo "    - [homes]:       build \`homeConfigurations\` for all users defined in the \`$(emphasize 'realusers')\` set"
     echo "    - [packages]:    build all \`packages\` where \`system\` == '$(emphasize "${host_nix_system}")'"
-    echo "    - [everything]:  $(emphasize "machines + homes + iso + packages")"
+    echo "    - [everything]:  $(emphasize "systems + homes + iso + packages")"
 }
 
 function source_nix_vals() {
     pushd "$(dirname "$0")" > /dev/null
 
-    nix build --quiet .#listOfNixosMachines 2>/dev/null
+    nix build --quiet .#listOf."${host_nix_system}".nixosSystems 2>/dev/null
     # shellcheck disable=SC1091
     source ./result
-    readonly all_nixos_machines
+    readonly all_nixos_systems
 
-    nix build --quiet .#listOfRealUsers 2>/dev/null
+    nix build --quiet .#listOf."${host_nix_system}".realUsers 2>/dev/null
     # shellcheck disable=SC1091
     source ./result
     readonly all_users
 
-    nix build --quiet .#listOfRealPackages 2>/dev/null
+    nix build --quiet .#listOf."${host_nix_system}".packages 2>/dev/null
     # shellcheck disable=SC1091
     source ./result
     readonly all_packages
@@ -53,10 +53,10 @@ function source_nix_vals() {
     popd > /dev/null
 }
 
-function build_all_machines() {
-    for nixos_machine in "${all_nixos_machines[@]}"; do
-        if [[ "$(nix eval --raw --quiet ".#nixosConfigurations.${nixos_machine}.pkgs.stdenv.system" 2>/dev/null)" == "${host_nix_system}" ]]; then
-            build_targets+=( "$(nixos_system_expression "${nixos_machine}")" )
+function build_all_systems() {
+    for nixos_system in "${all_nixos_systems[@]}"; do
+        if [[ "$(nix eval --raw --quiet ".#nixosConfigurations.${nixos_system}.pkgs.stdenv.system" 2>/dev/null)" == "${host_nix_system}" ]]; then
+            build_targets+=( "$(nixos_system_expression "${nixos_system}")" )
         fi
     done
 }
@@ -73,7 +73,7 @@ function build_all_packages() {
 }
 
 # ugly hack but idk what else to do while still keeping the script "fast enough"
-if [[ "${1:-}" == 'machines' ]] || [[ "${1:-}" == 'homes' ]] || [[ "${1:-}" == 'packages' ]] || [[ "${1:-}" == 'everything' ]]; then
+if [[ "${1:-}" == 'systems' ]] || [[ "${1:-}" == 'homes' ]] || [[ "${1:-}" == 'packages' ]] || [[ "${1:-}" == 'everything' ]]; then
     source_nix_vals
 fi
 
@@ -83,10 +83,10 @@ if [[ -z "${1:-}" ]]; then
     help_text
     exit 1
 
-elif [[ "$1" == 'machine' ]]; then
+elif [[ "$1" == 'system' ]]; then
     build_targets+=( "$(nixos_system_expression "${2:-$(hostname)}")" )
-elif [[ "$1" == 'machines' ]]; then
-    build_all_machines
+elif [[ "$1" == 'systems' ]]; then
+    build_all_systems
 
 elif [[ "$1" == 'home' ]]; then
     build_targets+=( "$(home_manager_expression)" )
@@ -102,7 +102,7 @@ elif [[ "$1" == 'packages' ]]; then
     build_targets+=( "$(build_all_packages)" )
 
 elif [[ "$1" == 'everything' ]]; then
-    build_all_machines
+    build_all_systems
     build_all_homes
     build_all_packages
     build_targets+=( "$(nixos_iso_expression)" )

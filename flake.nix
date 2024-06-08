@@ -183,7 +183,7 @@
         };
       };
 
-      nixosMachinesNames = nixpkgs.lib.concatStringsSep "' '" (nixpkgs.lib.attrNames nixosMachines.hosts);
+      nixosSystemsNames = nixpkgs.lib.concatStringsSep "' '" (nixpkgs.lib.attrNames nixosMachines.hosts);
 
       mkNixosSystem = { hostname, passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager }:
         let
@@ -292,24 +292,25 @@
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
 
-      packages = forEachSupportedSystem ({ pkgs, ... }: {
-        listOfNixosMachines = pkgs.writeTextFile {
-          name = "all-nixos-machines.sh";
-          text = "all_nixos_machines=('${nixosMachinesNames}')";
+      listOf = forEachSupportedSystem ({ pkgs, ... }: {
+        nixosSystems = pkgs.writeTextFile {
+          name = "all-nixos-systems.sh";
+          text = "all_nixos_systems=('${nixosSystemsNames}')";
         };
-        listOfRealUsers = pkgs.writeTextFile {
+        realUsers = pkgs.writeTextFile {
           name = "all-users.sh";
           text = "all_users=('${realUsersNames}')";
         };
-        listOfRealPackages = pkgs.writeTextFile {
+        packages = pkgs.writeTextFile {
           name = "all-packages.sh";
           text = let
-            allRealPackages = pkgs.lib.lists.partition
-              (pkg: (pkg == "listOfRealPackages") || (pkg == "listOfRealUsers") || (pkg == "listOfNixosMachines"))
-              (pkgs.lib.attrNames self.packages.${pkgs.stdenv.system});
-            allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages.wrong;
+            allRealPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
+            allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages;
           in "all_packages=('${allRealPackagesNames}')";
         };
+      });
+
+      packages = forEachSupportedSystem ({ pkgs, ... }: {
       });
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
