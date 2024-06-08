@@ -185,8 +185,11 @@
 
       nixosMachinesNames = nixpkgs.lib.concatStringsSep "' '" (nixpkgs.lib.attrNames nixosMachines.hosts);
 
-      mkNixosSystem = hostname:
+      mkNixosSystem = { hostname, passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager }:
         let
+          nixpkgs = passed-nixpkgs;
+          home-manager = passed-home-manager;
+
           system = nixosMachines.hosts."${hostname}".system;
           pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
           pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
@@ -205,7 +208,7 @@
           modules = [
             ./nixos-configuration/hosts/${hostname}/default.nix
             ./nixos-configuration/hosts/hosts-common.nix
-            self.nixosModules.customNixosBaseModule
+            (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager; })
             home-manager.nixosModules.home-manager {
               home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; };
             }
@@ -233,7 +236,11 @@
         };
     in {
       nixosModules = {
-        customNixosBaseModule = {
+        customNixosBaseModule = { passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager, ... }:
+        let
+          nixpkgs = passed-nixpkgs;
+          home-manager = passed-home-manager;
+        in {
           _module.args = {
             inherit home-manager;
             inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
@@ -266,15 +273,15 @@
       };
 
       nixosConfigurations = {
-        flameboi   = mkNixosSystem "flameboi";
-        sentinel   = mkNixosSystem "sentinel";
-        reddish    = mkNixosSystem "reddish";
-        mahadev    = mkNixosSystem "mahadev";
-        pawandev   = mkNixosSystem "pawandev";
-        stuti      = mkNixosSystem "stuti";
-        chaturvyas = mkNixosSystem "chaturvyas";
-        vaaman     = mkNixosSystem "vaaman";
-        vaayu      = mkNixosSystem "vaayu";
+        flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
+        sentinel   = mkNixosSystem { hostname = "sentinel"; };
+        reddish    = mkNixosSystem { hostname = "reddish"; };
+        mahadev    = mkNixosSystem { hostname = "mahadev"; };
+        pawandev   = mkNixosSystem { hostname = "pawandev"; };
+        stuti      = mkNixosSystem { hostname = "stuti"; };
+        chaturvyas = mkNixosSystem { hostname = "chaturvyas"; };
+        vaaman     = mkNixosSystem { hostname = "vaaman"; };
+        vaayu      = mkNixosSystem { hostname = "vaayu"; };
 
         z-iso-aarch64 = mkNixosIso "aarch64";
         z-iso-x86_64  = mkNixosIso "x86_64";

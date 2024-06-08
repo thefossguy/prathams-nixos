@@ -1,8 +1,6 @@
 { ... }:
 
 {
-  imports = [ ../../includes/display-server/kde-plasma.nix ];
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/B911-786F";
     fsType = "vfat";

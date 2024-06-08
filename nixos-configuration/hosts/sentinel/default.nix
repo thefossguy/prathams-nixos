@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [ ../../includes/display-server/bspwm.nix ];
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0659-9795";
     fsType = "vfat";
