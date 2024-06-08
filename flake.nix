@@ -26,8 +26,8 @@
     nixpkgs-0unstable-small, home-manager-0unstable-small,
     ... }:
     let
-      nixpkgs = nixpkgs-1stable;
-      home-manager = home-manager-1stable;
+      nixpkgs = nixpkgs-1stable-small;
+      home-manager = home-manager-1stable-small;
       mkPkgs = { system, passed-nixpkgs }: import passed-nixpkgs { inherit system; };
 
       mkForEachSupportedSystem = supportedSystems: f:
@@ -227,7 +227,7 @@
         };
 
       mkNixosIso = systemArch:
-        nixpkgs-1stable-small.lib.nixosSystem {
+        nixpkgs.lib.nixosSystem {
           system = linuxSystems."${systemArch}";
           modules = [ self.nixosModules.customNixosIsoModule ];
         };
