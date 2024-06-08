@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, flakeUri, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -76,6 +76,7 @@
       # doesn't affect 'pratham' since there is an `unalias -a` in $HOME/.bashrc
       shellAliases = {
         "e" = "${pkgs.vim}/bin/vim";
+        "do-nixos-rebuild" = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}";
       };
     };
 
