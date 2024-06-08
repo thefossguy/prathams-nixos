@@ -125,4 +125,4 @@ fi
 
 set -x
 $nix_flake_update
-time $nix_bin build "${build_targets[@]}"
+time $nix_bin build --print-build-logs --show-trace "${build_targets[@]}"
