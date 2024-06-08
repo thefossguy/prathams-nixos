@@ -292,6 +292,9 @@
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
 
+      packages = forEachSupportedSystem ({ pkgs, ... }: {
+      });
+
       listOf = forEachSupportedSystem ({ pkgs, ... }: {
         nixosSystems = pkgs.writeTextFile {
           name = "all-nixos-systems.sh";
@@ -308,9 +311,6 @@
             allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages;
           in "all_packages=('${allRealPackagesNames}')";
         };
-      });
-
-      packages = forEachSupportedSystem ({ pkgs, ... }: {
       });
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
