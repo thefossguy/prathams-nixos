@@ -230,7 +230,7 @@
         };
 
       mkNixosIso = systemArch:
-        nixpkgs.lib.nixosSystem {
+        nixpkgs-1stable-small.lib.nixosSystem {
           system = linuxSystems."${systemArch}";
           modules = [ self.nixosModules.customNixosIsoModule ];
         };
