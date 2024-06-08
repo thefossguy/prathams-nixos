@@ -2,7 +2,7 @@
 
 {
   # we disable the systemd service that NixOS ships because we have our own "special sauce"
-  system.autoUpgrade = lib.mkForce false;
+  system.autoUpgrade.enable = lib.mkForce false;
 
   systemd = {
     timers."custom-nixos-upgrade" = {
