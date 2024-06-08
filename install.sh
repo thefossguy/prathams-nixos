@@ -67,7 +67,7 @@ set -x
 mount | grep " on ${MOUNT_PATH}" && umount --recursive --force "${MOUNT_PATH}"
 
 # now we partition
-./scripts/partition-disk.sh
+./scripts/installation-scripts/partition-disk.sh
 
 # finally, we install NixOS
 TOTAL_MEM_IN_KIB="$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')"
@@ -95,7 +95,7 @@ REAL_USER_LIST=( $(awk -F ':' '{print $6}' "${MOUNT_PATH}/etc/passwd" | grep '/h
 CHROOT_USER_SCRIPT='chroot-user-setup.sh'
 for NIXOS_USER in "${REAL_USER_LIST[@]}"; do
     DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
-    cp "scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${DESTINATION}"
+    cp "scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${DESTINATION}"
     nixos-enter --root "${MOUNT_PATH}" -c "sudo -i -u ${NIXOS_USER} bash ${DESTINATION}"
     rm "${MOUNT_PATH}${DESTINATION}"
 done
