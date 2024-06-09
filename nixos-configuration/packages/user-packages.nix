@@ -81,7 +81,6 @@ in {
     hyperfine
     iperf # this is iperf3
     iperf2 # this is what is usually 'iperf' on other distros
-    just
     mediainfo
     nload
     parallel
@@ -101,6 +100,7 @@ in {
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
+    nixfmt-classic
 
     # these projects were deleted
     #cargo-deps # build dependency graph of Rust projects # https://github.com/NixOS/nixpkgs/pull/302970#issuecomment-2046592104
@@ -133,7 +133,6 @@ in {
         lldb # provides lldb-vscode
         lua-language-server
         nil # language server for Nix
-        nixfmt-classic
         nodePackages.bash-language-server
         ruff
         shellcheck
