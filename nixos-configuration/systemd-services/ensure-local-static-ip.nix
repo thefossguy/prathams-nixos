@@ -4,7 +4,8 @@
   systemd = {
     services."ensure-local-static-ip" = {
       enable = true;
-      requiredBy = [ "basic.target" ];
+      wantedBy = [ "basic.target" ];
+      requires = [ "network-online.target" ];
 
       serviceConfig = {
         User = "root";
@@ -12,11 +13,26 @@
       };
 
       script = ''
-        (${pkgs.iproute2}/bin/ip -brief address show ${networkingIface} | \
-            ${pkgs.gawk}/bin/awk '{print $3}' | \
-            ${pkgs.gawk}/bin/awk -F/ '{print $1}' | \
-            ${pkgs.gnugrep}/bin/grep -q ${ipv4Address}) || \
-            ${pkgs.systemd}/bin/systemctl reboot
+        set -xuf -o pipefail
+        # wait for 120 seconds
+        # on top of the 120 seconds that `systemd-networkd-wait-online.service` waits for
+        for i in $(seq 0 11); do
+            iface_status="$(${pkgs.iproute2}/bin/ip -brief address show ${networkingIface})"
+
+            if [[ "''${iface_status}" =~ UP ]]; then
+                if [[ "''${iface_status}" =~ ${ipv4Address} ]]; then
+                    exit 0
+                else
+                    systemctl reboot
+                fi
+            fi
+
+            sleep 10
+        done
+
+        # the networking interface that we needed was not **online**
+        # just exit gracefully
+        exit 0
       '';
     };
   };
