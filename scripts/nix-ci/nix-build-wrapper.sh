@@ -21,11 +21,11 @@ function package_expression()      { echo ".#packages.${host_nix_system}.$1"; }
 
 function help_text() {
     echo 'I have the following **exclusive** targets:'
-    echo "    - [system]:    \`nix build .#nixosConfigurations.$(emphasize '"${2:-$(hostname)}"').config.system.build.toplevel\`"
+    echo "    - [system]:     \`nix build .#nixosConfigurations.$(emphasize '"${2:-$(hostname)}"').config.system.build.toplevel\`"
     echo "    - [home]:       \`nix build .#legacyPackages.$(emphasize "${host_nix_system}").homeConfigurations.$(emphasize "${USER}").activationPackage\`"
     echo "    - [iso]:        \`nix build .#nixosConfigurations.z-iso-$(emphasize "$(uname -m)").config.system.build.isoImage\`"
     echo "    - [package]:    \`nix build .#packages.$(emphasize "${host_nix_system}").$(emphasize '"$2"')\`"
-    echo "    - [systems]:    build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
+    echo "    - [systems]:     build all \`nixosConfigurations\` where \`system\` == '$(emphasize "${host_nix_system}")'"
     echo "    - [homes]:       build \`homeConfigurations\` for all users defined in the \`$(emphasize 'realusers')\` set"
     echo "    - [packages]:    build all \`packages\` where \`system\` == '$(emphasize "${host_nix_system}")'"
     echo "    - [everything]:  $(emphasize "systems + homes + iso + packages")"
