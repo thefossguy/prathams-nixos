@@ -5,10 +5,12 @@ let
   hm_config_dir = "${homeDir}/.prathams-nixos";
 
 in lib.mkIf pkgs.stdenv.isLinux {
+  services.home-manager.autoUpgrade.enable = lib.mkForce false;
+
   systemd.user.services = {
-    "upgrade-my-home" = {
+    "custom-home-manager-upgrade" = {
       Service = {
-        ExecStart = "${pkgs.writeShellScript "upgrade-my-home-execstart.sh" ''
+        ExecStart = "${pkgs.writeShellScript "custom-home-manager-upgrade-execstart.sh" ''
           set -xeuf -o pipefail
 
           [[ ! -d ${hm_config_dir} ]] && ${pkgs.gitMinimal}/bin/git clone https://gitlab.com/thefossguy/prathams-nixos ${hm_config_dir}
@@ -27,11 +29,11 @@ in lib.mkIf pkgs.stdenv.isLinux {
   };
 
   systemd.user.timers = {
-    "upgrade-my-home" = {
+    "custom-home-manager-upgrade" = {
       Timer = {
         OnBootSec = "now";
         OnCalendar = "Monday *-*-* 07:00:00";
-        Unit = "upgrade-my-home.service";
+        Unit = "custom-home-manager-upgrade.service";
       };
       Install = { WantedBy = [ "timers.target" ]; };
     };

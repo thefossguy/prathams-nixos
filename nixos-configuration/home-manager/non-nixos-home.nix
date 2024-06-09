@@ -3,7 +3,7 @@
 {
   imports = [
     ./common-home.nix
-    ../systemd-services/upgrade-my-home.nix
+    ../systemd-services/custom-home-manager-upgrade.nix
   ];
 
   nix = {
