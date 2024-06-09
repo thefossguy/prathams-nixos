@@ -6,6 +6,7 @@ in {
   imports = [
    ./custom-nixos-upgrade.nix
    ./ensure-local-static-ip.nix
+   ./needs-reboot.nix
    ];
 
   services = {
