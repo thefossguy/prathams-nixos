@@ -37,12 +37,11 @@
 
         [[ ! -d ${flakeUri} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
         pushd ${flakeUri}
-
         git pull
         nix flake update
-        nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}
-
         popd
+
+        nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}
       '';
     };
   };
