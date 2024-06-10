@@ -53,6 +53,7 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+    brave
     fractal
     kdePackages.filelight
     kdePackages.ghostwriter
