@@ -77,9 +77,9 @@ if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
     echo "WARNING: Total memory is less than ${MIN_MEMORY_IN_GIB} GB. You might get an OOM-kill ... "
 fi
 
-nix flake update
+nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
 if [[ "$(uname -m)" == 'aarch64' ]]; then
-    nix build .#packages."$(uname -m)-linux".customRPiUBoot
+    nix build --extra-experimental-features nix-command --extra-experimental-features flakes .#packages."$(uname -m)-linux".customRPiUBoot
     cp result/* "${MOUNT_PATH}"/boot
 fi
 
