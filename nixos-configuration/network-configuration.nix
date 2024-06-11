@@ -1,13 +1,14 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
-let domainNameServers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
-
+let
+  domainNameServers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
+  enableWaitOnline = config.custom-options.enableLocalStaticIpCheck;
 in {
   systemd.network = {
     enable = true;
     wait-online = {
-      enable = true;
-      anyInterface = true;
+      enable = enableWaitOnline;
+      anyInterface = enableWaitOnline;
     };
   };
 
