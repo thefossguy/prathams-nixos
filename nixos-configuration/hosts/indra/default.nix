@@ -1,7 +1,10 @@
 { ... }:
 
 {
-  imports = [ ../../includes/display-server/kde-plasma.nix ];
+  imports = [
+    ../../battery-and-power-management.nix
+    ../../includes/display-server/kde-plasma.nix
+  ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";
