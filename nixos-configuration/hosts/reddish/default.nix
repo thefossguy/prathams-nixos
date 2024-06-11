@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
+  imports = [ ../_raspberry-pi/4/default.nix ];
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/15D7-1EF4";
     fsType = "vfat";
@@ -20,8 +22,6 @@
     device = "/dev/disk/by-uuid/cb9dcd35-891b-438f-baa1-fd3278dc3069";
     fsType = "xfs";
   };
-
-  environment.systemPackages = [ pkgs.rpiUBootAndFirmware ];
 
   custom-options.enableRootlessContainers = true;
   networking.firewall.allowedTCPPorts = [

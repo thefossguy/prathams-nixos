@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
+  imports = [ ../_raspberry-pi/4/default.nix ];
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0659-9795";
     fsType = "vfat";
@@ -20,6 +22,4 @@
     device = "/dev/disk/by-uuid/1a989d9a-e9d6-4762-b6d4-8c4774ec1d93";
     fsType = "xfs";
   };
-
-  environment.systemPackages = [ pkgs.rpiUBootAndFirmware ];
 }

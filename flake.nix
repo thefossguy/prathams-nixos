@@ -105,6 +105,7 @@
           pawandev.hostId   = "2fefd3b2";
           stuti.hostId      = "07ca9dd4";
           chaturvyas.hostId = "6e52044b";
+          raajan.hostId     = "337088b4";
           vaaman.hostId     = "3c8077f9";
           vaayu.hostId      = "d81cd923";
 
@@ -128,6 +129,14 @@
           reddish = {
             hostname = "reddish";
             ipv4Address = "10.0.0.19";
+            networkingIface = "end0";
+            system = linuxSystems.aarch64;
+          };
+
+          # Raspberry Pi 5 Model B (8GB)
+          raajan = {
+            hostname = "reddish";
+            ipv4Address = "10.0.0.59";
             networkingIface = "end0";
             system = linuxSystems.aarch64;
           };
@@ -242,7 +251,7 @@
           home-manager = passed-home-manager;
         in {
           _module.args = {
-            inherit home-manager;
+            inherit home-manager nixpkgs;
             inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
           };
 
@@ -276,6 +285,7 @@
         flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
         sentinel   = mkNixosSystem { hostname = "sentinel"; };
         reddish    = mkNixosSystem { hostname = "reddish"; };
+        raajan     = mkNixosSystem { hostname = "raajan"; };
         mahadev    = mkNixosSystem { hostname = "mahadev"; };
         pawandev   = mkNixosSystem { hostname = "pawandev"; };
         stuti      = mkNixosSystem { hostname = "stuti"; };

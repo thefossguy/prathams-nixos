@@ -14,7 +14,6 @@
 
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
-  nixpkgs.overlays = [ (import ./packages/rpiUBootAndFirmware.nix) ];
   system.stateVersion = lib.versions.majorMinor lib.version;
 
   nix = {
