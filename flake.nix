@@ -99,6 +99,7 @@
         hosts = {
           # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`
           flameboi.hostId   = "20c95fe3";
+          indra.hostId      = "d92f6246";
           sentinel.hostId   = "041d6ae7";
           reddish.hostId    = "996ccb68";
           mahadev.hostId    = "c06c1a49";
@@ -114,6 +115,14 @@
             hostname = "flameboi";
             ipv4Address = "10.0.0.13";
             networkingIface = "eth0";
+            system = linuxSystems.x86_64;
+          };
+
+          # Lenovo Yoga Slim 6 (Intel 16GB; i5-13500H; Iris Xe)
+          indra = {
+            hostname = "indra";
+            ipv4Address = "10.0.0.50";
+            networkingIface = "wlp0s20f3";
             system = linuxSystems.x86_64;
           };
 
@@ -283,6 +292,7 @@
 
       nixosConfigurations = {
         flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
+        indra      = mkNixosSystem { hostname = "indra";    passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
         sentinel   = mkNixosSystem { hostname = "sentinel"; };
         reddish    = mkNixosSystem { hostname = "reddish"; };
         raajan     = mkNixosSystem { hostname = "raajan"; };
