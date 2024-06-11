@@ -1,10 +1,12 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
     ../../battery-and-power-management.nix
     ../../includes/display-server/kde-plasma.nix
   ];
+
+  custom-options.enableLocalStaticIpCheck = lib.mkForce false; # is a laptop, wireless cannot connect at boot like eth lol
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";

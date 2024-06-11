@@ -1,6 +1,6 @@
-{ pkgs, ipv4Address, networkingIface,  ... }:
+{ config, lib, pkgs, ipv4Address, networkingIface,  ... }:
 
-{
+lib.mkIf config.custom-options.enableLocalStaticIpCheck {
   systemd = {
     services."ensure-local-static-ip" = {
       enable = true;
