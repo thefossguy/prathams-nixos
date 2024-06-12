@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, systemUser, ... }:
 
 {
   imports = [ ./base-display-server.nix ];
@@ -8,6 +8,7 @@
     extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
   };
 
+  security.pam.services.${systemUser.username}.kwallet.enable = true;
   services = {
     desktopManager.plasma6.enable = true;
 
