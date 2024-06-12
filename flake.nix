@@ -84,7 +84,7 @@
 
       nixosMachines = {
         misc = {
-          flakeUri = "/root/prathams-nixos";
+          flakeUri = "/etc/nixos";
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
 
