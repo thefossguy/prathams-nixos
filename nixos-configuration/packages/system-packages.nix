@@ -77,6 +77,7 @@
       shellAliases = {
         "e" = "${pkgs.vim}/bin/vim";
         "do-nixos-rebuild" = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}";
+        "donixos-rebuild" = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}";
       };
     };
 
