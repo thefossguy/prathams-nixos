@@ -90,6 +90,8 @@ nixos-install \
     --flake ".#${HOSTNAME}"
 
 # very very initial setup for 'pratham'
+# enable networking first
+mount -o bind /etc/resolv.conf "${MOUNT_PATH}/etc/resolv.conf"
 # shellcheck disable=SC2207
 REAL_USER_LIST=( $(awk -F ':' '{print $6}' "${MOUNT_PATH}/etc/passwd" | grep '/home/' | awk -F '/' '{print $NF}') )
 CHROOT_USER_SCRIPT='chroot-user-setup.sh'
