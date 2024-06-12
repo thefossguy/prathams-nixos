@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../battery-and-power-management.nix
+    #../../battery-and-power-management.nix
     ../../includes/display-server/kde-plasma.nix
   ];
 
