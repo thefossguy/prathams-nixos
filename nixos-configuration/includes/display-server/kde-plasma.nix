@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [ ./base-display-server.nix ];
@@ -16,9 +16,8 @@
 
       sddm = {
         enable = true;
-        wayland.enable = true;
+        wayland.enable = lib.mkDefault false; # wayland support is experimental
         enableHidpi = true;
-        settings.General.DisplayServer = "x11-user";
         #autologin = {
         #  enable = true;
         #  user = systemUser.username;
