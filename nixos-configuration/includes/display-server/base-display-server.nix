@@ -17,11 +17,6 @@
         combineScreens = false; # same wallpaper for all screens
       };
     };
-
-    videoDrivers = [
-      "amdgpu"
-      "xe"
-    ];
   };
 
   services = {
