@@ -35,7 +35,7 @@
       script = ''
         set -xuf -o pipefail
 
-        [[ ! -d ${flakeUri} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
+        [[ ! -d ${flakeUri}/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
         pushd ${flakeUri}
         git pull
         nix flake update
