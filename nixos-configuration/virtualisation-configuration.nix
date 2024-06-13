@@ -11,7 +11,6 @@
 
       qemu = {
         ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMF ];
         package = pkgs.qemu_kvm;
         runAsRoot = false; # not sure about this
         swtpm.enable = true;
