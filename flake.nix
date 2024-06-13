@@ -80,7 +80,6 @@
       };
 
       systemUsers = miscUsers // realUsers;
-      realUsersNames = nixpkgs.lib.concatStringsSep "' '" (nixpkgs.lib.attrNames realUsers);
 
       nixosMachines = {
         misc = {
@@ -201,8 +200,6 @@
         };
       };
 
-      nixosSystemsNames = nixpkgs.lib.concatStringsSep "' '" (nixpkgs.lib.attrNames nixosMachines.hosts);
-
       mkNixosSystem = { hostname, passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager }:
         let
           nixpkgs = passed-nixpkgs;
@@ -304,8 +301,8 @@
         vaayu      = mkNixosSystem { hostname = "vaayu"; };
 
         z-iso-aarch64 = mkNixosIso "aarch64";
-        z-iso-x86_64  = mkNixosIso "x86_64";
         z-iso-riscv64 = mkNixosIso "riscv64";
+        z-iso-x86_64  = mkNixosIso "x86_64";
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
@@ -315,22 +312,106 @@
       packages = forEachSupportedSystem ({ pkgs, ... }: {
       });
 
-      listOf = forEachSupportedSystem ({ pkgs, ... }: {
-        nixosSystems = pkgs.writeTextFile {
-          name = "all-nixos-systems.sh";
-          text = "all_nixos_systems=('${nixosSystemsNames}')";
+      apps = forEachSupportedSystem ({ pkgs, ... }: {
+        buildThisNixosSystem = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.thisNixosSystem}/bin/run.sh";
         };
-        realUsers = pkgs.writeTextFile {
-          name = "all-users.sh";
-          text = "all_users=('${realUsersNames}')";
+        buildAllNixosSystems = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.allNixosSystems}/bin/run.sh";
         };
-        packages = pkgs.writeTextFile {
-          name = "all-packages.sh";
-          text = let
-            allRealPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
-            allRealPackagesNames = pkgs.lib.concatStringsSep "' '" allRealPackages;
-          in "all_packages=('${allRealPackagesNames}')";
+
+        buildThisHome = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.thisHome}/bin/run.sh";
         };
+        buildAllHomes = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.allHomes}/bin/run.sh";
+        };
+
+        buildThisPackage = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.thisPackage}/bin/run.sh";
+        };
+        buildAllPackages = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.allPackages}/bin/run.sh";
+        };
+
+        buildIsos = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.allIsos}/bin/run.sh";
+        };
+        buildEverything = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.default}/bin/run.sh";
+        };
+      });
+
+      builders = forEachSupportedSystem ({ pkgs, ... }: let
+        lib = pkgs.lib;
+        system = pkgs.stdenv.system;
+        nixBuilder = "${pkgs.nix-output-monitor}/bin/nom";
+
+        buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
+        allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
+
+        concatListToString = passedList: lib.concatStringsSep "," passedList;
+        encloseInBrackets = passedList: if (lib.lists.length passedList > 1)
+          then "{" + concatListToString passedList + "}"
+          else concatListToString passedList;
+
+        listOfAllSystems = encloseInBrackets (lib.attrNames buildableSystems);
+        listOfAllUsers = encloseInBrackets (lib.attrNames realUsers);
+        listOfAllPackages = encloseInBrackets allPackages;
+
+        buildExpressionOfSystem  = nixosSystem: if (lib.stringLength nixosSystem == 0) then ""
+          else ".#nixosConfigurations.${nixosSystem}.config.system.build.toplevel";
+        buildExpressionOfHome    = user:        if (lib.stringLength user == 0) then ""
+          else ".#legacyPackages.${system}.homeConfigurations.${user}.activationPackage";
+        buildExpressionOfPackage = package:     if (lib.stringLength package== 0) then ""
+          else ".#packages.${system}.${package}";
+        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-$(uname -m).config.system.build.isoImage";
+      in {
+        default = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          # the order matters because they are listed in the priority of build status to me
+          ${nixBuilder} build  ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
+        '';
+
+        thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfSystem ''''${NIXOS_MACHINE_HOSTNAME:-}''}
+        '';
+        allNixosSystems = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfSystem "${listOfAllSystems}"}
+        '';
+
+        thisHome = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfHome ''''${USER:-}''}
+        '';
+        allHomes = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfHome "${listOfAllUsers}"}
+        '';
+
+        thisPackage = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfPackage ''''${1:-}''}
+        '';
+        allPackages = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfPackage "${listOfAllPackages}"}
+        '';
+
+        allIso = pkgs.writeShellScriptBin "run.sh" ''
+          set -x
+          ${nixBuilder} build ${buildExpressionOfIso}
+        '';
       });
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
