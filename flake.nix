@@ -320,6 +320,12 @@
       });
 
       apps = forEachSupportedSystem ({ pkgs, ... }: {
+        default = self.apps.${pkgs.stdenv.system}.buildEverything;
+        buildEverything = {
+          type = "app";
+          program = "${self.builders.${pkgs.stdenv.system}.default}/bin/run.sh";
+        };
+
         buildThisNixosSystem = {
           type = "app";
           program = "${self.builders.${pkgs.stdenv.system}.thisNixosSystem}/bin/run.sh";
@@ -350,10 +356,6 @@
         buildIsos = {
           type = "app";
           program = "${self.builders.${pkgs.stdenv.system}.allIsos}/bin/run.sh";
-        };
-        buildEverything = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.default}/bin/run.sh";
         };
       });
 
