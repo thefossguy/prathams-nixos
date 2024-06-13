@@ -48,16 +48,22 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+    authenticator
     brave
     fractal
-    kdePackages.filelight
-    kdePackages.ghostwriter
-    kdePackages.keysmith
     mediainfo-gui
+    metadata-cleaner
     mpv
     neovide
+    paper-clip
+    snapshot
     ungoogled-chromium
-  ];
+  ] ++ (with pkgs.kdePackages; [
+    filelight
+    ghostwriter
+    kalk
+    keysmith
+  ]);
 
   fonts = {
     fontDir.enable = true;
