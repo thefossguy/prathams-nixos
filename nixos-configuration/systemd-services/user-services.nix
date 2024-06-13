@@ -35,8 +35,8 @@ in lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.timers = {
     "dotfiles-pull" = {
       Timer = {
-        OnBootSec = "now";
-        OnCalendar = "*-*-* 23:00:00";
+        OnBootSec = "10m";
+        OnCalendar = "*-*-* 18:00:00";
         Unit = "dotfiles-pull.service";
       };
       Install = { WantedBy = [ "timers.target" ]; };
@@ -44,8 +44,8 @@ in lib.mkIf pkgs.stdenv.isLinux {
 
     "flatpak-manage" = {
       Timer = {
-        OnBootSec = "now";
-        OnCalendar = "*-*-* 04:00:00";
+        OnBootSec = "10m";
+        OnCalendar = "*-*-* 18:00:00";
         Unit = "flatpak-manage.service";
       };
       Install = { WantedBy = [ "timers.target" ]; };
@@ -53,8 +53,8 @@ in lib.mkIf pkgs.stdenv.isLinux {
 
     "update-rust" = {
       Timer = {
-        OnBootSec = "now";
-        OnCalendar = "*-*-* 04:00:00";
+        OnBootSec = "10m";
+        OnCalendar = "*-*-* 18:00:00";
         Unit = "update-rust.service";
       };
       Install = { WantedBy = [ "timers.target" ]; };
