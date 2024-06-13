@@ -48,21 +48,20 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
-    authenticator
+    authenticator # alt to Google Authenticator on iOS/Android
     brave
-    fractal
+    fractal # matrix client
     mediainfo-gui
-    metadata-cleaner
+    metadata-cleaner # exif removal
     mpv
-    neovide
-    paper-clip
-    snapshot
+    neovide # haz nice neovim animations
+    paper-clip # PDF editor
+    snapshot # camera
     ungoogled-chromium
   ] ++ (with pkgs.kdePackages; [
-    filelight
-    ghostwriter
-    kalk
-    keysmith
+    filelight # visualize disk space
+    ghostwriter # markdown editor
+    kalk # calculator
   ]);
 
   fonts = {
