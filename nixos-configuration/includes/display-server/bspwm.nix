@@ -25,10 +25,6 @@
           enable = true;
           enableHidpi = true;
           settings.General.DisplayServer = "x11-user";
-          #autologin = {
-          #  enable = true;
-          #  user = systemUser.username;
-          #};
         };
       };
     };

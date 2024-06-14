@@ -19,10 +19,6 @@
         enable = true;
         wayland.enable = lib.mkDefault false; # wayland support is experimental
         enableHidpi = true;
-        #autologin = {
-        #  enable = true;
-        #  user = systemUser.username;
-        #};
       };
     };
   };
