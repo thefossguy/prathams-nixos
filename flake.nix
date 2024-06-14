@@ -59,8 +59,8 @@
 
       miscUsers = {
         # generate the `hashedPassword` using `mkpasswd`
-        root.hashedPassword     = "$y$j9T$pu6FzqviKwK3OJFd/iRjc.$9AS4GXVkjYhrFKK/apJzQj3a8eTikI2S0jBhRAS/1e8";
-        nixosIso.hashedPassword = "$y$j9T$Cvs/IpcrqGMijUQzTK/QT.$MUR/yeWILyoA8TK/lHGJmA32WR60OOko9WI/z7T0BB9";
+        root.hashedPassword     = "$y$j9T$BzG/Oq8bbL.2uq2/MuRox.$cofHV3CnpcdI4PI5nEEJz//nWqFWiAL8Mfj8/adLJhC";
+        nixosIso.hashedPassword = "$y$j9T$vMupXoz6rvpT55CkuDenZ0$umu0dpi6NG7lllLcoP9L.wY0ZxEY2wbmPwkiBFsejnC";
 
         nixosIso = {
           username = "nixos";
@@ -74,7 +74,7 @@
         pratham = {
           username = "pratham";
           fullname = "Pratham Patel";
-          hashedPassword = "$y$j9T$OfCucSHxqUwSKja6tw/K..$ookfkYGconxq6oqeRYMUR2WhjwFxiuDsIe9aCBQTVz8";
+          hashedPassword = "$y$j9T$dyQH1g6q6YjT.8lNruhJT.$xU2x3Phl3L6ey6tIWfmBlgHlCMrTnAxn9yD.a2/yS82";
           enableLingering = true;
         };
       };
