@@ -27,6 +27,9 @@
     };
   };
 
+  # enables the Wayland trackpad gestures in Chroimum/Electron
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
   environment.systemPackages = with pkgs; [
     cliphist
     wayland-utils
