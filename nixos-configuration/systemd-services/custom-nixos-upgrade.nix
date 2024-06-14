@@ -35,6 +35,11 @@
       script = ''
         set -xuf -o pipefail
 
+        if ! "${pkgs.iputils}/bin/ping" -c 10 cache.nixos.org; then
+            echo 'ERROR: Not connected to the internet... exiting...'
+            exit 0
+        fi
+
         [[ ! -d ${flakeUri}/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
         pushd ${flakeUri}
         git pull
