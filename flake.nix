@@ -244,14 +244,10 @@
           modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
         };
 
-      mkNixosIso = { systemArch, isoModuleName ? "installation-cd-minimal.nix" }: let
-        nixpkgs = nixpkgs-1stable-small;
-        in nixpkgs.lib.nixosSystem {
+      mkNixosIso = { systemArch }:
+        nixpkgs-1stable-small.lib.nixosSystem {
           system = linuxSystems."${systemArch}";
-          modules = [
-            self.nixosModules.customNixosIsoModule
-            { imports = [ "${nixpkgs.outPath}/nixos/modules/installer/cd-dvd/${isoModuleName}" ]; }
-          ];
+          modules = [ self.nixosModules.customNixosIsoModule ];
         };
     in {
       nixosModules = {
@@ -307,9 +303,6 @@
         z-iso-aarch64 = mkNixosIso { systemArch = "aarch64"; };
         z-iso-riscv64 = mkNixosIso { systemArch = "riscv64"; };
         z-iso-x86_64  = mkNixosIso { systemArch = "x86_64"; };
-        z-iso-aarch64-kde = mkNixosIso { systemArch = "aarch64"; isoModuleName = "installation-cd-graphical-calamares-plasma6.nix"; };
-        z-iso-riscv64-kde = mkNixosIso { systemArch = "riscv64"; isoModuleName = "installation-cd-graphical-calamares-plasma6.nix"; };
-        z-iso-x86_64-kde  = mkNixosIso { systemArch = "x86_64";  isoModuleName = "installation-cd-graphical-calamares-plasma6.nix"; };
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
@@ -353,9 +346,9 @@
           program = "${self.builders.${pkgs.stdenv.system}.allPackages}/bin/run.sh";
         };
 
-        buildIsos = {
+        buildIso = {
           type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.allIsos}/bin/run.sh";
+          program = "${self.builders.${pkgs.stdenv.system}.theIso}/bin/run.sh";
         };
       });
 
@@ -382,7 +375,7 @@
           else ".#legacyPackages.${system}.homeConfigurations.${user}.activationPackage";
         buildExpressionOfPackage = package:     if (lib.stringLength package== 0) then ""
           else ".#packages.${system}.${package}";
-        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-$(uname -m){,-kde}.config.system.build.isoImage";
+        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-$(uname -m).config.system.build.isoImage";
       in {
         default = pkgs.writeShellScriptBin "run.sh" ''
           set -x
@@ -417,7 +410,7 @@
           ${nixBuilder} build ${buildExpressionOfPackage "${listOfAllPackages}"}
         '';
 
-        allIso = pkgs.writeShellScriptBin "run.sh" ''
+        theIso = pkgs.writeShellScriptBin "run.sh" ''
           set -x
           ${nixBuilder} build ${buildExpressionOfIso}
         '';

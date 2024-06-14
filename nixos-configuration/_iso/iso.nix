@@ -1,4 +1,4 @@
-{ lib, pkgs, supportedFilesystemsSansZFS, ... }:
+{ lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
 
 let
   getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''
@@ -21,6 +21,8 @@ let
   '';
 
 in {
+  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+
   environment.systemPackages = with pkgs; [
     # utilities necessary for installation
     hdparm
