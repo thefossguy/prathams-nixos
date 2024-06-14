@@ -355,7 +355,7 @@
       builders = forEachSupportedSystem ({ pkgs, ... }: let
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
-        nixBuilder = "${pkgs.nix-output-monitor}/bin/nom";
+        nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build  --verbose --trace-verbose --print-build-logs --show-trace";
 
         buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
@@ -380,39 +380,39 @@
         default = pkgs.writeShellScriptBin "run.sh" ''
           set -x
           # the order matters because they are listed in the priority of build status to me
-          ${nixBuilder} build  ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
+          ${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
         '';
 
         thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfSystem ''''${NIXOS_MACHINE_HOSTNAME:-}''}
+          ${nixBuildCmd} ${buildExpressionOfSystem ''''${NIXOS_MACHINE_HOSTNAME:-}''}
         '';
         allNixosSystems = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfSystem "${listOfAllSystems}"}
+          ${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"}
         '';
 
         thisHome = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfHome ''''${USER:-}''}
+          ${nixBuildCmd} ${buildExpressionOfHome ''''${USER:-}''}
         '';
         allHomes = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfHome "${listOfAllUsers}"}
+          ${nixBuildCmd} ${buildExpressionOfHome "${listOfAllUsers}"}
         '';
 
         thisPackage = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfPackage ''''${1:-}''}
+          ${nixBuildCmd} ${buildExpressionOfPackage ''''${1:-}''}
         '';
         allPackages = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfPackage "${listOfAllPackages}"}
+          ${nixBuildCmd} ${buildExpressionOfPackage "${listOfAllPackages}"}
         '';
 
         theIso = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuilder} build ${buildExpressionOfIso}
+          ${nixBuildCmd} ${buildExpressionOfIso}
         '';
       });
 
