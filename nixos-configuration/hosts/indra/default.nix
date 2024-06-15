@@ -1,15 +1,11 @@
 { lib, ... }:
 
 {
-  imports = [
-    #../../battery-and-power-management.nix
-    ../../includes/display-server/kde-plasma.nix
-  ];
+  imports = [ ../../includes/display-server/kde-plasma.nix ];
 
-  # we no wants sound over HDMI
-  boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ];
-
+  boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   custom-options.enableLocalStaticIpCheck = lib.mkForce false; # is a laptop, wireless cannot connect at boot like eth lol
+  hardware.bluetooth.enable = true;
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";
