@@ -8,7 +8,7 @@ if [[ "$(id -u)" != '0' ]]; then
     exit 1
 fi
 
-if ! ping -c 1 google.com > /dev/null; then
+if ! ping -c 10 google.com > /dev/null; then
     echo 'ERROR: Not connected to the internet... exiting...'
     exit 1
 fi
