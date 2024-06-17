@@ -93,7 +93,7 @@ CHROOT_USER_SCRIPT='chroot-user-setup.sh'
 for NIXOS_USER in "${REAL_USER_LIST[@]}"; do
     DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
     cp "scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${DESTINATION}"
-    nixos-enter --root "${MOUNT_PATH}" -c "sudo -i -u ${NIXOS_USER} bash ${DESTINATION}"
+    nixos-enter --root "${MOUNT_PATH}" -c "su --login ${NIXOS_USER} --command 'bash ${DESTINATION}'"
     rm "${MOUNT_PATH}${DESTINATION}"
 done
 
