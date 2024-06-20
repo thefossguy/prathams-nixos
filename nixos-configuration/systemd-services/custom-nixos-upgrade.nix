@@ -1,4 +1,4 @@
-{ config, lib, pkgs, flakeUri, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   # we disable the systemd service that NixOS ships because we have our own "special sauce"
@@ -40,13 +40,13 @@
             exit 0
         fi
 
-        [[ ! -d ${flakeUri}/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${flakeUri}
-        pushd ${flakeUri}
+        [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
+        pushd /etc/nixos
         git pull
         nix flake update
         popd
 
-        nixos-rebuild boot --show-trace --verbose --flake ${flakeUri}#${config.networking.hostName}
+        nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}
       '';
     };
   };

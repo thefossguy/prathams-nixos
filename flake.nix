@@ -83,7 +83,6 @@
 
       nixosMachines = {
         misc = {
-          flakeUri = "/etc/nixos";
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
 
@@ -258,7 +257,7 @@
         in {
           _module.args = {
             inherit home-manager nixpkgs;
-            inherit (nixosMachines.misc) flakeUri gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
+            inherit (nixosMachines.misc) gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
           };
 
           imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
