@@ -35,7 +35,7 @@ let
       otg_mode=1
 
       [pi5]
-      dtparam=uart0_console
+      dtparam=uart0_console # enables UART over the "old" GPIO pins (14 and 15)
       EOF
 
       set +x
