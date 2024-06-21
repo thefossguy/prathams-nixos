@@ -57,7 +57,10 @@ in
 
 {
   boot.initrd.kernelModules = [ "vc4" "bcm2835_dma" "i2c_bcm2835" ];
-  boot.kernelParams = [ "console=ttyS1,115200n8" ];
+  boot.kernelParams = [
+    "console=ttyS0,115200"
+    "console=ttyS1"
+  ];
 
   environment.systemPackages = [ rpiUBootAndFirmware ];
 }
