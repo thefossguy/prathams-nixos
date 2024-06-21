@@ -29,7 +29,7 @@ let
 
       [pi4]
       arm_boost=1
-      hdmi_enable_4kp60=1 # increases power consumption but at least I can see things clearly
+      hdmi_enable_4kp60=0 # increases power consumption and no longer needed
 
       [cm4]
       otg_mode=1
