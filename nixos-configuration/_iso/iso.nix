@@ -31,6 +31,7 @@ in {
     # getting, modifying and running the installer
     git
     neovim
+    ripgrep
     rsync
     tmux
     vim
