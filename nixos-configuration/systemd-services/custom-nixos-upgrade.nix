@@ -49,7 +49,7 @@ in
         nix flake update
         popd
 
-        nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}
+        nixos-rebuild boot --show-trace --print-build-logs --flake /etc/nixos#${config.networking.hostName}
       '';
     };
   };
