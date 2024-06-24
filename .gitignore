@@ -1,5 +1,6 @@
 *.iso
 *.iso.sha*
+*.log
 .direnv/*
 flake.lock.old
 result*
