@@ -33,8 +33,6 @@ in
         nixos-rebuild
       ];
 
-      requires = [ "network-online.target" ];
-
       serviceConfig = {
         User = "root";
         Type = "oneshot";
