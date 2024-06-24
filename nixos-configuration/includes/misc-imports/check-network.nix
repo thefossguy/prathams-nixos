@@ -1,4 +1,4 @@
-{ internetEndpoint ? "google.com", exitCode ? 1, pkgs }:
+{ internetEndpoint ? "google.com", exitCode ? "1", pkgs }:
 
 ''
 if ! ${pkgs.iputils}/bin/ping -c 2 '${internetEndpoint}'; then

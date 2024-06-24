@@ -5,7 +5,7 @@ let
   hm_config_dir = "${homeDir}/.prathams-nixos";
   connectivityCheckScript = import ../includes/misc-imports/check-network.nix {
     internetEndpoint = "cache.nixos.org";
-    exitCode = 0;
+    exitCode = "0";
     inherit pkgs;
   };
 
