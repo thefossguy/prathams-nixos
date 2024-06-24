@@ -1,5 +1,13 @@
 { config, lib, pkgs, ... }:
 
+let
+  connectivityCheckScript = import ../includes/misc-imports/check-network.nix {
+    internetEndpoint = "cache.nixos.org";
+    exitCode = 0;
+    inherit pkgs;
+  };
+in
+
 {
   # we disable the systemd service that NixOS ships because we have our own "special sauce"
   system.autoUpgrade.enable = lib.mkForce false;
@@ -35,10 +43,7 @@
       script = ''
         set -xuf -o pipefail
 
-        if ! "${pkgs.iputils}/bin/ping" -c 10 cache.nixos.org; then
-            echo 'ERROR: Not connected to the internet... exiting...'
-            exit 0
-        fi
+        ${connectivityCheckScript}
 
         [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
         pushd /etc/nixos

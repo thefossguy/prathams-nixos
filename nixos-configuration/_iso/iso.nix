@@ -1,12 +1,12 @@
 { lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
 
 let
+  connectivityCheckScript = import ../includes/misc-imports/check-network.nix { inherit pkgs; };
+
   getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''
     set -xeuf -o pipefail
 
-    while ! ping 1.1.1.1 -c 1 1>/dev/null || ! ping 8.8.8.8 -c 1 1>/dev/null; do
-        sleep 1
-    done
+    ${connectivityCheckScript}
 
     if [[ ! -d "$HOME/.dotfiles" ]]; then
         git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$HOME/.dotfiles"
