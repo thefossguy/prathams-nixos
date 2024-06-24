@@ -212,6 +212,8 @@
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
             forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
             systemUser = nixosMachines.hosts."${hostname}".systemUser or systemUsers.pratham;
+            gatewayAddr = nixosMachines.hosts."${hostname}".gatewayAddr or nixosMachines.misc.gatewayAddr;
+            ipv4PrefixLength = nixosMachines.hosts."${hostname}".ipv4PrefixLength or nixosMachines.misc.ipv4PrefixLength;
           };
 
           modules = [
@@ -252,7 +254,7 @@
         in {
           _module.args = {
             inherit home-manager nixpkgs;
-            inherit (nixosMachines.misc) gatewayAddr ipv4PrefixLength supportedFilesystemsSansZFS;
+            inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
           };
 
           imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
