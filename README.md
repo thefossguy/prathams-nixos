@@ -1,21 +1,20 @@
 # README
-[![Continuous Build](https://github.com/thefossguy/prathams-nixos/actions/workflows/continuous-build.yaml/badge.svg)](https://github.com/thefossguy/prathams-nixos/actions/workflows/continuous-build.yaml)
 
- 1. `$hostName` is the hostname of a host defined in the `nixosHosts` set,
-    inside the flake.nix file
- 2. `$(whoami)` should evaluate to the username of a valid user, as
-    defined in the `nixosHosts` set, inside the flake.nix file
+`$NIXOS_MACHINE_HOSTNAME` refers to the value of
+`nixosMachines.hosts."${hostname}"` as defined in the `flake.nix` file.
+
 
 ## Install NixOS
 
 ```bash
-sudo ./install.sh $targetDrive $hostName
+sudo ./install.sh $target_disk $NIXOS_MACHINE_HOSTNAME
 ```
 
 ### Build a NixOS configuration
 
 ```bash
-nix build .#machines."$hostName"
+nix run .#buildAllNixosSystems # builds all NixOS systems where `system == $(uname -m)-linux`
+NIXOS_MACHINE_HOSTNAME=$(hostname) nix run .#buildThisNixosSystem
 ```
 
 
@@ -27,13 +26,19 @@ nix run home-manager/master -- switch --flake .
 
 ### Build a standalone home-manager configuration
 
+Build home-manager for **all users** that are defined in the `realUsers` set.
 ```bash
-nix build .#homeOf."$(uname -m)-$(uname -s | awk '{print tolower($0)}')"."$(whoami)"
+nix run .#buildAllHomes
+```
+
+Build home-manager for the current user. **It must be defined in the `realUsers` set.**
+```bash
+nix run .#buildThisHome
 ```
 
 
 ## Create a NixOS ISO
 
 ```bash
-nix build .#isos."$(uname -m)"
+nix run .#buildIso
 ```
