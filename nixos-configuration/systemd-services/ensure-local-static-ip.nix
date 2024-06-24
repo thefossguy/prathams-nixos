@@ -1,6 +1,6 @@
-{ config, lib, pkgs, ipv4Address, networkingIface,  ... }:
+{ pkgs, ipv4Address, networkingIface,  ... }:
 
-lib.mkIf config.custom-options.enableLocalStaticIpCheck {
+{
   systemd = {
     services."ensure-local-static-ip" = {
       enable = true;
@@ -14,6 +14,12 @@ lib.mkIf config.custom-options.enableLocalStaticIpCheck {
 
       script = ''
         set -xuf -o pipefail
+
+        # if '${networkingIface}' starts with a `w`, we exclude the check entirely
+        if echo '${networkingIface}' | grep ^w > /dev/null; then
+            exit 0
+        fi
+
         # wait for 120 seconds
         # on top of the 120 seconds that `systemd-networkd-wait-online.service` waits for
         for i in $(seq 0 11); do
@@ -30,7 +36,7 @@ lib.mkIf config.custom-options.enableLocalStaticIpCheck {
             sleep 10
         done
 
-        # the networking interface that we needed was not **online**
+        # the networking interface that we needed was **not online** :(
         # just exit gracefully
         exit 0
       '';
