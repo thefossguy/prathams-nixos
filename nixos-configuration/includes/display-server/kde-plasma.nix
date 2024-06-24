@@ -28,6 +28,8 @@
 
   environment.systemPackages = with pkgs; [
     cliphist
+    kdePackages.kdeconnect-kde
+    kdePackages.kdenlive
     wayland-utils
     wl-clipboard
 
@@ -39,6 +41,7 @@
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     elisa # music player, use mpv
+    filelight # shows disk space
     gwenview # image viewer, use mpv
     khelpcenter
   ];
