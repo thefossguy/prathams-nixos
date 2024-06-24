@@ -1,7 +1,7 @@
 # README
 
 `$NIXOS_MACHINE_HOSTNAME` refers to the value of
-`nixosMachines.hosts."${hostname}"` as defined in the `flake.nix` file.
+`nixosMachines.hosts."${hostname}"`.
 
 
 ## Install NixOS
@@ -12,9 +12,15 @@ sudo ./install.sh $target_disk $NIXOS_MACHINE_HOSTNAME
 
 ### Build a NixOS configuration
 
+Build the NixOS system where the hostname is `$targetHostname`. **It must be
+defined the `nixosMachines.hosts` set.**
 ```bash
-nix run .#buildAllNixosSystems # builds all NixOS systems where `system == $(uname -m)-linux`
-NIXOS_MACHINE_HOSTNAME=$(hostname) nix run .#buildThisNixosSystem
+NIXOS_MACHINE_HOSTNAME=$targetHostname nix run .#buildThisNixosSystem
+```
+
+Builds all NixOS systems which can be natively built by your CPU.
+```bash
+nix run .#buildAllNixosSystems
 ```
 
 
