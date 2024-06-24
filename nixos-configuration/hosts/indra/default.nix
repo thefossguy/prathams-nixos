@@ -3,6 +3,8 @@
 {
   imports = [ ../../includes/display-server/kde-plasma.nix ];
 
+  boot.extraModprobeConfig = "options kvm_intel nested=1";
+
   boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   custom-options.enableLocalStaticIpCheck = lib.mkForce false; # is a laptop, wireless cannot connect at boot like eth lol
   hardware.bluetooth.enable = true;
