@@ -3,6 +3,11 @@
 let
   homeDir = "/home/${systemUser.username}";
   hm_config_dir = "${homeDir}/.prathams-nixos";
+  connectivityCheckScript = import ../includes/misc-imports/check-network.nix {
+    internetEndpoint = "cache.nixos.org";
+    exitCode = 0;
+    inherit pkgs;
+  };
 
 in lib.mkIf pkgs.stdenv.isLinux {
   services.home-manager.autoUpgrade.enable = lib.mkForce false;
@@ -12,6 +17,8 @@ in lib.mkIf pkgs.stdenv.isLinux {
       Service = {
         ExecStart = "${pkgs.writeShellScript "custom-home-manager-upgrade-execstart.sh" ''
           set -xeuf -o pipefail
+
+          ${connectivityCheckScript}
 
           [[ ! -d ${hm_config_dir} ]] && ${pkgs.gitMinimal}/bin/git clone https://gitlab.com/thefossguy/prathams-nixos ${hm_config_dir}
 
