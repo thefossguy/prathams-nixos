@@ -16,8 +16,15 @@
         swtpm.enable = true;
 
         verbatimConfig = ''
+          #https://github.com/NixOS/nixpkgs/pull/37281#issuecomment-413133203
+          namespaces = []
           user = "${systemUser.username}"
           group = "${systemUser.username}"
+
+          # Whether libvirt should dynamically change file ownership
+          # to match the configured user/group above. Defaults to 1.
+          # Set to 0 to disable file ownership changes.
+          dynamic_ownership = 1
         '';
       };
     };
