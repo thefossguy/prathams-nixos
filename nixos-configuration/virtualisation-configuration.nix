@@ -12,7 +12,7 @@
       qemu = {
         ovmf.enable = true;
         package = pkgs.qemu_kvm;
-        runAsRoot = false; # not sure about this
+        runAsRoot = true; # when set to `true`, will let me specify the user and group in `verbatimConfig` (i.e. not override)
         swtpm.enable = true;
 
         verbatimConfig = ''
