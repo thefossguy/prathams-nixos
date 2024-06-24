@@ -1,15 +1,11 @@
-{ lib, config, ... }:
+{ lib, ... }:
 
 let
   domainNameServers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
-  enableWaitOnline = config.custom-options.enableLocalStaticIpCheck;
 in {
   systemd.network = {
     enable = true;
-    wait-online = {
-      enable = enableWaitOnline;
-      anyInterface = enableWaitOnline;
-    };
+    wait-online.enable = lib.mkForce false; # handled by my custom service
   };
 
   environment.etc."resolv.conf".mode = "direct-symlink";
