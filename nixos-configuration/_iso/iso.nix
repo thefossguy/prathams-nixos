@@ -1,4 +1,4 @@
-{ lib, pkgs, modulesPath, supportedFilesystemsSansZFS, ... }:
+{ lib, pkgs, modulesPath, supportedFilesystemsSansZFS, isoUser, ... }:
 
 let
   connectivityCheckScript = import ../includes/misc-imports/check-network.nix { inherit pkgs; };
@@ -22,6 +22,8 @@ let
 
 in {
   imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+
+  users.users."${isoUser.username}".hashedPassword = "${isoUser.hashedPassword}";
 
   environment.systemPackages = with pkgs; [
     # utilities necessary for installation

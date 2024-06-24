@@ -61,12 +61,7 @@
         # generate the `hashedPassword` using `mkpasswd`
         root.hashedPassword     = "$y$j9T$BzG/Oq8bbL.2uq2/MuRox.$cofHV3CnpcdI4PI5nEEJz//nWqFWiAL8Mfj8/adLJhC";
         nixosIso.hashedPassword = "$y$j9T$vMupXoz6rvpT55CkuDenZ0$umu0dpi6NG7lllLcoP9L.wY0ZxEY2wbmPwkiBFsejnC";
-
-        nixosIso = {
-          username = "nixos";
-          fullname = "nixos";
-          enableLingering = true;
-        };
+        nixosIso.username  = "nixos";
       };
 
       # actual, real system users
@@ -281,7 +276,10 @@
         };
 
         customNixosIsoModule = {
-          _module.args = { inherit (nixosMachines.misc) supportedFilesystemsSansZFS; };
+          _module.args = {
+            inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
+            isoUser = miscUsers.nixosIso;
+          };
           imports = [ ./nixos-configuration/_iso/iso.nix ];
         };
       };
