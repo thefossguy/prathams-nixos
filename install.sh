@@ -99,4 +99,4 @@ done
 
 # done!
 sync; sync; sync; sync;
-umount -R "${MOUNT_PATH}"
+umount -vR "${MOUNT_PATH}"
