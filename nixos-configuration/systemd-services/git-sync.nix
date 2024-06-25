@@ -10,7 +10,7 @@ let
   gitUpstreamAuthKeyPath = "${gitUser.homeDir}/.ssh/${gitUpstreamAuthKeyName}";
   gitRepoStore = "${gitUser.homeDir}/my-git-repos/";
 
-  connectivityCheckScript = origin: import ../../includes/misc-imports/check-network.nix {
+  connectivityCheckScript = origin: import ../includes/misc-imports/check-network.nix {
     internetEndpoint = "${origin}.com";
     inherit pkgs;
   };
