@@ -3,6 +3,9 @@
 date +%Y/%m/%d\ %H:%M:%S
 set -euf -o pipefail
 
+nix_flake_flags='--extra-experimental-features nix-command --extra-experimental-features flakes'
+readonly nix_flake_flags
+
 if [[ "$(id -u)" != '0' ]]; then
     echo 'ERROR: Please run this script as root'
     exit 1
@@ -21,6 +24,9 @@ else
     TARGET_DRIVE="$1"
     HOSTNAME="$2"
 fi
+
+nix "${nix_flake_flags}" flake update
+nix "${nix_flake_flags}" build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 
 if [ -b "${TARGET_DRIVE}" ]; then
     if echo "${TARGET_DRIVE}" | grep "sd\|vd" > /dev/null; then
@@ -77,7 +83,6 @@ if [[ "${TOTAL_MEM_IN_GIB}" -lt "${MIN_MEMORY_IN_GIB}" ]]; then
     echo "WARNING: Total memory is less than ${MIN_MEMORY_IN_GIB} GB. You might get an OOM-kill ... "
 fi
 
-nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
 nixos-install \
     --show-trace \
     --root ${MOUNT_PATH} \
