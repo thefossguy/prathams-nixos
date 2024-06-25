@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  imports = [ ../_raspberry-pi/4/default.nix ];
+  imports = [ ../../includes/raspberry-pi/4/default.nix ];
 
   custom-options.enableRootlessContainers = true;
   networking.firewall.allowedTCPPorts = [

@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  imports = [ ../_raspberry-pi/5/default.nix ];
+  imports = [ ../../includes/raspberry-pi/5/default.nix ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/61A5-09DA";
