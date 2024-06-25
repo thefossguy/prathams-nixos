@@ -3,7 +3,7 @@
 {
   imports = [ ../../includes/raspberry-pi/4/default.nix ];
 
-  custom-options.enableRootlessContainers = true;
+  custom-options.enableWebRemoteServices = true;
   networking.firewall.allowedTCPPorts = [
     8001 # caddy HTTP
     8002 # caddy HTTPS
