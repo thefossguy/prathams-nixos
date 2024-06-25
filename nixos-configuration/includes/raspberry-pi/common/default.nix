@@ -56,11 +56,16 @@ let
 in
 
 {
-  boot.initrd.kernelModules = [ "vc4" "bcm2835_dma" "i2c_bcm2835" ];
-  boot.kernelParams = [
-    "console=ttyS0,115200"
-    "console=ttyS1"
-  ];
+  boot = {
+    initrd.kernelModules = [ "vc4" "bcm2835_dma" "i2c_bcm2835" ];
+    kernelParams = [ "console=ttyS0,115200" ];
 
-  environment.systemPackages = [ rpiUBootAndFirmware ];
+    loader.systemd-boot.extraInstallCommands = ''
+
+      # ----[ cut ]----
+      # RPi Specific script starts here
+      set -x
+      ${pkgs.rsync}/bin/rsync --quiet --no-motd --checksum --recursive --progress --stats ${rpiUBootAndFirmware}/ /boot/
+    '';
+  };
 }
