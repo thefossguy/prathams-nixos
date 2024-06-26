@@ -30,8 +30,8 @@ in {
   imports = [ ../common/default.nix ];
 
   boot = {
-    #boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    #kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
+    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     initrd.availableKernelModules = [
       "nvme"
       "usbhid"
