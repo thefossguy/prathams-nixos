@@ -1,21 +1,20 @@
 { lib, pkgs, nixpkgs, ... }:
 
 let
-  tag = "stable_20240423";
   linux_rpi5 = pkgs.linux_rpi4.override {
     rpiVersion = 5;
 
     argsOverride = rec {
-      version = "${modDirVersion}-${tag}";
-      modDirVersion = "6.6.28";
+      version = "${modDirVersion}-vendor-rpi5-16k";
+      modDirVersion = "6.6.35";
 
-      defconfig = "bcm2712_defconfig";
+      defconfig = "bcm2712_defconfig"; # only difference between this and 'bcm2711_defconfig' is 16K pages
 
       src = pkgs.fetchFromGitHub {
         owner = "raspberrypi";
         repo = "linux";
-        rev = tag;
-        hash = "sha256-mlsDuVczu0e57BlD/iq7IEEluOIgqbZ+W4Ju30E/zhw=";
+        rev = "d2813c02131b9ddf938277f4123da7ccbd113ea7";
+        hash = "sha256-pzjgCWG9FhMU3LCZnvz5N4jYfaaJQDT6Pv5lD/3zsm4=";
       };
 
       kernelPatches = [
@@ -30,8 +29,7 @@ in {
   imports = [ ../common/default.nix ];
 
   boot = {
-    #kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
     initrd.availableKernelModules = [
       "nvme"
       "usbhid"
