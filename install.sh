@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 date +%Y/%m/%d\ %H:%M:%S
-set -euf -o pipefail
+set -xeuf -o pipefail
 
 nix_flake_flags='--extra-experimental-features nix-command --extra-experimental-features flakes'
 readonly nix_flake_flags
@@ -66,7 +66,6 @@ export MOUNT_PATH='/mnt'
 ################################################################################
 # installation actually starts here
 ################################################################################
-set -x
 
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
