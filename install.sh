@@ -26,8 +26,10 @@ else
 fi
 
 echo 'This may take some time on the first run.'
-nix "${nix_flake_flags}" flake update
-nix "${nix_flake_flags}" build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
+# shellcheck disable=SC2086
+nix ${nix_flake_flags} flake update
+# shellcheck disable=SC2086
+nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 
 if [ -b "${TARGET_DRIVE}" ]; then
     if echo "${TARGET_DRIVE}" | grep "sd\|vd" > /dev/null; then
