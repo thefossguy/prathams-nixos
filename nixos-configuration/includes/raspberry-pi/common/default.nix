@@ -57,7 +57,6 @@ in
 
 {
   boot = {
-    initrd.kernelModules = [ "vc4" "bcm2835_dma" "i2c_bcm2835" ];
     kernelParams = [ "console=ttyS0,115200" ];
 
     loader.systemd-boot.extraInstallCommands = ''

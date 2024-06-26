@@ -29,6 +29,13 @@ let
 in {
   imports = [ ../common/default.nix ];
 
-  #boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+  boot = {
+    #boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor linux_rpi5);
+    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    initrd.availableKernelModules = [
+      "nvme"
+      "usbhid"
+      "usb_storage"
+    ];
+  };
 }
