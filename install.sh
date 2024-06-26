@@ -25,6 +25,7 @@ else
     HOSTNAME="$2"
 fi
 
+echo 'This may take some time on the first run.'
 nix "${nix_flake_flags}" flake update
 nix "${nix_flake_flags}" build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 
