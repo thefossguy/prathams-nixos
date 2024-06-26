@@ -47,10 +47,10 @@ let
     extraMeta.platforms = ["aarch64-linux"];
     filesToInstall = ["u-boot.bin"];
 
-    version = "2024.07-rc4";
+    version = "2024.07-rc5";
     src = pkgs.fetchurl {
       url = "https://ftp.denx.de/pub/u-boot/u-boot-${version}.tar.bz2";
-      hash = "sha256-jTaz/QtH/pP8A6uyWqwsJrfCob8rHHRniMD8SvaHhsU=";
+      hash = "sha256-jrcMwNwQlmW3RnMn8pd/SWP3p3xBYMQc0P9pDUv3+FM=";
     };
   };
 in
