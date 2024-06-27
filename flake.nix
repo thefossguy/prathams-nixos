@@ -137,7 +137,7 @@
 
           # Raspberry Pi 5 Model B (8GB)
           raajan = {
-            hostname = "reddish";
+            hostname = "raajan";
             ipv4Address = "10.0.0.59";
             networkingIface = "end0";
             system = linuxSystems.aarch64;
