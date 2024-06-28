@@ -1,21 +1,11 @@
-{ lib, pkgs, hostname, forceLtsKernel ? false, gatewayAddr, hostId
-, ipv4Address, ipv4PrefixLength, networkingIface, supportedFilesystemsSansZFS
-, system, ... }:
+{ lib, pkgs, hostname, gatewayAddr, hostId, ipv4Address, ipv4PrefixLength
+, networkingIface, supportedFilesystemsSansZFS, system, ... }:
 
 {
-  boot = {
-    kernelPackages = if forceLtsKernel
-      then pkgs.linuxPackages
-      else pkgs.linuxPackages_latest;
+  imports = [ ../includes/zfs/default.nix ];
 
-    # no need to lib.mkForce because ZFS is only enabled in the ISO's config; nowhere else
-    supportedFilesystems = supportedFilesystemsSansZFS
-      ++ (if forceLtsKernel
-        then [ "zfs" ]
-        else []);
-
-    zfs.forceImportAll = !forceLtsKernel;
-  };
+  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = lib.mkDefault supportedFilesystemsSansZFS;
 
   zramSwap = {
     enable = true;
