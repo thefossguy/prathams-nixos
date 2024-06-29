@@ -3,10 +3,10 @@
 set -xeuf -o pipefail
 
 # do this first to fail early if this `exit 1`s
-BOOT_UUID="$(MOUNT_PATH=boot scripts/installation-scripts/get-mount-path-uuid.sh)"
-ROOT_UUID="$(MOUNT_PATH=root scripts/installation-scripts/get-mount-path-uuid.sh)"
-HOME_UUID="$(MOUNT_PATH=home scripts/installation-scripts/get-mount-path-uuid.sh)"
-VARL_UUID="$(MOUNT_PATH=var  scripts/installation-scripts/get-mount-path-uuid.sh)"
+BOOT_UUID="$(MOUNT_PATH=boot ./scripts/installation-scripts/get-mount-path-uuid.sh)"
+ROOT_UUID="$(MOUNT_PATH=root ./scripts/installation-scripts/get-mount-path-uuid.sh)"
+HOME_UUID="$(MOUNT_PATH=home ./scripts/installation-scripts/get-mount-path-uuid.sh)"
+VARL_UUID="$(MOUNT_PATH=var  ./scripts/installation-scripts/get-mount-path-uuid.sh)"
 
 cat << EOF | fdisk --wipe always "${TARGET_DRIVE}"
 g
