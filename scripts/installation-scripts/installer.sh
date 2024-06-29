@@ -109,6 +109,13 @@ for NIXOS_USER in "${REAL_USER_LIST[@]}"; do
     rm "${MOUNT_PATH}${DESTINATION}"
 done
 
+if [[ "$(dmidecode -s system-manufacturer)" == 'QEMU' ]]; then
+    # if we're in a VM, at the very least, the flake.nix must be modified
+    # so we copy the entire tree itself to the VM
+    rm -rf "${MOUNT_PATH}/etc/nixos"
+    cp -R "$(git rev-parse --show-toplevel)" "${MOUNT_PATH}/etc/nixos"
+fi
+
 # done!
 sync; sync; sync; sync;
 umount -vR "${MOUNT_PATH}"
