@@ -27,6 +27,7 @@ in {
 
   environment.systemPackages = with pkgs; [
     # utilities necessary for installation
+    dash
     hdparm
     parted
 
