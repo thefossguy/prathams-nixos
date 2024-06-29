@@ -63,6 +63,13 @@ in {
     supportedFilesystems = lib.mkForce supportedFilesystemsSansZFS;
   };
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+    swapDevices = 2;
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   isoImage.squashfsCompression = "zstd -Xcompression-level 22"; # for prod
