@@ -1,7 +1,7 @@
 { lib, pkgs, pkgs0UnstableSmall, ... }:
 
 let
-  linuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
+  tuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
     buildah
     cargo-valgrind
     dict
@@ -31,7 +31,7 @@ let
   ]);
 
 in {
-  home.packages = linuxPackages ++ darwinPackages ++ (with pkgs; [
+  home.packages = tuxPackages ++ darwinPackages ++ (with pkgs; [
     # programming tools + compilers
     #cargo-deb # generate .deb packages solely based on Cargo.toml
     #cargo-ndk # extension for building Android NDK projects
