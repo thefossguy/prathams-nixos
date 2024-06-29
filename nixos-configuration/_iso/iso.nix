@@ -21,7 +21,10 @@ let
   '';
 
 in {
-  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix") ];
+  imports = [
+    (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+    ../includes/qemu/qemu-guest.nix
+  ];
 
   users.users."${isoUser.username}".hashedPassword = "${isoUser.hashedPassword}";
 
