@@ -14,17 +14,17 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFF1";
+    device = "/dev/disk/by-uuid/ffffffff-ffff-ffff-ffff-fffffffffff1";
     fsType = "xfs";
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFF2";
+    device = "/dev/disk/by-uuid/ffffffff-ffff-ffff-ffff-fffffffffff2";
     fsType = "xfs";
   };
 
   fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFF3";
+    device = "/dev/disk/by-uuid/ffffffff-ffff-ffff-ffff-fffffffffff3";
     fsType = "xfs";
   };
 }
