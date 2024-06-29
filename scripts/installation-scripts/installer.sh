@@ -25,17 +25,6 @@ else
     HOSTNAME="$2"
 fi
 
-echo 'This may take some time on the first run.'
-# shellcheck disable=SC2086
-nix ${nix_flake_flags} flake update
-# shellcheck disable=SC2086
-if nix ${nix_flake_flags} eval .#nixosConfigurations."${HOSTNAME}".config.boot.initrd.supportedFilesystems.zfs 2>/dev/null; then
-    echo 'ERROR: I do not yet know how to handle ZFS datasets. Exiting.'
-    exit 2
-fi
-# shellcheck disable=SC2086
-nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
-
 if [ -b "${TARGET_DRIVE}" ]; then
     if echo "${TARGET_DRIVE}" | grep "sd\|vd" > /dev/null; then
         INTERMEDIATE_PART="${TARGET_DRIVE}"
@@ -49,6 +38,17 @@ else
     echo "ERROR: '${TARGET_DRIVE}' is not a block device"
     exit 1
 fi
+
+echo 'This may take some time on the first run.'
+# shellcheck disable=SC2086
+nix ${nix_flake_flags} flake update
+# shellcheck disable=SC2086
+if nix ${nix_flake_flags} eval .#nixosConfigurations."${HOSTNAME}".config.boot.initrd.supportedFilesystems.zfs 2>/dev/null; then
+    echo 'ERROR: I do not yet know how to handle ZFS datasets. Exiting.'
+    exit 2
+fi
+# shellcheck disable=SC2086
+nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 
 TARGET_DRIVE_SIZE_IN_BYTES="$(blockdev --getsize64 "${TARGET_DRIVE}")"
 TARGET_DRIVE_SIZE_IN_GIB="$(( TARGET_DRIVE_SIZE_IN_BYTES / 1024 / 1024 /1024 ))"
