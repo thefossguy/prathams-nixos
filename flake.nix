@@ -255,6 +255,7 @@
           _module.args = {
             inherit home-manager nixpkgs;
             inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
+            latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
           };
 
           imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";

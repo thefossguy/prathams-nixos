@@ -1,13 +1,14 @@
-{ lib, pkgs, forceLtsKernel ? false, supportedFilesystemsSansZFS, ... }:
+{ lib, pkgs, forceLtsKernel ? false, latestLtsKernel, supportedFilesystemsSansZFS, ... }:
 
 let
+  latestLtsKernelPackage = pkgs."${latestLtsKernel}";
   allSupportedFilesystems = supportedFilesystemsSansZFS ++ [ "zfs" ];
 in
 
 lib.mkIf forceLtsKernel {
   boot = {
     # we force them because we want to override values from `nixos-configuration/hosts/hosts-common.nix`
-    kernelPackages = lib.mkForce pkgs.linuxPackages;
+    kernelPackages = lib.mkForce latestLtsKernelPackage;
     initrd.supportedFilesystems = lib.mkForce allSupportedFilesystems;
     supportedFilesystems = lib.mkForce allSupportedFilesystems;
 
@@ -37,7 +38,7 @@ lib.mkIf forceLtsKernel {
 
     services."custom-zpool-maintainence" = {
       enable = true;
-      path = [ pkgs.linuxPackages.zfs.userspaceTools ];
+      path = [ latestLtsKernelPackage.zfs.userspaceTools ];
 
       serviceConfig = {
         User = "root";
