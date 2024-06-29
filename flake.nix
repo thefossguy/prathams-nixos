@@ -191,6 +191,18 @@
             networkingIface = "end0"; # first one from the right
             system = linuxSystems.riscv64;
           };
+
+          # virtual machine
+          zVirtSys = let threeOctets = ""; in {
+            hostId   = "FFFFFFFF";
+            hostname = "zVirtSys";
+            gatewayAddr = "${threeOctets}.1";
+            ipv4Address = "${threeOctets}.";
+            ipv4PrefixLength = -1;
+            networkingIface = "";
+            forceLtsKernel = false;
+            system = null;
+          };
         };
       };
 
@@ -303,6 +315,8 @@
         z-iso-aarch64 = mkNixosIso { systemArch = "aarch64"; };
         z-iso-riscv64 = mkNixosIso { systemArch = "riscv64"; };
         z-iso-x86_64  = mkNixosIso { systemArch = "x86_64"; };
+
+        zVirtSys = mkNixosSystem { hostname = "zVirtSys"; };
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
