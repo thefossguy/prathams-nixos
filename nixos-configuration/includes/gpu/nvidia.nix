@@ -4,12 +4,6 @@
   boot.blacklistedKernelModules = lib.mkForce [ "nvidia" ];
   services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
 
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
   hardware.nvidia = {
     modesetting.enable = true;
 

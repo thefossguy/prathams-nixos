@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  hardware.opengl.enable = true;
   security.rtkit.enable = true;
   sound.enable = true;
   xdg.portal.enable = true;
@@ -39,11 +40,6 @@
     firefox.enable = true;
     light.enable = true;
     virt-manager.enable = true;
-  };
-
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
   };
 
   environment.systemPackages = with pkgs; [
