@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -8,6 +8,9 @@
     ../../includes/qemu/qemu-guest.nix
     ../../includes/zfs/default.nix
   ];
+
+  zramSwap.memoryPercent = lib.mkOverride 50;
+  zramSwap.swapDevices = lib.mkOverride 2;
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/05ED-4450";
