@@ -70,6 +70,7 @@ in {
     swapDevices = 2;
   };
 
+  time.timeZone = "Asia/Kolkata";
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   isoImage.squashfsCompression = "zstd -Xcompression-level 22"; # for prod
