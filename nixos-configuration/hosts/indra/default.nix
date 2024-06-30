@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ../../includes/display-server/kde-plasma.nix ];
@@ -6,6 +6,8 @@
   boot.extraModprobeConfig = "options kvm_intel nested=1";
   boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   hardware.bluetooth.enable = true;
+
+  environment.systemPackages = [ pkgs.ubootQemuRiscv64Smode ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";
