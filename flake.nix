@@ -369,7 +369,7 @@
       builders = forEachSupportedSystem ({ pkgs, ... }: let
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
-        nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build  --verbose --trace-verbose --print-build-logs --show-trace";
+        nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build --verbose --trace-verbose --print-build-logs --show-trace";
 
         buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
