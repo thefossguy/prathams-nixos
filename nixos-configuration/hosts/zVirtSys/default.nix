@@ -5,7 +5,7 @@
     ../../includes/autologin/default.nix
     #../../includes/display-server/kde-plasma.nix
     ../../includes/misc-imports/sudo-nopasswd.nix
-    ../../includes/qemu/qemu-binfmt.nix
+    #../../includes/qemu/qemu-binfmt.nix
     ../../includes/qemu/qemu-guest.nix
     ../../includes/zfs/default.nix
   ];
