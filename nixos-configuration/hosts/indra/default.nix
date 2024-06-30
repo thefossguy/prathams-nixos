@@ -7,7 +7,7 @@
   boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   hardware.bluetooth.enable = true;
 
-  environment.systemPackages = [ pkgs.ubootQemuRiscv64Smode ];
+  environment.systemPackages = [ pkgs.qemu ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";
