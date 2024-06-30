@@ -316,7 +316,7 @@
         z-iso-riscv64 = mkNixosIso { systemArch = "riscv64"; };
         z-iso-x86_64  = mkNixosIso { systemArch = "x86_64"; };
 
-        zVirtSys = mkNixosSystem { hostname = "zVirtSys"; };
+        zVirtSys = mkNixosSystem { hostname = "zVirtSys"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
