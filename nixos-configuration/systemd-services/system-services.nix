@@ -51,6 +51,7 @@ in {
         PasswordAuthentication = lib.mkForce false;
         PermitRootLogin = lib.mkForce "prohibit-password";
         X11Forwarding = false;
+        LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
       };
     };
   };
