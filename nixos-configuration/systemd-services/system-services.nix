@@ -45,13 +45,13 @@ in {
       openFirewall = true;
 
       settings = {
-        Protocol = 2;
-        MaxAuthTries = 2;
-        PermitEmptyPasswords = lib.mkForce false;
-        PasswordAuthentication = lib.mkForce false;
-        PermitRootLogin = lib.mkForce "prohibit-password";
-        X11Forwarding = false;
         LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
+        MaxAuthTries = 2;
+        PasswordAuthentication = lib.mkForce false;
+        PermitEmptyPasswords = lib.mkForce false;
+        PermitRootLogin = lib.mkForce "prohibit-password";
+        Protocol = 2;
+        X11Forwarding = false;
       };
     };
   };
