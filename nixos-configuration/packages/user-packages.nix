@@ -61,6 +61,9 @@ in {
     aerc
     protonmail-bridge
 
+    # "cloud" stuff
+    google-cloud-sdk-gce
+
     # misc utilities + shells
     asciinema
     catimg # fur email (aerc); print image on ze terminal
