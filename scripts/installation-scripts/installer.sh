@@ -77,7 +77,7 @@ export MOUNT_PATH='/mnt'
 
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
-mount | grep " on ${MOUNT_PATH}" && umount --recursive --force "${MOUNT_PATH}"
+mount | grep " on ${MOUNT_PATH} type " && umount --recursive --force "${MOUNT_PATH}"
 
 # now we partition
 ./scripts/installation-scripts/partition-disk.sh
