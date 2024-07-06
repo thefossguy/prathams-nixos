@@ -1,4 +1,16 @@
-{ lib, pkgs, modulesPath, supportedFilesystemsSansZFS, isoUser, ... }:
+{ config, lib, pkgs, modulesPath, enableZfs, latestLtsKernel, supportedFilesystemsSansZFS, isoUser, ... }:
+
+let
+  isoZfsString = if enableZfs
+    then "zfs-"
+    else "";
+  isoKernelPackage = if enableZfs
+    then pkgs."${latestLtsKernel}"
+    else pkgs.linuxPackages_latest;
+  isoSupportedFilesystems = supportedFilesystemsSansZFS ++ (if enableZfs
+    then [ "zfs" ]
+    else []);
+in
 
 let
   connectivityCheckScript = import ../includes/misc-imports/check-network.nix { inherit pkgs; };
@@ -52,11 +64,12 @@ in {
     getGitRepos
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.supportedFilesystems = lib.mkForce supportedFilesystemsSansZFS;
+  boot.kernelPackages = isoKernelPackage;
+  boot.supportedFilesystems = lib.mkForce isoSupportedFilesystems;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Asia/Kolkata";
   users.users."${isoUser.username}".hashedPassword = "${isoUser.hashedPassword}";
+  isoImage.isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${config.boot.kernelPackages.kernel.version}-${isoZfsString}${pkgs.stdenv.hostPlatform.system}.iso";
 
   zramSwap = {
     enable = true;

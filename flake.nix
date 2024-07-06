@@ -80,6 +80,7 @@
         misc = {
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
+          latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
 
           # actual filesystems that I use
           supportedFilesystemsSansZFS = [
@@ -219,6 +220,7 @@
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
+            inherit (nixosMachines.misc) latestLtsKernel;
             inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall;
 
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
@@ -252,9 +254,13 @@
           modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
         };
 
-      mkNixosIso = { systemArch }:
+      mkNixosIso = { systemArch, enableZfs ? false }:
         nixpkgs-1stable-small.lib.nixosSystem {
           system = linuxSystems."${systemArch}";
+          specialArgs = {
+            inherit enableZfs;
+            inherit (nixosMachines.misc) latestLtsKernel;
+          };
           modules = [ self.nixosModules.customNixosIsoModule ];
         };
     in {
@@ -267,7 +273,6 @@
           _module.args = {
             inherit home-manager nixpkgs;
             inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
-            latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
           };
 
           imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
@@ -312,9 +317,12 @@
         vaaman     = mkNixosSystem { hostname = "vaaman"; };
         vaayu      = mkNixosSystem { hostname = "vaayu"; };
 
-        z-iso-aarch64 = mkNixosIso { systemArch = "aarch64"; };
-        z-iso-riscv64 = mkNixosIso { systemArch = "riscv64"; };
-        z-iso-x86_64  = mkNixosIso { systemArch = "x86_64"; };
+        z-iso-nozfs-aarch64 = mkNixosIso { systemArch = "aarch64"; };
+        z-iso-nozfs-riscv64 = mkNixosIso { systemArch = "riscv64"; };
+        z-iso-nozfs-x86_64  = mkNixosIso { systemArch = "x86_64"; };
+        z-iso-zfs-aarch64   = mkNixosIso { systemArch = "aarch64"; enableZfs = true; };
+        z-iso-zfs-riscv64   = mkNixosIso { systemArch = "riscv64"; enableZfs = true; };
+        z-iso-zfs-x86_64    = mkNixosIso { systemArch = "x86_64"; enableZfs = true; };
 
         zVirtSys = mkNixosSystem { hostname = "zVirtSys"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
       };
@@ -360,9 +368,9 @@
           program = "${self.builders.${pkgs.stdenv.system}.allPackages}/bin/run.sh";
         };
 
-        buildIso = {
+        buildIsos = {
           type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.theIso}/bin/run.sh";
+          program = "${self.builders.${pkgs.stdenv.system}.allIsos}/bin/run.sh";
         };
       });
 
@@ -389,7 +397,7 @@
           else ".#legacyPackages.${system}.homeConfigurations.${user}.activationPackage";
         buildExpressionOfPackage = package:     if (lib.stringLength package== 0) then ""
           else ".#packages.${system}.${package}";
-        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-$(uname -m).config.system.build.isoImage";
+        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-{no,}zfs-$(uname -m).config.system.build.isoImage";
       in {
         default = pkgs.writeShellScriptBin "run.sh" ''
           set -x
@@ -424,7 +432,7 @@
           ${nixBuildCmd} ${buildExpressionOfPackage "${listOfAllPackages}"}
         '';
 
-        theIso = pkgs.writeShellScriptBin "run.sh" ''
+        allIsos = pkgs.writeShellScriptBin "run.sh" ''
           set -x
           ${nixBuildCmd} ${buildExpressionOfIso}
         '';
