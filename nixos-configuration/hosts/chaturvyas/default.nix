@@ -45,7 +45,10 @@ let
 in
 
 {
-  imports = [ ../../includes/zfs/default.nix ];
+  imports = [
+    ../../includes/zfs/default.nix
+    ../../systemd-services/git-sync.nix
+  ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/3A4D-C659";
