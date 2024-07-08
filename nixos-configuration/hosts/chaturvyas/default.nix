@@ -6,7 +6,6 @@ in
 
 {
   imports = [
-    ../../includes/zfs/default.nix
     ../../systemd-services/git-sync.nix
   ];
 

@@ -7,7 +7,6 @@
     ../../includes/misc-imports/sudo-nopasswd.nix
     #../../includes/qemu/qemu-binfmt.nix
     ../../includes/qemu/qemu-guest.nix
-    ../../includes/zfs/default.nix
   ];
 
   zramSwap.memoryPercent = lib.mkForce 50;
