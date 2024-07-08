@@ -46,6 +46,7 @@
     alacritty
     authenticator # alt to Google Authenticator on iOS/Android
     brave
+    desktop-file-utils
     fractal # matrix client
     mediainfo-gui
     metadata-cleaner # exif removal
