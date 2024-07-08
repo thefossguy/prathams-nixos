@@ -16,7 +16,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
     "flatpak-manage" = {
       Service = {
         ExecStart = "${pkgs.bash}/bin/bash ${scriptsDir}/other-common-scripts/flatpak-manage.sh";
-        Environment = [ ''"PATH=${pkgs.gnugrep}/bin"'' ];
+        Environment = [ ''"PATH=${pkgs.gnugrep}/bin:${pkgs.flatpak}/bin:${pkgs.coreutils}/bin"'' ];
         Type = "oneshot";
       };
       Install = { WantedBy = [ "default.target" ]; };
