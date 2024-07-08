@@ -6,6 +6,7 @@ in
 
 {
   imports = [
+    ../../systemd-services/continuous-build.nix
     ../../systemd-services/git-sync.nix
   ];
 
