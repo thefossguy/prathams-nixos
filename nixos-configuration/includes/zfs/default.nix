@@ -1,8 +1,9 @@
-{ lib, pkgs, forceLtsKernel ? false, latestLtsKernel, supportedFilesystemsSansZFS, ... }:
+{ config, lib, pkgs, forceLtsKernel ? false, latestLtsKernel, supportedFilesystemsSansZFS, ... }:
 
 let
   latestLtsKernelPackage = pkgs."${latestLtsKernel}";
   allSupportedFilesystems = supportedFilesystemsSansZFS ++ [ "zfs" ];
+  zpoolName = "${config.networking.hostName}-zpool";
 in
 
 lib.mkIf forceLtsKernel {
@@ -26,35 +27,59 @@ lib.mkIf forceLtsKernel {
   services.zfs.trim.enable = lib.mkForce false;
 
   systemd = {
-    timers."custom-zpool-maintainence" = {
-      enable = true;
-      requiredBy = [ "timers.target" ];
+    timers = {
+      "custom-zpool-maintainence" = {
+        enable = true;
+        requiredBy = [ "timers.target" ];
 
-      timerConfig = {
-        Unit = "custom-zpool-maintainence";
-        OnCalendar = "Fri *-*-* 00:00:00";
+        timerConfig = {
+          Unit = "custom-zpool-maintainence";
+          OnCalendar = "Fri *-*-* 00:00:00";
+        };
+      };
+
+      "full-zpool-maintainence" = {
+        enable = true;
+        requiredBy = [ "timers.target" ];
+
+        timerConfig = {
+          Unit = "full-zpool-maintainence";
+          OnCalendar = "monthly";
+        };
       };
     };
 
-    services."custom-zpool-maintainence" = {
-      enable = true;
-      path = [ latestLtsKernelPackage.zfs.userspaceTools ];
-
-      serviceConfig = {
-        User = "root";
-        Type = "oneshot";
+    services = {
+      "custom-zpool-maintainence" = {
+        enable = true;
+        serviceConfig = {
+          User = "root";
+          Type = "oneshot";
+        };
+        script = ''${latestLtsKernelPackage.zfs.userspaceTools} scrub -w ${config.networking.hostName}-zpool'';
       };
 
-      script = ''
-        set -xuf -o pipefail
+      "full-zpool-maintainence" = {
+        enable = true;
+        path = [ latestLtsKernelPackage.zfs.userspaceTools ];
+        serviceConfig = {
+          User = "root";
+          Type = "oneshot";
+        };
 
-        # TODO: script this lol
-        #zpool trim one device
-        #zpool scrub
-        #zpool trim another device
-        #zpool scrub
-        exit 1
-      '';
+        script = ''
+          set -xuf -o pipefail
+
+          # first, we find the devices in a zpool
+          ZPOOL_DEVICES=( $(zpool list "''${zpoolName}" -v -H -P | grep '/dev/' | awk '{print $1}') )
+
+          for INDV_ZPOOL_DEV in "''${ZPOOL_DEVICES[@]}"; do
+              time zpool trim -w "${zpoolName}" "''${INDV_ZPOOL_DEV}"
+              time zpool sync "${zpoolName}"
+              time zpool scrub -w "${zpoolName}"
+          done
+        '';
+      };
     };
   };
 }
