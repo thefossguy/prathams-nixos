@@ -46,30 +46,32 @@ nix ${nix_flake_flags} flake update
 nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 # shellcheck disable=SC2086
 if nix ${nix_flake_flags} eval .#nixosConfigurations."${HOSTNAME}".config.boot.initrd.supportedFilesystems.zfs 2>/dev/null; then
-    echo 'ERROR: I do not yet know how to handle ZFS datasets. Exiting.'
-    exit 2
-fi
-
-TARGET_DRIVE_SIZE_IN_BYTES="$(blockdev --getsize64 "${TARGET_DRIVE}")"
-TARGET_DRIVE_SIZE_IN_GIB="$(( TARGET_DRIVE_SIZE_IN_BYTES / 1024 / 1024 /1024 ))"
-if [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 32 ]]; then
-    echo 'ERROR: Get a bigger disk'
-    exit 1
-elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 64 ]]; then
-    ROOT_PART_SIZE=24
+    ZFS_IN_USE=1
 else
-    BASE=1
-    while [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -gt "${BASE}" ]]; do
-        BASE="$(( BASE * 2))"
-    done
-    ROOT_PART_SIZE=$(( BASE / 4 ))
+    ZFS_IN_USE=0
+
+    TARGET_DRIVE_SIZE_IN_BYTES="$(blockdev --getsize64 "${TARGET_DRIVE}")"
+    TARGET_DRIVE_SIZE_IN_GIB="$(( TARGET_DRIVE_SIZE_IN_BYTES / 1024 / 1024 /1024 ))"
+    if [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 32 ]]; then
+        echo 'ERROR: Get a bigger disk'
+        exit 1
+    elif [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -lt 64 ]]; then
+        ROOT_PART_SIZE=24
+    else
+        BASE=1
+        while [[ "${TARGET_DRIVE_SIZE_IN_GIB}" -gt "${BASE}" ]]; do
+            BASE="$(( BASE * 2))"
+        done
+        ROOT_PART_SIZE=$(( BASE / 4 ))
+    fi
+    export ROOT_PART_SIZE
 fi
 
 export HOSTNAME
 export TARGET_DRIVE
 export INTERMEDIATE_PART
-export ROOT_PART_SIZE
 export MOUNT_PATH='/mnt'
+export ZFS_IN_USE
 
 ################################################################################
 # installation actually starts here
@@ -78,9 +80,16 @@ export MOUNT_PATH='/mnt'
 # make sure that $MOUNT_PATH is empty
 # otherwise, bad things happen
 mount | grep " on ${MOUNT_PATH} type " && umount --recursive --force "${MOUNT_PATH}"
+if [[ "${ZFS_IN_USE}" -eq 1 ]] && ! zpool list | grep 'no pools available'; then
+    zpool export -f "${HOSTNAME}-zpool"
+fi
 
 # now we partition
-./scripts/installation-scripts/partition-disk.sh
+if [[ "${ZFS_IN_USE}" -eq 1 ]]; then
+    ./scripts/installation-scripts/partition-disks-with-zfs.sh
+else
+    ./scripts/installation-scripts/partition-disks-no-zfs.sh
+fi
 
 # finally, we install NixOS
 TOTAL_MEM_IN_KIB="$(grep 'MemTotal' /proc/meminfo | awk '{print $2}')"
@@ -119,3 +128,4 @@ fi
 # done!
 sync; sync; sync; sync;
 umount -vR "${MOUNT_PATH}"
+[[ "${ZFS_IN_USE}" -eq 1 ]] && zpool export "${HOSTNAME}-zpool"
