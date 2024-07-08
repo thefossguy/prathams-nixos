@@ -6,6 +6,16 @@ let
     exitCode = "0";
     inherit pkgs;
   };
+
+  serviceScript = lib.mkIf config.systemd.services."continuous-build".enable ''
+    ${connectivityCheckScript}
+
+    [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
+    pushd /etc/nixos
+    git pull
+    nix flake update
+    popd
+  '';
 in
 
 {
@@ -31,6 +41,7 @@ in
         gitMinimal
         nix
         nixos-rebuild
+        systemd
       ];
 
       serviceConfig = {
@@ -41,13 +52,7 @@ in
       script = ''
         set -xuf -o pipefail
 
-        ${connectivityCheckScript}
-
-        [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
-        pushd /etc/nixos
-        git pull
-        nix flake update
-        popd
+        ${serviceScript}
 
         nixos-rebuild boot --show-trace --print-build-logs --flake /etc/nixos#${config.networking.hostName}
       '';
