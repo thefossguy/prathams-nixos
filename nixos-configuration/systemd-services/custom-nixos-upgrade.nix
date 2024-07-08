@@ -7,14 +7,16 @@ let
     inherit pkgs;
   };
 
-  serviceScript = lib.mkIf config.systemd.services."continuous-build".enable ''
-    ${connectivityCheckScript}
+  serviceScript = if !config.systemd.services."continuous-build".enable
+    then ""
+    else ''
+      ${connectivityCheckScript}
 
-    [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
-    pushd /etc/nixos
-    git pull
-    nix flake update
-    popd
+      [[ ! -d /etc/nixos/.git ]] && git clone https://gitlab.com/thefossguy/prathams-nixos /etc/nixos
+      pushd /etc/nixos
+      git pull
+      nix flake update
+      popd
   '';
 in
 
