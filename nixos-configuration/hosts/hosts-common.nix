@@ -1,10 +1,10 @@
 { lib, pkgs, hostname, gatewayAddr, hostId, ipv4Address, ipv4PrefixLength
-, networkingIface, supportedFilesystemsSansZFS, system, ... }:
+, networkingIface, latestStableKernel, supportedFilesystemsSansZFS, system, ... }:
 
 {
   imports = [ ../includes/zfs/default.nix ];
 
-  boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
+  boot.kernelPackages = lib.mkDefault pkgs."${latestStableKernel}";
   boot.supportedFilesystems = lib.mkDefault supportedFilesystemsSansZFS;
 
   zramSwap = {

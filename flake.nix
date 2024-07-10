@@ -81,6 +81,7 @@
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
           latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
+          latestStableKernel = "linuxPackages_latest_hardened";
 
           # actual filesystems that I use
           supportedFilesystemsSansZFS = [
@@ -220,7 +221,7 @@
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
-            inherit (nixosMachines.misc) latestLtsKernel;
+            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
             inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall;
 
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
@@ -259,7 +260,7 @@
           system = linuxSystems."${systemArch}";
           specialArgs = {
             inherit enableZfs;
-            inherit (nixosMachines.misc) latestLtsKernel;
+            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
           };
           modules = [ self.nixosModules.customNixosIsoModule ];
         };

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, enableZfs, latestLtsKernel, supportedFilesystemsSansZFS, isoUser, ... }:
+{ config, lib, pkgs, modulesPath, enableZfs, latestLtsKernel, latestStableKernel, supportedFilesystemsSansZFS, isoUser, ... }:
 
 let
   isoZfsString = if enableZfs
@@ -6,7 +6,7 @@ let
     else "";
   isoKernelPackage = if enableZfs
     then pkgs."${latestLtsKernel}"
-    else pkgs.linuxPackages_latest;
+    else pkgs."${latestStableKernel}";
   isoSupportedFilesystems = supportedFilesystemsSansZFS ++ (if enableZfs
     then [ "zfs" ]
     else []);
