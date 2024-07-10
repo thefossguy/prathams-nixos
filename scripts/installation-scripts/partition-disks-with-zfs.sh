@@ -34,13 +34,6 @@ zpoolCreate="zpool create -o ashift=12 -o autotrim=off -o compatibility=off -o l
 export zpoolCreate
 
 if [[ "${HOSTNAME}" == 'chaturvyas' ]]; then
-    if [[ "${RECREATE_ZPOOL:-0}" -eq 1 ]]; then
-        if zpool import | grep "${zpoolName}"; then
-            zpool import "${zpoolName}" -N
-            zpool destroy "${zpoolName}" -f
-        fi
-    fi
-
     ${zpoolCreate} raidz1 nvme0n1 nvme1n1 nvme2n1 nvme3n1
 else
     echo 'Handle the **ZPOOL creation** yourself.'
