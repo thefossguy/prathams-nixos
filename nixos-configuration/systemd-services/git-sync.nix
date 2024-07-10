@@ -37,7 +37,7 @@ let
       ${connectivityCheckScript "${origin}"}
 
       [[ ! -d ${gitRepoStore} ]] && mkdir -p ${gitRepoStore}
-      for gitDir in $(find ${gitRepoStore} -depth -maxdepth 2 -mindepth 2 -type d); do
+      for gitDir in $(find ${gitRepoStore} -name "*.git" -depth -maxdepth 2 -mindepth 2 -type d); do
           pushd "''${gitDir}"
 
           git config remote.origin.url 2>&1 >/dev/null && \
