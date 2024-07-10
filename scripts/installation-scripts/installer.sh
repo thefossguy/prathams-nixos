@@ -45,7 +45,7 @@ nix ${nix_flake_flags} flake update
 # shellcheck disable=SC2086
 nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 # shellcheck disable=SC2086
-if nix ${nix_flake_flags} eval .#nixosConfigurations."${HOSTNAME}".config.boot.initrd.supportedFilesystems.zfs 2>/dev/null; then
+if grep 'fsType = "zfs"' "nixos-configuration/hosts/${HOSTNAME}/default.nix"; then
     ZFS_IN_USE=1
 else
     ZFS_IN_USE=0
