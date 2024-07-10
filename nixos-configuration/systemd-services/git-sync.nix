@@ -8,24 +8,25 @@ let
 
   gitUpstreamAuthKeyName = "ssh";
   gitUpstreamAuthKeyPath = "${gitUser.homeDir}/.ssh/${gitUpstreamAuthKeyName}";
-  gitRepoStore = "${gitUser.homeDir}/my-git-repos/";
 
   connectivityCheckScript = origin: import ../includes/misc-imports/check-network.nix {
     internetEndpoint = "${origin}.com";
     inherit pkgs;
   };
 
-  mkGitPushTimer = origin: {
+  mkServiceTimer = service: {
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnBootSec = "now";
       OnCalendar = "hourly";
       Persistent = true;
-      Unit = "push-to-origin-${origin}.service";
+      Unit = "${service}.service";
     };
   };
 
-  mkGitPushService = origin: {
+  mkGitPushService = origin: let
+    gitRepoStore = "${gitUser.homeDir}/repos-to-push/";
+  in {
     after = [ "ssh-keys-sanity-check.service" ];
     requires = [ "ssh-keys-sanity-check.service" ];
     serviceConfig = { Type = "oneshot"; User = "${gitUser.username}"; };
@@ -39,19 +40,36 @@ let
       [[ ! -d ${gitRepoStore} ]] && mkdir -p ${gitRepoStore}
       for gitDir in $(find ${gitRepoStore} -name "*.git" -depth -maxdepth 2 -mindepth 2 -type d); do
           pushd "''${gitDir}"
+          gitOrigins=( $(git remote) )
+          for gitOrigin in "''${gitOrigins[@]}"; do
+              # 1. Specify SSH private key to use
+              # 2. `StrictHostKeyChecking=no` because we are **pushing** ;)
+              GIT_SSH_COMMAND="ssh -i ${gitUpstreamAuthKeyPath} -o StrictHostKeyChecking=no" git push ${origin}
+          done
+          popd
+      done
+    '';
+  };
 
-          git config remote.origin.url 2>&1 >/dev/null && \
-              git remote rm origin
+  mkGitPullService = let
+    gitRepoStore = "${gitUser.homeDir}/repos-to-pull/";
+  in {
+    after = [ "ssh-keys-sanity-check.service" ];
+    requires = [ "ssh-keys-sanity-check.service" ];
+    serviceConfig = { Type = "oneshot"; User = "${gitUser.username}"; };
+    path = with pkgs; [ git openssh iputils ];
 
-          ORIGIN_PATH="''${gitDir#${gitRepoStore}}"
-          git config remote.${origin}.url 2>&1 >/dev/null || \
-              # we use '--mirror=push' to set it as a mirror once and for all
-              # and not specify '--mirror' when pushing
-              git remote add ${origin} git@${origin}.com:"''${ORIGIN_PATH}" --mirror=push
+    script = ''
+      set -xeuf -o pipefail
+
+      [[ ! -d ${gitRepoStore} ]] && mkdir -p ${gitRepoStore}
+      for gitDir in $(find ${gitRepoStore} -name "*.git" -depth -maxdepth 2 -mindepth 2 -type d); do
+          pushd "''${gitDir}"
+          # no loop because the pull origin will always remain singular
 
           # 1. Specify SSH private key to use
-          # 2. `StrictHostKeyChecking=no` because we are **pushing** ;)
-          GIT_SSH_COMMAND="ssh -i ${gitUpstreamAuthKeyPath} -o StrictHostKeyChecking=no" git push ${origin}
+          # 2. `StrictHostKeyChecking=no` because I already pulled manually ;)
+          GIT_SSH_COMMAND="ssh -i ${gitUpstreamAuthKeyPath} -o StrictHostKeyChecking=no" git pull
           popd
       done
     '';
@@ -79,7 +97,6 @@ in {
       script = ''
         set -xeuf -o pipefail
 
-        mkdir -p ${gitRepoStore}
         find ${gitUser.homeDir}/.ssh -type f -empty -delete
         if [[ ! -f ${gitUpstreamAuthKeyPath} ]]; then
             echo 'ERROR: No SSH key found (${gitUpstreamAuthKeyPath}).'
@@ -88,12 +105,14 @@ in {
       '';
     };
 
-    "push-to-origin-gitlab" = mkGitPushService "gitlab";
-    "push-to-origin-github" = mkGitPushService "github";
+    "push-to-gitlab"   = mkGitPushService "gitlab";
+    "push-to-github"   = mkGitPushService "github";
+    "pull-from-origin" = mkGitPullService;
   };
 
   systemd.timers = {
-    "push-to-origin-gitlab" = mkGitPushTimer "gitlab";
-    "push-to-origin-github" = mkGitPushTimer "github";
+    "push-to-gitlab"   = mkServiceTimer "push-to-gitlab";
+    "push-to-github"   = mkServiceTimer "push-to-github";
+    "pull-from-origin" = mkServiceTimer "pull-from-origin";
   };
 }
