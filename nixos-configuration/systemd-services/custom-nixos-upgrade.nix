@@ -7,7 +7,7 @@ let
     inherit pkgs;
   };
 
-  serviceScript = if !config.systemd.services."continuous-build".enable
+  serviceScript = if (config.systemd.services."continuous-build".enable or false)
     then ""
     else ''
       ${connectivityCheckScript}
