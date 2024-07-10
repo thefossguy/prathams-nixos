@@ -1,4 +1,4 @@
-{ lib, pkgs, systemUser, ... }:
+{ config, lib, pkgs, systemUser, ... }:
 
 let userHome = "/home/${systemUser.username}";
 
@@ -9,10 +9,17 @@ in {
    ./needs-reboot.nix
    ];
 
+  services.logrotate = {
+    enable = true;
+    # With the hardened linux kernel, the config check for logrotate fails at build-time
+    # but since you can't disable `unprivileged_userns_clone`, disable the check instead
+    # https://discourse.nixos.org/t/logrotate-config-fails-due-to-missing-group-30000/28501/9
+    checkConfig = !config.boot.kernelPackages.kernel.isHardened;
+  };
+
   services = {
     fwupd.enable = true;
     journald.storage = "persistent";
-    logrotate.enable = true;
     timesyncd.enable = true; # NTP
     udisks2.enable = true;
 
