@@ -81,7 +81,7 @@
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
           latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
-          latestStableKernel = "linuxPackages_latest_hardened";
+          latestStableKernel = "linuxPackages_latest";
 
           # actual filesystems that I use
           supportedFilesystemsSansZFS = [
