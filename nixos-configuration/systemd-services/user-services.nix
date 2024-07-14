@@ -24,8 +24,8 @@ in lib.mkIf pkgs.stdenv.isLinux {
 
     "update-rust" = {
       Service = {
-        ExecStart = "${pkgs.dash}/bin/dash ${scriptsDir}/other-common-scripts/rust-manage.sh";
-        Environment = [ ''"PATH=${pkgs.procps}/bin:${pkgs.rustup}/bin"'' ];
+        ExecStart = "${pkgs.dash}/bin/bash ${scriptsDir}/other-common-scripts/rust-manage.sh ${pkgs.rustup}/bin/rustup";
+        Environment = [ ''"PATH=${pkgs.procps}/bin"'' ];
         Type = "oneshot";
       };
       Install = { WantedBy = [ "default.target" ]; };
