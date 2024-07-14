@@ -6,7 +6,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.services = {
     "dotfiles-pull" = {
       Service = {
-        ExecStart = "${pkgs.dash}/bin/dash ${scriptsDir}/other-common-scripts/dotfiles-pull.sh";
+        ExecStart = "${pkgs.bash}/bin/bash ${scriptsDir}/other-common-scripts/dotfiles-pull.sh";
         Environment = [ ''"PATH=${pkgs.git}/bin:${pkgs.openssh}/bin"'' ];
         Type = "oneshot";
       };
@@ -24,7 +24,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
 
     "update-rust" = {
       Service = {
-        ExecStart = "${pkgs.dash}/bin/bash ${scriptsDir}/other-common-scripts/rust-manage.sh ${pkgs.rustup}/bin/rustup";
+        ExecStart = "${pkgs.bash}/bin/bash ${scriptsDir}/other-common-scripts/rust-manage.sh ${pkgs.rustup}/bin/rustup";
         Environment = [ ''"PATH=${pkgs.procps}/bin"'' ];
         Type = "oneshot";
       };
