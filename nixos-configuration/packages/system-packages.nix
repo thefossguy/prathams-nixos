@@ -33,6 +33,7 @@
     # optional, misc packages
     cloud-utils # provides growpart
     dmidecode
+    lsof
     minisign
     nvme-cli
 
