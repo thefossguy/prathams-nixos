@@ -24,6 +24,7 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = with pkgs; [
+    blueman
     brightnessctl # manage the embedded display's brightness
     cliphist
     grim # screenshot utility
