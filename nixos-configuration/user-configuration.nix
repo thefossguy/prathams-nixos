@@ -50,6 +50,7 @@ in {
       extraGroups = [
         "adbusers"
         "adm"
+        "audio"
         "dialout"
         "ftp"
         "games"
