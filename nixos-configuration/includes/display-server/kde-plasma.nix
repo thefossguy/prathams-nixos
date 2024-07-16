@@ -9,7 +9,6 @@
   };
 
   security.pam.services.${systemUser.username}.kwallet.enable = true;
-  security.polkit.package = pkgs.kdePackages.polkit-kde-agent-1;
   services = {
     desktopManager.plasma6.enable = true;
 
