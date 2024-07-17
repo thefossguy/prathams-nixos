@@ -41,5 +41,6 @@
     wl-clipboard
     wofi # app launcher
     xfce.thunar # file manager
+    xfce.tumbler # thumbnails for thunar
   ];
 }
