@@ -4,7 +4,6 @@
   imports = [ ./base-display-server.nix ];
 
   programs.hyprland.enable = true;
-  programs.hyprlock.enable = true;
   programs.waybar.enable = true;
   services.hypridle.enable = true;
 
@@ -36,6 +35,7 @@
     networkmanagerapplet
     playerctl # for play/pause/next/previous using fn-keys
     slurp # screenshot selection utility
+    swaylock-fancy
     swww # setting wallpaper
     wayland-utils
     wl-clipboard
