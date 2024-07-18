@@ -67,12 +67,7 @@
 
     bash = {
       enableCompletion = true;
-      # notifications when long-running terminal commands complete
-      undistractMe = {
-        enable = true;
-        playSound = true;
-        timeout = 300; # notify only if said command has been running for this many seconds
-      };
+
       # aliases for the root user
       # doesn't affect 'pratham' since there is an `unalias -a` in $HOME/.bashrc
       shellAliases = {
