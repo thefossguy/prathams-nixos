@@ -7,6 +7,11 @@
   programs.waybar.enable = true;
   services.hypridle.enable = true;
 
+  security.pam.services.login.kwallet = {
+    enable = true;
+    package = pkgs.kdePackages.kwallet-pam;
+  };
+
   services = {
     displayManager = {
       defaultSession = "hyprland";
