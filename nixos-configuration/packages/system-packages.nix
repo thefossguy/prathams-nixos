@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, systemUser, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -70,10 +70,15 @@
 
       # aliases for the root user
       # doesn't affect 'pratham' since there is an `unalias -a` in $HOME/.bashrc
-      shellAliases = {
+      shellAliases = let
+        nixosRebuildCommand = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}";
+        paranoidFlushScript = "/home/${systemUser.username}/.local/scripts/other-common-scripts/paranoid-flush.sh";
+      in {
         "e" = "${pkgs.vim}/bin/vim";
-        "do-nixos-rebuild" = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}";
-        "donixos-rebuild" =  "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}";
+        "do-nixos-rebuild" = nixosRebuildCommand;
+        "donixos-rebuild" =  nixosRebuildCommand;
+        "syncsync" = paranoidFlushScript;
+        "sudosync" = paranoidFlushScript;
       };
     };
 
