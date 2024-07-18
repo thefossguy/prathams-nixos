@@ -4,7 +4,6 @@ let
   # more chromium flags in ~/.local/scripts/other-common-scripts/flatpak-manage.sh
   commonChromiumFlags = [
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
-    "--password-store=basic" # disables the password prompt for the "wallet"
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
   ];
   braveWrapped = pkgs.brave.override {
