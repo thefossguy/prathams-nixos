@@ -69,6 +69,8 @@ in {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Asia/Kolkata";
   users.users."${isoUser.username}".hashedPassword = "${isoUser.hashedPassword}";
+  networking.networkmanager.enable = true;
+  networking.wireless.enable = lib.mkForce false; # this enabled 'wpa_supplicant', use networkmanager instead
   isoImage.isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${config.boot.kernelPackages.kernel.version}-${isoZfsString}${pkgs.stdenv.hostPlatform.system}.iso";
 
   zramSwap = {
