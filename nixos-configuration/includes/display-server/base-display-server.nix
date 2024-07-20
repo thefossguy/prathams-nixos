@@ -57,6 +57,7 @@ in
     alacritty
     authenticator # alt to Google Authenticator on iOS/Android
     desktop-file-utils
+    foot
     fractal # matrix client
     mediainfo-gui
     metadata-cleaner # exif removal
