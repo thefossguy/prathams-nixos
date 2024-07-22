@@ -21,14 +21,14 @@ let
     ${connectivityCheckScript}
 
     if [[ ! -d "$HOME/.dotfiles" ]]; then
-        git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$HOME/.dotfiles"
-        git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout -f
+        ${pkgs.gitFull}/bin/git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$HOME/.dotfiles"
+        ${pkgs.gitFull}/bin/git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout -f
         rm -rf "$HOME/.config/nvim"
     fi
 
     if [[ ! -d "$HOME/my-git-repos/prathams-nixos" ]]; then
         mkdir -vp "$HOME/my-git-repos"
-        git clone https://gitlab.com/thefossguy/prathams-nixos.git "$HOME/my-git-repos/prathams-nixos"
+        ${pkgs.gitFull}/bin/git clone https://gitlab.com/thefossguy/prathams-nixos.git "$HOME/my-git-repos/prathams-nixos"
     fi
   '';
 
