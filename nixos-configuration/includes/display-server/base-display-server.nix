@@ -6,12 +6,6 @@ let
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
   ];
-  braveWrapped = pkgs.brave.override {
-    commandLineArgs = commonChromiumFlags;
-  };
-  ungoogledChromiumWrapped = pkgs.ungoogled-chromium.override {
-    commandLineArgs = commonChromiumFlags;
-  };
 in
 
 {
@@ -56,6 +50,7 @@ in
   environment.systemPackages = with pkgs; [
     alacritty
     authenticator # alt to Google Authenticator on iOS/Android
+    brave
     desktop-file-utils
     foot
     fractal # matrix client
@@ -65,14 +60,30 @@ in
     neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
+    ungoogled-chromium
   ] ++ (with pkgs.kdePackages; [
     filelight # visualize disk space
     ghostwriter # markdown editor
     kalk # calculator
-  ]) ++ ([
-    braveWrapped
-    ungoogledChromiumWrapped
   ]);
+
+  nixpkgs.overlays = [
+    (self: super: {
+      brave = super.brave.override {
+        commandLineArgs = commonChromiumFlags;
+      };
+      ungoogled-chromium = super.ungoogled-chromium.override {
+        commandLineArgs = commonChromiumFlags;
+      };
+
+      mpv = super.mpv.override {
+        scripts = [ self.mpvScripts.mpris ];
+      };
+      mpv-unwrapped = super.mpv-unwrapped.override {
+        ffmpeg = self.ffmpeg-full;
+      };
+    })
+  ];
 
   fonts = {
     fontDir.enable = true;
