@@ -84,6 +84,11 @@ in {
       keepTerminfo = true;
       wheelNeedsPassword = true;
 
+      # no first password prompt banner "with great power comes great responsibility"
+      extraConfig = ''
+        Defaults lecture = never
+      '';
+
       extraRules = [{
         users = [ "${systemUser.username}" ];
         commands = sudoCommands;
