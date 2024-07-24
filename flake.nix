@@ -83,6 +83,12 @@
           latestLtsKernel = "linuxPackages_6_6_hardened"; # so that we can haz a newer LTS kernel after the yy.11 release
           latestStableKernel = "linuxPackages_latest";
 
+          machineTypes = {
+            desktop = "Desktop";
+            laptop  = "Laptop";
+            server  = "Server";
+          };
+
           # actual filesystems that I use
           supportedFilesystemsSansZFS = [
             "ext4"
@@ -110,6 +116,7 @@
             hostname = "flameboi";
             ipv4Address = "10.0.0.13";
             networkingIface = "eth0";
+            machineType = nixosMachines.misc.machineTypes.desktop;
             system = linuxSystems.x86_64;
           };
 
@@ -118,6 +125,7 @@
             hostname = "indra";
             ipv4Address = "10.0.0.50";
             networkingIface = "wlp0s20f3";
+            machineType = nixosMachines.misc.machineTypes.laptop;
             system = linuxSystems.x86_64;
           };
 
@@ -214,6 +222,7 @@
           home-manager = passed-home-manager;
 
           system = nixosMachines.hosts."${hostname}".system;
+          machineType = nixosMachines.hosts."${hostname}".machineType or nixosMachines.misc.machineTypes.server;
           pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
           pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
           pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
@@ -237,6 +246,10 @@
             (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager; })
             home-manager.nixosModules.home-manager {
               home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; };
+            }
+            {
+              # this is an ugly hack that will probably stay for an eternity lol
+              config.custom-options."isNixos${machineType}" = true;
             }
           ] ++ (nixosMachines.hosts."${hostname}".extraSystemModules or [ ]);
         };
