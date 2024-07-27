@@ -61,7 +61,7 @@
         # generate the `hashedPassword` using `mkpasswd`
         root.hashedPassword     = "$y$j9T$BzG/Oq8bbL.2uq2/MuRox.$cofHV3CnpcdI4PI5nEEJz//nWqFWiAL8Mfj8/adLJhC";
         nixosIso.hashedPassword = "$y$j9T$vMupXoz6rvpT55CkuDenZ0$umu0dpi6NG7lllLcoP9L.wY0ZxEY2wbmPwkiBFsejnC";
-        nixosIso.username  = "nixos";
+        nixosIso.username = "nixos";
       };
 
       # actual, real system users
@@ -204,7 +204,7 @@
 
           # virtual machine
           zVirtSys = let threeOctets = ""; in {
-            hostId   = "FFFFFFFF";
+            hostId = "FFFFFFFF";
             hostname = "zVirtSys";
             gatewayAddr = "${threeOctets}.1";
             ipv4Address = "${threeOctets}.";
@@ -244,9 +244,7 @@
             ./nixos-configuration/hosts/${hostname}/default.nix
             ./nixos-configuration/hosts/hosts-common.nix
             (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager; })
-            home-manager.nixosModules.home-manager {
-              home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; };
-            }
+            home-manager.nixosModules.home-manager { home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; }; }
             {
               # this is an ugly hack that will probably stay for an eternity lol
               config.custom-options."isNixos${machineType}" = true;
@@ -336,7 +334,7 @@
         z-iso-nozfs-x86_64  = mkNixosIso { systemArch = "x86_64"; };
         z-iso-zfs-aarch64   = mkNixosIso { systemArch = "aarch64"; enableZfs = true; };
         z-iso-zfs-riscv64   = mkNixosIso { systemArch = "riscv64"; enableZfs = true; };
-        z-iso-zfs-x86_64    = mkNixosIso { systemArch = "x86_64"; enableZfs = true; };
+        z-iso-zfs-x86_64    = mkNixosIso { systemArch = "x86_64";  enableZfs = true; };
 
         zVirtSys = mkNixosSystem { hostname = "zVirtSys"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
       };
@@ -409,7 +407,7 @@
           else ".#nixosConfigurations.${nixosSystem}.config.system.build.toplevel";
         buildExpressionOfHome    = user:        if (lib.stringLength user == 0) then ""
           else ".#legacyPackages.${system}.homeConfigurations.${user}.activationPackage";
-        buildExpressionOfPackage = package:     if (lib.stringLength package== 0) then ""
+        buildExpressionOfPackage = package:     if (lib.stringLength package == 0) then ""
           else ".#packages.${system}.${package}";
         buildExpressionOfIso     = ".#nixosConfigurations.z-iso-{no,}zfs-$(uname -m).config.system.build.isoImage";
       in {
@@ -421,7 +419,7 @@
 
         thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuildCmd} ${buildExpressionOfSystem ''''${NIXOS_MACHINE_HOSTNAME:-}''}
+          ${nixBuildCmd} ${buildExpressionOfSystem "\${NIXOS_MACHINE_HOSTNAME:-}"}
         '';
         allNixosSystems = pkgs.writeShellScriptBin "run.sh" ''
           set -x
@@ -430,7 +428,7 @@
 
         thisHome = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuildCmd} ${buildExpressionOfHome ''''${USER:-}''}
+          ${nixBuildCmd} ${buildExpressionOfHome "\${USER:-}"}
         '';
         allHomes = pkgs.writeShellScriptBin "run.sh" ''
           set -x
@@ -439,7 +437,7 @@
 
         thisPackage = pkgs.writeShellScriptBin "run.sh" ''
           set -x
-          ${nixBuildCmd} ${buildExpressionOfPackage ''''${1:-}''}
+          ${nixBuildCmd} ${buildExpressionOfPackage "\${1:-}"}
         '';
         allPackages = pkgs.writeShellScriptBin "run.sh" ''
           set -x
