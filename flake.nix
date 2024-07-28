@@ -161,6 +161,7 @@
             hostname = "mahadev";
             ipv4Address = "10.0.0.21";
             networkingIface = "enP4p65s0";
+            forceLtsKernel = true;
             system = linuxSystems.aarch64;
           };
 
