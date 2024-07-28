@@ -86,7 +86,7 @@ in {
     description = "${gitUser.username}";
     group = "${gitUser.username}";
     home = "${gitUser.homeDir}";
-    isNormaluser = true;
+    isNormalUser = true;
     isSystemUser = false;
     linger = true;
     useDefaultShell = true;
