@@ -27,7 +27,6 @@ mkfs.fat -F 32 -n nixboot "${BOOT_PART}" -i "${BOOT_UUID//-/}"
 parted -s "${TARGET_DRIVE}" -- set 1 esp on
 BOOT_PART="/dev/disk/by-uuid/${BOOT_UUID}"
 
-zpoolName="${HOSTNAME}-zpool"
 # get the options specified in `zpool create -o` with `man 7 zpoolprops`
 # get the options specified in `zpool create -O` with `man 7 zfsprops`
 zpoolCreate="zpool create -o ashift=12 -o autotrim=off -o compatibility=off -o listsnapshots=on -O atime=off -O checksum=fletcher4 -O compression=zstd-fast -O primarycache=none -O relatime=off -O sync=always -O xattr=sa -m none ${zpoolName}"

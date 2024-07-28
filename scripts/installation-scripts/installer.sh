@@ -47,6 +47,8 @@ nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-l
 # shellcheck disable=SC2086
 if grep 'fsType = "zfs"' "nixos-configuration/hosts/${HOSTNAME}/default.nix"; then
     ZFS_IN_USE=1
+    zpoolName="${HOSTNAME}-zpool"
+    export zpoolName
 else
     ZFS_IN_USE=0
 
@@ -110,12 +112,17 @@ nixos-install \
 mount -o bind /etc/resolv.conf "${MOUNT_PATH}/etc/resolv.conf"
 # shellcheck disable=SC2207
 REAL_USER_LIST=( $(awk -F ':' '{print $6}' "${MOUNT_PATH}/etc/passwd" | grep '/home/' | awk -F '/' '{print $NF}') )
-CHROOT_USER_SCRIPT='chroot-user-setup.sh'
 for NIXOS_USER in "${REAL_USER_LIST[@]}"; do
-    DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
-    cp "./scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${DESTINATION}"
-    nixos-enter --root "${MOUNT_PATH}" -c "su --login ${NIXOS_USER} --command 'bash ${DESTINATION}'"
-    rm "${MOUNT_PATH}${DESTINATION}"
+    CHROOT_USER_SCRIPT='chroot-user-setup.sh'
+    CHROOT_USER_SCRIPT_DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
+
+    cp "./scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
+
+    nixos-enter --root "${MOUNT_PATH}" -c "su --login ${NIXOS_USER} --command 'bash ${CHROOT_USER_SCRIPT_DESTINATION}'"
+    [[ "${ZFS_IN_USE}" -eq 1 ]] && nixos-enter --root "${MOUNT_PATH}" -c "zfs allow -u ${NIXOS_USER} diff,rollback,mount,snapshot,send,hold ${zpoolName}"
+
+    rm "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
+    rm "${MOUNT_PATH}${CHROOT_ZFS_PERMISSION_SCRIPT_DESTINATION}"
 done
 
 if [[ "$(dmidecode -s system-manufacturer)" == 'QEMU' ]]; then
