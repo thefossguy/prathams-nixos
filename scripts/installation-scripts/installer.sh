@@ -113,18 +113,15 @@ mount -o bind /etc/resolv.conf "${MOUNT_PATH}/etc/resolv.conf"
 # shellcheck disable=SC2207
 REAL_USER_LIST=( $(awk -F ':' '{print $6}' "${MOUNT_PATH}/etc/passwd" | grep '/home/' | awk -F '/' '{print $NF}') )
 for NIXOS_USER in "${REAL_USER_LIST[@]}"; do
+    CHROOT_USER_SCRIPT='chroot-user-setup.sh'
+    CHROOT_USER_SCRIPT_DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
+    cp "./scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
+    nixos-enter --root "${MOUNT_PATH}" -c "su --login ${NIXOS_USER} --command 'bash ${CHROOT_USER_SCRIPT_DESTINATION}'"
+    rm "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
+
     # see the definition of `realUsers` in `flake.nix`
     if grep -q "${NIXOS_USER}IsInRealUsers = true" flake.nix; then
-        CHROOT_USER_SCRIPT='chroot-user-setup.sh'
-        CHROOT_USER_SCRIPT_DESTINATION="/home/${NIXOS_USER}/${CHROOT_USER_SCRIPT}"
-
-        cp "./scripts/installation-scripts/${CHROOT_USER_SCRIPT}" "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
-
-        nixos-enter --root "${MOUNT_PATH}" -c "su --login ${NIXOS_USER} --command 'bash ${CHROOT_USER_SCRIPT_DESTINATION}'"
         [[ "${ZFS_IN_USE}" -eq 1 ]] && nixos-enter --root "${MOUNT_PATH}" -c "zfs allow -u ${NIXOS_USER} diff,rollback,mount,snapshot,send,hold ${zpoolName}"
-
-        rm "${MOUNT_PATH}${CHROOT_USER_SCRIPT_DESTINATION}"
-        rm "${MOUNT_PATH}${CHROOT_ZFS_PERMISSION_SCRIPT_DESTINATION}"
     fi
 done
 
