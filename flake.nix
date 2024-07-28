@@ -64,13 +64,16 @@
         nixosIso.username = "nixos";
       };
 
-      # actual, real system users
+      # actual, real system users (`"${user}IsInRealUsers"` is `true`)
+      # i.e. the ones that represent a human associated to it
+      # not for users created for running systemd services or any other task
       realUsers = {
         pratham = {
           username = "pratham";
           fullname = "Pratham Patel";
           hashedPassword = "$y$j9T$dyQH1g6q6YjT.8lNruhJT.$xU2x3Phl3L6ey6tIWfmBlgHlCMrTnAxn9yD.a2/yS82";
           enableLingering = true;
+          prathamIsInRealUsers = true;
         };
       };
 
