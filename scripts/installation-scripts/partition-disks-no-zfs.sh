@@ -12,7 +12,7 @@ cat << EOF | fdisk --wipe always "${TARGET_DRIVE}"
 g
 n
 1
-
+65536
 +1G
 n
 2
