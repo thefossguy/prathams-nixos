@@ -27,6 +27,12 @@ in
     options = [ "zfsutil" ];
   };
 
+  fileSystems."/nas" = {
+    device = "${zpoolName}/nas";
+    fsType = "zfs";
+    options = [ "zfsutil" ];
+  };
+
   fileSystems."/var" = {
     device = "${zpoolName}/var";
     fsType = "zfs";

@@ -43,6 +43,7 @@ fi
 ZPOOL_ROOTFS_SIZE="$(( $(( $(zpool list -H -o size -p) / $(( 1024 * 1024 * 1024 )) )) / 4 ))G"
 zfs create -o mountpoint=/     -o recordsize=64K -o refreservation="${ZPOOL_ROOTFS_SIZE}" -u "${zpoolName}/root"
 zfs create -o mountpoint=/home -o recordsize=64K -u "${zpoolName}/home"
+zfs create -o mountpoint=/nas  -o recordsize=1M  -o checksum=sha512 -o compression=zstd-19 -u "${zpoolName}/nas"
 zfs create -o mountpoint=/var  -o recordsize=64K -o checksum=off -o compression=zstd-19 -o snapshot_limit=0 -o redundant_metadata=none -o refquota=6G -u "${zpoolName}/var"
 zpool export "${zpoolName}" && zpool import "${zpoolName}" -R "${MOUNT_PATH}"
 mount -o async,lazytime,relatime --mkdir "${BOOT_PART}" "${MOUNT_PATH}/boot"
