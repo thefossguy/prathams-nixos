@@ -393,7 +393,16 @@
       builders = forEachSupportedSystem ({ pkgs, ... }: let
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
-        nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build --verbose --trace-verbose --print-build-logs --show-trace";
+        nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
+        nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build ${nixBuildFlags}";
+        nixBuildCmd = "${pkgs.nix}/bin/nix build ${nixBuildFlags}";
+        nixOrNom = ''
+          if [[ "$(id -u)" -eq 0 ]]; then
+              nixBuildCmd='${pkgs.nix}/bin/nix build ${nixBuildFlags}'
+          else
+              nixBuildCmd='${pkgs.nix-output-monitor}/bin/nom build ${nixBuildFlags}'
+          fi
+        '';
 
         buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
@@ -416,41 +425,49 @@
         buildExpressionOfIso     = ".#nixosConfigurations.z-iso-{no,}zfs-$(uname -m).config.system.build.isoImage";
       in {
         default = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
           # the order matters because they are listed in the priority of build status to me
-          ${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
+          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
         '';
 
         thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfSystem "\${NIXOS_MACHINE_HOSTNAME:-}"}
+          ''${nixBuildCmd} ${buildExpressionOfSystem "\${NIXOS_MACHINE_HOSTNAME:-}"}
         '';
         allNixosSystems = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"}
+          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"}
         '';
 
         thisHome = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfHome "\${USER:-}"}
+          ''${nixBuildCmd} ${buildExpressionOfHome "\${USER:-}"}
         '';
         allHomes = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfHome "${listOfAllUsers}"}
+          ''${nixBuildCmd} ${buildExpressionOfHome "${listOfAllUsers}"}
         '';
 
         thisPackage = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfPackage "\${1:-}"}
+          ''${nixBuildCmd} ${buildExpressionOfPackage "\${1:-}"}
         '';
         allPackages = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfPackage "${listOfAllPackages}"}
+          ''${nixBuildCmd} ${buildExpressionOfPackage "${listOfAllPackages}"}
         '';
 
         allIsos = pkgs.writeShellScriptBin "run.sh" ''
+          ${nixOrNom}
           set -x
-          ${nixBuildCmd} ${buildExpressionOfIso}
+          ''${nixBuildCmd} ${buildExpressionOfIso}
         '';
       });
     };
