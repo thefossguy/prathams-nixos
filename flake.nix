@@ -428,7 +428,7 @@
           ${nixOrNom}
           set -x
           # the order matters because they are listed in the priority of build status to me
-          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"} ${buildExpressionOfIso}
+          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"}
         '';
 
         thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
