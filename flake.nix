@@ -350,47 +350,7 @@
       packages = forEachSupportedSystem ({ pkgs, ... }: {
       });
 
-      apps = forEachSupportedSystem ({ pkgs, ... }: {
-        default = self.apps.${pkgs.stdenv.system}.buildEverything;
-        buildEverything = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.default}/bin/run.sh";
-        };
-
-        buildThisNixosSystem = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.thisNixosSystem}/bin/run.sh";
-        };
-        buildAllNixosSystems = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.allNixosSystems}/bin/run.sh";
-        };
-
-        buildThisHome = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.thisHome}/bin/run.sh";
-        };
-        buildAllHomes = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.allHomes}/bin/run.sh";
-        };
-
-        buildThisPackage = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.thisPackage}/bin/run.sh";
-        };
-        buildAllPackages = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.allPackages}/bin/run.sh";
-        };
-
-        buildIsos = {
-          type = "app";
-          program = "${self.builders.${pkgs.stdenv.system}.allIsos}/bin/run.sh";
-        };
-      });
-
-      builders = forEachSupportedSystem ({ pkgs, ... }: let
+      apps = forEachSupportedSystem ({ pkgs, ... }: let
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
         nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
@@ -407,69 +367,117 @@
         buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
 
-        concatListToString = passedList: lib.concatStringsSep "," passedList;
-        encloseInBrackets = passedList: if (lib.lists.length passedList == 0) then "" else
-          if (lib.lists.length passedList > 1)
-            then "{" + concatListToString passedList + "}"
-            else concatListToString passedList;
+        listOfAllSystems  = lib.attrNames buildableSystems;
+        listOfAllUsers    = lib.attrNames realUsers;
+        listOfAllPackages = allPackages;
 
-        listOfAllSystems = encloseInBrackets (lib.attrNames buildableSystems);
-        listOfAllUsers = encloseInBrackets (lib.attrNames realUsers);
-        listOfAllPackages = encloseInBrackets allPackages;
+        buildNixBuildExpressions = { prefix, infixes, suffix }:
+          lib.concatStringsSep " " (
+            map (infix: ".#${prefix}." + builtins.toString infix + ".${suffix}") infixes
+          );
+        buildExpressionOfSystem = nixosSystems:  buildNixBuildExpressions {
+          prefix  = "nixosConfigurations";
+          infixes = nixosSystems;
+          suffix  = "config.system.build.toplevel";
+        };
+        buildExpressionOfHome = users: buildNixBuildExpressions {
+          prefix  = "legacyPackages.${system}.homeConfigurations";
+          infixes = users;
+          suffix  = "activationPackage";
+        };
+        buildExpressionOfPackage = packages: buildNixBuildExpressions {
+          prefix  = "packages.${system}";
+          infixes = packages;
+          suffix  = "";
+        };
+        buildExpressionOfZfsIso   = ".#nixosConfigurations.z-iso-zfs-$(uname -m).config.system.build.isoImage";
+        buildExpressionOfNozfsIso = ".#nixosConfigurations.z-iso-nozfs-$(uname -m).config.system.build.isoImage";
 
-        buildExpressionOfSystem  = nixosSystem: if (lib.stringLength nixosSystem == 0) then ""
-          else ".#nixosConfigurations.${nixosSystem}.config.system.build.toplevel";
-        buildExpressionOfHome    = user:        if (lib.stringLength user == 0) then ""
-          else ".#legacyPackages.${system}.homeConfigurations.${user}.activationPackage";
-        buildExpressionOfPackage = package:     if (lib.stringLength package == 0) then ""
-          else ".#packages.${system}.${package}";
-        buildExpressionOfIso     = ".#nixosConfigurations.z-iso-{no,}zfs-$(uname -m).config.system.build.isoImage";
       in {
-        default = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          # the order matters because they are listed in the priority of build status to me
-          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"} ${buildExpressionOfHome "${listOfAllUsers}"} ${buildExpressionOfPackage "${listOfAllPackages}"}
-        '';
+        continuousBuild = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-continuous-build" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${buildExpressionOfHome listOfAllUsers} ${buildExpressionOfSystem listOfAllSystems}
+          ''}/bin/nix-run-continuous-build";
+        };
+        buildEverything = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-everything" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${buildExpressionOfHome listOfAllUsers} ${buildExpressionOfSystem listOfAllSystems} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+          ''}/bin/nix-run-build-everything";
+        };
 
-        thisNixosSystem = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfSystem "\${NIXOS_MACHINE_HOSTNAME:-}"}
-        '';
-        allNixosSystems = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfSystem "${listOfAllSystems}"}
-        '';
+        buildThisNixosSystem = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-this-nixos-system" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfSystem ["\${NIXOS_MACHINE_HOSTNAME:-}"]}
+          ''}/bin/nix-run-build-this-nixos-system";
+        };
+        buildAllNixosSystems = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-runall-nixos-systems" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfSystem listOfAllSystems}
+          ''}/bin/nix-runall-nixos-systems";
+        };
 
-        thisHome = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfHome "\${USER:-}"}
-        '';
-        allHomes = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfHome "${listOfAllUsers}"}
-        '';
+        buildThisHome = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-this-home" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfHome ["\${USER:-}"]}
+          ''}/bin/nix-run-build-this-home";
+        };
+        buildAllHomes = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-all-homes" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers}
+          ''}/bin/nix-run-build-all-homes";
+        };
 
-        thisPackage = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfPackage "\${1:-}"}
-        '';
-        allPackages = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfPackage "${listOfAllPackages}"}
-        '';
+        buildAllPackages = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-all-packages" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages}
+          ''}/bin/nix-run-build-all-packages";
+        };
 
-        allIsos = pkgs.writeShellScriptBin "run.sh" ''
-          ${nixOrNom}
-          set -x
-          ''${nixBuildCmd} ${buildExpressionOfIso}
-        '';
+        buildZfsIso = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-zfs-iso" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfZfsIso}
+          ''}/bin/nix-run-build-zfs-iso";
+        };
+        buildNozfsIso = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-nozfs-iso" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfNozfsIso}
+          ''}/bin/nix-run-build-nozfs-iso";
+        };
+        buildAllIsos = {
+          type = "app";
+          program = "${pkgs.writeShellScriptBin "nix-run-build-all-isos" ''
+            ${nixOrNom}
+            set -x
+            ''${nixBuildCmd} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+          ''}/bin/nix-run-build-all-isos";
+        };
       });
     };
 }
