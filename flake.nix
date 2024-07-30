@@ -408,9 +408,10 @@
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
 
         concatListToString = passedList: lib.concatStringsSep "," passedList;
-        encloseInBrackets = passedList: if (lib.lists.length passedList > 1)
-          then "{" + concatListToString passedList + "}"
-          else concatListToString passedList;
+        encloseInBrackets = passedList: if (lib.lists.length passedList == 0) then "" else
+          if (lib.lists.length passedList > 1)
+            then "{" + concatListToString passedList + "}"
+            else concatListToString passedList;
 
         listOfAllSystems = encloseInBrackets (lib.attrNames buildableSystems);
         listOfAllUsers = encloseInBrackets (lib.attrNames realUsers);
