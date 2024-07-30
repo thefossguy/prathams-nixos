@@ -44,7 +44,7 @@
 
     gc = {
       automatic = true;
-      dates = "*-*-* 23:00:00"; # everyday, at 23:00
+      dates = "Mon *-*-* 00:00:00";
       options = "--delete-older-than 14d";
     };
 
