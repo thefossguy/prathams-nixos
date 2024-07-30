@@ -7,20 +7,15 @@
   programs.waybar.enable = true;
   services.hypridle.enable = true;
 
-  services = {
-    displayManager = {
-      defaultSession = "hyprland";
+  security.pam.services.login.kwallet.enable = true;
+  security.pam.services.login.kwallet.package = pkgs.kdePackages.kwallet;
+  services.xserver.displayManager.lightdm.enable = lib.mkForce false;
 
-      sddm = {
-        enable = true;
-        wayland.enable = lib.mkDefault false; # wayland support is experimental
-        enableHidpi = true;
-      };
-    };
+  environment.variables = {
+    # enables the Wayland trackpad gestures in Chroimum/Electron
+    NIXOS_OZONE_WL = "1";
+    NIXOS_PAM_KWALLET_INIT_FILE = "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init";
   };
-
-  # enables the Wayland trackpad gestures in Chroimum/Electron
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   environment.systemPackages = with pkgs; [
     blueman
@@ -29,6 +24,7 @@
     grim # screenshot utility
     kdePackages.kdeconnect-kde
     kdePackages.kdenlive
+    kdePackages.kwallet-pam
     kdePackages.kwalletmanager
     kdePackages.okular # the universal document viewer (good for previews)
     libnotify # for some reason, this isn't bundled with a notification daemon ('mako' in my case)
