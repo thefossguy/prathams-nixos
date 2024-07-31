@@ -8,12 +8,26 @@
   services.hypridle.enable = true;
 
   security.pam.services.login.kwallet.enable = true;
-  security.pam.services.login.kwallet.package = pkgs.kdePackages.kwallet;
+  security.pam.services.login.kwallet.package = pkgs.kdePackages.kwallet-pam;
+
+  # lightdm gets enabled by default if no display manager is enabled
+  # force disable in case I want to login from the TTY instead of using **any** DM
   services.xserver.displayManager.lightdm.enable = lib.mkForce false;
+
+  services.displayManager = {
+    defaultSession = "hyprland";
+    sddm = {
+      enable = true;
+      wayland.enable = lib.mkDefault false; # wayland support is experimental
+      enableHidpi = true;
+    };
+  };
 
   environment.variables = {
     # enables the Wayland trackpad gestures in Chroimum/Electron
     NIXOS_OZONE_WL = "1";
+    # since the pam_kwallet_init is not symlinked anywhere (that I could find)
+    # put it in an env that can be called from a script
     NIXOS_PAM_KWALLET_INIT_FILE = "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init";
   };
 
@@ -24,7 +38,6 @@
     grim # screenshot utility
     kdePackages.kdeconnect-kde
     kdePackages.kdenlive
-    kdePackages.kwallet-pam
     kdePackages.kwalletmanager
     kdePackages.okular # the universal document viewer (good for previews)
     libnotify # for some reason, this isn't bundled with a notification daemon ('mako' in my case)
