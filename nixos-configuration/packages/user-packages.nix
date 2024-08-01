@@ -62,7 +62,7 @@ in {
     protonmail-bridge
 
     # "cloud" stuff
-    google-cloud-sdk-gce
+    #google-cloud-sdk-gce
 
     # misc utilities + shells
     asciinema
