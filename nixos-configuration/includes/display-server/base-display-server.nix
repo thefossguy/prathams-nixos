@@ -12,7 +12,6 @@ in
   hardware.opengl.enable = true;
   security.rtkit.enable = true;
   security.polkit.enable = true;
-  sound.enable = true;
   xdg.portal.enable = true;
 
   services.displayManager.hiddenUsers = [ "root" ];
