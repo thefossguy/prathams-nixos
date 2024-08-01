@@ -1,5 +1,17 @@
 { lib, pkgs, ... }:
 
+let
+  # workaround until https://github.com/NixOS/nixpkgs/pull/331278 is merged
+  # and also lands in a stable branch
+  origKwalletPamPkg = pkgs.kdePackages.kwallet-pam;
+  kwalletPamWithForceRun = origKwalletPamPkg.overrideAttrs {
+    postPatch = ''
+      ${origKwalletPamPkg.postPatch or ""}
+      sed -i 's/static int force_run = 0;/static int force_run = 1;/' pam_kwallet.c
+    '';
+  };
+in
+
 {
   imports = [ ./base-display-server.nix ];
 
@@ -8,7 +20,7 @@
   services.hypridle.enable = true;
 
   security.pam.services.login.kwallet.enable = true;
-  security.pam.services.login.kwallet.package = pkgs.kdePackages.kwallet-pam;
+  security.pam.services.login.kwallet.package = kwalletPamWithForceRun;
 
   # lightdm gets enabled by default if no display manager is enabled
   # force disable in case I want to login from the TTY instead of using **any** DM
@@ -28,7 +40,7 @@
     NIXOS_OZONE_WL = "1";
     # since the pam_kwallet_init is not symlinked anywhere (that I could find)
     # put it in an env that can be called from a script
-    NIXOS_PAM_KWALLET_INIT_FILE = "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init";
+    NIXOS_PAM_KWALLET_INIT_FILE = "${kwalletPamWithForceRun}/libexec/pam_kwallet_init";
   };
 
   environment.systemPackages = with pkgs; [
