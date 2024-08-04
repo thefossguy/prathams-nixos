@@ -61,7 +61,7 @@ lib.mkIf forceLtsKernel {
 
       "full-zpool-maintainence" = {
         enable = true;
-        path = [ latestLtsKernelPackage.zfs.userspaceTools ];
+        path = [ latestLtsKernelPackage.zfs.userspaceTools pkgs.gawk ];
         serviceConfig = {
           User = "root";
           Type = "oneshot";
