@@ -19,6 +19,12 @@
         default = false;
       };
 
+      isNixCacheMachine = lib.mkOption {
+        description = "This machine serves Nix Cache.";
+        type = lib.types.bool;
+        default = false;
+      };
+
       enableWebRemoteServices = lib.mkOption {
         description = "Enable all systemd services that start rootless (Podman) containers for the home-manager user";
         type = lib.types.bool;

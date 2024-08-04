@@ -17,6 +17,8 @@
     nixpkgs-0unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     home-manager-0unstable-small.url = "github:nix-community/home-manager/master";
     home-manager-0unstable-small.inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
+
+    nix-serve-ng.url = "github:aristanetworks/nix-serve-ng";
   };
 
   outputs = { self,
@@ -24,6 +26,7 @@
     nixpkgs-1stable-small,   home-manager-1stable-small,
     nixpkgs-0unstable,       home-manager-0unstable,
     nixpkgs-0unstable-small, home-manager-0unstable-small,
+    nix-serve-ng,
     ... }:
     let
       nixpkgs = nixpkgs-1stable-small;
@@ -307,6 +310,7 @@
               users.users.root.hashedPassword = "${systemUsers.root.hashedPassword}";
             }
 
+            nix-serve-ng.nixosModules.default
             home-manager.nixosModules.home-manager { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
           ];
         };
