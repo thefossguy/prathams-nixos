@@ -2,7 +2,10 @@
 , networkingIface, latestStableKernel, supportedFilesystemsSansZFS, system, ... }:
 
 {
-  imports = [ ../includes/zfs/default.nix ];
+  imports = [
+    ../includes/zfs/default.nix
+    ../includes/local-nix-cahe/default.nix
+  ];
 
   boot.kernelPackages = lib.mkDefault pkgs."${latestStableKernel}";
   boot.supportedFilesystems = lib.mkDefault supportedFilesystemsSansZFS;
