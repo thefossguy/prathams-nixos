@@ -14,6 +14,7 @@ in {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
     ../includes/qemu/qemu-guest.nix
+    ../includes/local-nix-cache/nix-conf.nix
   ];
 
   environment.systemPackages = pkgs.callPackage ./packages-in-iso.nix {};
