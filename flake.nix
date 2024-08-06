@@ -327,7 +327,7 @@
       nixosConfigurations = {
         flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
         indra      = mkNixosSystem { hostname = "indra";    passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
-        sentinel   = mkNixosSystem { hostname = "sentinel"; };
+        sentinel   = mkNixosSystem { hostname = "sentinel"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
         reddish    = mkNixosSystem { hostname = "reddish"; };
         raajan     = mkNixosSystem { hostname = "raajan"; };
         mahadev    = mkNixosSystem { hostname = "mahadev"; };
