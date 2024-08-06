@@ -33,7 +33,7 @@ BOOT_PART="/dev/disk/by-uuid/${BOOT_UUID}"
 
 # get the options specified in `zpool create -o` with `man 7 zpoolprops`
 # get the options specified in `zpool create -O` with `man 7 zfsprops`
-zpoolCreate="zpool create -o ashift=12 -o autotrim=off -o compatibility=off -o listsnapshots=on -O atime=off -O checksum=fletcher4 -O compression=zstd-fast -O primarycache=none -O relatime=off -O sync=always -O xattr=sa -O acltype=posixacl -m none ${zpoolName}"
+zpoolCreate="zpool create -o ashift=12 -o autotrim=off -o compatibility=off -o listsnapshots=on -O atime=off -O checksum=fletcher4 -O compression=zstd-fast -O primarycache=none -O relatime=off -O sync=standard -O xattr=sa -O acltype=posixacl -m none ${zpoolName}"
 export zpoolCreate
 
 if [[ "${HOSTNAME}" == 'chaturvyas' ]]; then
