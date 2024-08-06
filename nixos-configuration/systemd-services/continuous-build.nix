@@ -33,7 +33,7 @@ in
         pushd /etc/nixos
         git pull
         nix flake update
-        time nix run .
+        time nix run .#continuousBuild
         popd
       '';
     };
