@@ -4,7 +4,7 @@
 {
   imports = [
     ../includes/zfs/default.nix
-    ../includes/local-nix-cahe/default.nix
+    ../includes/local-nix-cache/default.nix
   ];
 
   boot.kernelPackages = lib.mkDefault pkgs."${latestStableKernel}";
