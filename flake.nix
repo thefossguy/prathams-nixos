@@ -354,6 +354,18 @@
       packages = forEachSupportedSystem ({ pkgs, ... }: {
       });
 
+      devShells = forEachSupportedSystem ({ pkgs, ... }: {
+        default = pkgs.mkShellNoCC {
+          packages = pkgs.callPackage ./nixos-configuration/_iso/packages-in-iso.nix {};
+          shellHook = ''
+          if ! nix help 1>/dev/null 2>&1; then
+              export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
+              alias nix="''${nix}"
+          fi
+          '';
+        };
+      });
+
       apps = forEachSupportedSystem ({ pkgs, ... }: let
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
