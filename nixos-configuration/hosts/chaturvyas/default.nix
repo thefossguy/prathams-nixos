@@ -5,6 +5,8 @@ let
 in
 
 {
+  custom-options.isNixCacheMachine = true;
+
   imports = [
     ../../systemd-services/continuous-build.nix
     ../../systemd-services/git-sync.nix
