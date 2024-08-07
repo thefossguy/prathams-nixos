@@ -67,19 +67,26 @@ in
   ]);
 
   nixpkgs.overlays = [
-    (self: super: {
-      brave = super.brave.override {
-        commandLineArgs = commonChromiumFlags;
-      };
-      ungoogled-chromium = super.ungoogled-chromium.override {
-        commandLineArgs = commonChromiumFlags;
+    (final: prev: {
+      kwalletPam = prev.kdePackages.kwallet-pam.overrideAttrs {
+        postPatch = ''
+          ${prev.kdePackages.kwallet-pam.postPatch or ""}
+          sed -i 's/static int force_run = 0;/static int force_run = 1;/' pam_kwallet.c
+        '';
       };
 
-      mpv = super.mpv.override {
-        scripts = [ self.mpvScripts.mpris ];
+      mpv = prev.mpv.override {
+        scripts = [ prev.mpvScripts.mpris ];
       };
-      mpv-unwrapped = super.mpv-unwrapped.override {
-        ffmpeg = self.ffmpeg-full;
+      mpv-unwrapped = prev.mpv-unwrapped.override {
+        ffmpeg = prev.ffmpeg-full;
+      };
+
+      brave = prev.brave.override {
+        commandLineArgs = commonChromiumFlags;
+      };
+      ungoogled-chromium = prev.ungoogled-chromium.override {
+        commandLineArgs = commonChromiumFlags;
       };
     })
   ];
