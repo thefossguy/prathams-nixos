@@ -75,6 +75,14 @@ in
         '';
       };
 
+      nerdfonts-tfg = prev.nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "Overpass"
+          "SourceCodePro"
+        ];
+      };
+
       mpv = prev.mpv.override {
         scripts = [ prev.mpvScripts.mpris ];
       };
@@ -93,14 +101,6 @@ in
 
   fonts = {
     fontDir.enable = true;
-    packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "Overpass"
-          "SourceCodePro"
-        ];
-      })
-    ];
+    packages = [ pkgs.nerdfonts-tfg ];
   };
 }
