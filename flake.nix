@@ -374,9 +374,9 @@
         nixBuildCmd = "${pkgs.nix}/bin/nix build ${nixBuildFlags}";
         nixOrNom = ''
           if [[ "$(id -u)" -eq 0 ]]; then
-              nixBuildCmd='${nixBuildCmd} ${nixBuildFlags}'
+              nixBuildCmd='${nixBuildCmd}'
           else
-              nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'
+              nixBuildCmd='${nomBuildCmd}'
           fi
         '';
 
