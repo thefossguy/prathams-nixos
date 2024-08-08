@@ -19,6 +19,9 @@
     home-manager-0unstable-small.inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
 
     nix-serve-ng.url = "github:aristanetworks/nix-serve-ng";
+
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    nixos-cosmic.inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
   };
 
   outputs = { self,
@@ -26,7 +29,7 @@
     nixpkgs-1stable-small,   home-manager-1stable-small,
     nixpkgs-0unstable,       home-manager-0unstable,
     nixpkgs-0unstable-small, home-manager-0unstable-small,
-    nix-serve-ng,
+    nix-serve-ng, nixos-cosmic,
     ... }:
     let
       nixpkgs = nixpkgs-1stable-small;
@@ -310,6 +313,7 @@
               users.users.root.hashedPassword = "${systemUsers.root.hashedPassword}";
             }
 
+            nixos-cosmic.nixosModules.default
             nix-serve-ng.nixosModules.default
             home-manager.nixosModules.home-manager { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
           ];
