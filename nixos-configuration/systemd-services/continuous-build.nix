@@ -9,6 +9,7 @@ let
 in
 
 {
+  nix.settings.max-jobs = 1;
   systemd = {
     services."continuous-build" = {
       enable = true;
