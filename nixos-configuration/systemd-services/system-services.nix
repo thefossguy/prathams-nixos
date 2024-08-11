@@ -7,6 +7,7 @@ in {
    ./custom-nixos-upgrade.nix
    ./ensure-local-static-ip.nix
    ./needs-reboot.nix
+   ./update-nixos-flake-inputs.nix
    ];
 
   services.logrotate = {
