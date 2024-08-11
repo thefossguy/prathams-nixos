@@ -2,7 +2,20 @@
 
 {
   nix.settings.max-jobs = 1;
+
   systemd = {
+    timers."continuous-build" = {
+      enable = true;
+      requiredBy = [ "timers.target" ];
+
+      timerConfig = {
+        Unit = "continuous-build";
+
+        OnBootSec = "10m";
+        OnCalendar = "hourly";
+      };
+    };
+
     services."continuous-build" = {
       enable = true;
       after    = [ "custom-nixos-upgrade.service" ];
