@@ -370,13 +370,13 @@
         lib = pkgs.lib;
         system = pkgs.stdenv.system;
         nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
-        nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build ${nixBuildFlags}";
-        nixBuildCmd = "${pkgs.nix}/bin/nix build ${nixBuildFlags}";
+        nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build";
+        nixBuildCmd = "${pkgs.nix}/bin/nix build";
         nixOrNom = ''
           if [[ "$(id -u)" -eq 0 ]]; then
-              nixBuildCmd='${nixBuildCmd}'
+              nixBuildCmd='${nixBuildCmd} ${nixBuildFlags} --max-jobs 1'
           else
-              nixBuildCmd='${nomBuildCmd}'
+              nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'
           fi
         '';
 
