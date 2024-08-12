@@ -19,6 +19,12 @@
         default = false;
       };
 
+      runsVirtualMachines = lib.mkOption {
+        description = "Machine that runs VM and so has other related things enabled.";
+        type = lib.types.bool;
+        default = false;
+      };
+
       isNixCacheMachine = lib.mkOption {
         description = "This machine serves Nix Cache.";
         type = lib.types.bool;

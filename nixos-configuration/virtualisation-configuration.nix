@@ -1,6 +1,6 @@
-{ pkgs, systemUser, ... }:
+{ pkgs, lib, config, systemUser, ... }:
 
-{
+lib.mkIf (config.custom-options.runsVirtualMachines or false) {
   environment.systemPackages = with pkgs; [
     bridge-utils
   ];

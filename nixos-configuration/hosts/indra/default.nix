@@ -11,6 +11,7 @@
   hardware.bluetooth.enable = true;
 
   environment.systemPackages = [ pkgs.qemu ];
+  custom-options.runsVirtualMachines = true;
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/2C9D-5832";
