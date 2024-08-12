@@ -1,6 +1,10 @@
 { pkgs, systemUser, ... }:
 
 {
+  environment.systemPackages = with pkgs; [
+    bridge-utils
+  ];
+
   virtualisation = {
     oci-containers.backend = "podman";
 
