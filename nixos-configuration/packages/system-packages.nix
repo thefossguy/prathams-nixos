@@ -22,13 +22,13 @@
     # base system packages + packages what I *need*
     hdparm
     linux-firmware
+    parted
     pciutils # provides lspci and setpci
     psmisc # provides killall, fuser, pslog, pstree, etc
     pv
     smartmontools
     usbutils
     vim # it is a necessity
-    parted
 
     # optional, misc packages
     cloud-utils # provides growpart
