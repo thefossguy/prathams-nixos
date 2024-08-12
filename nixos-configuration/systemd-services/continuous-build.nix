@@ -10,8 +10,6 @@
 
       timerConfig = {
         Unit = "continuous-build";
-
-        OnBootSec = "10m";
         OnCalendar = "hourly";
       };
     };

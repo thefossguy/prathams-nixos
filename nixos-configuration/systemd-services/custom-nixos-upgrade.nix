@@ -11,8 +11,6 @@
 
       timerConfig = {
         Unit = "custom-nixos-upgrade";
-
-        OnBootSec = "10m";
         OnCalendar = "hourly";
       };
     };
