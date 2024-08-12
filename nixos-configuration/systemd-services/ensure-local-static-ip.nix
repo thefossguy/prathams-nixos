@@ -1,8 +1,16 @@
 { pkgs, ipv4Address, networkingIface,  ... }:
 
+let
+  serviceName = "ensure-local-static-ip";
+  dhcpUnfuckAttemptsLogFileDir = "/var/${serviceName}";
+  dhcpUnfuckAttemptsLogFileName = "rebootsSinceDhcpFuckUp";
+  dhcpUnfuckAttemptsLogFileFilePath = "${dhcpUnfuckAttemptsLogFileDir}/${dhcpUnfuckAttemptsLogFileName}";
+  maxRebootsAttemptsAllowed = 5;
+in
+
 {
   systemd = {
-    services."ensure-local-static-ip" = {
+    services."${serviceName}" = {
       enable = true;
       wantedBy = [ "basic.target" ];
       requires = [ "network-online.target" ];
@@ -14,6 +22,16 @@
 
       script = ''
         set -xuf -o pipefail
+
+        # good initial value
+        DHCP_UNFUCK_ATTEMPTS='0'
+        [[ ! -d ${dhcpUnfuckAttemptsLogFileDir} ]] && mkdir -p ${dhcpUnfuckAttemptsLogFileDir}
+
+        if [[ ! -f ${dhcpUnfuckAttemptsLogFileFilePath} ]]; then
+            echo '0' > ${dhcpUnfuckAttemptsLogFileFilePath}
+        else
+            DHCP_UNFUCK_ATTEMPTS="$(cat ${dhcpUnfuckAttemptsLogFileFilePath})"
+        fi
 
         # if '${networkingIface}' starts with a `w`, we exclude the check entirely
         if echo '${networkingIface}' | grep ^w > /dev/null; then
@@ -27,12 +45,21 @@
 
             if [[ "''${iface_status}" =~ UP ]]; then
                 if [[ "''${iface_status}" =~ ${ipv4Address} ]]; then
+                    if [[ "''${DHCP_UNFUCK_ATTEMPTS}" -ne 0 ]]; then
+                        echo '0' > ${dhcpUnfuckAttemptsLogFileFilePath}
+                    fi
                     exit 0
                 else
-                    systemctl reboot
+                    if [[ "''${DHCP_UNFUCK_ATTEMPTS}" -lt ${toString maxRebootsAttemptsAllowed} ]]; then
+                        echo "$(( "''${DHCP_UNFUCK_ATTEMPTS}" + 1 ))" > ${dhcpUnfuckAttemptsLogFileFilePath}
+                        systemctl reboot
+                    else
+                        exit 1
+                    fi
                 fi
             fi
 
+            # iface wasn't UP, wait
             sleep 10
         done
 
