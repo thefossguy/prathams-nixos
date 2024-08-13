@@ -71,12 +71,12 @@ lib.mkIf forceLtsKernel {
           set -xuf -o pipefail
 
           # first, we find the devices in a zpool
-          ZPOOL_DEVICES=( $(zpool list "''${zpoolName}" -v -H -P | grep '/dev/' | awk '{print $1}') )
+          ZPOOL_DEVICES=( $(zpool list ${zpoolName} -v -H -P | grep '/dev/' | awk '{print $1}') )
 
           for INDV_ZPOOL_DEV in "''${ZPOOL_DEVICES[@]}"; do
-              time zpool trim -w "${zpoolName}" "''${INDV_ZPOOL_DEV}"
-              time zpool sync "${zpoolName}"
-              time zpool scrub -w "${zpoolName}"
+              time zpool trim -w ${zpoolName} "''${INDV_ZPOOL_DEV}"
+              time zpool sync ${zpoolName}
+              time zpool scrub -w ${zpoolName}
           done
         '';
       };
