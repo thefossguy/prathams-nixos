@@ -41,9 +41,6 @@
     acpi
     lm_sensors
 
-    # virtualisation
-    qemu_kvm
-
     # utilities specific to Nix
     nvd # diff between NixOS generations
   ];
