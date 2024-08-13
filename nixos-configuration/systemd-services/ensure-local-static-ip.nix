@@ -1,4 +1,4 @@
-{ pkgs, ipv4Address, networkingIface,  ... }:
+{ pkgs, ipv4Address, networkingIface, config,  ... }:
 
 let
   serviceName = "ensure-local-static-ip";
@@ -20,7 +20,11 @@ in
         Type = "oneshot";
       };
 
-      script = ''
+      script = let
+        netIface = if (config.custom-options.runsVirtualMachines or false)
+          then "virbr0"
+          else "${networkingIface}";
+      in ''
         set -xuf -o pipefail
 
         # good initial value
@@ -33,15 +37,15 @@ in
             DHCP_UNFUCK_ATTEMPTS="$(cat ${dhcpUnfuckAttemptsLogFileFilePath})"
         fi
 
-        # if '${networkingIface}' starts with a `w`, we exclude the check entirely
-        if echo '${networkingIface}' | grep ^w > /dev/null; then
+        # if '${netIface}' starts with a `w`, we exclude the check entirely
+        if echo '${netIface}' | grep ^w > /dev/null; then
             exit 0
         fi
 
         # wait for 120 seconds
         # on top of the 120 seconds that `systemd-networkd-wait-online.service` waits for
         for i in $(seq 0 11); do
-            iface_status="$(${pkgs.iproute2}/bin/ip -brief address show ${networkingIface})"
+            iface_status="$(${pkgs.iproute2}/bin/ip -brief address show ${netIface})"
 
             if [[ "''${iface_status}" =~ UP ]]; then
                 if [[ "''${iface_status}" =~ ${ipv4Address} ]]; then
