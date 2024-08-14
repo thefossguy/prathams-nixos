@@ -10,7 +10,7 @@
   boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   hardware.bluetooth.enable = true;
 
-  environment.systemPackages = [ pkgs.qemu ];
+  environment.systemPackages = [  ];
   custom-options.runsVirtualMachines = true;
 
   fileSystems."/boot" = {
