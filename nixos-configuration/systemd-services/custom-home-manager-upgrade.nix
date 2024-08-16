@@ -17,16 +17,18 @@ in lib.mkIf pkgs.stdenv.isLinux {
       Service = {
         ExecStart = "${pkgs.writeShellScript "custom-home-manager-upgrade-execstart.sh" ''
           set -xeuf -o pipefail
+          PATH="$PATH:${pkgs.gitMinimal}/bin:${pkgs.nix}/bin:${pkgs.home-manager}/bin"
+          export PATH
 
           ${connectivityCheckScript}
 
-          [[ ! -d ${hm_config_dir} ]] && ${pkgs.gitMinimal}/bin/git clone https://gitlab.com/thefossguy/prathams-nixos ${hm_config_dir}
+          [[ ! -d ${hm_config_dir} ]] && git clone https://gitlab.com/thefossguy/prathams-nixos ${hm_config_dir}
 
           pushd ${hm_config_dir}
-          ${pkgs.gitMinimal}/bin/git pull
-          ${pkgs.nix}/bin/nix flake update
-          ${pkgs.home-manager}/bin/home-manager -v --show-trace --print-build-logs --flake . switch
-          ${pkgs.home-manager}/bin/home-manager expire-generations '-1 days'
+          git pull
+          nix flake update
+          home-manager -v --show-trace --print-build-logs --flake . switch
+          home-manager expire-generations '-1 days'
           popd
         ''}";
         Type = "oneshot";
