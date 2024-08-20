@@ -21,7 +21,7 @@ in {
   boot = {
     kernelPackages = isoKernelPackage;
     supportedFilesystems = lib.mkForce isoSupportedFilesystems;
-    blacklistedKernelModules = [ "nvidia" ]; # since it's hard to combine copytoram+nomodeset
+    blacklistedKernelModules = [ "nvidia" "nouveau" ]; # since it's hard to combine copytoram+nomodeset
   };
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Asia/Kolkata";
