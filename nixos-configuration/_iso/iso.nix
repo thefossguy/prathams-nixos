@@ -18,8 +18,11 @@ in {
   ];
 
   environment.systemPackages = pkgs.callPackage ./packages-in-iso.nix {};
-  boot.kernelPackages = isoKernelPackage;
-  boot.supportedFilesystems = lib.mkForce isoSupportedFilesystems;
+  boot = {
+    kernelPackages = isoKernelPackage;
+    supportedFilesystems = lib.mkForce isoSupportedFilesystems;
+    blacklistedKernelModules = [ "nvidia" ]; # since it's hard to combine copytoram+nomodeset
+  };
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Asia/Kolkata";
   users.users."${isoUser.username}".hashedPassword = "${isoUser.hashedPassword}";
