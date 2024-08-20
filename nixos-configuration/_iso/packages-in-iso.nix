@@ -34,6 +34,7 @@ in [ getGitRepos ] ++ (with pkgs; [
 
   # extra misc
   dmidecode
+  memtester
   pciutils
 
   # monitoring
