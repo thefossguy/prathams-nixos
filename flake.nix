@@ -107,6 +107,7 @@
           # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`
           flameboi.hostId   = "20c95fe3";
           indra.hostId      = "d92f6246";
+          madhav.hostId     = "102b6927";
           sentinel.hostId   = "041d6ae7";
           reddish.hostId    = "996ccb68";
           mahadev.hostId    = "c06c1a49";
@@ -132,6 +133,16 @@
             ipv4Address = "10.0.0.50";
             networkingIface = "wlp0s20f3";
             machineType = nixosMachines.misc.machineTypes.laptop;
+            system = linuxSystems.x86_64;
+          };
+
+          # x86_64 NAS (16GB ECC; R5 3500X)
+          madhav = {
+            hostname = "madhav";
+            ipv4Address = "10.0.0.108";
+            networkingIface = "enp5s0";
+            machineType = nixosMachines.misc.machineTypes.server;
+            forceLtsKernel = true;
             system = linuxSystems.x86_64;
           };
 
@@ -327,6 +338,7 @@
       nixosConfigurations = {
         flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
         indra      = mkNixosSystem { hostname = "indra";    passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
+        madhav     = mkNixosSystem { hostname = "madhav"; };
         sentinel   = mkNixosSystem { hostname = "sentinel"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
         reddish    = mkNixosSystem { hostname = "reddish"; };
         raajan     = mkNixosSystem { hostname = "raajan"; };
