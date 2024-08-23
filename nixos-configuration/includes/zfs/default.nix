@@ -73,11 +73,20 @@ lib.mkIf forceLtsKernel {
           # first, we find the devices in a zpool
           ZPOOL_DEVICES=( $(zpool list ${zpoolName} -v -H -P | grep '/dev/' | awk '{print $1}') )
 
-          for INDV_ZPOOL_DEV in "''${ZPOOL_DEVICES[@]}"; do
-              time zpool trim -w ${zpoolName} "''${INDV_ZPOOL_DEV}"
+          if zpool list ${zpoolName} -v -H -P -L | grep -q 'nvme'; then
+              # zpool is made of SSDs
+              # one by one, trim each SSD and perform a scrub to verify integrity
+              for INDV_ZPOOL_DEV in "''${ZPOOL_DEVICES[@]}"; do
+                  time zpool trim -w ${zpoolName} "''${INDV_ZPOOL_DEV}"
+                  time zpool sync ${zpoolName}
+                  time zpool scrub -w ${zpoolName}
+              done
+          else
+              # zpool is made of HDDs
+              # perform only a scrub
               time zpool sync ${zpoolName}
               time zpool scrub -w ${zpoolName}
-          done
+          fi
         '';
       };
     };
