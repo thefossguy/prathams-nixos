@@ -39,9 +39,17 @@ else
     exit 1
 fi
 
-echo 'This may take some time on the first run.'
-# shellcheck disable=SC2086
-nix ${nix_flake_flags} flake update
+if [[ -z "$(git status --porcelain=v1 flake.lock)" ]]; then
+    # shellcheck disable=SC2086
+    nix ${nix_flake_flags} flake update
+else
+    # 86400: seconds in a day
+    # The nixpkgs stable channel(s) usually get updated every two days
+    if [[ $(( $(( $(date +%s) - $(stat --format=%Y flake.lock) )) / 2 )) -gt 86400 ]]; then
+        # shellcheck disable=SC2086
+        nix ${nix_flake_flags} flake update
+    fi
+fi
 # shellcheck disable=SC2086
 nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 # shellcheck disable=SC2086
