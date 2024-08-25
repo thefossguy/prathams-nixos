@@ -331,7 +331,7 @@
             inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
             isoUser = miscUsers.nixosIso;
           };
-          imports = [ ./nixos-configuration/_iso/iso.nix ];
+          imports = [ ./nixos-configuration/_iso/default.nix ];
         };
       };
 
