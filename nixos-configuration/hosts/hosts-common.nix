@@ -16,6 +16,7 @@ in
   imports = [
     ../includes/zfs/default.nix
     ../includes/local-nix-cache/default.nix
+    ../includes/misc-imports/ether-dev-names-with-mac-addr.nix
   ];
 
   boot.kernelPackages = lib.mkDefault pkgs."${latestStableKernel}";

@@ -15,6 +15,7 @@ in {
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
     ../includes/qemu/qemu-guest.nix
     ../includes/local-nix-cache/nix-conf.nix
+    ../includes/misc-imports/ether-dev-names-with-mac-addr.nix
   ];
 
   environment.systemPackages = pkgs.callPackage ./packages-in-iso.nix {};
