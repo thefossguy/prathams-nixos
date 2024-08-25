@@ -60,17 +60,10 @@
       forEachSupportedLinuxSystem = mkForEachSupportedSystem supportedLinuxSystems;
       forEachSupportedSystem = mkForEachSupportedSystem supportedSystems;
 
-      miscUsers = {
-        # generate the `hashedPassword` using `mkpasswd`
-        root.hashedPassword     = "$y$j9T$BzG/Oq8bbL.2uq2/MuRox.$cofHV3CnpcdI4PI5nEEJz//nWqFWiAL8Mfj8/adLJhC";
-        nixosIso.hashedPassword = "$y$j9T$vMupXoz6rvpT55CkuDenZ0$umu0dpi6NG7lllLcoP9L.wY0ZxEY2wbmPwkiBFsejnC";
-        nixosIso.username = "nixos";
-      };
-
       # actual, real system users (`"${user}IsInRealUsers"` is `true`)
       # i.e. the ones that represent a human associated to it
       # not for users created for running systemd services or any other task
-      realUsers = {
+      systemUsers = {
         pratham = {
           username = "pratham";
           fullname = "Pratham Patel";
@@ -79,8 +72,6 @@
           prathamIsInRealUsers = true;
         };
       };
-
-      systemUsers = miscUsers // realUsers;
 
       nixosMachines = {
         misc = {
@@ -318,7 +309,6 @@
                 "nixos-config=/etc/nixos/configuration.nix"
                 "/nix/var/nix/profiles/per-user/root/channels"
               ];
-              users.users.root.hashedPassword = "${systemUsers.root.hashedPassword}";
             }
 
             nix-serve-ng.nixosModules.default
@@ -329,7 +319,6 @@
         customNixosIsoModule = {
           _module.args = {
             inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
-            isoUser = miscUsers.nixosIso;
           };
           imports = [ ./nixos-configuration/_iso/default.nix ];
         };
@@ -396,7 +385,7 @@
         allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
 
         listOfAllSystems  = lib.attrNames buildableSystems;
-        listOfAllUsers    = lib.attrNames realUsers;
+        listOfAllUsers    = lib.attrNames systemUsers;
         listOfAllPackages = allPackages;
 
         buildNixBuildExpressions = { prefix, infixes, suffix }:

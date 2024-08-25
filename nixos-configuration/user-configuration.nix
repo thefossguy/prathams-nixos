@@ -27,6 +27,7 @@ in {
     defaultUserShell = pkgs.bash;
     enforceIdUniqueness = true;
     mutableUsers = false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
+    users."root".hashedPassword = "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
 
     groups.${systemUser.username} = {
       name = "${systemUser.username}";
