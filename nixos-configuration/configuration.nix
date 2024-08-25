@@ -10,7 +10,7 @@
     ./systemd-services/system-services.nix
     ./user-configuration.nix
     ./virtualisation-configuration.nix
-    ./includes/local-nix-cache/nix-conf.nix
+    ./modules/local-nix-cache/nix-conf.nix
   ];
 
   hardware.enableRedistributableFirmware = true;

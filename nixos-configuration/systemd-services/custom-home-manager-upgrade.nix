@@ -3,7 +3,7 @@
 let
   homeDir = "/home/${systemUser.username}";
   hm_config_dir = "${homeDir}/.prathams-nixos";
-  connectivityCheckScript = import ../includes/misc-imports/check-network.nix {
+  connectivityCheckScript = import ../modules/misc-imports/check-network.nix {
     internetEndpoint = "cache.nixos.org";
     exitCode = "0";
     inherit pkgs;

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  connectivityCheckScript = import ../includes/misc-imports/check-network.nix { inherit pkgs; };
+  connectivityCheckScript = import ../modules/misc-imports/check-network.nix { inherit pkgs; };
   getGitRepos = pkgs.writeShellScriptBin "getGitRepos" ''
     set -xeuf -o pipefail
 

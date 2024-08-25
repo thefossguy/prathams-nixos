@@ -8,7 +8,7 @@ in
 
 lib.mkIf forceLtsKernel {
   boot = {
-    # we force them because we want to override values from `nixos-configuration/hosts/hosts-common.nix`
+    # we force them because we want to override values from `nixos-configuration/systems/hosts-common.nix`
     kernelPackages = lib.mkForce latestLtsKernelPackage;
     initrd.supportedFilesystems = lib.mkForce allSupportedFilesystems;
     supportedFilesystems = lib.mkForce allSupportedFilesystems;

@@ -2,11 +2,11 @@
 
 {
   imports = [
-    ../../includes/autologin/default.nix
-    #../../includes/display-server/kde-plasma.nix
-    ../../includes/misc-imports/sudo-nopasswd.nix
-    #../../includes/qemu/qemu-binfmt.nix
-    ../../includes/qemu/qemu-guest.nix
+    ../../modules/autologin/default.nix
+    #../../modules/display-server/kde-plasma.nix
+    ../../modules/misc-imports/sudo-nopasswd.nix
+    #../../modules/qemu/qemu-binfmt.nix
+    ../../modules/qemu/qemu-guest.nix
   ];
 
   zramSwap.memoryPercent = lib.mkForce 50;

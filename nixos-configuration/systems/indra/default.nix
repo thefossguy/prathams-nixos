@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ../../includes/gpu/intel-xe.nix
-    ../../includes/display-server/hyprland.nix
+    ../../modules/gpu/intel-xe.nix
+    ../../modules/display-server/hyprland.nix
   ];
 
   boot.extraModprobeConfig = "options kvm_intel nested=1";

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  connectivityCheckScript = import ../includes/misc-imports/check-network.nix {
+  connectivityCheckScript = import ../modules/misc-imports/check-network.nix {
     internetEndpoint = "cache.nixos.org";
     exitCode = "1";
     inherit pkgs;

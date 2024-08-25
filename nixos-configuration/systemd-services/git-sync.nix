@@ -10,7 +10,7 @@ let
   sshKeyPairName = "ssh";
   sshKeyPairPath = "${gitUser.sshDirPath}/${sshKeyPairName}";
 
-  connectivityCheckScript = import ../includes/misc-imports/check-network.nix { inherit pkgs; };
+  connectivityCheckScript = import ../modules/misc-imports/check-network.nix { inherit pkgs; };
 
   mkServiceTimer = serviceName: {
     wantedBy = [ "timers.target" ];

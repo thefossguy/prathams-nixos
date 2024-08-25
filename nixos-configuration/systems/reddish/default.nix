@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  imports = [ ../../includes/raspberry-pi/4/default.nix ];
+  imports = [ ../../modules/raspberry-pi/4/default.nix ];
 
   custom-options.enableWebRemoteServices = true;
   networking.firewall.allowedTCPPorts = [
