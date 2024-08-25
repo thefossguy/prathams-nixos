@@ -17,14 +17,9 @@
 
     services."custom-nixos-upgrade" = {
       enable = true;
-      after    = [ "update-nixos-flake-inputs.service" ];
+      after = [ "update-nixos-flake-inputs.service" ];
       requires = [ "update-nixos-flake-inputs.service" ];
-      path = with pkgs; [
-        gitMinimal
-        nix
-        nixos-rebuild
-        systemd
-      ];
+      path = with pkgs; [ gitMinimal nix nixos-rebuild systemd ];
 
       serviceConfig = {
         User = "root";

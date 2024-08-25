@@ -6,9 +6,7 @@ let
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
   ];
-in
-
-{
+in {
   hardware.opengl.enable = true;
   security.rtkit.enable = true;
   security.polkit.enable = true;
@@ -75,27 +73,13 @@ in
         '';
       };
 
-      nerdfonts-tfg = prev.nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "Overpass"
-          "SourceCodePro"
-        ];
-      };
+      nerdfonts-tfg = prev.nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; };
 
-      mpv = prev.mpv.override {
-        scripts = [ prev.mpvScripts.mpris ];
-      };
-      mpv-unwrapped = prev.mpv-unwrapped.override {
-        ffmpeg = prev.ffmpeg-full;
-      };
+      mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
+      mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
-      brave = prev.brave.override {
-        commandLineArgs = commonChromiumFlags;
-      };
-      ungoogled-chromium = prev.ungoogled-chromium.override {
-        commandLineArgs = commonChromiumFlags;
-      };
+      brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
+      ungoogled-chromium = prev.ungoogled-chromium.override { commandLineArgs = commonChromiumFlags; };
     })
   ];
 

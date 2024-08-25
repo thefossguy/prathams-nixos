@@ -16,11 +16,7 @@
     # present in the initrd but only loaded on-demand
     # **ONLY INCLUDE MODULES NECESSARY TO MOUNT ROT ROOT DEVICE**
     # please do not use this for including drivers for non-storage hardware
-    initrd.availableKernelModules = [
-      "nvme"
-      "usb_storage"
-      "usbhid"
-    ];
+    initrd.availableKernelModules = [ "nvme" "usb_storage" "usbhid" ];
 
     kernelParams = [
       "audit=0"

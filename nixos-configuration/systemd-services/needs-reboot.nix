@@ -11,9 +11,7 @@
         Type = "oneshot";
       };
 
-      path = with pkgs; [
-        nix
-      ];
+      path = with pkgs; [ nix ];
 
       script = ''
         set -xuf -o pipefail

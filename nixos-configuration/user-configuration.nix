@@ -43,8 +43,14 @@ in {
       isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
       isSystemUser = false;
       linger = systemUser.enableLingering or false;
-      subGidRanges = [{ startGid = 10000; count = 65536; }];
-      subUidRanges = [{ startUid = 10000; count = 65536; }];
+      subGidRanges = [{
+        startGid = 10000;
+        count = 65536;
+      }];
+      subUidRanges = [{
+        startUid = 10000;
+        count = 65536;
+      }];
       uid = 1000;
       useDefaultShell = true;
 

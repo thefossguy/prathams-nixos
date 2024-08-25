@@ -1,16 +1,9 @@
 { config, ... }:
 
-let
-  zpoolName = "${config.networking.hostName}-zpool";
-in
-
-{
+let zpoolName = "${config.networking.hostName}-zpool";
+in {
   custom-options.isNixCacheMachine = true;
-
-  imports = [
-    ../../systemd-services/continuous-build.nix
-    ../../systemd-services/git-sync.nix
-  ];
+  imports = [ ../../systemd-services/continuous-build.nix ../../systemd-services/git-sync.nix ];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/3A4D-C659";

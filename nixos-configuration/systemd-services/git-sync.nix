@@ -22,12 +22,14 @@ let
     };
   };
 
-  mkGitPushService = let
-    gitRepoStore = "${gitUser.homeDir}/repos-to-push";
+  mkGitPushService = let gitRepoStore = "${gitUser.homeDir}/repos-to-push";
   in {
     after = [ "ssh-keys-sanity-check.service" ];
     requires = [ "ssh-keys-sanity-check.service" ];
-    serviceConfig = { Type = "oneshot"; User = "${gitUser.username}"; };
+    serviceConfig = {
+      Type = "oneshot";
+      User = "${gitUser.username}";
+    };
     path = with pkgs; [ gitFull openssh iputils ];
 
     script = ''
@@ -51,13 +53,14 @@ let
     '';
   };
 
-  mkGitPullService = let
-    gitRepoStore = "${gitUser.homeDir}/repos-to-pull";
+  mkGitPullService = let gitRepoStore = "${gitUser.homeDir}/repos-to-pull";
   in {
-
     after = [ "ssh-keys-sanity-check.service" ];
     requires = [ "ssh-keys-sanity-check.service" ];
-    serviceConfig = { Type = "oneshot"; User = "${gitUser.username}"; };
+    serviceConfig = {
+      Type = "oneshot";
+      User = "${gitUser.username}";
+    };
     path = with pkgs; [ gitFull openssh iputils ];
 
     script = ''
@@ -94,7 +97,10 @@ in {
 
   systemd.services = {
     "ssh-keys-sanity-check" = {
-      serviceConfig = { Type = "oneshot"; User = "${gitUser.username}"; };
+      serviceConfig = {
+        Type = "oneshot";
+        User = "${gitUser.username}";
+      };
 
       script = ''
         set -xeuf -o pipefail
@@ -113,7 +119,7 @@ in {
 
   systemd.timers = {
     "ssh-keys-sanity-check" = mkServiceTimer "ssh-keys-sanity-check";
-    "push-to-origin"        = mkServiceTimer "push-to-origin";
-    "pull-from-origin"      = mkServiceTimer "pull-from-origin";
+    "push-to-origin" = mkServiceTimer "push-to-origin";
+    "pull-from-origin" = mkServiceTimer "pull-from-origin";
   };
 }

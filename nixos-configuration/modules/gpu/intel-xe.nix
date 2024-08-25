@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
 {
-  hardware.opengl.extraPackages = [
-    pkgs.intel-media-driver
-  ];
+  hardware.opengl.extraPackages = [ pkgs.intel-media-driver ];
 }

@@ -5,10 +5,6 @@
 
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
-    initrd.availableKernelModules = [
-      "nvme"
-      "usbhid"
-      "usb_storage"
-    ];
+    initrd.availableKernelModules = [ "nvme" "usbhid" "usb_storage" ];
   };
 }

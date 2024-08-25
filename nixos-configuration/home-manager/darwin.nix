@@ -18,9 +18,7 @@ lib.mkIf pkgs.stdenv.isDarwin {
   };
 
   targets.darwin = {
-    currentHostDefaults = {
-      "com.apple.controlcenter".BatteryShowPercentage = true;
-    };
+    currentHostDefaults = { "com.apple.controlcenter".BatteryShowPercentage = true; };
     defaults = {
       NSGlobalDomain = {
         NSAutomaticCapitalizationEnabled = false;
@@ -48,8 +46,8 @@ lib.mkIf pkgs.stdenv.isDarwin {
     };
     # https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TextDefaultsBindings/TextDefaultsBindings.html
     keybindings = {
-      "^\Uf702" = "moveWordLeft:"; # Ctrl-<Left>
-      "^\Uf703" = "moveWordRight:"; # Ctrl-<Right>
+      "^Uf702" = "moveWordLeft:"; # Ctrl-<Left>
+      "^Uf703" = "moveWordRight:"; # Ctrl-<Right>
     };
   };
 

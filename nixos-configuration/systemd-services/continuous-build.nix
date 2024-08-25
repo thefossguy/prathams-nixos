@@ -16,7 +16,7 @@
 
     services."continuous-build" = {
       enable = true;
-      after    = [ "custom-nixos-upgrade.service" ];
+      after = [ "custom-nixos-upgrade.service" ];
       requires = [ "custom-nixos-upgrade.service" ];
       path = [ pkgs.nix ];
 

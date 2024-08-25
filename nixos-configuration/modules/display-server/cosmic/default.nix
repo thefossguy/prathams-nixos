@@ -9,6 +9,5 @@
   # enables the Wayland trackpad gestures in Chroimum/Electron
   environment.variables.NIXOS_OZONE_WL = "1";
 
-  environment.systemPackages = with pkgs; [
-  ];
+  environment.systemPackages = with pkgs; [];
 }

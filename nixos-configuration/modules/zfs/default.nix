@@ -4,9 +4,7 @@ let
   latestLtsKernelPackage = pkgs."${latestLtsKernel}";
   allSupportedFilesystems = supportedFilesystemsSansZFS ++ [ "zfs" ];
   zpoolName = "${config.networking.hostName}-zpool";
-in
-
-lib.mkIf forceLtsKernel {
+in lib.mkIf forceLtsKernel {
   boot = {
     # we force them because we want to override values from `nixos-configuration/systems/hosts-common.nix`
     kernelPackages = lib.mkForce latestLtsKernelPackage;
@@ -56,7 +54,7 @@ lib.mkIf forceLtsKernel {
           User = "root";
           Type = "oneshot";
         };
-        script = ''${latestLtsKernelPackage.zfs.userspaceTools} scrub -w ${config.networking.hostName}-zpool'';
+        script = "${latestLtsKernelPackage.zfs.userspaceTools} scrub -w ${config.networking.hostName}-zpool";
       };
 
       "full-zpool-maintainence" = {

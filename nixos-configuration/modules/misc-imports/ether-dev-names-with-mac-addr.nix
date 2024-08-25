@@ -12,9 +12,7 @@ let
     NamePolicy=mac keep kernel database onboard slot path
     AlternativeNamesPolicy=database onboard slot path
   '';
-in
-
-{
+in {
   boot.initrd.extraFiles."etc/${macAddrIfaceNamesLinkFileBasename}".source = "${pkgs.etherDevNamesWithMacAddr}";
   environment.etc."${macAddrIfaceNamesLinkFileBasename}/${macAddrIfaceNamesLinkFileName}" = {
     enable = true;

@@ -1,5 +1,5 @@
-{ lib, pkgs, hostname, gatewayAddr, hostId, ipv4Address, ipv4PrefixLength
-, networkingIface, latestStableKernel, supportedFilesystemsSansZFS, system, config, ... }:
+{ lib, pkgs, hostname, gatewayAddr, hostId, ipv4Address, ipv4PrefixLength, networkingIface, latestStableKernel
+, supportedFilesystemsSansZFS, system, config, ... }:
 
 let
   staticIpConfig = {
@@ -10,9 +10,7 @@ let
       prefixLength = ipv4PrefixLength;
     }];
   };
-in
-
-{
+in {
   imports = [
     ../modules/zfs/default.nix
     ../modules/local-nix-cache/default.nix
@@ -37,7 +35,7 @@ in
       address = gatewayAddr;
       interface = if (config.custom-options.runsVirtualMachines or false)
         then "virbr0"
-        else networkingIface ;
+        else networkingIface;
     };
 
     interfaces = if (config.custom-options.runsVirtualMachines or false)
@@ -51,9 +49,7 @@ in
     bridges = lib.mkIf (config.custom-options.runsVirtualMachines or false) {
       "virbr0" = {
         rstp = lib.mkForce false;
-        interfaces = [
-          "${networkingIface}"
-        ];
+        interfaces = [ "${networkingIface}" ];
       };
     };
   };

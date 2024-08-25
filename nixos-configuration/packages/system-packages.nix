@@ -73,7 +73,7 @@
       in {
         "e" = "${pkgs.vim}/bin/vim";
         "do-nixos-rebuild" = nixosRebuildCommand;
-        "donixos-rebuild" =  nixosRebuildCommand;
+        "donixos-rebuild" = nixosRebuildCommand;
         "syncsync" = paranoidFlushScript;
         "sudosync" = paranoidFlushScript;
       };

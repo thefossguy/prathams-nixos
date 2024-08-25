@@ -21,16 +21,9 @@
         ExecStart = "${pkgs.nix}/bin/nix-shell /home/${systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
         Type = "oneshot";
       };
-
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
+      Install = { WantedBy = [ "default.target" ]; };
     };
   };
 
-  home.packages = with pkgs; [
-    ctop
-    podman-compose
-    podman-tui
-  ];
+  home.packages = with pkgs; [ ctop podman-compose podman-tui ];
 }

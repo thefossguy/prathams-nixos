@@ -1,14 +1,13 @@
 { config, lib, pkgs, systemUser, ... }:
 
 let userHome = "/home/${systemUser.username}";
-
 in {
   imports = [
-   ./custom-nixos-upgrade.nix
-   ./ensure-local-static-ip.nix
-   ./needs-reboot.nix
-   ./update-nixos-flake-inputs.nix
-   ];
+    ./custom-nixos-upgrade.nix
+    ./ensure-local-static-ip.nix
+    ./needs-reboot.nix
+    ./update-nixos-flake-inputs.nix
+  ];
 
   services.logrotate = {
     enable = true;

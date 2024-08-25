@@ -1,9 +1,7 @@
 { pkgs, lib, config, systemUser, ... }:
 
 lib.mkIf (config.custom-options.runsVirtualMachines or false) {
-  environment.systemPackages = with pkgs; [
-    bridge-utils
-  ];
+  environment.systemPackages = with pkgs; [ bridge-utils ];
 
   virtualisation = {
     oci-containers.backend = "podman";
@@ -16,9 +14,10 @@ lib.mkIf (config.custom-options.runsVirtualMachines or false) {
       qemu = {
         ovmf.enable = true;
         package = pkgs.qemu_kvm;
-        runAsRoot = true; # when set to `true`, will let me specify the user and group in `verbatimConfig` (i.e. not override)
         swtpm.enable = true;
 
+        # when set to `true`, will let me specify the user and group in `verbatimConfig` (i.e. not override)
+        runAsRoot = true;
         verbatimConfig = ''
           #https://github.com/NixOS/nixpkgs/pull/37281#issuecomment-413133203
           namespaces = []

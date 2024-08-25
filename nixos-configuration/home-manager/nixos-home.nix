@@ -1,10 +1,16 @@
 { pkgs, systemUser, ... }:
 
 let
-  mkContainerService = { containerDescription, containerName,
+  mkContainerService = {
+     containerDescription,
+     containerName,
      extraExecStart,
      installServiceRequiredBy ? [ ],
-     unitAfter, unitRequires ? [ ] , unitWants ? [ ] }: {
+     unitAfter,
+     unitRequires ? [ ],
+     unitWants ? [ ]
+    }:
+    {
       Install = {
         RequiredBy = installServiceRequiredBy;
         WantedBy = [ "default.target" ];

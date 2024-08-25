@@ -1,17 +1,8 @@
 { lib, pkgs, pkgs0UnstableSmall, ... }:
 
 let
-  tuxPackages = lib.optionals (pkgs.stdenv.isLinux) (with pkgs; [
-    buildah
-    cargo-valgrind
-    dict
-    imagemagick
-    inotify-tools
-    rpm
-    thunderbird
-    ventoy
-    wol
-  ]);
+  tuxPackages = lib.optionals (pkgs.stdenv.isLinux)
+    (with pkgs; [ buildah cargo-valgrind dict imagemagick inotify-tools rpm thunderbird ventoy wol ]);
 
   darwinPackages = lib.optionals (pkgs.stdenv.isDarwin) (with pkgs; [
     coreutils-prefixed
@@ -21,13 +12,7 @@ let
     tmux
     watch
 
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "Overpass"
-        "SourceCodePro"
-      ];
-    })
+    (nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; })
   ]);
 
 in {

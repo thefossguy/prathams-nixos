@@ -1,10 +1,7 @@
 { ... }:
 
 {
-  imports = [
-    ../default.nix
-    ./gpu.nix
-  ];
+  imports = [ ../default.nix ./gpu.nix ];
 
   boot.initrd.availableKernelModules = [
     "usbhid"

@@ -46,7 +46,6 @@ let
   '';
 
 in {
-  systemd.user.services."container-${containerName}" = mkContainerService {
-    inherit containerDescription containerName extraExecStart unitAfter unitRequires unitWants;
-  };
+  systemd.user.services."container-${containerName}" =
+    mkContainerService { inherit containerDescription containerName extraExecStart unitAfter unitRequires unitWants; };
 }

@@ -6,16 +6,11 @@ let
     exitCode = "1";
     inherit pkgs;
   };
-in
-
-{
+in {
   systemd = {
     services."update-nixos-flake-inputs" = {
       enable = true;
-      path = with pkgs; [
-        gitMinimal
-        nix
-      ];
+      path = with pkgs; [ gitMinimal nix ];
 
       serviceConfig = {
         User = "root";

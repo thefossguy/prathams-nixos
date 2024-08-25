@@ -4,7 +4,7 @@
   boot.kernel = {
     sysctl = {
       "net.ipv4.conf.all.forwarding" = true; # toggle IPv4 forwarding
-        "net.ipv6.conf.all.forwarding" = true; # toggle IPv6 forwarding
+      "net.ipv6.conf.all.forwarding" = true; # toggle IPv6 forwarding
     };
   };
 
