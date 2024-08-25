@@ -320,7 +320,7 @@
           _module.args = {
             inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
           };
-          imports = [ ./nixos-configuration/_iso/default.nix ];
+          imports = [ ./nixos-configuration/iso/default.nix ];
         };
       };
 
@@ -357,7 +357,7 @@
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
         default = pkgs.mkShellNoCC {
-          packages = pkgs.callPackage ./nixos-configuration/_iso/packages-in-iso.nix {};
+          packages = pkgs.callPackage ./nixos-configuration/iso/packages.nix {};
           shellHook = ''
           if ! nix help 1>/dev/null 2>&1; then
               export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'

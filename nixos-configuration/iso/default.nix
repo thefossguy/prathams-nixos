@@ -18,7 +18,7 @@ in {
     ../modules/misc-imports/ether-dev-names-with-mac-addr.nix
   ];
 
-  environment.systemPackages = pkgs.callPackage ./packages-in-iso.nix {};
+  environment.systemPackages = pkgs.callPackage ./packages.nix {};
   boot = {
     kernelPackages = isoKernelPackage;
     supportedFilesystems = lib.mkForce isoSupportedFilesystems;
