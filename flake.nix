@@ -250,8 +250,8 @@
           };
 
           modules = [
-            ./nixos-configuration/hosts/${hostname}/default.nix
-            ./nixos-configuration/hosts/hosts-common.nix
+            ./nixos-configuration/systems/${hostname}/default.nix
+            ./nixos-configuration/systems/hosts-common.nix
             (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager; })
             home-manager.nixosModules.home-manager { home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; }; }
             {
