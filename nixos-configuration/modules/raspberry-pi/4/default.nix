@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../common/default.nix
+    ../default.nix
     ./gpu.nix
   ];
 

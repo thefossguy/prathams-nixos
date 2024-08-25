@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [ ../common/default.nix ];
+  imports = [ ../default.nix ];
 
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
