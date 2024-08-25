@@ -3,20 +3,28 @@
 
   inputs = {
     nixpkgs-1stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    home-manager-1stable.url = "github:nix-community/home-manager/release-24.05";
-    home-manager-1stable.inputs.nixpkgs.follows = "nixpkgs-1stable";
+    home-manager-1stable = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs-1stable";
+    };
 
     nixpkgs-1stable-small.url = "github:NixOS/nixpkgs/nixos-24.05-small";
-    home-manager-1stable-small.url = "github:nix-community/home-manager/release-24.05";
-    home-manager-1stable-small.inputs.nixpkgs.follows = "nixpkgs-1stable-small";
+    home-manager-1stable-small = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs-1stable-small";
+    };
 
     nixpkgs-0unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager-0unstable.url = "github:nix-community/home-manager/master";
-    home-manager-0unstable.inputs.nixpkgs.follows = "nixpkgs-0unstable";
+    home-manager-0unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-0unstable";
+    };
 
     nixpkgs-0unstable-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-    home-manager-0unstable-small.url = "github:nix-community/home-manager/master";
-    home-manager-0unstable-small.inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
+    home-manager-0unstable-small = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-0unstable-small";
+    };
 
     nix-serve-ng.url = "github:aristanetworks/nix-serve-ng";
   };
@@ -26,32 +34,62 @@
     nixpkgs-1stable-small,   home-manager-1stable-small,
     nixpkgs-0unstable,       home-manager-0unstable,
     nixpkgs-0unstable-small, home-manager-0unstable-small,
-    nix-serve-ng,
-    ... }:
+    nix-serve-ng, ... }:
     let
-      nixpkgs = nixpkgs-1stable-small;
-      home-manager = home-manager-1stable-small;
+      allNixpkgsChannelInputs = {
+        stable = {
+          nixpkgs = nixpkgs-1stable;
+          home-manager = home-manager-1stable;
+        };
+        stableSmall = {
+          nixpkgs = nixpkgs-1stable-small;
+          home-manager = home-manager-1stable-small;
+        };
+        unstable = {
+          nixpkgs = nixpkgs-0unstable;
+          home-manager = home-manager-0unstable;
+        };
+        unstableSmall = {
+          nixpkgs = nixpkgs-0unstable-small;
+          home-manager = home-manager-0unstable-small;
+        };
+      };
+
+      nixpkgs = allNixpkgsChannelInputs.stableSmall.nixpkgs;
+      home-manager = allNixpkgsChannelInputs.stableSmall.nixpkgs;
       mkPkgs = { system, passed-nixpkgs }: import passed-nixpkgs { inherit system; };
 
       mkForEachSupportedSystem = supportedSystems: f:
         nixpkgs.lib.genAttrs supportedSystems (system:
           f rec {
             pkgs = pkgs1Stable;
-            pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
-            pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
-            pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
-            pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
+            pkgs1Stable = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-1stable;
+            };
+            pkgs1StableSmall = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-1stable-small;
+            };
+            pkgs0Unstable = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-0unstable;
+            };
+            pkgs0UnstableSmall = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-0unstable-small;
+            };
           });
 
       linuxSystems = {
         aarch64 = "aarch64-linux";
         riscv64 = "riscv64-linux";
-        x86_64 = "x86_64-linux";
+        x86_64  = "x86_64-linux";
       };
 
       darwinSystems = {
         aarch64 = "aarch64-darwin";
-        x86_64 = "x86_64-darwin";
+        x86_64  = "x86_64-darwin";
       };
 
       supportedLinuxSystems = nixpkgs.lib.attrValues linuxSystems;
@@ -60,9 +98,6 @@
       forEachSupportedLinuxSystem = mkForEachSupportedSystem supportedLinuxSystems;
       forEachSupportedSystem = mkForEachSupportedSystem supportedSystems;
 
-      # actual, real system users (`"${user}IsInRealUsers"` is `true`)
-      # i.e. the ones that represent a human associated to it
-      # not for users created for running systemd services or any other task
       systemUsers = {
         pratham = {
           username = "pratham";
@@ -77,21 +112,17 @@
         misc = {
           gatewayAddr = "10.0.0.1";
           ipv4PrefixLength = 24;
-          latestLtsKernel = "linuxPackages_6_6"; # so that we can haz a newer LTS kernel after the yy.11 release
           latestStableKernel = "linuxPackages_latest";
+          # so that we can haz a newer LTS kernel after the yy.11 release;
+          latestLtsKernel = "linuxPackages_6_6";
+          # actual filesystems that I use
+          supportedFilesystemsSansZFS = [ "ext4" "vfat" "xfs" ];
 
           machineTypes = {
             desktop = "Desktop";
-            laptop  = "Laptop";
-            server  = "Server";
+            laptop = "Laptop";
+            server = "Server";
           };
-
-          # actual filesystems that I use
-          supportedFilesystemsSansZFS = [
-            "ext4"
-            "vfat"
-            "xfs"
-          ];
         };
 
         hosts = {
@@ -232,10 +263,22 @@
 
           system = nixosMachines.hosts."${hostname}".system;
           machineType = nixosMachines.hosts."${hostname}".machineType or nixosMachines.misc.machineTypes.server;
-          pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
-          pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
-          pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
-          pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
+          pkgs1Stable = mkPkgs {
+            inherit system;
+            passed-nixpkgs = nixpkgs-1stable;
+          };
+          pkgs1StableSmall = mkPkgs {
+            inherit system;
+            passed-nixpkgs = nixpkgs-1stable-small;
+          };
+          pkgs0Unstable = mkPkgs {
+            inherit system;
+            passed-nixpkgs = nixpkgs-0unstable;
+          };
+          pkgs0UnstableSmall = mkPkgs {
+            inherit system;
+            passed-nixpkgs = nixpkgs-0unstable-small;
+          };
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit system;
@@ -267,10 +310,22 @@
           inherit pkgs;
           extraSpecialArgs = {
             inherit systemUser;
-            pkgs1Stable        = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable; };
-            pkgs1StableSmall   = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-1stable-small; };
-            pkgs0Unstable      = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable; };
-            pkgs0UnstableSmall = mkPkgs { inherit system; passed-nixpkgs = nixpkgs-0unstable-small; };
+            pkgs1Stable = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-1stable;
+            };
+            pkgs1StableSmall = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-1stable-small;
+            };
+            pkgs0Unstable = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-0unstable;
+            };
+            pkgs0UnstableSmall = mkPkgs {
+              inherit system;
+              passed-nixpkgs = nixpkgs-0unstable-small;
+            };
           };
           modules = [ ./nixos-configuration/home-manager/non-nixos-home.nix ];
         };
@@ -287,214 +342,263 @@
     in {
       nixosModules = {
         customNixosBaseModule = { passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager, ... }:
-        let
-          nixpkgs = passed-nixpkgs;
-          home-manager = passed-home-manager;
-        in {
-          _module.args = {
-            inherit home-manager nixpkgs;
-            inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
+          let
+            nixpkgs = passed-nixpkgs;
+            home-manager = passed-home-manager;
+          in {
+            _module.args = {
+              inherit home-manager nixpkgs;
+              inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
+            };
+
+            imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
+            in [
+              ./nixos-configuration/configuration.nix
+              {
+                # declare config options that depend on "super sets"
+                # which are best not passed to the nixos-configuration/* files
+                environment.etc."${nixpkgsChannelPath}".source = nixpkgs.outPath;
+                nix.registry.nixpkgs.flake = nixpkgs;
+                nix.nixPath = [
+                  "nixpkgs=/etc/${nixpkgsChannelPath}"
+                  "nixos-config=/etc/nixos/configuration.nix"
+                  "/nix/var/nix/profiles/per-user/root/channels"
+                ];
+              }
+
+              nix-serve-ng.nixosModules.default
+              home-manager.nixosModules.home-manager
+              { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
+            ];
           };
-
-          imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
-          in [
-            ./nixos-configuration/configuration.nix
-            {
-              # declare config options that depend on "super sets"
-              # which are best not passed to the nixos-configuration/* files
-              environment.etc."${nixpkgsChannelPath}".source = nixpkgs.outPath;
-              nix.registry.nixpkgs.flake = nixpkgs;
-              nix.nixPath = [
-                "nixpkgs=/etc/${nixpkgsChannelPath}"
-                "nixos-config=/etc/nixos/configuration.nix"
-                "/nix/var/nix/profiles/per-user/root/channels"
-              ];
-            }
-
-            nix-serve-ng.nixosModules.default
-            home-manager.nixosModules.home-manager { imports = [ ./nixos-configuration/home-manager/nixos-home.nix ]; }
-          ];
-        };
 
         customNixosIsoModule = {
-          _module.args = {
-            inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
-          };
+          _module.args = { inherit (nixosMachines.misc) supportedFilesystemsSansZFS; };
           imports = [ ./nixos-configuration/iso/default.nix ];
         };
       };
 
       nixosConfigurations = {
-        flameboi   = mkNixosSystem { hostname = "flameboi"; passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
-        indra      = mkNixosSystem { hostname = "indra";    passed-nixpkgs = nixpkgs-1stable; passed-home-manager = home-manager-1stable; };
-        madhav     = mkNixosSystem { hostname = "madhav"; };
-        sentinel   = mkNixosSystem { hostname = "sentinel"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
-        reddish    = mkNixosSystem { hostname = "reddish"; };
-        raajan     = mkNixosSystem { hostname = "raajan"; };
-        mahadev    = mkNixosSystem { hostname = "mahadev"; };
-        pawandev   = mkNixosSystem { hostname = "pawandev"; };
-        stuti      = mkNixosSystem { hostname = "stuti"; };
+        flameboi = mkNixosSystem {
+          hostname = "flameboi";
+          passed-nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
+        };
+        indra = mkNixosSystem {
+          hostname = "indra";
+          passed-nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
+        };
+        madhav = mkNixosSystem { hostname = "madhav"; };
+        sentinel = mkNixosSystem {
+          hostname = "sentinel";
+          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+        };
+        reddish = mkNixosSystem { hostname = "reddish"; };
+        raajan = mkNixosSystem { hostname = "raajan"; };
+        mahadev = mkNixosSystem { hostname = "mahadev"; };
+        pawandev = mkNixosSystem { hostname = "pawandev"; };
+        stuti = mkNixosSystem { hostname = "stuti"; };
         chaturvyas = mkNixosSystem { hostname = "chaturvyas"; };
-        vaaman     = mkNixosSystem { hostname = "vaaman"; };
-        vaayu      = mkNixosSystem { hostname = "vaayu"; };
+        vaaman = mkNixosSystem { hostname = "vaaman"; };
+        vaayu = mkNixosSystem { hostname = "vaayu"; };
 
         z-iso-nozfs-aarch64 = mkNixosIso { systemArch = "aarch64"; };
         z-iso-nozfs-riscv64 = mkNixosIso { systemArch = "riscv64"; };
-        z-iso-nozfs-x86_64  = mkNixosIso { systemArch = "x86_64"; };
-        z-iso-zfs-aarch64   = mkNixosIso { systemArch = "aarch64"; enableZfs = true; };
-        z-iso-zfs-riscv64   = mkNixosIso { systemArch = "riscv64"; enableZfs = true; };
-        z-iso-zfs-x86_64    = mkNixosIso { systemArch = "x86_64";  enableZfs = true; };
+        z-iso-nozfs-x86_64 = mkNixosIso { systemArch = "x86_64"; };
+        z-iso-zfs-aarch64 = mkNixosIso {
+          systemArch = "aarch64";
+          enableZfs = true;
+        };
+        z-iso-zfs-riscv64 = mkNixosIso {
+          systemArch = "riscv64";
+          enableZfs = true;
+        };
+        z-iso-zfs-x86_64 = mkNixosIso {
+          systemArch = "x86_64";
+          enableZfs = true;
+        };
 
-        zVirtSys = mkNixosSystem { hostname = "zVirtSys"; passed-nixpkgs = nixpkgs-0unstable-small; passed-home-manager = home-manager-0unstable-small; };
+        zVirtSys = mkNixosSystem {
+          hostname = "zVirtSys";
+          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+        };
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
         homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
       });
 
-      packages = forEachSupportedSystem ({ pkgs, ... }: {
-      });
+      packages = forEachSupportedSystem ({ pkgs, ... }: { });
 
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
         default = pkgs.mkShellNoCC {
-          packages = pkgs.callPackage ./nixos-configuration/iso/packages.nix {};
+          packages = pkgs.callPackage ./nixos-configuration/iso/packages.nix { };
           shellHook = ''
-          if ! nix help 1>/dev/null 2>&1; then
-              export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
-              alias nix="''${nix}"
-          fi
+            if ! nix help 1>/dev/null 2>&1; then
+                export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
+                alias nix="''${nix}"
+            fi
           '';
         };
       });
 
-      apps = forEachSupportedSystem ({ pkgs, ... }: let
-        lib = pkgs.lib;
-        system = pkgs.stdenv.system;
-        nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
-        nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build";
-        nixBuildCmd = "${pkgs.nix}/bin/nix build";
-        nixOrNom = ''
-          if [[ "$(id -u)" -eq 0 ]]; then
-              nixBuildCmd='${nixBuildCmd} ${nixBuildFlags} --max-jobs 1'
-          else
-              nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'
-          fi
-        '';
+      apps = forEachSupportedSystem ({ pkgs, ... }:
+        let
+          lib = pkgs.lib;
+          system = pkgs.stdenv.system;
+          nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
+          nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build";
+          nixBuildCmd = "${pkgs.nix}/bin/nix build";
+          nixOrNom = ''
+            if [[ "$(id -u)" -eq 0 ]]; then
+                nixBuildCmd='${nixBuildCmd} ${nixBuildFlags} --max-jobs 1'
+            else
+                nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'
+            fi
+          '';
 
-        buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
-        allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
+          buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
+          allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
 
-        listOfAllSystems  = lib.attrNames buildableSystems;
-        listOfAllUsers    = lib.attrNames systemUsers;
-        listOfAllPackages = allPackages;
+          listOfAllSystems = lib.attrNames buildableSystems;
+          listOfAllUsers = lib.attrNames systemUsers;
+          listOfAllPackages = allPackages;
 
-        buildNixBuildExpressions = { prefix, infixes, suffix }:
-          lib.concatStringsSep " " (
-            map (infix: ".#${prefix}." + builtins.toString infix + ".${suffix}") infixes
-          );
-        buildExpressionOfSystem = nixosSystems:  buildNixBuildExpressions {
-          prefix  = "nixosConfigurations";
-          infixes = nixosSystems;
-          suffix  = "config.system.build.toplevel";
-        };
-        buildExpressionOfHome = users: buildNixBuildExpressions {
-          prefix  = "legacyPackages.${system}.homeConfigurations";
-          infixes = users;
-          suffix  = "activationPackage";
-        };
-        buildExpressionOfPackage = packages: buildNixBuildExpressions {
-          prefix  = "packages.${system}";
-          infixes = packages;
-          suffix  = "";
-        };
-        buildExpressionOfZfsIso   = ".#nixosConfigurations.z-iso-zfs-$(uname -m).config.system.build.isoImage";
-        buildExpressionOfNozfsIso = ".#nixosConfigurations.z-iso-nozfs-$(uname -m).config.system.build.isoImage";
+          buildNixBuildExpressions = { prefix, infixes, suffix }:
+            lib.concatStringsSep " " (map (infix: ".#${prefix}." + builtins.toString infix + ".${suffix}") infixes);
+          buildExpressionOfSystem = nixosSystems:
+            buildNixBuildExpressions {
+              prefix = "nixosConfigurations";
+              infixes = nixosSystems;
+              suffix = "config.system.build.toplevel";
+            };
+          buildExpressionOfHome = users:
+            buildNixBuildExpressions {
+              prefix = "legacyPackages.${system}.homeConfigurations";
+              infixes = users;
+              suffix = "activationPackage";
+            };
+          buildExpressionOfPackage = packages:
+            buildNixBuildExpressions {
+              prefix = "packages.${system}";
+              infixes = packages;
+              suffix = "";
+            };
+          buildExpressionOfZfsIso = ".#nixosConfigurations.z-iso-zfs-$(uname -m).config.system.build.isoImage";
+          buildExpressionOfNozfsIso = ".#nixosConfigurations.z-iso-nozfs-$(uname -m).config.system.build.isoImage";
 
-      in {
-        continuousBuild = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-continuous-build" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${buildExpressionOfHome listOfAllUsers} ${buildExpressionOfSystem listOfAllSystems}
-          ''}/bin/nix-run-continuous-build";
-        };
-        buildEverything = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-everything" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${buildExpressionOfHome listOfAllUsers} ${buildExpressionOfSystem listOfAllSystems} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
-          ''}/bin/nix-run-build-everything";
-        };
+        in {
+          continuousBuild = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-continuous-build" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${
+                    buildExpressionOfHome listOfAllUsers
+                  } ${buildExpressionOfSystem listOfAllSystems}
+                ''
+              }/bin/nix-run-continuous-build";
+          };
+          buildEverything = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-everything" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${
+                    buildExpressionOfHome listOfAllUsers
+                  } ${buildExpressionOfSystem listOfAllSystems} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+                ''
+              }/bin/nix-run-build-everything";
+          };
 
-        buildThisNixosSystem = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-this-nixos-system" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfSystem ["\${NIXOS_MACHINE_HOSTNAME:-}"]}
-          ''}/bin/nix-run-build-this-nixos-system";
-        };
-        buildAllNixosSystems = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-runall-nixos-systems" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfSystem listOfAllSystems}
-          ''}/bin/nix-runall-nixos-systems";
-        };
+          buildThisNixosSystem = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-this-nixos-system" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfSystem [ "\${NIXOS_MACHINE_HOSTNAME:-}" ]}
+                ''
+              }/bin/nix-run-build-this-nixos-system";
+          };
+          buildAllNixosSystems = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-runall-nixos-systems" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfSystem listOfAllSystems}
+                ''
+              }/bin/nix-runall-nixos-systems";
+          };
 
-        buildThisHome = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-this-home" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfHome ["\${USER:-}"]}
-          ''}/bin/nix-run-build-this-home";
-        };
-        buildAllHomes = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-all-homes" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers}
-          ''}/bin/nix-run-build-all-homes";
-        };
+          buildThisHome = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-this-home" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfHome [ "\${USER:-}" ]}
+                ''
+              }/bin/nix-run-build-this-home";
+          };
+          buildAllHomes = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-all-homes" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers}
+                ''
+              }/bin/nix-run-build-all-homes";
+          };
 
-        buildAllPackages = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-all-packages" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages}
-          ''}/bin/nix-run-build-all-packages";
-        };
+          buildAllPackages = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-all-packages" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages}
+                ''
+              }/bin/nix-run-build-all-packages";
+          };
 
-        buildZfsIso = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-zfs-iso" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfZfsIso}
-          ''}/bin/nix-run-build-zfs-iso";
-        };
-        buildNozfsIso = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-nozfs-iso" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfNozfsIso}
-          ''}/bin/nix-run-build-nozfs-iso";
-        };
-        buildAllIsos = {
-          type = "app";
-          program = "${pkgs.writeShellScriptBin "nix-run-build-all-isos" ''
-            ${nixOrNom}
-            set -x
-            ''${nixBuildCmd} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
-          ''}/bin/nix-run-build-all-isos";
-        };
-      });
+          buildZfsIso = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-zfs-iso" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfZfsIso}
+                ''
+              }/bin/nix-run-build-zfs-iso";
+          };
+          buildNozfsIso = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-nozfs-iso" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfNozfsIso}
+                ''
+              }/bin/nix-run-build-nozfs-iso";
+          };
+          buildAllIsos = {
+            type = "app";
+            program = "${
+                pkgs.writeShellScriptBin "nix-run-build-all-isos" ''
+                  ${nixOrNom}
+                  set -x
+                  ''${nixBuildCmd} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+                ''
+              }/bin/nix-run-build-all-isos";
+          };
+        });
     };
 }
