@@ -98,7 +98,7 @@
       forEachSupportedLinuxSystem = mkForEachSupportedSystem supportedLinuxSystems;
       forEachSupportedSystem = mkForEachSupportedSystem supportedSystems;
 
-      systemUsers = {
+      realUsers = {
         pratham = {
           username = "pratham";
           fullname = "Pratham Patel";
@@ -287,7 +287,7 @@
 
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
             forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
-            systemUser = nixosMachines.hosts."${hostname}".systemUser or systemUsers.pratham;
+            systemUser = nixosMachines.hosts."${hostname}".systemUser or realUsers.pratham;
             gatewayAddr = nixosMachines.hosts."${hostname}".gatewayAddr or nixosMachines.misc.gatewayAddr;
             ipv4PrefixLength = nixosMachines.hosts."${hostname}".ipv4PrefixLength or nixosMachines.misc.ipv4PrefixLength;
           };
@@ -424,7 +424,7 @@
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
-        homeConfigurations."${systemUsers.pratham.username}" = mkNonNixosHomeManager pkgs systemUsers.pratham;
+        homeConfigurations."${realUsers.pratham.username}" = mkNonNixosHomeManager pkgs realUsers.pratham;
       });
 
       packages = forEachSupportedSystem ({ pkgs, ... }: { });
@@ -460,7 +460,7 @@
           allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
 
           listOfAllSystems = lib.attrNames buildableSystems;
-          listOfAllUsers = lib.attrNames systemUsers;
+          listOfAllUsers = lib.attrNames realUsers;
           listOfAllPackages = allPackages;
 
           buildNixBuildExpressions = { prefix, infixes, suffix }:
