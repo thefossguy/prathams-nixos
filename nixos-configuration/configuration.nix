@@ -3,7 +3,7 @@
 {
   imports = [
     ./bootloader-configuration.nix
-    ./sysctl.nix
+    ./sysctls.nix
     ./custom-options.nix
     ./misc-configuration.nix
     ./network-configuration.nix
