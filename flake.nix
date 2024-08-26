@@ -56,7 +56,7 @@
       };
 
       nixpkgs = allNixpkgsChannelInputs.stableSmall.nixpkgs;
-      home-manager = allNixpkgsChannelInputs.stableSmall.nixpkgs;
+      home-manager = allNixpkgsChannelInputs.stableSmall.home-manager;
       mkPkgs = { system, passed-nixpkgs }: import passed-nixpkgs { inherit system; };
 
       mkForEachSupportedSystem = supportedSystems: f:
