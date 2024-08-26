@@ -74,14 +74,14 @@ in {
       ./virt-ovmf.nix
     ] ++ (lib.optionals osConfig.custom-options.enableWebRemoteServices [
       # TODO: self-host flakestry.dev so that I don't go over the piddly rate-limit of GitHub
-      ../systemd-services/podman/podman-init.nix
-      ../systemd-services/podman/container-caddy-vishwambhar.nix
-      ../systemd-services/podman/container-gitea-chitragupta.nix
-      ../systemd-services/podman/container-gitea-govinda.nix
-      ../systemd-services/podman/container-hugo-mahayogi.nix
-      ../systemd-services/podman/container-hugo-vaikunthnatham.nix
-      ../systemd-services/podman/container-transmission-raadhe.nix
-      ../systemd-services/podman/container-uptime-vishnu.nix
+      ../modules/services/podman/podman-init.nix
+      ../modules/services/podman/container-caddy-vishwambhar.nix
+      ../modules/services/podman/container-gitea-chitragupta.nix
+      ../modules/services/podman/container-gitea-govinda.nix
+      ../modules/services/podman/container-hugo-mahayogi.nix
+      ../modules/services/podman/container-hugo-vaikunthnatham.nix
+      ../modules/services/podman/container-transmission-raadhe.nix
+      ../modules/services/podman/container-uptime-vishnu.nix
     ]);
 
     _module.args = { inherit mkContainerService; };

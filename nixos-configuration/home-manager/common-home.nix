@@ -3,7 +3,7 @@
 {
   imports = [
     ../packages/user-packages.nix
-    ../systemd-services/user-services.nix
+    ../modules/services/user-services.nix
     ./darwin.nix
     ./linux.nix
   ];

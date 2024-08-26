@@ -7,7 +7,7 @@
     ./misc-configuration.nix
     ./network-configuration.nix
     ./packages/system-packages.nix
-    ./systemd-services/system-services.nix
+    ./modules/services/system-services.nix
     ./user-configuration.nix
     ./virtualisation-configuration.nix
     ./modules/local-nix-cache/nix-conf.nix
