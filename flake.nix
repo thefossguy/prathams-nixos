@@ -453,7 +453,7 @@
           nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build";
           nixBuildCmd = "${pkgs.nix}/bin/nix build";
           nixOrNom = ''
-            if [[ "$(id -u)" -eq 0 ]]; then
+            if [[ "''${USE_NIX_INSTEAD_OF_NOM:-0}" -eq 1 ]]; then
                 nixBuildCmd='${nixBuildCmd} ${nixBuildFlags} --max-jobs 1'
             else
                 nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'

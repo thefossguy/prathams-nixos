@@ -25,7 +25,10 @@
         Type = "oneshot";
       };
 
-      script = "time nix run /etc/nixos.#continuousBuild";
+      script = ''
+        export USE_NIX_INSTEAD_OF_NOM=1
+        time nix run /etc/nixos.#continuousBuild
+      '';
     };
   };
 }
