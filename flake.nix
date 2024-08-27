@@ -390,11 +390,7 @@
           passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
         };
         madhav = mkNixosSystem { hostname = "madhav"; };
-        sentinel = mkNixosSystem {
-          hostname = "sentinel";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
-        };
+        sentinel = mkNixosSystem { hostname = "sentinel"; };
         reddish = mkNixosSystem { hostname = "reddish"; };
         raajan = mkNixosSystem { hostname = "raajan"; };
         mahadev = mkNixosSystem { hostname = "mahadev"; };
