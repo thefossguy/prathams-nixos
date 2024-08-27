@@ -1,4 +1,4 @@
-{ pkgs, ipv4Address, networkingIface, config, ... }:
+{ config, pkgs, nixosSystem, ... }:
 let
   serviceName = "ensure-local-static-ip";
   dhcpUnfuckAttemptsLogFileDir = "/var/${serviceName}";
@@ -21,7 +21,7 @@ in {
         let
           netIface = if (config.custom-options.runsVirtualMachines or false)
             then "virbr0"
-            else "${networkingIface}";
+            else "${nixosSystem.networkingIface}";
         in ''
           set -xuf -o pipefail
 
@@ -46,7 +46,7 @@ in {
               iface_status="$(${pkgs.iproute2}/bin/ip -brief address show ${netIface})"
 
               if [[ "''${iface_status}" =~ UP ]]; then
-                  if [[ "''${iface_status}" =~ ${ipv4Address} ]]; then
+                  if [[ "''${iface_status}" =~ ${nixosSystem.ipv4Address} ]]; then
                       if [[ "''${DHCP_UNFUCK_ATTEMPTS}" -ne 0 ]]; then
                           echo '0' > ${dhcpUnfuckAttemptsLogFileFilePath}
                       fi

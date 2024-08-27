@@ -1,7 +1,7 @@
-{ lib, pkgs, systemUser, ... }:
+{ lib, pkgs, nixosSystem, ... }:
 
 lib.mkIf pkgs.stdenv.isDarwin {
-  home.homeDirectory = "/Users/${systemUser.username}";
+  home.homeDirectory = "/Users/${nixosSystem.systemUser.username}";
   # TODO: install the following with brew
   # alacritty
   # bash

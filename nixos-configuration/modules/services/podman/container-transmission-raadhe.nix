@@ -1,4 +1,4 @@
-{ mkContainerService, ... }:
+{ mkContainerService, ... }@args:
 
 let
   containerImage = "lscr.io/linuxserver/transmission:latest";

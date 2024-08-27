@@ -1,6 +1,6 @@
-{ config, lib, pkgs, systemUser, ... }:
+{ config, lib, pkgs, nixosSystem, ... }:
 
-let userHome = "/home/${systemUser.username}";
+let userHome = "/home/${nixosSystem.systemUser.username}";
 in {
   imports = [
     ./custom-nixos-upgrade.nix

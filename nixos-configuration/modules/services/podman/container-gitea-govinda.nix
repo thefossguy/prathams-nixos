@@ -1,8 +1,8 @@
-{ systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }@args:
 
 let
   containerImage = "docker.io/gitea/gitea:latest";
-  containerVolumePath = "/home/${systemUser.username}/container-data/volumes/gitea";
+  containerVolumePath = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/container-data/volumes/gitea";
 
   containerDescription = "Gitea web UI";
   containerName = "gitea-govinda";

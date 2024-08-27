@@ -1,8 +1,8 @@
-{ systemUser, ... }:
+{ nixosSystem, ... }:
 
 {
   security.sudo.extraRules = [{
-    users = [ systemUser.username ];
+    users = [ nixosSystem.systemUser.username ];
     commands = [{
       command = "ALL";
       options = [ "NOPASSWD" ];

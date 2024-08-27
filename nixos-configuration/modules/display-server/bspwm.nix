@@ -13,8 +13,8 @@
       windowManager = {
         bspwm = {
           enable = true;
-          configFile = "/home/${systemUser.username}/.config/bspwm/bspwmrc";
-          sxhkd.configFile = "/home/${systemUser.username}/.config/sxhkd/sxhkdrc";
+          configFile = "/home/${nixosSystem.systemUser.username}/.config/bspwm/bspwmrc";
+          sxhkd.configFile = "/home/${nixosSystem.systemUser.username}/.config/sxhkd/sxhkdrc";
         };
       };
 

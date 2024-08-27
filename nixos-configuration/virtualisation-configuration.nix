@@ -1,4 +1,4 @@
-{ pkgs, lib, config, systemUser, ... }:
+{ config, lib, pkgs, nixosSystem, ... }:
 
 lib.mkIf (config.custom-options.runsVirtualMachines or false) {
   environment.systemPackages = with pkgs; [ bridge-utils ];
@@ -21,8 +21,8 @@ lib.mkIf (config.custom-options.runsVirtualMachines or false) {
         verbatimConfig = ''
           #https://github.com/NixOS/nixpkgs/pull/37281#issuecomment-413133203
           namespaces = []
-          user = "${systemUser.username}"
-          group = "${systemUser.username}"
+          user = "${nixosSystem.systemUser.username}"
+          group = "${nixosSystem.systemUser.username}"
 
           # Whether libvirt should dynamically change file ownership
           # to match the configured user/group above. Defaults to 1.

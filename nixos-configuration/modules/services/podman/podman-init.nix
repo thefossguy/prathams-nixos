@@ -1,4 +1,4 @@
-{ pkgs, systemUser, ... }:
+{ pkgs, systemUser, ... }@args:
 
 {
   systemd.user.services = {
@@ -18,7 +18,7 @@
       };
 
       Service = {
-        ExecStart = "${pkgs.nix}/bin/nix-shell /home/${systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
+        ExecStart = "${pkgs.nix}/bin/nix-shell /home/${args.nixosSystem.systemUser.username or systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
         Type = "oneshot";
       };
       Install = { WantedBy = [ "default.target" ]; };

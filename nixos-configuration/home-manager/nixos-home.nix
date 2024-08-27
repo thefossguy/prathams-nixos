@@ -1,4 +1,4 @@
-{ pkgs, systemUser, ... }:
+{ pkgs, nixosSystem, ... }:
 
 let
   mkContainerService = {
@@ -66,9 +66,9 @@ let
     };
 
 in {
-  home-manager.extraSpecialArgs = { inherit systemUser; };
+  home-manager.extraSpecialArgs = { inherit (nixosSystem) systemUser; };
   home-manager.useGlobalPkgs = true;
-  home-manager.users.${systemUser.username} = { config, lib, pkgs, osConfig, ... }: {
+  home-manager.users.${nixosSystem.systemUser.username} = { config, lib, pkgs, osConfig, ... }: {
     imports = [
       ./common-home.nix
       ./virt-ovmf.nix

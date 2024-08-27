@@ -1,8 +1,8 @@
-{ systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }@args:
 
 let
   containerImage = "docker.io/klakegg/hugo:ext-debian";
-  containerVolumePath = "/home/${systemUser.username}/container-data/volumes/mach";
+  containerVolumePath = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/container-data/volumes/mach";
 
   containerDescription = "Pratham Patel's documentation website";
   containerName = "hugo-mahayogi";

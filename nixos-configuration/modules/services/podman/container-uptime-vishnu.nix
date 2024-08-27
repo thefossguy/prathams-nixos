@@ -1,8 +1,8 @@
-{ systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }@args:
 
 let
   containerImage = "docker.io/louislam/uptime-kuma:debian";
-  containerVolumePath = "/home/${systemUser.username}/container-data/volumes/uptimekuma";
+  containerVolumePath = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/container-data/volumes/uptimekuma";
 
   containerDescription = "Uptime Kuma";
   containerName = "uptime-vishnu";

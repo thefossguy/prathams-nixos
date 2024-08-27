@@ -1,4 +1,4 @@
-{ lib, pkgs, systemUser, ... }:
+{ lib, pkgs, nixosSystem, ... }:
 
 lib.mkIf pkgs.stdenv.isLinux {
   home.activation = {
@@ -11,7 +11,7 @@ lib.mkIf pkgs.stdenv.isLinux {
           EDKII_VARS_NIX="${pkgs.OVMF.fd}/FV/OVMF_VARS.fd"
       fi
 
-      EDKII_DIR_HOME="/home/${systemUser.username}/.local/share/edk2"
+      EDKII_DIR_HOME="/home/${nixosSystem.systemUser.username}/.local/share/edk2"
       EDKII_CODE_HOME="$EDKII_DIR_HOME/EDKII_CODE"
       EDKII_VARS_HOME="$EDKII_DIR_HOME/EDKII_VARS"
 
@@ -35,7 +35,7 @@ lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       text = ''
         nvram = [
-          "/home/${systemUser.username}/.local/share/edk2/EDKII_CODE:/home/${systemUser.username}/.local/share/edk2/EDKII_VARS",
+          "/home/${nixosSystem.systemUser.username}/.local/share/edk2/EDKII_CODE:/home/${nixosSystem.systemUser.username}/.local/share/edk2/EDKII_VARS",
           "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd",
           "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"
         ]

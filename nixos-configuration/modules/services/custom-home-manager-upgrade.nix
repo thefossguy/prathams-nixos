@@ -1,9 +1,9 @@
-{ lib, pkgs, systemUser, ... }:
+{ lib, pkgs, systemUser, ... } @ args:
 
 let
-  homeDir = "/home/${systemUser.username}";
+  homeDir = "/home/${args.nixosSystem.systemUser.username or systemUser.username}";
   hm_config_dir = "${homeDir}/.prathams-nixos";
-  connectivityCheckScript = import ../modules/misc-imports/check-network.nix {
+  connectivityCheckScript = import ../misc-imports/check-network.nix {
     internetEndpoint = "cache.nixos.org";
     exitCode = "0";
     inherit pkgs;

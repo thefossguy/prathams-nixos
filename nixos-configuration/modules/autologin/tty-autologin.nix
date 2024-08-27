@@ -1,5 +1,5 @@
-{ systemUser, ... }:
+{ nixosSystem, ... }:
 
 {
-  services.getty.autologinUser = systemUser.username;
+  services.getty.autologinUser = nixosSystem.systemUser.username;
 }

@@ -1,13 +1,13 @@
-{ config, lib, pkgs, modulesPath, enableZfs, latestLtsKernel, latestStableKernel, supportedFilesystemsSansZFS, ... }:
+{ config, lib, modulesPath, pkgs, nixosSystem, ... }:
 
 let
-  isoZfsString = if enableZfs
+  isoZfsString = if nixosSystem.enableZfs
     then "zfs-"
     else "";
-  isoKernelPackage = if enableZfs
-    then pkgs."${latestLtsKernel}"
-    else pkgs."${latestStableKernel}";
-  isoSupportedFilesystems = supportedFilesystemsSansZFS ++ (if enableZfs
+  isoKernelPackage = if nixosSystem.enableZfs
+    then pkgs."${nixosSystem.latestLtsKernel}"
+    else pkgs."${nixosSystem.latestStableKernel}";
+  isoSupportedFilesystems = nixosSystem.supportedFilesystemsSansZFS ++ (if nixosSystem.enableZfs
     then [ "zfs" ]
     else []);
 in {

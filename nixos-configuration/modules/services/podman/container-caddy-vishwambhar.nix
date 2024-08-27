@@ -1,8 +1,8 @@
-{ systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }@args:
 
 let
   containerImage = "docker.io/library/caddy:latest";
-  containerVolumePath = "/home/${systemUser.username}/container-data/volumes/caddy";
+  containerVolumePath = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/container-data/volumes/caddy";
 
   containerDescription = "Caddy Web Server (reverse proxy)";
   containerName = "caddy-vishwambhar";

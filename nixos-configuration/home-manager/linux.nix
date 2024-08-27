@@ -1,6 +1,6 @@
-{ lib, pkgs, systemUser, ... }:
+{ lib, pkgs, systemUser, ... }@args:
 
 lib.mkIf pkgs.stdenv.isLinux {
-  home.homeDirectory = "/home/${systemUser.username}";
+  home.homeDirectory = "/home/${args.nixosSystem.systemUser.username or systemUser.username}";
   targets.genericLinux.enable = true;
 }

@@ -1,4 +1,4 @@
-{ lib, systemUser, ... }:
+{ lib, nixosSystem, ... }:
 
 {
   imports = [
@@ -58,7 +58,7 @@
       log-lines = 9999;
       sandbox = true;
       show-trace = true;
-      trusted-users = [ "root" "${systemUser.username}" ];
+      trusted-users = [ "root" "${nixosSystem.systemUser.username}" ];
     };
   };
 }

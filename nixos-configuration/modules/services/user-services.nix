@@ -1,6 +1,6 @@
-{ lib, pkgs, systemUser, ... }:
+{ lib, pkgs, systemUser, ... } @ args:
 
-let scriptsDir = "/home/${systemUser.username}/.local/scripts";
+let scriptsDir = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/.local/scripts";
 
 in lib.mkIf pkgs.stdenv.isLinux {
   systemd.user.services = {

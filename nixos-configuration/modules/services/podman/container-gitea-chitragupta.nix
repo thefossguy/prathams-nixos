@@ -1,8 +1,8 @@
-{ systemUser, mkContainerService, ... }:
+{ systemUser, mkContainerService, ... }@args:
 
 let
   containerImage = "docker.io/library/postgres:15-bookworm";
-  containerVolumePath = "/home/${systemUser.username}/container-data/volumes/gitea/database";
+  containerVolumePath = "/home/${args.nixosSystem.systemUser.username or systemUser.username}/container-data/volumes/gitea/database";
 
   containerDescription = "Gitea database (PostgreSQL)";
   containerName = "gitea-chitragupta";

@@ -1,4 +1,4 @@
-{ lib, systemUser, ... }:
+{ lib, systemUser, ... }@args:
 
 {
   imports = [
@@ -9,5 +9,5 @@
   ];
 
   home.stateVersion = lib.versions.majorMinor lib.version;
-  home.username = "${systemUser.username}";
+  home.username = "${args.nixosSystem.systemUser.username or systemUser.username}";
 }

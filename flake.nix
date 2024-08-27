@@ -261,8 +261,18 @@
           nixpkgs = passed-nixpkgs;
           home-manager = passed-home-manager;
 
-          system = nixosMachines.hosts."${hostname}".system;
-          machineType = nixosMachines.hosts."${hostname}".machineType or nixosMachines.misc.machineTypes.server;
+        system = nixosMachines.hosts."${hostname}".system;
+          nixosSystem = {
+            inherit system;
+            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
+
+            inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
+            forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
+            systemUser = nixosMachines.hosts."${hostname}".systemUser or realUsers.pratham;
+            gatewayAddr = nixosMachines.hosts."${hostname}".gatewayAddr or nixosMachines.misc.gatewayAddr;
+            ipv4PrefixLength = nixosMachines.hosts."${hostname}".ipv4PrefixLength or nixosMachines.misc.ipv4PrefixLength;
+            machineType = nixosMachines.hosts."${hostname}".machineType or nixosMachines.misc.machineTypes.server;
+          };
           pkgs1Stable = mkPkgs {
             inherit system;
             passed-nixpkgs = nixpkgs-1stable;
@@ -281,25 +291,17 @@
           };
         in nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit system;
-            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
-            inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall;
-
-            inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
-            forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
-            systemUser = nixosMachines.hosts."${hostname}".systemUser or realUsers.pratham;
-            gatewayAddr = nixosMachines.hosts."${hostname}".gatewayAddr or nixosMachines.misc.gatewayAddr;
-            ipv4PrefixLength = nixosMachines.hosts."${hostname}".ipv4PrefixLength or nixosMachines.misc.ipv4PrefixLength;
+            inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem;
           };
 
           modules = [
             ./nixos-configuration/systems/${hostname}/default.nix
             ./nixos-configuration/systems/hosts-common.nix
-            (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager; })
-            home-manager.nixosModules.home-manager { home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall; }; }
+            (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager nixosSystem; })
+            home-manager.nixosModules.home-manager { home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem; }; }
             {
               # this is an ugly hack that will probably stay for an eternity lol
-              config.custom-options."isNixos${machineType}" = true;
+              config.custom-options."isNixos${nixosSystem.machineType}" = true;
             }
           ] ++ (nixosMachines.hosts."${hostname}".extraSystemModules or [ ]);
         };
@@ -334,8 +336,10 @@
         nixpkgs-1stable-small.lib.nixosSystem {
           system = linuxSystems."${systemArch}";
           specialArgs = {
-            inherit enableZfs;
-            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
+            nixosSystem = {
+              inherit enableZfs;
+              inherit (nixosMachines.misc) latestLtsKernel latestStableKernel supportedFilesystemsSansZFS;
+            };
           };
           modules = [ self.nixosModules.customNixosIsoModule ];
         };
@@ -348,7 +352,6 @@
           in {
             _module.args = {
               inherit home-manager nixpkgs;
-              inherit (nixosMachines.misc) supportedFilesystemsSansZFS;
             };
 
             imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";

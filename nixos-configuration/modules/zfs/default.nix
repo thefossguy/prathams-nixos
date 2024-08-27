@@ -1,10 +1,10 @@
-{ config, lib, pkgs, forceLtsKernel ? false, latestLtsKernel, supportedFilesystemsSansZFS, ... }:
+{ config, lib, pkgs, nixosSystem, supportedFilesystemsSansZFS, ... }:
 
 let
-  latestLtsKernelPackage = pkgs."${latestLtsKernel}";
+  latestLtsKernelPackage = pkgs."${nixosSystem.latestLtsKernel}";
   allSupportedFilesystems = supportedFilesystemsSansZFS ++ [ "zfs" ];
   zpoolName = "${config.networking.hostName}-zpool";
-in lib.mkIf forceLtsKernel {
+in lib.mkIf nixosSystem.forceLtsKernel {
   boot = {
     # we force them because we want to override values from `nixos-configuration/systems/hosts-common.nix`
     kernelPackages = lib.mkForce latestLtsKernelPackage;

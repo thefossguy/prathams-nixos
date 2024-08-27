@@ -1,4 +1,4 @@
-{ pkgs, systemUser, ... }:
+{ pkgs, nixosSystem, ... }:
 
 let
   sudoRules = with pkgs; [
@@ -29,20 +29,20 @@ in {
     mutableUsers = false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
     users."root".hashedPassword = "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
 
-    groups.${systemUser.username} = {
-      name = "${systemUser.username}";
+    groups.${nixosSystem.systemUser.username} = {
+      name = "${nixosSystem.systemUser.username}";
       gid = 1000;
     };
 
-    users.${systemUser.username} = {
+    users.${nixosSystem.systemUser.username} = {
       createHome = true;
-      description = "${systemUser.fullname}";
-      group = "${systemUser.username}";
-      hashedPassword = "${systemUser.hashedPassword}";
-      home = "/home/${systemUser.username}";
+      description = "${nixosSystem.systemUser.fullname}";
+      group = "${nixosSystem.systemUser.username}";
+      hashedPassword = "${nixosSystem.systemUser.hashedPassword}";
+      home = "/home/${nixosSystem.systemUser.username}";
       isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
       isSystemUser = false;
-      linger = systemUser.enableLingering or false;
+      linger = nixosSystem.systemUser.enableLingering or false;
       subGidRanges = [{
         startGid = 10000;
         count = 65536;
@@ -97,7 +97,7 @@ in {
       '';
 
       extraRules = [{
-        users = [ "${systemUser.username}" ];
+        users = [ "${nixosSystem.systemUser.username}" ];
         commands = sudoCommands;
       }];
     };
