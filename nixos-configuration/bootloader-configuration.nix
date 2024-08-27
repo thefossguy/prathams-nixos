@@ -1,4 +1,4 @@
-{ lib, supportedFilesystemsSansZFS, ... }:
+{ lib, nixosSystem, ... }:
 
 {
   boot = {
@@ -11,7 +11,7 @@
     loader.efi.canTouchEfiVariables = false;
     blacklistedKernelModules = [ "nvidia" ];
     plymouth.enable = lib.mkForce false;
-    supportedFilesystems = supportedFilesystemsSansZFS;
+    supportedFilesystems = nixosSystem.supportedFilesystemsSansZFS;
 
     # present in the initrd but only loaded on-demand
     # **ONLY INCLUDE MODULES NECESSARY TO MOUNT ROT ROOT DEVICE**

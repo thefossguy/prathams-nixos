@@ -264,7 +264,7 @@
         system = nixosMachines.hosts."${hostname}".system;
           nixosSystem = {
             inherit system;
-            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel;
+            inherit (nixosMachines.misc) latestLtsKernel latestStableKernel supportedFilesystemsSansZFS;
 
             inherit (nixosMachines.hosts."${hostname}") hostname ipv4Address networkingIface hostId;
             forceLtsKernel = nixosMachines.hosts."${hostname}".forceLtsKernel or false;
@@ -376,7 +376,6 @@
           };
 
         customNixosIsoModule = {
-          _module.args = { inherit (nixosMachines.misc) supportedFilesystemsSansZFS; };
           imports = [ ./nixos-configuration/iso/default.nix ];
         };
       };

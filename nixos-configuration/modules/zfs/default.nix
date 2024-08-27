@@ -1,8 +1,8 @@
-{ config, lib, pkgs, nixosSystem, supportedFilesystemsSansZFS, ... }:
+{ config, lib, pkgs, nixosSystem, ... }:
 
 let
   latestLtsKernelPackage = pkgs."${nixosSystem.latestLtsKernel}";
-  allSupportedFilesystems = supportedFilesystemsSansZFS ++ [ "zfs" ];
+  allSupportedFilesystems = nixosSystem.supportedFilesystemsSansZFS ++ [ "zfs" ];
   zpoolName = "${config.networking.hostName}-zpool";
 in lib.mkIf nixosSystem.forceLtsKernel {
   boot = {
