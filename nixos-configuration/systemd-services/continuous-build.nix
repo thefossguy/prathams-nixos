@@ -1,7 +1,11 @@
 { pkgs, ... }:
 
 {
-  nix.settings.max-jobs = 1;
+  nix.settings = {
+    keep-derivations = true;
+    keep-outputs = true;
+    max-jobs = 1;
+  };
 
   systemd = {
     timers."continuous-build" = {
