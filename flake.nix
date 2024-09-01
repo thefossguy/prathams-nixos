@@ -172,7 +172,7 @@
           sentinel = {
             hostname = "sentinel";
             ipv4Address = "10.0.0.14";
-            networkingIface = "end0";
+            networkingIface = "enxdca6322f1a7c";
             system = linuxSystems.aarch64;
           };
 
