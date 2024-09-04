@@ -25,6 +25,12 @@
         default = false;
       };
 
+      isNixOS = lib.mkOption {
+        description = "An option for home-manager to check if it's on NixOS or not.";
+        type = lib.types.bool;
+        default = true;
+      };
+
       isNixCacheMachine = lib.mkOption {
         description = "This machine serves Nix Cache.";
         type = lib.types.bool;
