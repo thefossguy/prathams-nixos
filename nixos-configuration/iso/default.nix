@@ -26,7 +26,7 @@ in {
   };
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Asia/Kolkata";
-  users.users."nixos".hashedPassword = "$y$j9T$dNGwIUpZQhc0aS5003TW/0$odAB.8V8YPU15.FVHCY8IcnxFWUrxuDcUxyPjoYke80";
+  users.users."nixos".initialHashedPassword = lib.mkForce "$y$j9T$dNGwIUpZQhc0aS5003TW/0$odAB.8V8YPU15.FVHCY8IcnxFWUrxuDcUxyPjoYke80";
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false; # this enabled 'wpa_supplicant', use networkmanager instead
   isoImage.isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${config.boot.kernelPackages.kernel.version}-${isoZfsString}${pkgs.stdenv.hostPlatform.system}.iso";
