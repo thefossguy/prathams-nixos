@@ -6,6 +6,7 @@ in {
     ./custom-nixos-upgrade.nix
     ./ensure-local-static-ip.nix
     ./needs-reboot.nix
+    ./scheduled-reboots.nix
     ./update-nixos-flake-inputs.nix
   ];
 
