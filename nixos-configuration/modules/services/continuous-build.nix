@@ -22,7 +22,10 @@
       enable = true;
       after = [ "custom-nixos-upgrade.service" ];
       requires = [ "custom-nixos-upgrade.service" ];
-      path = [ pkgs.nix ];
+      path = with pkgs; [
+        git
+        nix
+      ];
 
       serviceConfig = {
         User = "root";
