@@ -1,9 +1,8 @@
-{ lib, pkgs, osConfig ? null, pkgs0UnstableSmall, ... }:
+{ lib, pkgs, pkgs0UnstableSmall, ... }:
 
 let
-  nixosPackages = lib.optionals (osConfig.custom-options.isNixOS or false) [ pkgs.thunderbird ];
-  tuxPackages = nixosPackages ++ lib.optionals (pkgs.stdenv.isLinux)
-    (with pkgs; [ buildah cargo-valgrind dict imagemagick inotify-tools rpm ventoy wol ]);
+  tuxPackages = lib.optionals (pkgs.stdenv.isLinux)
+    (with pkgs; [ buildah cargo-valgrind dict imagemagick inotify-tools rpm thunderbird ventoy wol ]);
 
   darwinPackages = lib.optionals (pkgs.stdenv.isDarwin) (with pkgs; [
     coreutils-prefixed
