@@ -5,6 +5,7 @@
     # should be already included in the base image
     #bzip2
     #curl
+    dash
     #findutils
     #gawk
     #gnugrep
