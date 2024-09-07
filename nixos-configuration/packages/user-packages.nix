@@ -1,4 +1,4 @@
-{ lib, pkgs, osConfig, pkgs0UnstableSmall, ... }:
+{ lib, pkgs, osConfig ? null, pkgs0UnstableSmall, ... }:
 
 let
   nixosPackages = lib.optionals (osConfig.custom-options.isNixOS or false) [ pkgs.thunderbird ];
