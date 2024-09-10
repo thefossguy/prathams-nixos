@@ -394,7 +394,11 @@
         sentinel = mkNixosSystem { hostname = "sentinel"; };
         reddish = mkNixosSystem { hostname = "reddish"; };
         raajan = mkNixosSystem { hostname = "raajan"; };
-        mahadev = mkNixosSystem { hostname = "mahadev"; };
+        mahadev = mkNixosSystem {
+          hostname = "mahadev";
+          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+        };
         pawandev = mkNixosSystem { hostname = "pawandev"; };
         stuti = mkNixosSystem { hostname = "stuti"; };
         chaturvyas = mkNixosSystem { hostname = "chaturvyas"; };
