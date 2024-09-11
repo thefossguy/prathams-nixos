@@ -20,10 +20,4 @@
     device = "/dev/disk/by-uuid/7cb3c69f-2c62-4498-86e5-f168b3f2daa4";
     fsType = "xfs";
   };
-
-  boot.kernelPatches = [{
-    name = "Enable Rust support in the Kernel configuration file";
-    patch = null;
-    features.rust = true;
-  }];
 }
