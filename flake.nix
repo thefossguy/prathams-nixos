@@ -162,7 +162,7 @@
           madhav = {
             hostname = "madhav";
             ipv4Address = "10.0.0.108";
-            networkingIface = "enp5s0";
+            networkingIface = "enx9c6b002245ab";
             machineType = nixosMachines.misc.machineTypes.server;
             forceLtsKernel = true;
             system = linuxSystems.x86_64;
