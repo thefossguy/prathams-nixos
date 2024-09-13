@@ -25,6 +25,7 @@ in {
     blacklistedKernelModules = [ "nvidia" "nouveau" ]; # since it's hard to combine copytoram+nomodeset
   };
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.max-jobs = 1;
   time.timeZone = "Asia/Kolkata";
   users.users."nixos".initialHashedPassword = lib.mkForce "$y$j9T$dNGwIUpZQhc0aS5003TW/0$odAB.8V8YPU15.FVHCY8IcnxFWUrxuDcUxyPjoYke80";
   networking.networkmanager.enable = true;
