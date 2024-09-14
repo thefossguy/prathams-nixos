@@ -132,6 +132,7 @@
           flameboi.hostId   = "20c95fe3";
           indra.hostId      = "d92f6246";
           madhav.hostId     = "102b6927";
+          matsya.hostId     = "3852eff0";
           sentinel.hostId   = "041d6ae7";
           reddish.hostId    = "996ccb68";
           mahadev.hostId    = "c06c1a49";
@@ -151,7 +152,7 @@
             system = linuxSystems.x86_64;
           };
 
-          # Lenovo Yoga Slim 6 (Intel 16GB; i5-13500H; Iris Xe)
+          # Lenovo Yoga Slim 6 (16GB; i5-13500H; Iris Xe)
           indra = {
             hostname = "indra";
             ipv4Address = "10.0.0.50";
@@ -167,6 +168,15 @@
             networkingIface = "enx9c6b002245ab";
             machineType = nixosMachines.misc.machineTypes.server;
             forceLtsKernel = true;
+            system = linuxSystems.x86_64;
+          };
+
+          # Radxa X4 (12GB; N100)
+          matsya = {
+            hostname = "matsya";
+            ipv4Address = "10.0.0.109";
+            networkingIface = "";
+            machineType = nixosMachines.misc.machineTypes.server;
             system = linuxSystems.x86_64;
           };
 
@@ -303,6 +313,8 @@
                 inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem;
               };
               # this is an ugly hack that will probably stay for an eternity lol
+            }
+            {
               config.custom-options."isNixos${nixosSystem.machineType}" = true;
             }
           ] ++ (nixosMachines.hosts."${hostname}".extraSystemModules or [ ]);
@@ -390,6 +402,11 @@
           passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
         };
         madhav = mkNixosSystem { hostname = "madhav"; };
+        matsya = mkNixosSystem {
+          hostname = "matsya";
+          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+        };
         sentinel = mkNixosSystem { hostname = "sentinel"; };
         reddish = mkNixosSystem { hostname = "reddish"; };
         raajan = mkNixosSystem { hostname = "raajan"; };
@@ -447,7 +464,7 @@
         let
           lib = pkgs.lib;
           system = pkgs.stdenv.system;
-          nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
+          nixBuildFlags = "--trace-verbose --print-build-logs --show-trace";
           nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build ${nixBuildFlags}";
 
           buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
