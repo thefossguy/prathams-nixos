@@ -21,7 +21,7 @@ in {
   services = {
     fwupd.enable = true;
     journald.storage = "persistent";
-    timesyncd.enable = true; # NTP
+    timesyncd.enable = lib.mkForce true; # NTP
     udisks2.enable = true;
 
     locate = {
