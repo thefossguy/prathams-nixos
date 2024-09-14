@@ -93,9 +93,11 @@
       };
 
       supportedLinuxSystems = nixpkgs.lib.attrValues linuxSystems;
-      supportedSystems = supportedLinuxSystems ++ (nixpkgs.lib.attrValues darwinSystems);
+      supportedDarwinSystems = nixpkgs.lib.attrValues darwinSystems;
+      supportedSystems = supportedLinuxSystems ++ supportedDarwinSystems;
 
       forEachSupportedLinuxSystem = mkForEachSupportedSystem supportedLinuxSystems;
+      forEachSupportedDarwinSystem = mkForEachSupportedSystem supportedDarwinSystems;
       forEachSupportedSystem = mkForEachSupportedSystem supportedSystems;
 
       realUsers = {
@@ -260,7 +262,7 @@
           nixpkgs = passed-nixpkgs;
           home-manager = passed-home-manager;
 
-        system = nixosMachines.hosts."${hostname}".system;
+          system = nixosMachines.hosts."${hostname}".system;
           nixosSystem = {
             inherit system;
             inherit (nixosMachines.misc) latestLtsKernel latestStableKernel supportedFilesystemsSansZFS;
@@ -289,16 +291,17 @@
             passed-nixpkgs = nixpkgs-0unstable-small;
           };
         in nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem;
-          };
+          specialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem; };
 
           modules = [
             ./nixos-configuration/systems/${hostname}/default.nix
             ./nixos-configuration/systems/hosts-common.nix
             (self.nixosModules.customNixosBaseModule { inherit passed-nixpkgs passed-home-manager nixosSystem; })
-            home-manager.nixosModules.home-manager { home-manager.extraSpecialArgs = { inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem; }; }
+            home-manager.nixosModules.home-manager
             {
+              home-manager.extraSpecialArgs = {
+                inherit pkgs1Stable pkgs1StableSmall pkgs0Unstable pkgs0UnstableSmall nixosSystem;
+              };
               # this is an ugly hack that will probably stay for an eternity lol
               config.custom-options."isNixos${nixosSystem.machineType}" = true;
             }
@@ -349,9 +352,7 @@
             nixpkgs = passed-nixpkgs;
             home-manager = passed-home-manager;
           in {
-            _module.args = {
-              inherit home-manager nixpkgs;
-            };
+            _module.args = { inherit home-manager nixpkgs; };
 
             imports = let nixpkgsChannelPath = "nixpkgs/channels/nixpkgs";
             in [
@@ -374,9 +375,7 @@
             ];
           };
 
-        customNixosIsoModule = {
-          imports = [ ./nixos-configuration/iso/default.nix ];
-        };
+        customNixosIsoModule = { imports = [ ./nixos-configuration/iso/default.nix ]; };
       };
 
       nixosConfigurations = {
@@ -432,8 +431,6 @@
         homeConfigurations."${realUsers.pratham.username}" = mkNonNixosHomeManager pkgs realUsers.pratham;
       });
 
-      packages = forEachSupportedSystem ({ pkgs, ... }: { });
-
       devShells = forEachSupportedSystem ({ pkgs, ... }: {
         default = pkgs.mkShellNoCC {
           packages = pkgs.callPackage ./nixos-configuration/iso/packages.nix { };
@@ -451,22 +448,11 @@
           lib = pkgs.lib;
           system = pkgs.stdenv.system;
           nixBuildFlags = "--verbose --trace-verbose --print-build-logs --show-trace";
-          nomBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build";
-          nixBuildCmd = "${pkgs.nix}/bin/nix build";
-          nixOrNom = ''
-            if [[ "''${USE_NIX_INSTEAD_OF_NOM:-0}" -eq 1 ]]; then
-                nixBuildCmd='${nixBuildCmd} ${nixBuildFlags} --max-jobs 1'
-            else
-                nixBuildCmd='${nomBuildCmd} ${nixBuildFlags}'
-            fi
-          '';
+          nixBuildCmd = "${pkgs.nix-output-monitor}/bin/nom build ${nixBuildFlags}";
 
           buildableSystems = lib.filterAttrs (name: host: host.system == system) nixosMachines.hosts;
-          allPackages = pkgs.lib.attrNames self.packages.${pkgs.stdenv.system};
-
           listOfAllSystems = lib.attrNames buildableSystems;
           listOfAllUsers = lib.attrNames realUsers;
-          listOfAllPackages = allPackages;
 
           buildNixBuildExpressions = { prefix, infixes, suffix }:
             lib.concatStringsSep " " (map (infix: ".#${prefix}." + builtins.toString infix + ".${suffix}") infixes);
@@ -482,37 +468,33 @@
               infixes = users;
               suffix = "activationPackage";
             };
-          buildExpressionOfPackage = packages:
-            buildNixBuildExpressions {
-              prefix = "packages.${system}";
-              infixes = packages;
-              suffix = "";
-            };
-          buildExpressionOfZfsIso = ".#nixosConfigurations.z-iso-zfs-$(uname -m).config.system.build.isoImage";
-          buildExpressionOfNozfsIso = ".#nixosConfigurations.z-iso-nozfs-$(uname -m).config.system.build.isoImage";
+          buildExpressionOfZfsIso = if pkgs.stdenv.isLinux
+            then ".#nixosConfigurations.z-iso-zfs-${builtins.toString (lib.lists.take 1 (lib.strings.split "-" pkgs.stdenv.system))}.config.system.build.isoImage"
+            else "";
+          buildExpressionOfNozfsIso = if pkgs.stdenv.isLinux
+            then ".#nixosConfigurations.z-iso-nozfs-${builtins.toString (lib.lists.take 1 (lib.strings.split "-" pkgs.stdenv.system))}.config.system.build.isoImage"
+            else "";
 
         in {
           continuousBuild = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-continuous-build" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-continuous-build" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${
-                    buildExpressionOfHome listOfAllUsers
-                  } ${buildExpressionOfSystem listOfAllSystems}
+                  ${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers} ${buildExpressionOfSystem listOfAllSystems}
                 ''
               }/bin/nix-run-continuous-build";
           };
           buildEverything = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-everything" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-everything" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages} ${
-                    buildExpressionOfHome listOfAllUsers
-                  } ${buildExpressionOfSystem listOfAllSystems} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+                  ${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers} ${
+                    buildExpressionOfSystem listOfAllSystems
+                  } ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
                 ''
               }/bin/nix-run-build-everything";
           };
@@ -520,20 +502,20 @@
           buildThisNixosSystem = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-this-nixos-system" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-this-nixos-system" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfSystem [ "\${NIXOS_MACHINE_HOSTNAME:-}" ]}
+                  ${nixBuildCmd} ${buildExpressionOfSystem [ "\${NIXOS_MACHINE_HOSTNAME:-}" ]}
                 ''
               }/bin/nix-run-build-this-nixos-system";
           };
           buildAllNixosSystems = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-runall-nixos-systems" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-runall-nixos-systems" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfSystem listOfAllSystems}
+                  ${nixBuildCmd} ${buildExpressionOfSystem listOfAllSystems}
                 ''
               }/bin/nix-runall-nixos-systems";
           };
@@ -541,62 +523,51 @@
           buildThisHome = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-this-home" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-this-home" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfHome [ "\${USER:-}" ]}
+                  ${nixBuildCmd} ${buildExpressionOfHome [ "\${USER:-}" ]}
                 ''
               }/bin/nix-run-build-this-home";
           };
           buildAllHomes = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-all-homes" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-all-homes" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers}
+                  ${nixBuildCmd} ${buildExpressionOfHome listOfAllUsers}
                 ''
               }/bin/nix-run-build-all-homes";
-          };
-
-          buildAllPackages = {
-            type = "app";
-            program = "${
-                pkgs.writeShellScriptBin "nix-run-build-all-packages" ''
-                  ${nixOrNom}
-                  set -x
-                  ''${nixBuildCmd} ${buildExpressionOfPackage listOfAllPackages}
-                ''
-              }/bin/nix-run-build-all-packages";
           };
 
           buildZfsIso = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-zfs-iso" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-zfs-iso" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfZfsIso}
+                  ${nixBuildCmd} ${buildExpressionOfZfsIso}
                 ''
               }/bin/nix-run-build-zfs-iso";
           };
           buildNozfsIso = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-nozfs-iso" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-nozfs-iso" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfNozfsIso}
+                  ${nixBuildCmd} ${buildExpressionOfNozfsIso}
                 ''
               }/bin/nix-run-build-nozfs-iso";
           };
           buildAllIsos = {
             type = "app";
             program = "${
-                pkgs.writeShellScriptBin "nix-run-build-all-isos" ''
-                  ${nixOrNom}
+                pkgs.writeScriptBin "nix-run-build-all-isos" ''
+                  #!${pkgs.dash}/bin/dash
                   set -x
-                  ''${nixBuildCmd} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
+                  ${nixBuildCmd} ${buildExpressionOfZfsIso} ${buildExpressionOfNozfsIso}
                 ''
               }/bin/nix-run-build-all-isos";
           };
