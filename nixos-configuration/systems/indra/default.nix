@@ -7,7 +7,10 @@
   boot.blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
   hardware.bluetooth.enable = true;
 
-  environment.systemPackages = [ pkgs.google-cloud-sdk-gce ];
+  environment.systemPackages = with pkgs; [
+    awscli2
+    google-cloud-sdk-gce
+  ];
   custom-options.runsVirtualMachines = true;
 
   fileSystems."/boot" = {
