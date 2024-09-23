@@ -73,9 +73,7 @@
         paranoidFlushScript = "/home/${nixosSystem.systemUser.username}/.local/scripts/other-common-scripts/paranoid-flush.sh";
       in {
         "e" = "${pkgs.vim}/bin/vim";
-        "do-nixos-rebuild" = nixosRebuildCommand;
         "donixos-rebuild" = nixosRebuildCommand;
-        "syncsync" = paranoidFlushScript;
         "sudosync" = paranoidFlushScript;
       };
     };
