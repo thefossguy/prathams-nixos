@@ -45,6 +45,7 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    tor-browser
     alacritty
     authenticator # alt to Google Authenticator on iOS/Android
     brave
