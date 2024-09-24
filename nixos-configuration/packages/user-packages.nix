@@ -2,7 +2,17 @@
 
 let
   tuxPackages = lib.optionals (pkgs.stdenv.isLinux)
-    (with pkgs; [ buildah cargo-valgrind dict imagemagick inotify-tools rpm thunderbird ventoy wol ]);
+    (with pkgs; [
+      buildah
+      cargo-valgrind
+      dict
+      imagemagick
+      inotify-tools
+      rpm
+      #thunderbird
+      ventoy
+      wol
+    ]);
 
   darwinPackages = lib.optionals (pkgs.stdenv.isDarwin) (with pkgs; [
     coreutils-prefixed
