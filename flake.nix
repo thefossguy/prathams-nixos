@@ -55,8 +55,8 @@
         };
       };
 
-      nixpkgs = allNixpkgsChannelInputs.stableSmall.nixpkgs;
-      home-manager = allNixpkgsChannelInputs.stableSmall.home-manager;
+      nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
+      home-manager = allNixpkgsChannelInputs.stable.home-manager;
       mkPkgs = { system, passed-nixpkgs }: import passed-nixpkgs { inherit system; };
 
       mkForEachSupportedSystem = supportedSystems: f:
@@ -404,16 +404,16 @@
         madhav = mkNixosSystem { hostname = "madhav"; };
         matsya = mkNixosSystem {
           hostname = "matsya";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
         };
         sentinel = mkNixosSystem { hostname = "sentinel"; };
         reddish = mkNixosSystem { hostname = "reddish"; };
         raajan = mkNixosSystem { hostname = "raajan"; };
         mahadev = mkNixosSystem {
           hostname = "mahadev";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
         };
         pawandev = mkNixosSystem { hostname = "pawandev"; };
         stuti = mkNixosSystem { hostname = "stuti"; };
@@ -439,8 +439,8 @@
 
         zVirtSys = mkNixosSystem {
           hostname = "zVirtSys";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstableSmall.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstableSmall.home-manager;
+          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
+          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
         };
       };
 
