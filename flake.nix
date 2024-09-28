@@ -267,7 +267,7 @@
         };
       };
 
-      mkNixosSystem = { hostname, passed-nixpkgs ? nixpkgs, passed-home-manager ? home-manager }:
+      mkNixosSystem = { hostname, passed-nixpkgs ? nixpkgs-0unstable, passed-home-manager ? home-manager-0unstable }:
         let
           nixpkgs = passed-nixpkgs;
           home-manager = passed-home-manager;
@@ -391,30 +391,18 @@
       };
 
       nixosConfigurations = {
-        flameboi = mkNixosSystem {
-          hostname = "flameboi";
-          passed-nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
-        };
+        flameboi = mkNixosSystem { hostname = "flameboi"; };
         indra = mkNixosSystem {
           hostname = "indra";
           passed-nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
           passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
         };
         madhav = mkNixosSystem { hostname = "madhav"; };
-        matsya = mkNixosSystem {
-          hostname = "matsya";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
-        };
+        matsya = mkNixosSystem { hostname = "matsya"; };
         sentinel = mkNixosSystem { hostname = "sentinel"; };
         reddish = mkNixosSystem { hostname = "reddish"; };
         raajan = mkNixosSystem { hostname = "raajan"; };
-        mahadev = mkNixosSystem {
-          hostname = "mahadev";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
-        };
+        mahadev = mkNixosSystem { hostname = "mahadev"; };
         pawandev = mkNixosSystem { hostname = "pawandev"; };
         stuti = mkNixosSystem { hostname = "stuti"; };
         chaturvyas = mkNixosSystem { hostname = "chaturvyas"; };
@@ -437,11 +425,7 @@
           enableZfs = true;
         };
 
-        zVirtSys = mkNixosSystem {
-          hostname = "zVirtSys";
-          passed-nixpkgs = allNixpkgsChannelInputs.unstable.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.unstable.home-manager;
-        };
+        zVirtSys = mkNixosSystem { hostname = "zVirtSys"; };
       };
 
       legacyPackages = forEachSupportedSystem ({ pkgs, ... }: {
