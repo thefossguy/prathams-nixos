@@ -175,7 +175,7 @@
           matsya = {
             hostname = "matsya";
             ipv4Address = "10.0.0.109";
-            networkingIface = "";
+            networkingIface = "enx1002b586054e";
             machineType = nixosMachines.misc.machineTypes.server;
             system = linuxSystems.x86_64;
           };
