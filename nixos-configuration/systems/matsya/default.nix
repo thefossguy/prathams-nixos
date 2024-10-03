@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ../../modules/display-server/hyprland.nix
     ../../modules/gpu/intel-xe.nix
     ../../modules/misc-imports/sudo-nopasswd.nix
     ../../modules/qemu/qemu-binfmt.nix
