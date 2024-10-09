@@ -392,11 +392,7 @@
 
       nixosConfigurations = {
         flameboi = mkNixosSystem { hostname = "flameboi"; };
-        indra = mkNixosSystem {
-          hostname = "indra";
-          passed-nixpkgs = allNixpkgsChannelInputs.stable.nixpkgs;
-          passed-home-manager = allNixpkgsChannelInputs.stable.home-manager;
-        };
+        indra = mkNixosSystem { hostname = "indra"; };
         madhav = mkNixosSystem { hostname = "madhav"; };
         matsya = mkNixosSystem { hostname = "matsya"; };
         sentinel = mkNixosSystem { hostname = "sentinel"; };
