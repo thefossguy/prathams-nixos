@@ -6,6 +6,8 @@ let
       buildah
       cargo-valgrind
       dict
+      firefox-beta
+      firefox-esr
       imagemagick
       inotify-tools
       rpm
