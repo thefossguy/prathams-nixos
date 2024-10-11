@@ -6,7 +6,7 @@ let
       buildah
       cargo-valgrind
       dict
-      firefox-beta
+      #firefox-beta
       firefox-esr
       imagemagick
       inotify-tools
