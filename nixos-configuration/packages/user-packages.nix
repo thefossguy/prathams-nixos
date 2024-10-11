@@ -11,7 +11,7 @@ let
       imagemagick
       inotify-tools
       rpm
-      #thunderbird
+      thunderbird
       ventoy
       wol
     ]);
