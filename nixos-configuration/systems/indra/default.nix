@@ -8,7 +8,6 @@
   hardware.bluetooth.enable = true;
 
   environment.systemPackages = with pkgs; [
-    awscli2
     google-cloud-sdk-gce
   ];
   custom-options.runsVirtualMachines = true;
