@@ -3,6 +3,7 @@
 {
   imports = [
     ../modules/services/custom-home-manager-upgrade.nix
+    ../modules/services/get-redhat-csaf-vex.nix
     ./common-home.nix
   ];
 
