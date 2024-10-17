@@ -37,7 +37,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
           pushd "''${VEX_DIR}"
           if [[ ! -f "''${filename}" ]]; then
               wget "''${url_without_filename}/''${filename}"
-              tar -xf --overwrite "''${filename}"
+              tar --overwrite -xf "''${filename}"
               rm -vf csaf_vex_*.tar.zst
           fi
           popd
