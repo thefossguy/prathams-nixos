@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 lib.mkIf (config.custom-options.isNixCacheMachine or false) {
   services.nix-serve = {
@@ -6,6 +6,7 @@ lib.mkIf (config.custom-options.isNixCacheMachine or false) {
     openFirewall = true;
     port = 5000;
     secretKeyFile = "/my-nix-binary-cache/cache-priv-key.pem";
+    package = pkgs.nix-serve-ng;
   };
 
   services.nginx = {
