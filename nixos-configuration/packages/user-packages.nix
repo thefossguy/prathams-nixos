@@ -92,6 +92,7 @@ in {
 
     # utilities specific to Nix
     home-manager
+    nix-diff # a better `nvd`
     nix-output-monitor
     nix-prefetch
     nix-prefetch-git
