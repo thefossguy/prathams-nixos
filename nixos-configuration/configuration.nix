@@ -56,6 +56,7 @@
       experimental-features = [ "nix-command" "flakes" ];
       keep-going = false;
       log-lines = 9999;
+      max-jobs = 1;
       sandbox = true;
       show-trace = true;
       trusted-users = [ "root" "${nixosSystem.systemUser.username}" ];
