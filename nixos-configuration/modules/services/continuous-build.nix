@@ -4,7 +4,6 @@
   nix.settings = {
     keep-derivations = true;
     keep-outputs = true;
-    max-jobs = 1;
   };
 
   systemd = {
