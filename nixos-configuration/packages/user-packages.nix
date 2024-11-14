@@ -47,7 +47,7 @@ in {
     cargo-profiler # profile Rust binaries
     cargo-public-api # detect breaking API changes and semver violations
     cargo-show-asm # display ASM, LLVM-IR, MIR and WASM for the Rust src
-    #cargo-sweep # cleanup unused build files
+    cargo-sweep # cleanup unused build files
     cargo-udeps # find unused dependencies
     cargo-update # update installed binaries
     cargo-vet # ensure that the third-party dependencies are audited by a trusted source
