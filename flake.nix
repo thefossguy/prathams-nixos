@@ -190,7 +190,7 @@
           reddish = {
             hostname = "reddish";
             ipv4Address = "10.0.0.19";
-            networkingIface = "end0";
+            networkingIface = "enxe45f015fa482";
             system = linuxSystems.aarch64;
           };
 
