@@ -60,7 +60,5 @@ lib.mkIf pkgs.stdenv.isDarwin {
 
   programs = {
     alacritty.enable = true;
-    foot.enable = true;
-    foot.server.enable = lib.mkForce false;
   };
 }
