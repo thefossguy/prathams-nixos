@@ -1,6 +1,8 @@
 *.iso
 *.iso.sha*
 *.log
+*template.nix*
 .direnv/*
 flake.lock.old
 result*
+scripts/nix-ci/__pycache__/
