@@ -57,4 +57,8 @@ lib.mkIf pkgs.stdenv.isDarwin {
       "^Uf703" = "moveWordRight:"; # Ctrl-<Right>
     };
   };
+
+  programs = {
+    git.enable = true;
+  };
 }
