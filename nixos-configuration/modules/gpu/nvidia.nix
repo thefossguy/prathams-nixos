@@ -1,25 +1,19 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-{
-  boot.blacklistedKernelModules = lib.mkForce [ "nvidia" ];
+lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
+  boot.blacklistedKernelModules = lib.mkForce [ "nouveau" ];
   services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
-
-    # setting this to 'true' may cause sleep/suspend to fail
-    powerManagement.enable = false; # TODO: check this lol
-    powerManagement.finegrained = false; # turns off GPU when not in use
-
-    # the other OSS driver (**not "nouveau"**)
-    open = true; # TODO: try this out sometime
-
     nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidia_x11_vulkan_beta_open;
 
-    # selects the latest LTS kernel
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # NixOS now defaults to using the open source kernel driver
+    # https://github.com/NixOS/nixpkgs/pull/337289
+    #open = true;
 
-    # hoping it doesn't ever come to this but just in case I am masochist enough
+    # Hoping it doesn't ever come to this but just in case I am masochist enough
     # to buy a laptop with an Nvidia dGPU, populate these from the output of
     # 'sudo lshw -c display'
     #prime = {

@@ -1,36 +1,8 @@
-{ config, ... }:
+{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-let zpoolName = "${config.networking.hostName}-zpool";
-in {
-  custom-options.isNixCacheMachine = true;
-  imports = [ ../../modules/services/continuous-build.nix ../../modules/services/git-sync.nix ];
+{
+  imports = [ ./hardware-configuration.nix ];
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/3A4D-C659";
-    fsType = "vfat";
-  };
-
-  fileSystems."/" = {
-    device = "${zpoolName}/root";
-    fsType = "zfs";
-    options = [ "zfsutil" ];
-  };
-
-  fileSystems."/home" = {
-    device = "${zpoolName}/home";
-    fsType = "zfs";
-    options = [ "zfsutil" ];
-  };
-
-  fileSystems."/nas" = {
-    device = "${zpoolName}/nas";
-    fsType = "zfs";
-    options = [ "zfsutil" ];
-  };
-
-  fileSystems."/var" = {
-    device = "${zpoolName}/var";
-    fsType = "zfs";
-    options = [ "zfsutil" ];
-  };
+  customOptions.localCaching.servesNixDerivations = true;
+  customOptions.localCaching.buildsNixDerivations = true;
 }
