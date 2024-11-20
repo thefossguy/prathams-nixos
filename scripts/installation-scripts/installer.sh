@@ -53,7 +53,7 @@ fi
 # shellcheck disable=SC2086
 nix ${nix_flake_flags} build --dry-run --verbose --trace-verbose --print-build-logs --show-trace .#nixosConfigurations."${HOSTNAME}".config.system.build.toplevel
 # shellcheck disable=SC2086
-if grep 'fsType = "zfs"' "nixos-configuration/systems/${HOSTNAME}/default.nix"; then
+if [[ "$(nix eval .#nixosConfigurations."${HOSTNAME}".config.boot.supportedFilesystems.zfs)" == 'true' ]]; then
     ZFS_IN_USE=1
     zpoolName="${HOSTNAME}-zpool"
     export zpoolName
