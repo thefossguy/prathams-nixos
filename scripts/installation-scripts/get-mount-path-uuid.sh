@@ -34,7 +34,7 @@ else
     exit 1
 fi
 
-TARGET_FILE="nixos-configuration/systems/${HOSTNAME}/default.nix"
+TARGET_FILE="nixos-configuration/systems/${HOSTNAME}/hardware-configuration.nix"
 if [[ -f "${TARGET_FILE}" ]]; then
     grep -A 1 "${MOUNT_PATH}" "${TARGET_FILE}" | tail -n 1 | \
       grep 'device = "/dev/disk/by-uuid/' | \
@@ -46,4 +46,3 @@ else
     echo 'ERROR: No file found for $HOSTNAME'
     exit 1
 fi
-
