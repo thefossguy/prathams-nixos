@@ -1,13 +1,13 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 let
   ubootPackages = let unstablePkgs = pkgsChannels.unstable; in {
-    sentinel   = unstablePkgs.ubootRaspberryPiGeneric_64bit;
-    reddish    = unstablePkgs.ubootRaspberryPiGeneric_64bit;
+    sentinel   = pkgs.ubootRaspberryPiGeneric_64bit;
+    reddish    = pkgs.ubootRaspberryPiGeneric_64bit;
     mahadev    = unstablePkgs.ubootRock5ModelB;
     pawandev   = unstablePkgs.ubootOrangePi5;
     stuti      = unstablePkgs.ubootNanoPCT6;
     chaturvyas = unstablePkgs.ubootCM3588NAS;
-    raajan     = unstablePkgs.ubootRaspberryPiGeneric_64bit;
+    raajan     = pkgs.ubootRaspberryPiGeneric_64bit;
     vaaman     = unstablePkgs.ubootVisionFive2;
     vaayu      = unstablePkgs.ubootVisionFive2;
 
