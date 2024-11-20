@@ -15,6 +15,11 @@
     };
 
     socSupport = {
+      enabled = lib.mkOption {
+        description = "An internal-only option.";
+        default = lib.mkForce ((config.customOptions.socSupport.armSoc != "unset") || (config.customOptions.socSupport.riscvSoc != "unset"));
+        type = lib.types.bool;
+      };
       armSoc = lib.mkOption {
         description = "Enable support for some Aarch64 SoCs.";
         default = "unset";

@@ -39,8 +39,7 @@ let
   '' else "";
 in
 
-# Do not build this for the ISO
-lib.mkIf ((config.isoImage.isoName or "") != "") {
+lib.mkIf config.customOptions.socSupport.enabled {
   boot = {
     kernelParams = [
       "custom_options.uboot_version=${selectedUbootPackage.version}"
