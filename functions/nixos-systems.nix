@@ -164,6 +164,9 @@ in {
         primaryNetIface = "enxeeea8718dda5";
         system = linuxSystems.aarch64;
       };
+      commonConfig = {
+        gatewayAddr = "192.168.64.1";
+      };
     };
 
     # Apple Mac Mini host (32GB; M4)
