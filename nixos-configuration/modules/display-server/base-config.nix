@@ -78,7 +78,6 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     fractal # matrix client
     mediainfo-gui
     metadata-cleaner # exif removal
-    mpv
     #neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
@@ -88,7 +87,6 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     ghostwriter # markdown editor
     kalk # calculator
     kdeconnect-kde
-    kdenlive
     okular # the universal document viewer (good for previews)
   ]) ++ (if waylandEnabled then (with pkgs; [
     # Wayland-exclusive packages goes here
@@ -97,7 +95,12 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     wl-clipboard
   ]) else (with pkgs; [
     # X11-exclusive packages goes here
-  ])) ++ (if (pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) then [ pkgs.tor-browser] else []);
+  ])) ++ (if pkgs.stdenv.isx86_64 then (with pkgs; [
+    kdePackages.kdenlive
+    mpv
+    tor-browser
+  ]) else []);
+
 
   fonts = {
     fontDir.enable = true;

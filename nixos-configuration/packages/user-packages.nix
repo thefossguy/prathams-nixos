@@ -94,7 +94,6 @@ let
     du-dust
     dua
     fd
-    ffmpeg
     file
     fzf
     hyperfine
@@ -117,6 +116,8 @@ let
     nix-prefetch
     nix-prefetch-git
     nix-prefetch-github
+  ]) ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) (with pkgs; [
+    ffmpeg
   ]);
 in {
   imports = [ ./overlays.nix ];
