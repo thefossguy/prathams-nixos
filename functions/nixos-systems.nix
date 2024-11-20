@@ -154,7 +154,17 @@ in {
       kernelConfig.useLongtermKernel = true;
     };
 
-    # Apple Mac Mini (32GB; M4)
+    # ARM64 VM (16G; 8x M4) guest on `bheem`
+    bhim = {
+      coreConfig = {
+        hostname = "bhim";
+        ipv4Address = "192.168.64.3";
+        primaryNetIface = "enxeeea8718dda5";
+        system = linuxSystems.aarch64;
+      };
+    };
+
+    # Apple Mac Mini host (32GB; M4)
     bheem = {
       coreConfig = {
         hostname = "bheem";
