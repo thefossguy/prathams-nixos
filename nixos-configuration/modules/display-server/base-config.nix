@@ -79,7 +79,7 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     mediainfo-gui
     metadata-cleaner # exif removal
     mpv
-    neovide # haz nice neovim animations
+    #neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
     tor-browser
