@@ -160,12 +160,9 @@ in {
     bhim = {
       coreConfig = {
         hostname = "bhim";
-        ipv4Address = "192.168.64.3";
-        primaryNetIface = "enxeeea8718dda5";
+        ipv4Address = "10.0.0.103";
+        primaryNetIface = "enxcacf915df82c";
         system = linuxSystems.aarch64;
-      };
-      commonConfig = {
-        gatewayAddr = "192.168.64.1";
       };
     };
 
