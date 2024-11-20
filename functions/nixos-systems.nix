@@ -34,6 +34,8 @@ in {
       stuti      = "07ca9dd4";
       chaturvyas = "6e52044b";
       raajan     = "337088b4";
+      bhim       = "03c38aa0";
+      bheem      = "6cca5083";
       vaaman     = "3c8077f9";
       vaayu      = "d81cd923";
     };
