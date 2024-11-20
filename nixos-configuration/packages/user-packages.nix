@@ -55,6 +55,7 @@ let
 
   nixosPackagesCheck = (nixosSystemConfig.coreConfig.isNixOS);
   nixosPackagesMinimal = lib.optionals nixosPackagesCheck (with pkgs; [
+    dconf
     wol
   ]);
   nixosPackages = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (with pkgs; [
@@ -139,7 +140,6 @@ in {
     bottom.enable = !useMinimalConfig;
     broot.enable = !useMinimalConfig;
     btop.enable = true;
-    dconf.enable = true;
     ripgrep.enable = true;
     tealdeer.enable = !useMinimalConfig;
     # I randomly select a server to "download" a big [set] of video file(s)
