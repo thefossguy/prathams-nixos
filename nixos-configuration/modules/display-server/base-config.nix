@@ -82,7 +82,6 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     #neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
-    tor-browser
     ungoogled-chromium
   ]) ++ (with pkgs.kdePackages; [
     filelight # visualize disk space
@@ -98,7 +97,7 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     wl-clipboard
   ]) else (with pkgs; [
     # X11-exclusive packages goes here
-  ]));
+  ])) ++ (if (pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) then [ pkgs.tor-browser] else []);
 
   fonts = {
     fontDir.enable = true;
