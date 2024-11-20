@@ -9,7 +9,6 @@
   customOptions = {
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
-    displayServer.guiSession = "hyprland";
     enablePasswordlessSudo = true;
     kernelDevelopment.enable = true;
   };
