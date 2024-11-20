@@ -139,6 +139,7 @@ in {
     bottom.enable = !useMinimalConfig;
     broot.enable = !useMinimalConfig;
     btop.enable = true;
+    dconf.enable = true;
     ripgrep.enable = true;
     tealdeer.enable = !useMinimalConfig;
     # I randomly select a server to "download" a big [set] of video file(s)
