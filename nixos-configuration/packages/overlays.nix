@@ -34,21 +34,11 @@ in {
 
     # Custom (new) packages go here.
     (final: prev: {
-      ubootRaspberryPiGeneric_64bit = let
-        version = "v2025.01-rc2";
-        in unstablePkgs.buildUBoot {
-          defconfig = "rpi_arm64_defconfig";
-          extraMeta.platforms = [ "aarch64-linux" ];
-          filesToInstall = [ "u-boot.bin" ];
-
-          inherit version;
-          src = prev.fetchFromGitHub {
-            owner = "u-boot";
-            repo = "u-boot";
-            rev = version;
-            hash = "sha256-ZdrPuOsWSvSZXP0dyJ6ROo52OJyaHpsISb2xcud0iEQ=";
-          };
-        };
+      ubootRaspberryPiGeneric_64bit = unstablePkgs.buildUBoot {
+        defconfig = "rpi_arm64_defconfig";
+        extraMeta.platforms = [ "aarch64-linux" ];
+        filesToInstall = [ "u-boot.bin" ];
+      };
 
       rpiUbootAndFirmware = prev.stdenvNoCC.mkDerivation {
         name = "rpiUbootAndFirmware";
