@@ -53,7 +53,7 @@ in {
     adb.enable = !useMinimalConfig;
     bandwhich.enable = !useMinimalConfig;
     command-not-found.enable = !useMinimalConfig;
-    dconf.enable = (config.customOptions.displayServer.guiSession != "unset");
+    dconf.enable = true;
     git.enable = true; # Always enable git because it's used to manage the NixOS Configuration
     gnupg.agent.enable = !useMinimalConfig;
     htop.enable = true;
