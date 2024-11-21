@@ -8,7 +8,6 @@ in {
     ../qemu/qemu-guest.nix
   ];
 
-  boot.blacklistedKernelModules = [ "nvidia" "nouveau" ]; # Disable modesetting on Nvidia.
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
