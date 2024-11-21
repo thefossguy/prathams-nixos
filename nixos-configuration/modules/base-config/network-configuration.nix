@@ -20,6 +20,6 @@ in {
     networkmanager.enable = true;
     nftables.enable = true;
     useDHCP = lib.mkDefault true;
-    wireless.enable = lib.mkForce false; # this enabled 'wpa_supplicant', use networkmanager instead
+    wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
   };
 }

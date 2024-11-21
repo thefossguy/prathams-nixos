@@ -9,8 +9,6 @@ in {
   ];
 
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
-  networking.networkmanager.enable = true;
-  networking.wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
   users.users."${nixosSystemConfig.coreConfig.systemUser.username}".initialHashedPassword = lib.mkForce nixosSystemConfig.coreConfig.systemUser.hashedPassword;
 
   zramSwap = {
