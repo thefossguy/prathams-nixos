@@ -4,7 +4,6 @@ let
   waylandEnabled = config.customOptions.displayServer.waylandEnabled;
 in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   hardware.graphics.enable = true;
-  security.polkit.enable = true;
   security.rtkit.enable = true; # For pulseaudio
   xdg.portal.enable = true;
 
