@@ -1,13 +1,10 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 lib.mkIf nixosSystemConfig.kernelConfig.useLongtermKernel {
-  boot.zfs = {
-    # Do not set `boot.zfs.enabled` because the default is not `true` (direct
-    # assigned boolean) but it **evaluates to `true`**.
-    allowHibernation = lib.mkForce false;
-    forceImportAll = false;
-    forceImportRoot = false;
-  };
+  # Do not set `boot.zfs.enabled` because the default is not `true` (direct
+  # assigned boolean) but it **evaluates to `true`**. Rather, toggling ZFS is
+  # done using the `boot.initrd.supportedFilesystems.zfs` and
+  # `boot.supportedFilesystems.zfs`.
 
   security.pam.services.login.zfs = true;
   security.pam.zfs.enable = true;
