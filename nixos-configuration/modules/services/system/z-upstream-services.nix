@@ -46,12 +46,12 @@ in {
 
       settings = {
         LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
-        MaxAuthTries = 10;
+        MaxAuthTries = lib.mkForce 10;
         PasswordAuthentication = lib.mkForce false;
         PermitEmptyPasswords = lib.mkForce false;
         PermitRootLogin = lib.mkForce "prohibit-password";
-        Protocol = 2;
-        X11Forwarding = false;
+        Protocol = lib.mkForce 2;
+        X11Forwarding = lib.mkForce false;
       };
     };
   };
