@@ -15,6 +15,7 @@
 
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableRedistributableFirmware = true;
+  hardware.nvidia.modesetting.enable = lib.mkDefault false;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
   system.stateVersion = lib.versions.majorMinor lib.version;
