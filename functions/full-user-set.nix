@@ -7,6 +7,13 @@
     isRealUser = true;
   };
 
+  # The `ppatel` user is on my work MBP which is an `aarch64-darwin` machine.
+  # So no attributes other than `username` and `isRealUser` need to be defined.
+  ppatel = {
+    username = "ppatel";
+    isRealUser = true;
+  };
+
   # User for the NixOS ISO
   iso = {
     username = "nixos";
