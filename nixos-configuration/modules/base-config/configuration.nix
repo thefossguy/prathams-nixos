@@ -15,10 +15,13 @@
 
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableRedistributableFirmware = true;
-  hardware.nvidia.modesetting.enable = lib.mkDefault false;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
   system.stateVersion = lib.versions.majorMinor lib.version;
+
+  # Global defaults that _would_ be overridden from local modules go here.
+  boot.zfs.forceImportRoot = lib.mkDefault false;
+  hardware.nvidia.modesetting.enable = lib.mkDefault false;
 
   systemd = {
     # Given that our systems are headless, emergency mode is useless.
