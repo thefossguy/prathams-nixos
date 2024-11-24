@@ -136,7 +136,7 @@ in {
     # with `wget` or `wget2`, `aria2` has, in my experience, higher chance of
     # completing a download faster than `wget` or `wget2`.
     aria2.enable = true;
-    bat.enable = !useMinimalConfig;
+    bat.enable = true;
     bottom.enable = !useMinimalConfig;
     broot.enable = !useMinimalConfig;
     btop.enable = true;
