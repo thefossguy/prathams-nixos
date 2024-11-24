@@ -13,5 +13,4 @@ lib.mkIf nixosSystemConfig.kernelConfig.useLongtermKernel {
   # we do this manually, because I have OCD and always divert from "one size fits all"
   services.zfs.autoScrub.enable = lib.mkForce false;
   services.zfs.autoSnapshot.enable = lib.mkForce false;
-  services.zfs.trim.enable = lib.mkForce false;
 }

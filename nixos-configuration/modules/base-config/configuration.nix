@@ -24,6 +24,7 @@
   boot.zfs.forceImportAll = lib.mkDefault false;
   boot.zfs.forceImportRoot = lib.mkDefault false;
   hardware.nvidia.modesetting.enable = lib.mkDefault false;
+  services.zfs.trim.enable = lib.mkForce false;
 
   systemd = {
     # Given that our systems are headless, emergency mode is useless.
