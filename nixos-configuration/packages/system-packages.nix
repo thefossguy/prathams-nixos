@@ -20,6 +20,7 @@ in {
     #iputils
     #pinentry # pkg summary: GnuPG’s interface to passphrase input
     #procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
+    python3
     #rsync
     tree
     #util-linux # provides blkid, losetup, lsblk, rfkill, fallocate, dmesg, etc
