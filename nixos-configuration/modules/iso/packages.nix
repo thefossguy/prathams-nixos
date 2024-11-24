@@ -36,6 +36,7 @@ in [ getGitRepos ] ++ (with pkgs; [
   dash
   hdparm
   parted
+  python3
 
   # getting, modifying and running the installer
   git
