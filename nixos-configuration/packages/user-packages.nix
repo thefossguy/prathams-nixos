@@ -95,7 +95,6 @@ let
     du-dust
     dua
     fd
-    file
     fzf
     hyperfine
     iperf # this is `iperf3`
@@ -108,7 +107,6 @@ let
     python3Minimal
     sd
     tre-command
-    tree
     unzip
     wget2
     zip

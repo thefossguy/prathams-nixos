@@ -9,6 +9,7 @@ in {
     #bzip2
     #curl
     dash
+    file
     #findutils
     #gawk
     #gnugrep
@@ -20,6 +21,7 @@ in {
     #pinentry # pkg summary: GnuPG’s interface to passphrase input
     #procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
     #rsync
+    tree
     #util-linux # provides blkid, losetup, lsblk, rfkill, fallocate, dmesg, etc
     #zstd
 
