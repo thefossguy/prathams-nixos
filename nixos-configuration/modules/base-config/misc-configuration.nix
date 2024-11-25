@@ -4,6 +4,7 @@ let
   userLocale = "en_IN";
   envLocale = "${userLocale}.UTF-8";
   useMinimalConfig = config.customOptions.useMinimalConfig;
+  isIso = ((config.isoImage.isoName or "") == "");
 in {
   time = {
     timeZone = "Asia/Kolkata";
@@ -80,15 +81,15 @@ in {
     };
   };
 
-  # Enable documentation only on a Desktop/Laptop
+  # Enable documentation only on a Desktop/Laptop and NixOS ISOs
   documentation = {
-    enable = !useMinimalConfig;
-    dev.enable = !useMinimalConfig;
-    doc.enable = !useMinimalConfig;
-    info.enable = !useMinimalConfig;
+    enable = !useMinimalConfig || isIso;
+    dev.enable = !useMinimalConfig || isIso;
+    doc.enable = !useMinimalConfig || isIso;
+    info.enable = !useMinimalConfig || isIso;
     man = {
-      enable = !useMinimalConfig;
-      generateCaches = !useMinimalConfig;
+      enable = !useMinimalConfig || isIso;
+      generateCaches = !useMinimalConfig || isIso;
     };
   };
 }
