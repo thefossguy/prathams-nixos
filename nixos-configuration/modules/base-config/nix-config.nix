@@ -3,7 +3,7 @@
 let
   fsyncStorePaths = if (lib.versionAtLeast config.nix.package.version "2.25") then "fsync-store-paths = true" else "";
   trustedNixUsers = [ "root" nixosSystemConfig.coreConfig.systemUser.username ];
-  isIso = ((config.isoImage.isoName or "") == "");
+  isIso = ((config.isoImage.isoName or "") != "");
 in {
   nix = {
     checkConfig = true;
