@@ -4,7 +4,7 @@ let
   userLocale = "en_IN";
   envLocale = "${userLocale}.UTF-8";
   useMinimalConfig = config.customOptions.useMinimalConfig;
-  isIso = ((config.isoImage.isoName or "") != "");
+  isIso = config.customOptions.isIso;
 in {
   time = {
     timeZone = "Asia/Kolkata";
