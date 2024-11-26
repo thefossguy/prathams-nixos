@@ -21,7 +21,7 @@ in {
   isoImage.isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${config.boot.kernelPackages.kernel.version}-${isoZfsString}${pkgs.stdenv.hostPlatform.system}.iso";
 
   isoImage = {
-    #squashfsCompression = "zstd -Xcompression-level 22"; # Highest compression ratio.
-    squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
+    squashfsCompression = "zstd -Xcompression-level 22"; # Highest compression ratio.
+    #squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
   };
 }
