@@ -3,6 +3,7 @@
 let
   fsyncStorePaths = if (lib.versionAtLeast config.nix.package.version "2.25") then "fsync-store-paths = true" else "";
   trustedNixUsers = [ "root" nixosSystemConfig.coreConfig.systemUser.username ];
+  isIso = ((config.isoImage.isoName or "") == "");
 in {
   nix = {
     checkConfig = true;
@@ -13,7 +14,10 @@ in {
     settings = {
       allowed-users = lib.mkForce trustedNixUsers;
       auto-optimise-store = true;
-      eval-cache = false;
+      # Enabling `eval-cache` on ISOs helps a bit with dry building the NixOS
+      # configuration that occurs before filesystem partitioning and formatting.
+      # But disable on normal NixOS systems. :)
+      eval-cache = isIso;
       experimental-features = [ "nix-command" "flakes" ];
       keep-going = false;
       log-lines = 9999;
