@@ -14,6 +14,12 @@
       default = config.customOptions.systemType == "server";
     };
 
+    isIso = lib.mkOption {
+      description = "An internal check to toggle options based on if a given NixOS system is an ISO.";
+      type = lib.types.bool;
+      default = ((config.isoImage.isoName or "") != "");
+    };
+
     socSupport = {
       enabled = lib.mkOption {
         description = "An internal-only option.";
