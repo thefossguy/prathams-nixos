@@ -319,9 +319,11 @@ def mount_resolv_conf() -> None:
 
 def pseudo_chroot_setup() -> None:
     nix_eval_command = [ 'nix', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
-    nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE)
-    host_user_username = nix_eval_process.stdout[1:-1]
-    shutil.copy('scripts/installer/.profile', '{}/home/{}/.profile'.format(installer_variables['mount_path'], host_user_username))
+    nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, text=True)
+    host_user_username = nix_eval_process.stdout[1:-2]
+    profile_file_src = 'scripts/installer/.profile'
+    profile_file_dst = '{}/home/{}/.profile'.format(installer_variables['mount_path'], host_user_username)
+    shutil.copy(profile_file_src, profile_file_dst)
     return
 
 def installer_post() -> None:
