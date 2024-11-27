@@ -288,8 +288,10 @@ def partition_target_disk() -> None:
     hostname_hardware_nix_file.close()
 
     if 'fsType = "zfs"' in hostname_hardware_nix:
+        installer_variables['zfs_in_use'] = True
         partition_target_disk_zfs()
     else:
+        installer_variables['zfs_in_use'] = False
         partition_target_disk_nozfs()
     return
 
@@ -317,9 +319,13 @@ def mount_resolv_conf() -> None:
 
 def user_chroot_setup() -> None:
     mount_resolv_conf()
+    scripts_dir = 'scripts/installer/'
 
     chroot_script_file = 'chroot-user-setup.sh'
-    chroot_script_src = 'scripts/installer/' + chroot_script_file
+    chroot_script_src = scripts_dir + chroot_script_file
+
+    profile_file = '.profile'
+    profile_file_src = scripts_dir + profile_file
 
     passwd_filepath = installer_variables['mount_path'] + '/etc/passwd'
     passwd_file = open(passwd_filepath, 'r')
@@ -329,22 +335,15 @@ def user_chroot_setup() -> None:
     for line in passwd_contents:
         if '/home/' in line:
             realuser_username = line.split(':')[0]
-            chroot_script_dst = '/home/' + realuser_username + '/' + chroot_script_file
+            user_home_path = '/home/' + realuser_username
+
+            chroot_script_dst = user_home_path + '/' + chroot_script_file
             chroot_script_real_dst = installer_variables['mount_path'] + chroot_script_dst
             shutil.copy(chroot_script_src, chroot_script_real_dst)
 
-            nix_chroot_command = [
-                'nixos-enter',
-                '--root',
-                installer_variables['mount_path'],
-                '-c',
-                '"su --login {} --command \'bash {}\'"'.format(realuser_username, chroot_script_dst),
-            ]
-            nix_chroot_process = subprocess.run(nix_chroot_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if nix_chroot_process.returncode != 0:
-                errorPrint('Could not perform the chroot setup for user `{}`.'.format(realuser_username))
-                sys.exit(1)
-            subprocess.run(['rm', chroot_script_real_dst])
+            profile_file_dst = user_home_path + '/' + profile_file
+            profile_file_real_dst = installer_variables['mount_path'] + profile_file_dst
+            shutil.copy(profile_file_src, profile_file_real_dst)
 
             if installer_variables['zfs_in_use']:
                 zfs_setup_command = [
