@@ -302,6 +302,7 @@ def installer_pre_setup() -> None:
     return
 
 def installer_run() -> None:
+    debugPrint("Installing NixOS for system `{}`.".format(installer_variables['hostname']))
     nixos_install_command = [ 'nixos-install', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
     nixos_install_process = subprocess.run(nixos_install_command, stderr=subprocess.STDOUT, stdout=sys.stdout)
     if nixos_install_process.returncode != 0:
@@ -336,6 +337,7 @@ def user_chroot_setup() -> None:
         if '/home/' in line:
             realuser_username = line.split(':')[0]
             user_home_path = '/home/' + realuser_username
+            debugPrint("Performing pseudo-chroot setup for user `{}`.".format(realuser_username))
 
             chroot_script_dst = user_home_path + '/' + chroot_script_file
             chroot_script_real_dst = installer_variables['mount_path'] + chroot_script_dst
@@ -359,7 +361,7 @@ def user_chroot_setup() -> None:
 
 def installer_post() -> None:
     user_chroot_setup()
-    subprocess.run(['umount', '-R', installer_variables['mount_path']])
+    subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if installer_variables['zfs_in_use']:
         subprocess.run(['zpool', 'export', installer_variables['zpool_name']])
     return
