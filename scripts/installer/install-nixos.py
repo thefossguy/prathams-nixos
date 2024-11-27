@@ -22,12 +22,12 @@ else:
     nixExperimentalFlags = nixExperimentalFlagsUnpopulated
 
 nixBuildFlags = [
-    "--cores", "1",
-    "--max-jobs", "1",
-    "--print-build-logs",
-    "--show-trace",
-    "--trace-verbose",
-    "--verbose",
+    '--cores', '1',
+    '--max-jobs', '1',
+    '--print-build-logs',
+    '--show-trace',
+    '--trace-verbose',
+    '--verbose',
 ]
 
 installer_variables = {}
@@ -48,12 +48,12 @@ def errorPrint(formatted_string: str) -> None:
 def update_flake_lockfile() -> None:
     flag_file = 'initial-lockfile-update-complete.log'
     if not pathlib.Path(flag_file).exists():
-        debugPrint("Updating the `flake.lock` file. This may take a while.")
-        nix_flake_update_command = [ "nix", ] + nixExperimentalFlags + [ "flake", "update", ]
+        debugPrint('Updating the `flake.lock` file. This may take a while.')
+        nix_flake_update_command = [ 'nix', ] + nixExperimentalFlags + [ 'flake', 'update', ]
         nix_flake_update_process = subprocess.run(nix_flake_update_command, stderr=subprocess.PIPE)
         if nix_flake_update_process.returncode != 0:
             errorPrint('The `nix flake update` command failed with the following error.')
-            print("```\n{}\n```".format(nix_flake_update_process.stderr))
+            print('```\n{}\n```'.format(nix_flake_update_process.stderr))
             sys.exit(1)
 
         flag_file_file = open(flag_file, 'w')
@@ -67,16 +67,16 @@ def fetch_git_repo_changes() -> None:
 
 def dry_build_nixos_configuration() -> None:
     hostname = installer_variables['hostname']
-    nix_dry_build_command = [ "nix", ] + nixExperimentalFlags + [ "build", ] + nixBuildFlags + [
-        "--dry-run",
-        ".#nixosConfigurations." + hostname + ".config.system.build.toplevel"
+    nix_dry_build_command = [ 'nix', ] + nixExperimentalFlags + [ 'build', ] + nixBuildFlags + [
+        '--dry-run',
+        '.#nixosConfigurations.' + hostname + '.config.system.build.toplevel'
     ]
-    debugPrint("Performing a dry build of `{}`. This may take a while.".format(hostname))
+    debugPrint('Performing a dry build of `{}`. This may take a while.'.format(hostname))
     nix_dry_build_process = subprocess.run(nix_dry_build_command, stderr=subprocess.PIPE)
 
     if nix_dry_build_process.returncode != 0:
         errorPrint('The dry-build of `{hostname}` failed.')
-        print("```\n{}\n```".format(nix_dry_build_process.stderr))
+        print('```\n{}\n```'.format(nix_dry_build_process.stderr))
         sys.exit(1)
     return
 
@@ -146,7 +146,7 @@ def generate_partition_sizes() -> None:
 
 def get_partition_uuid(partition_mount_path) -> None:
     hostname_hardware_nix_filepath = 'nixos-configuration/systems/' + installer_variables['hostname'] + '/hardware-configuration.nix'
-    match_pattern = 'fileSystems."/' + partition_mount_path + '" = {'
+    match_pattern = 'fileSystems.'/' + partition_mount_path + '' = {'
     with open(hostname_hardware_nix_filepath, 'r') as hostname_hardware_nix_file:
         line_num = 0
         matched_line_num = 0
@@ -154,7 +154,7 @@ def get_partition_uuid(partition_mount_path) -> None:
             line_num += 1
             if matched_line_num == line_num:
                 device_value = line.split()[2]
-                unquoted_device_value = device_value.split('"')[1]
+                unquoted_device_value = device_value.split(''')[1]
                 partition_uuid = unquoted_device_value.split('/')[4]
                 return partition_uuid
 
@@ -187,10 +187,10 @@ def partition_target_disk_nozfs() -> None:
     home_part_dev = target_disk + partition_suffix + '3'
     varl_part_dev = target_disk + partition_suffix + '4'
 
-    boot_part_uuid = get_partition_uuid("boot").replace('-','')
-    root_part_uuid = get_partition_uuid("")
-    home_part_uuid = get_partition_uuid("home")
-    varl_part_uuid = get_partition_uuid("var")
+    boot_part_uuid = get_partition_uuid('boot').replace('-','')
+    root_part_uuid = get_partition_uuid('')
+    home_part_uuid = get_partition_uuid('home')
+    varl_part_uuid = get_partition_uuid('var')
 
     parted_command = [ 'parted', '--script', '--fix', target_disk,
         'mklabel', 'gpt',
@@ -217,10 +217,10 @@ def partition_target_disk_nozfs() -> None:
             errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, process.stderr))
             sys.exit(1)
 
-    mount_root_command = [ 'mount', '-o', 'async,lazytime,relatime',            root_part_dev, mount_path + "/" ]
-    mount_boot_command = [ 'mount', '-o', 'umask=077',               '--mkdir', boot_part_dev, mount_path + "/boot" ]
-    mount_home_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', home_part_dev, mount_path + "/home" ]
-    mount_varl_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', varl_part_dev, mount_path + "/var" ]
+    mount_root_command = [ 'mount', '-o', 'async,lazytime,relatime',            root_part_dev, mount_path + '/' ]
+    mount_boot_command = [ 'mount', '-o', 'umask=077',               '--mkdir', boot_part_dev, mount_path + '/boot' ]
+    mount_home_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', home_part_dev, mount_path + '/home' ]
+    mount_varl_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', varl_part_dev, mount_path + '/var' ]
     mount_commands = [ mount_root_command, mount_boot_command, mount_home_command, mount_varl_command ]
     for mount_command in mount_commands:
         debugPrint('{}'.format(mount_command))
@@ -237,7 +237,7 @@ def partition_target_disk_zfs() -> None:
     target_disk = installer_variables['target_disk']
     boot_part_sizes = installer_variables['boot_part_sizes']
     boot_part_dev = installer_variables['boot_part_dev']
-    boot_part_uuid = get_partition_uuid("boot")
+    boot_part_uuid = get_partition_uuid('boot')
 
     parted_command = [ 'parted', '--script', '--fix', target_disk,
         'mklabel', 'gpt',
@@ -288,7 +288,7 @@ def partition_target_disk() -> None:
     hostname_hardware_nix = hostname_hardware_nix_file.read()
     hostname_hardware_nix_file.close()
 
-    if 'fsType = "zfs"' in hostname_hardware_nix:
+    if 'fsType = 'zfs'' in hostname_hardware_nix:
         installer_variables['zfs_in_use'] = True
         partition_target_disk_zfs()
     else:
@@ -303,7 +303,7 @@ def installer_pre_setup() -> None:
     return
 
 def installer_run() -> None:
-    debugPrint("Installing NixOS for system `{}`.".format(installer_variables['hostname']))
+    debugPrint('Installing NixOS for system `{}`.'.format(installer_variables['hostname']))
     nixos_install_command = [ 'nixos-install', '--max-jobs', '1', '--cores', '1', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
     nixos_install_process = subprocess.run(nixos_install_command, stdout=sys.stdout, stderr=sys.stderr)
     if nixos_install_process.returncode != 0:
@@ -338,7 +338,7 @@ def user_chroot_setup() -> None:
         if '/home/' in line:
             realuser_username = line.split(':')[0]
             user_home_path = '/home/' + realuser_username
-            debugPrint("Performing pseudo-chroot setup for user `{}`.".format(realuser_username))
+            debugPrint('Performing pseudo-chroot setup for user `{}`.'.format(realuser_username))
 
             chroot_script_dst = user_home_path + '/' + chroot_script_file
             chroot_script_real_dst = installer_variables['mount_path'] + chroot_script_dst
@@ -354,7 +354,7 @@ def user_chroot_setup() -> None:
                     '--root',
                     installer_variables['mount_path'],
                     '-c',
-                    '"zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}"'.format(realuser_username, installer_variables['zpool_name']),
+                    ''zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}''.format(realuser_username, installer_variables['zpool_name']),
                 ]
                 subprocess.run(zfs_setup_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -383,7 +383,7 @@ if __name__ == '__main__':
     system_kernel = os.uname().sysname.lower()
     system_arch = os.uname().machine.lower()
 
-    if system_kernel != "linux":
+    if system_kernel != 'linux':
         errorPrint(f'Platform `{system_kernel}` is unsupported.')
         sys.exit(1)
 
