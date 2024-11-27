@@ -12,8 +12,10 @@ let
 in {
   system.activationScripts.dotfilesSetup.text = ''
     if [[ ! -d ${dotfilesDir} ]]; then
-        su -c 'git clone --bare https://gitlab.com/thefossguy/dotfiles.git ${dotfilesDir}' ${username}
-        su -c 'git --git-dir=${dotfilesDir} --work-tree=${homeDir} --checkout -f' ${username}
+        cat << EOF > ${homeDir}/.profile
+        git clone --bare https://gitlab.com/thefossguy/dotfiles.git ${dotfilesDir}
+        git --git-dir=${dotfilesDir} --work-tree=${homeDir} --checkout -f
+    EOF
     fi
   '';
 
