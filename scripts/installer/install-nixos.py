@@ -154,7 +154,7 @@ def get_partition_uuid(partition_mount_path) -> None:
             line_num += 1
             if matched_line_num == line_num:
                 device_value = line.split()[2]
-                unquoted_device_value = device_value.split(''')[1]
+                unquoted_device_value = device_value.split("'")[1]
                 partition_uuid = unquoted_device_value.split('/')[4]
                 return partition_uuid
 
