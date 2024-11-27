@@ -288,7 +288,7 @@ def partition_target_disk() -> None:
     hostname_hardware_nix = hostname_hardware_nix_file.read()
     hostname_hardware_nix_file.close()
 
-    if 'fsType = 'zfs'' in hostname_hardware_nix:
+    if "fsType = 'zfs'" in hostname_hardware_nix:
         installer_variables['zfs_in_use'] = True
         partition_target_disk_zfs()
     else:
