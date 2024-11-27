@@ -49,5 +49,7 @@ nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
     # root of the NixOS System configuration for a normal system
     ../nixos-configuration/modules/iso
     ../nixos-configuration/modules
+
+    inputChannel.homeManager.nixosModules.default
   ];
 }
