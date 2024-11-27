@@ -361,7 +361,7 @@ def user_chroot_setup() -> None:
 
 def installer_post() -> None:
     user_chroot_setup()
-    subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
         subprocess.run(['zpool', 'export', installer_variables['zpool_name']])
     return
