@@ -146,7 +146,7 @@ def generate_partition_sizes() -> None:
 
 def get_partition_uuid(partition_mount_path) -> None:
     hostname_hardware_nix_filepath = 'nixos-configuration/systems/' + installer_variables['hostname'] + '/hardware-configuration.nix'
-    match_pattern = 'fileSystems.'/' + partition_mount_path + '' = {'
+    match_pattern = 'fileSystems."/' + partition_mount_path + '" = {'
     with open(hostname_hardware_nix_filepath, 'r') as hostname_hardware_nix_file:
         line_num = 0
         matched_line_num = 0
@@ -354,7 +354,7 @@ def user_chroot_setup() -> None:
                     '--root',
                     installer_variables['mount_path'],
                     '-c',
-                    ''zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}''.format(realuser_username, installer_variables['zpool_name']),
+                    "'zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}'".format(realuser_username, installer_variables['zpool_name']),
                 ]
                 subprocess.run(zfs_setup_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
