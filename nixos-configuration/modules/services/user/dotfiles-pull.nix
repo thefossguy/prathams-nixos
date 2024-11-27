@@ -18,6 +18,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
+        OnBootSec = "10m";
       };
     };
 
