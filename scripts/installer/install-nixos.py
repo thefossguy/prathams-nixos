@@ -327,6 +327,7 @@ def pseudo_chroot_setup() -> None:
     return
 
 def installer_post() -> None:
+    pseudo_chroot_setup()
     # `sync` 4 times because drive firmware lies
     debugPrint('Syncing disks, this may take a while or be stupid-fast.')
     for _ in range(0,4):
