@@ -319,6 +319,13 @@ def mount_resolv_conf() -> None:
         sys.exit(1)
     return
 
+def pseudo_chroot_setup() -> None:
+    nix_eval_command = [ 'nix', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
+    nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE)
+    host_user_username = nix_eval_process.stdout[1:-1]
+    shutil.copy('scripts/installer/.profile', '{}/home/{}/.profile'.format(installer_variables['mount_path'], host_user_username))
+    return
+
 def installer_post() -> None:
     subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
