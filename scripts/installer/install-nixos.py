@@ -319,49 +319,7 @@ def mount_resolv_conf() -> None:
         sys.exit(1)
     return
 
-def user_chroot_setup() -> None:
-    mount_resolv_conf()
-    scripts_dir = 'scripts/installer/'
-
-    chroot_script_file = 'chroot-user-setup.sh'
-    chroot_script_src = scripts_dir + chroot_script_file
-
-    profile_file = '.profile'
-    profile_file_src = scripts_dir + profile_file
-
-    passwd_filepath = installer_variables['mount_path'] + '/etc/passwd'
-    passwd_file = open(passwd_filepath, 'r')
-    passwd_contents = passwd_file.read().split('\n')
-    passwd_file.close()
-
-    for line in passwd_contents:
-        if '/home/' in line:
-            realuser_username = line.split(':')[0]
-            user_home_path = '/home/' + realuser_username
-            debugPrint('Performing pseudo-chroot setup for user `{}`.'.format(realuser_username))
-
-            chroot_script_dst = user_home_path + '/' + chroot_script_file
-            chroot_script_real_dst = installer_variables['mount_path'] + chroot_script_dst
-            shutil.copy(chroot_script_src, chroot_script_real_dst)
-
-            profile_file_dst = user_home_path + '/' + profile_file
-            profile_file_real_dst = installer_variables['mount_path'] + profile_file_dst
-            shutil.copy(profile_file_src, profile_file_real_dst)
-
-            if installer_variables['zfs_in_use']:
-                zfs_setup_command = [
-                    'nixos-enter',
-                    '--root',
-                    installer_variables['mount_path'],
-                    '-c',
-                    "'zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}'".format(realuser_username, installer_variables['zpool_name']),
-                ]
-                subprocess.run(zfs_setup_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    return
-
 def installer_post() -> None:
-    user_chroot_setup()
     subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
         subprocess.run(['zpool', 'export', installer_variables['zpool_name']])
