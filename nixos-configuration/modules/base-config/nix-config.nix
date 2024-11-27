@@ -13,8 +13,6 @@ in {
     settings = {
       allowed-users = lib.mkForce trustedNixUsers;
       auto-optimise-store = true;
-      # Use a single core in the NixOS ISO to prevent choking on low memory machines and VMs.
-      cores = if config.customOptions.isIso then 1 else 0;
       # Enabling `eval-cache` on ISOs helps a bit with dry building the NixOS
       # configuration that occurs before filesystem partitioning and formatting.
       # But disable on normal NixOS systems. :)

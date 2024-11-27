@@ -303,8 +303,8 @@ def installer_pre_setup() -> None:
 
 def installer_run() -> None:
     debugPrint("Installing NixOS for system `{}`.".format(installer_variables['hostname']))
-    nixos_install_command = [ 'nixos-install', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
-    nixos_install_process = subprocess.run(nixos_install_command, stderr=subprocess.STDOUT, stdout=sys.stdout)
+    nixos_install_command = [ 'nixos-install', '--max-jobs', '1', '--cores', '1', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
+    nixos_install_process = subprocess.run(nixos_install_command, stdout=sys.stdout, stderr=sys.stderr)
     if nixos_install_process.returncode != 0:
         sys.exit(1)
     return
