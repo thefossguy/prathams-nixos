@@ -17,8 +17,12 @@ let
     inherit unitName onCalendar afterUnits requiredUnits;
   };
 in rec {
-  updateNixosFlakeInputs = mkServiceConfig {
-    unitName = "update-nixos-flake-inputs";
+  # System services
+  continuousBuild = mkServiceConfig {
+    unitName = "continuous-build";
+    onCalendar = systemdTime.Hourly;
+    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
+    requiredUnits = continuousBuild.afterUnits;
   };
 
   customNixosUpgrade = mkServiceConfig {
@@ -26,13 +30,6 @@ in rec {
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
     requiredUnits = customNixosUpgrade.afterUnits;
     onCalendar = if isLaptop then systemdTime.Hourly else (systemdTime.Daily { hour = "05"; });
-  };
-
-  continuousBuild = mkServiceConfig {
-    unitName = "continuous-build";
-    onCalendar = systemdTime.Hourly;
-    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
-    requiredUnits = continuousBuild.afterUnits;
   };
 
   ensureLocalStaticIp = mkServiceConfig {
@@ -48,6 +45,10 @@ in rec {
     requiredUnits = scheduledReboots.afterUnits;
   };
 
+  updateNixosFlakeInputs = mkServiceConfig {
+    unitName = "update-nixos-flake-inputs";
+  };
+
   zpoolMaintainenceWeekly = mkServiceConfig {
     unitName = "zpool-maintainence-weekly";
     onCalendar = systemdTime.Weekly { weekday = "Fri"; };
@@ -58,6 +59,7 @@ in rec {
     onCalendar = systemdTime.Monthly { weekday = "Fri"; day = "01..07"; };
   };
 
+  # User services
   customHomeManagerUpgrade = mkServiceConfig {
     unitName = "custom-home-manager-upgrade";
     onCalendar = systemdTime.Weekly { weekday = "Mon"; hour = "05"; };
@@ -75,13 +77,13 @@ in rec {
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 
-  updateRust = mkServiceConfig {
-    unitName = "update-rust";
+  getRedhatCsafVex = mkServiceConfig {
+    unitName = "get-redhat-csaf-vex";
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 
-  getRedhatCsafVex = mkServiceConfig {
-    unitName = "get-redhat-csaf-vex";
+  updateRust = mkServiceConfig {
+    unitName = "update-rust";
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 }
