@@ -22,6 +22,7 @@ else:
     nixExperimentalFlags = nixExperimentalFlagsUnpopulated
 
 nixBuildFlags = [
+    "--cores", "1",
     "--max-jobs", "1",
     "--print-build-logs",
     "--show-trace",
