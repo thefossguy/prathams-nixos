@@ -327,9 +327,13 @@ def pseudo_chroot_setup() -> None:
     return
 
 def installer_post() -> None:
+    # `sync` 4 times because drive firmware lies
+    debugPrint('Syncing disks, this may take a while or be stupid-fast.')
+    for _ in range(0,4):
+        subprocess.run(['sync'])
     subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
-        subprocess.run(['zpool', 'export', installer_variables['zpool_name']])
+        subprocess.run(['zpool', 'export', installer_variables['zpool_name']], stdout=sys.stdout, stderr=sys.stderr)
     return
 
 def memtotal_warning() -> None:
@@ -374,3 +378,5 @@ if __name__ == '__main__':
     installer_pre_setup()
     installer_run()
     installer_post()
+
+    debugPrint('Installation complete.')
