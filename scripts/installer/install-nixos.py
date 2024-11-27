@@ -21,15 +21,6 @@ if nix3_check.returncode != 0:
 else:
     nixExperimentalFlags = nixExperimentalFlagsUnpopulated
 
-nixBuildFlags = [
-    '--cores', '1',
-    '--max-jobs', '1',
-    '--print-build-logs',
-    '--show-trace',
-    '--trace-verbose',
-    '--verbose',
-]
-
 installer_variables = {}
 
 def debugPrint(formatted_string: str) -> None:
@@ -67,12 +58,19 @@ def fetch_git_repo_changes() -> None:
 
 def dry_build_nixos_configuration() -> None:
     hostname = installer_variables['hostname']
-    nix_dry_build_command = [ 'nix', ] + nixExperimentalFlags + [ 'build', ] + nixBuildFlags + [
+    nix_dry_build_command = [ 'nix', ] + nixExperimentalFlags + [
+        'build',
         '--dry-run',
+        '--cores', '1',
+        '--max-jobs', '1',
+        '--print-build-logs',
+        '--show-trace',
+        '--trace-verbose',
+        '--verbose',
         '.#nixosConfigurations.' + hostname + '.config.system.build.toplevel'
     ]
     debugPrint('Performing a dry build of `{}`. This may take a while.'.format(hostname))
-    nix_dry_build_process = subprocess.run(nix_dry_build_command, stderr=subprocess.PIPE)
+    nix_dry_build_process = subprocess.run(nix_dry_build_command, stderr=subprocess.PIPE, text=True)
 
     if nix_dry_build_process.returncode != 0:
         errorPrint('The dry-build of `{hostname}` failed.')
