@@ -22,9 +22,17 @@ in {
         force = true;
         executable = true;
         text = ''
-          git clone https://gitlab.com/thefossguy/prathams-nixos.git "$HOME/.prathams-nixos"
-          git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$HOME/.dotfiles"
-          git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" checkout -f
+          set -x
+
+          NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
+          DOTFILES_DIR="$HOME/.prathams-nixos"
+
+          rm -rf "$NIXOS_CONFIG_DIR"
+          rm -rf "$DOTFILES_DIR"
+
+          git clone https://gitlab.com/thefossguy/prathams-nixos.git "$NIXOS_CONFIG_DIR"
+          git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$DOTFILES_DIR"
+          git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout -f
           rm -rf "$HOME/.config/nvim"
           exec bash
         '';
