@@ -164,8 +164,13 @@ def get_partition_uuid(partition_mount_path) -> None:
 
 def partition_target_disk_nozfs() -> None:
     target_disk = installer_variables['target_disk']
-    hostname = installer_variables['hostname']
     mount_path = installer_variables['mount_path']
+
+    boot_part_dev = installer_variables['boot_part_dev']
+    root_part_dev = installer_variables['root_part_dev']
+    home_part_dev = installer_variables['home_part_dev']
+    varl_part_dev = installer_variables['varl_part_dev']
+
     boot_part_sizes = installer_variables['boot_part_sizes']
     root_part_sizes = installer_variables['root_part_sizes']
     home_part_sizes = installer_variables['home_part_sizes']
