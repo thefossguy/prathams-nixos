@@ -28,6 +28,15 @@ in {
         text = ''
           set -x
 
+          if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 2>&1 1>/dev/null; then
+              set +x
+              echo 'You do not appear to be connected to the internet.'
+              echo 'Please clone the following directories manually:'
+              echo ' 1. NixOS Configuration: https://gitlab.com/thefossguy/prathams-nixos.git'
+              echo ' 2. Dotfiles: https://gitlab.com/thefossguy/dotfiles.git'
+              exec bash
+          fi
+
           NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
           DOTFILES_DIR="$HOME/.dotfiles"
 
@@ -38,6 +47,7 @@ in {
           git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$DOTFILES_DIR"
           git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout -f
           rm -rf "$HOME/.config/nvim"
+          set +x
           exec bash
         '';
       };
