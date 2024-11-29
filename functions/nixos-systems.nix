@@ -130,7 +130,7 @@ in {
       coreConfig = {
         hostname = "pawandev";
         ipv4Address = "10.0.0.22";
-        primaryNetIface = "eth0";
+        primaryNetIface = "enx326a3f36cd7e";
         system = linuxSystems.aarch64;
       };
     };
