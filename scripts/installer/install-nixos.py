@@ -271,14 +271,7 @@ def partition_target_disk_zfs() -> None:
     imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name' ]
     imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
     if installer_variables['zpool_name'] in imported_zpools_process.stdout:
-        warnPrint('Destroying the zfs pool `{}`.'.format(installer_variables['zpool_name']))
-        warnPrint('Press [Y/y] to destroy the zfs pool.')
-        user_input = str(input())
-        if user_input.lower() == 'y':
-            subprocess.run(['zpool', 'destroy', '-f', installer_variables['zpool_name']], check=True)
-        else:
-            errorPrint('Cannot re-create your zfs pool without destroying the pre-existing one.')
-            sys.exit(1)
+        subprocess.run(['zpool', 'destroy', '-f', installer_variables['zpool_name']], check=True)
 
 
 
