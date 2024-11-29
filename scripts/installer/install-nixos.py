@@ -267,7 +267,7 @@ def partition_target_disk_zfs() -> None:
         installer_variables['zpool_name'],
     ]
 
-    subprocess.run([ 'zpool', 'import', '-N', installer_variables['zpool_name']])
+    subprocess.run([ 'zpool', 'import', '-f', '-N', installer_variables['zpool_name']])
     imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name' ]
     imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
     if installer_variables['zpool_name'] in imported_zpools_process.stdout:
