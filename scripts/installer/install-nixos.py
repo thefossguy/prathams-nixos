@@ -404,7 +404,7 @@ def pseudo_chroot_setup() -> None:
             "zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}".format(host_user_username, installer_variables['zpool_name'])
         ]
         debugPrint('Target system uses ZFS for rootfs. Allowing ZFS operations for `{}`.\nRunning: `{}`'.format(host_user_username, zfs_allow_command))
-        zfs_allow_process = command.run(zfs_allow_command, stdout=sys.stdout, stderr=sys.stderr)
+        subprocess.run(zfs_allow_command, stdout=sys.stdout, stderr=sys.stderr)
     return
 
 def installer_post() -> None:
