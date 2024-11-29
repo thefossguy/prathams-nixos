@@ -28,7 +28,7 @@ in {
         text = ''
           set -x
 
-          if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 2>&1 1>/dev/null; then
+          if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
               set +x
               echo 'You do not appear to be connected to the internet.'
               echo 'Please clone the following directories manually:'
@@ -40,11 +40,15 @@ in {
           NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
           DOTFILES_DIR="$HOME/.dotfiles"
 
-          rm -rf "$NIXOS_CONFIG_DIR"
-          rm -rf "$DOTFILES_DIR"
+          NIXOS_CONFIG_REPO_URL='https://gitlab.com/thefossguy/prathams-nixos.git'
+          DOTFILE_REPO_URL='https://gitlab.com/thefossguy/dotfiles.git'
 
-          git clone https://gitlab.com/thefossguy/prathams-nixos.git "$NIXOS_CONFIG_DIR"
-          git clone --bare https://gitlab.com/thefossguy/dotfiles.git "$DOTFILES_DIR"
+          git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR" || \
+              (rm -rf "$NIXOS_CONFIG_DIR" && git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR")
+
+          git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR" || \
+              (rm -rf "$DOTFILES_DIR" && git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR")
+
           git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout -f
           rm -rf "$HOME/.config/nvim"
           set +x
