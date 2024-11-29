@@ -379,9 +379,32 @@ def pseudo_chroot_setup() -> None:
     nix_eval_command = [ 'nix', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
     nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, text=True)
     host_user_username = nix_eval_process.stdout[1:-2]
-    profile_file_src = 'scripts/installer/.profile'
-    profile_file_dst = '{}/home/{}/.profile'.format(installer_variables['mount_path'], host_user_username)
-    shutil.copy(profile_file_src, profile_file_dst)
+
+    # The `home-manager-$LOGNAME.service` not only reads but _executes_ the
+    # `$HOME/.profile` file. So, don't populate the content of `$HOME/.profile`
+    # with the contents of `chroot-user-setup.sh`. Or else, the service will fail
+    # and binaries enabled by `nixos-configuration/packages/user-packages.nix`
+    # will not be put in `$PATH`.
+    chroot_script_src = 'scripts/installer/chroot-user-setup.sh'
+    chroot_script_dst = installer_variables['mount_path'] + '/home/' + host_user_username + '/chroot-user-setup.sh'
+    shutil.copy(chroot_script_src, chroot_script_dst)
+    chroot_command = [
+        "nixos-enter",
+        "--root", installer_variables['mount_path'],
+        "-c",
+        "su --login {} --command 'bash $HOME/chroot-user-setup.sh'".format(host_user_username)
+    ]
+    subprocess.run(chroot_command, stdout=sys.stdout, stderr=sys.stderr)
+
+    if installer_variables['zfs_in_use']:
+        zfs_allow_command = [
+            "nixos-enter",
+            "--root", installer_variables['mount_path'],
+            "-c",
+            "zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}".format(host_user_username, installer_variables['zpool_name'])
+        ]
+        debugPrint('Target system uses ZFS for rootfs. Allowing ZFS operations for `{}`.\nRunning: `{}`'.format(host_user_username, zfs_allow_command))
+        zfs_allow_process = command.run(zfs_allow_command, stdout=sys.stdout, stderr=sys.stderr)
     return
 
 def installer_post() -> None:
