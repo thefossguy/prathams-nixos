@@ -10,6 +10,7 @@ in {
 
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   users.users."${nixosSystemConfig.coreConfig.systemUser.username}".initialHashedPassword = lib.mkForce nixosSystemConfig.coreConfig.systemUser.hashedPassword;
+  zramSwap.swapDevices = 2;
 
   # I hate to have home-manager since it is not **necessary** but it is the only
   # way that _I know_ how to create a file in $HOME in NixOS.
