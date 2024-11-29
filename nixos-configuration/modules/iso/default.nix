@@ -14,6 +14,7 @@ in {
   # Systems with memory less than 8G get an OOM kill on running `nixos-install`
   # so instead of having one swap device, use two swap devices.
   zramSwap.swapDevices = 2;
+  nix.settings.cores = 1;
 
   # I hate to have home-manager since it is not **necessary** but it is the only
   # way that _I know_ how to create a file in $HOME in NixOS.
