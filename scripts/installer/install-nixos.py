@@ -97,7 +97,7 @@ def get_target_disk_size() -> None:
 def installer_pre_checks() -> None:
     update_flake_lockfile()
     fetch_git_repo_changes()
-    #dry_build_nixos_configuration()
+    dry_build_nixos_configuration()
     get_target_disk_size()
     return
 
@@ -267,7 +267,8 @@ def partition_target_disk_zfs() -> None:
         installer_variables['zpool_name'],
     ]
 
-    imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name']
+    subprocess.run([ 'zpool', 'import', '-N', installer_variables['zpool_name']])
+    imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name' ]
     imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
     if installer_variables['zpool_name'] in imported_zpools_process.stdout:
         warnPrint('Destroying the zfs pool `{}`.'.format(installer_variables['zpool_name']))
