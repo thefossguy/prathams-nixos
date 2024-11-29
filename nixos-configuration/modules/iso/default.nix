@@ -25,7 +25,7 @@ in {
           set -x
 
           NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
-          DOTFILES_DIR="$HOME/.prathams-nixos"
+          DOTFILES_DIR="$HOME/.dotfiles"
 
           rm -rf "$NIXOS_CONFIG_DIR"
           rm -rf "$DOTFILES_DIR"
