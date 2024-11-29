@@ -97,7 +97,7 @@ def get_target_disk_size() -> None:
 def installer_pre_checks() -> None:
     update_flake_lockfile()
     fetch_git_repo_changes()
-    dry_build_nixos_configuration()
+    #dry_build_nixos_configuration()
     get_target_disk_size()
     return
 
@@ -171,20 +171,6 @@ def partition_target_disk_nozfs() -> None:
     home_part_sizes = installer_variables['home_part_sizes']
     varl_part_sizes = installer_variables['varl_part_sizes']
 
-    partition_suffix = ''
-    if 'sd' in target_disk or 'vd' in target_disk:
-        partition_suffix = ''
-    elif 'mmcblk' in target_disk or 'nvme' in target_disk or 'loop' in target_disk:
-        partition_suffix = 'p'
-    else:
-        errorPrint('Disk type is unsupported. Not sure how to partition.')
-        sys.exit(1)
-
-    boot_part_dev = target_disk + partition_suffix + '1'
-    root_part_dev = target_disk + partition_suffix + '2'
-    home_part_dev = target_disk + partition_suffix + '3'
-    varl_part_dev = target_disk + partition_suffix + '4'
-
     boot_part_uuid = get_partition_uuid('boot').replace('-','')
     root_part_uuid = get_partition_uuid('')
     home_part_uuid = get_partition_uuid('home')
@@ -230,12 +216,16 @@ def partition_target_disk_nozfs() -> None:
     return
 
 def partition_target_disk_zfs() -> None:
+    if shutil.which('zfs') == None:
+        errorPrint('ZFS userspace utilities were not detected. Not partitioning anything.')
+        sys.exit(1)
+
     hostname = installer_variables['hostname']
     installer_variables['zpool_name'] = hostname + '-zpool'
     target_disk = installer_variables['target_disk']
     boot_part_sizes = installer_variables['boot_part_sizes']
     boot_part_dev = installer_variables['boot_part_dev']
-    boot_part_uuid = get_partition_uuid('boot')
+    boot_part_uuid = get_partition_uuid('boot').replace('-','')
 
     parted_command = [ 'parted', '--script', '--fix', target_disk,
         'mklabel', 'gpt',
@@ -249,7 +239,7 @@ def partition_target_disk_zfs() -> None:
 
     mkfs_command = [ 'mkfs.fat', '-F', '32', '-n', 'nixboot', boot_part_dev, '-i', boot_part_uuid ]
     debugPrint('{}'.format(mkfs_command))
-    mkfs_process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
+    mkfs_process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True)
     if mkfs_process.returncode != 0:
         errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, mkfs_process.stderr))
         sys.exit(1)
@@ -272,21 +262,83 @@ def partition_target_disk_zfs() -> None:
         installer_variables['zpool_name'],
     ]
 
+    imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name']
+    imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
+    if installer_variables['zpool_name'] in imported_zpools_process.stdout:
+        warnPrint('Destroying the zfs pool `{}`.'.format(installer_variables['zpool_name']))
+        warnPrint('Press [Y/y] to destroy the zfs pool.')
+        user_input = str(input())
+        if user_input.lower() == 'y':
+            subprocess.run(['zpool', 'destroy', '-f', installer_variables['zpool_name']], check=True)
+        else:
+            errorPrint('Cannot re-create your zfs pool without destroying the pre-existing one.')
+            sys.exit(1)
+
+
+
     if installer_variables['hostname'] == 'chaturvyas':
         zpool_create_command[zpool_create_command.index('ashift=12')] = 'ashift=13'
+        zpool_create_command += ['raidz1', 'nvme0n1', 'nvme1n1', 'nvme2n1', 'nvme3n1']
+        debugPrint(zpool_create_command)
+        zpool_create_process = subprocess.run(zpool_create_command, stderr=subprocess.PIPE, text=True)
+        if zpool_create_process.returncode != 0:
+            errorPrint("zpool creation failed\n```\n{}\n```".format(zpool_create_process.stderr))
+            sys.exit(1)
     else:
         errorPrint('zpool creation for system `{}` is not handled automatically.'.format(installer_variables['hostname']))
         sys.exit(1)
 
+    zpool_rootfs_size = None
+    zpool_get_rootfs_size_command = [ 'zpool', 'list', '-H', '-o', 'size', '-p' ]
+    zpool_get_rootfs_size_process = subprocess.run(zpool_get_rootfs_size_command, text=True, stdout=subprocess.PIPE)
+    zpool_total_size = int(zpool_get_rootfs_size_process.stdout) / ( 1024 * 1024 * 1024 )
+    zpool_rootfs_size = int(math.ceil(zpool_total_size / 4))
+
+    zfs_create_root_command = [ 'zfs', 'create', '-u', '-o', 'mountpoint=/',     '-o', 'refreservation={}G'.format(zpool_rootfs_size), '{}/root'.format(installer_variables['zpool_name']), ]
+    zfs_create_home_command = [ 'zfs', 'create', '-u', '-o', 'mountpoint=/home', '-o', 'checksum=sha512', '{}/home'.format(installer_variables['zpool_name']), ]
+    zfs_create_nasd_command = [ 'zfs', 'create', '-u', '-o', 'mountpoint=/nas',  '-o', 'checksum=sha512', '-o', 'compression=zstd-19', '{}/nas'.format(installer_variables['zpool_name']), ]
+    zfs_create_varl_command = [ 'zfs', 'create', '-u', '-o', 'mountpoint=/varl', '-o', 'checksum=off', '-o', 'compression=zstd-19', '-o', 'snapshot_limit=0', '-o', 'redundant_metadata=none', '-o', 'refquota={}G'.format(installer_variables['varl_part_size']), '{}/var'.format(installer_variables['zpool_name']), ]
+
+    zfs_create_commands = [zfs_create_root_command, zfs_create_home_command, zfs_create_nasd_command, zfs_create_varl_command]
+
+    for zfs_create_command in zfs_create_commands:
+        debugPrint(zfs_create_command)
+        process = subprocess.run(zfs_create_command, stderr=subprocess.PIPE)
+        if process.returncode != 0:
+            errorPrint('zfs creation failed\n```\n{}\n```'.format(process.stderr))
+            sys.exit(1)
+
+    subprocess.run(['zpool', 'export', installer_variables['zpool_name']], text=True, stderr=subprocess.PIPE, check=True)
+    subprocess.run(['zpool', 'import', installer_variables['zpool_name'], '-R', installer_variables['mount_path']], text=True, stderr=subprocess.PIPE, check=True)
+    subprocess.run(['mount', '-o', 'umask=077', '--mkdir', boot_part_dev, installer_variables['mount_path'] + '/boot'])
     return
 
 def partition_target_disk() -> None:
-    hostname_hardware_nix_filepath = 'nixos-configuration/systems/' + installer_variables['hostname'] + '/hardware-configuration.nix'
+    hostname = installer_variables['hostname']
+    target_disk = installer_variables['target_disk']
+    mount_path = installer_variables['mount_path']
+    partition_suffix = ''
+
+    hostname_hardware_nix_filepath = 'nixos-configuration/systems/' + hostname + '/hardware-configuration.nix'
     hostname_hardware_nix_file = open(hostname_hardware_nix_filepath, 'r')
     hostname_hardware_nix = hostname_hardware_nix_file.read()
     hostname_hardware_nix_file.close()
 
-    if "fsType = 'zfs'" in hostname_hardware_nix:
+    if 'sd' in target_disk or 'vd' in target_disk:
+        partition_suffix = ''
+    elif 'mmcblk' in target_disk or 'nvme' in target_disk or 'loop' in target_disk:
+        partition_suffix = 'p'
+    else:
+        errorPrint('Disk type is unsupported. Not sure how to partition.')
+        sys.exit(1)
+    installer_variables['partition_suffix'] = partition_suffix
+
+    installer_variables['boot_part_dev'] = target_disk + partition_suffix + '1'
+    installer_variables['root_part_dev'] = target_disk + partition_suffix + '2'
+    installer_variables['home_part_dev'] = target_disk + partition_suffix + '3'
+    installer_variables['varl_part_dev'] = target_disk + partition_suffix + '4'
+
+    if 'fsType = "zfs"' in hostname_hardware_nix:
         installer_variables['zfs_in_use'] = True
         partition_target_disk_zfs()
     else:
