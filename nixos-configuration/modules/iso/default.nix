@@ -9,7 +9,10 @@ in {
   ];
 
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
+  # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${nixosSystemConfig.coreConfig.systemUser.username}".initialHashedPassword = lib.mkForce nixosSystemConfig.coreConfig.systemUser.hashedPassword;
+  # Systems with memory less than 8G get an OOM kill on running `nixos-install`
+  # so instead of having one swap device, use two swap devices.
   zramSwap.swapDevices = 2;
 
   # I hate to have home-manager since it is not **necessary** but it is the only
