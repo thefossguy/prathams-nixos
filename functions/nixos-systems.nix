@@ -9,6 +9,14 @@ in {
   commonConfig = {
     gatewayAddr = "10.0.0.1";
     ipv4PrefixLength = 24;
+    systemTypes = systemTypes;
+
+    filesystemsMountOptions = [
+      "async"
+      "relatime"
+      "lazytime"
+    ];
+
     supportedFilesystemsSansZfs = {
       cifs = true;
       ext4 = true;
@@ -19,7 +27,6 @@ in {
       xfs = true;
       #zfs = ...; # Don't assign `zfs`, that is done in `nixos-configuration/modules/base-config/kernel-packages.nix`.
     };
-    systemTypes = systemTypes;
 
     hostIds = {
       # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`

@@ -206,7 +206,7 @@ def partition_target_disk_nozfs() -> None:
             errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, process.stderr))
             sys.exit(1)
 
-    mount_root_command = [ 'mount', '-o', 'async,lazytime,relatime',            root_part_dev, mount_path + '/' ]
+    mount_root_command = [ 'mount', '-o', 'sync,lazytime,relatime',            root_part_dev, mount_path + '/' ]
     mount_boot_command = [ 'mount', '-o', 'umask=077',               '--mkdir', boot_part_dev, mount_path + '/boot' ]
     mount_home_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', home_part_dev, mount_path + '/home' ]
     mount_varl_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', varl_part_dev, mount_path + '/var' ]
@@ -353,7 +353,7 @@ def installer_pre_setup() -> None:
 
 def installer_run() -> None:
     debugPrint('Installing NixOS for system `{}`.'.format(installer_variables['hostname']))
-    nixos_install_command = [ 'nixos-install', '--max-jobs', '1', '--cores', '1', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
+    nixos_install_command = [ 'nice', '-20', 'nixos-install', '--max-jobs', '1', '--cores', '1', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
     nixos_install_process = subprocess.run(nixos_install_command, stdout=sys.stdout, stderr=sys.stderr)
     if nixos_install_process.returncode != 0:
         sys.exit(1)

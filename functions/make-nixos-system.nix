@@ -28,6 +28,7 @@ let
       gatewayAddr = thisSystem.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
       ipv4PrefixLength = thisSystem.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
+      filesystemsMountOptions = thisSystem.extraConfig.filesystemsMountOptions or nixosSystems.commonConfig.filesystemsMountOptions;
       inherit inputChannel allServicesSet nixBuildArgs;
     };
     kernelConfig = {
