@@ -3,8 +3,5 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions = {
-    socSupport.armSoc = "rpi5";
-    podmanContainers.enableHomelabServices = true;
-  };
+  customOptions.socSupport.armSoc = "rpi5";
 }
