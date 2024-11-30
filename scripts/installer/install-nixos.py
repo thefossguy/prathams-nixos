@@ -208,7 +208,7 @@ def partition_target_disk_nozfs() -> None:
 
     rootfs_sync_or_async = ""
     if installer_variables['might_get_oom']:
-        rootfs_sync_or_async = "sync"
+        rootfs_sync_or_async = "dirsync"
     else:
         rootfs_sync_or_async = "async"
 
