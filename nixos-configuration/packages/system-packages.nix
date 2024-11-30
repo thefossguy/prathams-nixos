@@ -8,7 +8,7 @@ in {
     # should be already included in the base image
     #bzip2
     #curl
-    dash
+    #dash
     file
     #findutils
     #gawk
@@ -21,6 +21,7 @@ in {
     #pinentry # pkg summary: GnuPG’s interface to passphrase input
     #procps # provides pgrep, kill, watch, ps, pidof, uptime, sysctl, free, etc
     python3
+    ripgrep
     #rsync
     tree
     #util-linux # provides blkid, losetup, lsblk, rfkill, fallocate, dmesg, etc
