@@ -39,7 +39,7 @@
       # the interval defined here, so every 300s.
       # If the hardware watchdog does not get a signal for 600s,
       # it will forcefully reboot the system.
-      runtimeTime = "600s";
+      runtimeTime = if config.customOptions.isIso then "1800s" else "600s";
       # Forcefully reboot if the final stage of the reboot
       # hangs without progress for more than 30s.
       # For more info, see:
