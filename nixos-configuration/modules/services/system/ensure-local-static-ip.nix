@@ -39,11 +39,11 @@ in {
 
       # Wait for 120 seconds, on top of the 120 seconds that
       # `systemd-networkd-wait-online.service` waits for.
-      for i in $(seq 0 11); do
+      for _ in $(seq 0 11); do
           iface_status="$(${pkgs.iproute2}/bin/ip -brief address show ${netIface})"
 
           if [[ "''${iface_status}" =~ 'UP' ]]; then
-              if [[ "''${iface_status}" =~ '${nixosSystemConfig.coreConfig.ipv4Address}' ]]; then
+              if [[ "''${iface_status}" =~ ${nixosSystemConfig.coreConfig.ipv4Address} ]]; then
                   if [[ "''${DHCP_UNFUCK_CUR_ATTEMPT}" -ne 0 ]]; then
                       echo '0' > "''${DHCP_UNFUCK_LOG_FILE_PATH}"
                   fi
