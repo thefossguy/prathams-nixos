@@ -13,6 +13,7 @@
   # value of the target system, keeping the intentional derivation "pure."
   nixpkgs.buildPlatform.system = builtins.currentSystem or nixosSystemConfig.coreConfig.system;
 
+  boot.initrd.systemd.enable = true;
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
