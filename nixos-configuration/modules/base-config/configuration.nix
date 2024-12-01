@@ -27,7 +27,9 @@
   services.zfs.trim.enable = lib.mkForce false;
 
   systemd = {
-    enableStrictShellChecks = true;
+    # Upstream (nixpkgs) has a lot of things broken. Do not enable _yet_.
+    #enableStrictShellChecks = true;
+
     # Given that our systems are headless, emergency mode is useless.
     # We prefer the system to attempt to continue booting so
     # that we can hopefully still access it remotely.
