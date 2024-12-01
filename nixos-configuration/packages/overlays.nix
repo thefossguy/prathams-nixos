@@ -14,8 +14,6 @@ in {
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
-      nerdfonts-tfg = prev.nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; };
-
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 

@@ -73,7 +73,11 @@ let
     gawk
     gnugrep
     gnused
-    (nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; })
+    nerd-fonts._0xproto
+    nerd-fonts.fira-code
+    nerd-fonts.overpass
+    nerd-fonts.sauce-code-pro
+    noto-fonts-color-emoji
     tmux # It is in `system-packages.nix` and `${scriptsDir}/other-common-scripts/unix-setup.sh`
     watch
   ]);
