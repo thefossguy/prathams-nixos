@@ -127,7 +127,7 @@ in {
       coreConfig = {
         hostname = "mahadev";
         ipv4Address = "10.0.0.21";
-        primaryNetIface = "enP4p65s0";
+        primaryNetIface = "enx0e9c3f0bc29f";
         system = linuxSystems.aarch64;
       };
     };
