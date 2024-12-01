@@ -30,15 +30,15 @@ nixos_systems = [
 
 async def print_eval_val(nixosSystem, config) -> None:
     eval_string = nixosSystem + ".config." + config
-    nix_eval_cmd = "nix eval " + eval_string
+    nix_eval_cmd = [ 'nix', 'eval', eval_string ]
     if "home-manager" in config:
         return [eval_string, "<EMPTY>"]
     else:
         proc = await asyncio.get_event_loop().run_in_executor(
             None,
-            lambda: subprocess.check_output(nix_eval_cmd, shell=True)
+            lambda: subprocess.run(nix_eval_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
         )
-        return [eval_string, proc.decode().strip()]
+        return [eval_string, proc.stdout.strip()]
 
 async def print_val(config):
     tasks = [ print_eval_val(nixosSystem, config) for nixosSystem in nixos_systems ]
