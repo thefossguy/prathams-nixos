@@ -59,6 +59,11 @@ lib.mkIf config.customOptions.socSupport.enabled {
       ${appendedPath}
       export PATH
 
+      if [[ "$(cat /proc/sys/kernel/hostname)" != config.networking.hostName ]]; then
+          # We're not on the target machine, abort before **anything** happens.
+          exit 0
+      fi
+
       if grep -q 'custom_options.uboot_version=${selectedUbootPackage.version}' /proc/cmdline; then
           # Running the latest version of U-Boot provided by Nixpkgs. Do nothing.
           exit 0
