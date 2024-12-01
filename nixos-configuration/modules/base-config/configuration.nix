@@ -27,6 +27,7 @@
   services.zfs.trim.enable = lib.mkForce false;
 
   systemd = {
+    enableStrictShellChecks = true;
     # Given that our systems are headless, emergency mode is useless.
     # We prefer the system to attempt to continue booting so
     # that we can hopefully still access it remotely.
