@@ -16,6 +16,13 @@ let
   };
   selectedUbootPackage = ubootPackages."${config.networking.hostName}";
   ddFlags = "conv=sync";
+  appendedPath = import ../../../functions/append-to-path.nix {
+    packages = with pkgs; [
+      coreutils-full
+      gnugrep
+      util-linux
+    ];
+  };
 
   rk3588UbootUpgradeScript = if (config.customOptions.socSupport.armSoc == "rk3588") then ''
     if [[ -c /dev/mtd0 ]]; then
@@ -49,6 +56,8 @@ lib.mkIf config.customOptions.socSupport.enabled {
       # ----[ cut ]----
       # U-Boot upgrade script starts here
       set -x
+      ${appendedPath}
+      export PATH
 
       if grep -q 'custom_options.uboot_version=${selectedUbootPackage.version}' /proc/cmdline; then
           # Running the latest version of U-Boot provided by Nixpkgs. Do nothing.
