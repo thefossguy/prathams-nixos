@@ -1,6 +1,9 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 lib.mkIf (config.customOptions.virtualisation.enable) {
+  environment.systemPackages = with pkgs; [
+    qemu_kvm
+  ];
   virtualisation = {
     libvirtd = {
       enable = true;
