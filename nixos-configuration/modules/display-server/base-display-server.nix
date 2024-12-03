@@ -74,8 +74,6 @@ in {
         '';
       };
 
-      nerdfonts-tfg = prev.nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; };
-
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
@@ -86,6 +84,12 @@ in {
 
   fonts = {
     fontDir.enable = true;
-    packages = [ pkgs.nerdfonts-tfg ];
+    packages = with pkgs; [
+      nerd-fonts._0xproto
+      nerd-fonts.fira-code
+      nerd-fonts.overpass
+      nerd-fonts.sauce-code-pro
+      noto-fonts-color-emoji
+    ];
   };
 }

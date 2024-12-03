@@ -23,8 +23,6 @@ let
     gnused
     tmux
     watch
-
-    (nerdfonts.override { fonts = [ "FiraCode" "Overpass" "SourceCodePro" ]; })
   ]);
 
 in {
