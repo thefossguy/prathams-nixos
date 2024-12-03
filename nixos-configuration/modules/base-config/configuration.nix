@@ -13,11 +13,13 @@
   # value of the target system, keeping the intentional derivation "pure."
   nixpkgs.buildPlatform.system = builtins.currentSystem or nixosSystemConfig.coreConfig.system;
 
+  boot.initrd.services.lvm.enable = lib.mkOverride 60 false;
   boot.initrd.systemd.enable = true;
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
+  services.lvm.enable = lib.mkOverride 60 false;
   system.stateVersion = lib.versions.majorMinor lib.version;
 
   # Global defaults that _would_ be overridden from local modules go here.
