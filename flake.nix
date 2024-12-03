@@ -1,9 +1,9 @@
 {
   inputs = {
     # stable channel
-    nixpkgsStable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgsStable.url = "github:NixOS/nixpkgs/nixos-24.11";
     homeManagerStable = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgsStable";
     };
 
