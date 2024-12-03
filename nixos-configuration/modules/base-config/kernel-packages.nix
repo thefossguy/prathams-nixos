@@ -1,6 +1,7 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
+  localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; };
   kernelPackages = if nixosSystemConfig.kernelConfig.useLongtermKernel
     then pkgs.linux_6_6
     else pkgs.linux_latest;
@@ -10,9 +11,9 @@ let
   };
 
   enableRustSupport = (nixosSystemConfig.kernelConfig.enableRustSupport && (
-    (pkgs.stdenv.isx86_64  && lib.versionAtLeast kernelPackages.version "6.7") ||
-    (pkgs.stdenv.isAarch64 && lib.versionAtLeast kernelPackages.version "6.9") ||
-    ((pkgs.stdenv.isRiscV64 or false) && lib.versionAtLeast kernelPackages.version "6.10")
+    (localStdenv.isx86_64  && lib.versionAtLeast kernelPackages.version "6.7") ||
+    (localStdenv.isAarch64 && lib.versionAtLeast kernelPackages.version "6.9") ||
+    (localStdenv.isRiscV64 && lib.versionAtLeast kernelPackages.version "6.10")
   ));
 in {
   boot = {

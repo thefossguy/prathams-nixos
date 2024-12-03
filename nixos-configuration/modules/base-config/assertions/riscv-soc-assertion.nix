@@ -2,7 +2,7 @@
 
 let
   # TODO: `s/localStdenv/pkgs.stdenv/g`
-  localStdenv = pkgs.stdenv // { isRiscV64 = ((!pkgs.stdenv.isx86_64) && (!pkgs.stdenv.isAarch64)); };
+  localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; };
 in
 lib.mkIf (config.customOptions.socSupport.riscvSoc != "unset") {
   assertions = [{
