@@ -94,6 +94,7 @@ let
     asciinema
     choose
     dash
+    delta
     dig # provides `dig` and `nslookup`
     dpkg
     du-dust
