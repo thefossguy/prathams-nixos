@@ -26,7 +26,7 @@ in {
       argsOverride = {
         features.rust = enableRustSupport;
         structuredExtraConfig = with lib.kernel; {
-          ARM64_64K_PAGES = if enableArm64kPages then yes else unset;
+          #ARM64_64K_PAGES = if enableArm64kPages then yes else unset;
         };
       };
     }));
