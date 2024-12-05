@@ -171,9 +171,6 @@ in {
         primaryNetIface = "enxcacf915df82c";
         system = linuxSystems.aarch64;
       };
-      kernelConfig = {
-        enableRustSupport = true;
-      };
     };
 
     # Apple Mac Mini host (32GB; M4)
