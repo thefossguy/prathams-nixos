@@ -7,6 +7,7 @@
     ./cpu-microcode
     ./display-server
     ./gpu
+    ./kernel-development
     ./local-nix-cache
     ./qemu
     ./soc-support
