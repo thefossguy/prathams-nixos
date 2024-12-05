@@ -16,6 +16,7 @@
   boot.initrd.services.lvm.enable = lib.mkOverride 60 false;
   boot.initrd.systemd.enable = true;
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
+  hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
