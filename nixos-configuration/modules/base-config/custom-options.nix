@@ -115,6 +115,7 @@
         default = if (config.customOptions.systemType == "server") then "unset" else "cosmic";
         type = lib.types.enum [
           "bspwm"
+          "cosmic"
           "hyprland"
           "kde"
 

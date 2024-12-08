@@ -6,6 +6,10 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgsStable";
     };
+    cosmicStable = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgsStable";
+    };
 
     # unstable channel
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -13,9 +17,13 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgsUnstable";
     };
+    cosmicUnstable = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgsUnstable";
+    };
   };
 
-  outputs = { nixpkgsStable, homeManagerStable, nixpkgsUnstable, homeManagerUnstable, self, ... }:
+  outputs = { nixpkgsStable, homeManagerStable, cosmicStable, nixpkgsUnstable, homeManagerUnstable, cosmicUnstable, self, ... }:
     let
       libGenAttrs = allInputChannels.default.nixpkgs.lib.genAttrs;
       libFilterAttrs = allInputChannels.default.nixpkgs.lib.filterAttrs;
@@ -24,10 +32,12 @@
         stable = {
           nixpkgs     = nixpkgsStable;
           homeManager = homeManagerStable;
+          cosmic      = cosmicStable;
         };
         unstable = {
           nixpkgs     = nixpkgsUnstable;
           homeManager = homeManagerUnstable;
+          cosmic      = cosmicUnstable;
         };
       };
 

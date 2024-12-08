@@ -49,5 +49,6 @@ in nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
     # third-party modules
     inputChannel.homeManager.nixosModules.default
     ../nixos-configuration/modules/home-manager/nixos-home.nix
+    inputChannel.cosmic.nixosModules.default
   ];
 }
