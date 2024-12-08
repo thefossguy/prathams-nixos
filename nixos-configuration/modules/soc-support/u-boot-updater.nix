@@ -25,6 +25,11 @@ let
   };
 
   rk3588UbootUpgradeScript = if (config.customOptions.socSupport.armSoc == "rk3588") then ''
+    if [[ "$(cat /proc/sys/kernel/hostname)" != config.networking.hostName ]]; then
+        # We're not on the target machine, abort before **anything** happens.
+        exit 0
+    fi
+
     if [[ -c /dev/mtd0 ]]; then
         dd ${ddFlags} if=${selectedUbootPackage.outPath}/u-boot-rockchip-spi.bin of=/dev/mtd0
     fi
@@ -58,11 +63,6 @@ lib.mkIf config.customOptions.socSupport.enabled {
       set -x
       ${appendedPath}
       export PATH
-
-      if [[ "$(cat /proc/sys/kernel/hostname)" != config.networking.hostName ]]; then
-          # We're not on the target machine, abort before **anything** happens.
-          exit 0
-      fi
 
       if grep -q 'custom_options.uboot_version=${selectedUbootPackage.version}' /proc/cmdline; then
           # Running the latest version of U-Boot provided by Nixpkgs. Do nothing.

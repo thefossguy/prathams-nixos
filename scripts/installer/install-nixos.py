@@ -415,6 +415,10 @@ def installer_post() -> None:
     subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
         subprocess.run(['zpool', 'export', installer_variables['zpool_name']], stdout=sys.stdout, stderr=sys.stderr)
+
+    if installer_variables['system_arch'] == 'aarch64':
+        debugPrint('\n\n')
+        debugPrint('If your U-Boot resides on the target_disk, you might want to re-flash U-Boot there.')
     return
 
 def memtotal_warning() -> None:
@@ -433,11 +437,13 @@ def memtotal_warning() -> None:
     return
 
 if __name__ == '__main__':
-    system_kernel = os.uname().sysname.lower()
-    system_arch = os.uname().machine.lower()
+    installer_variables['system_kernel'] = os.uname().sysname.lower()
+    installer_variables['system_arch'] = os.uname().machine.lower()
+    if installer_variables['system_arch'] == 'arm64':
+        installer_variables['system_arch'] = 'aarch64'
 
-    if system_kernel != 'linux':
-        errorPrint(f'Platform `{system_kernel}` is unsupported.')
+    if installer_variables['system_kernel'] != 'linux':
+        errorPrint('Platform `{}-{}` is unsupported.'.format(installer_variables['system_arch'], installer_variables['system_kernel']))
         sys.exit(1)
 
     if os.getuid() != 0:
