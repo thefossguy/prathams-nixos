@@ -8,6 +8,12 @@ in {
     ../qemu/qemu-guest.nix
   ];
 
+  boot.initrd.availableKernelModules = [
+    # Prevents a boot error that says:
+    # Cannot open access to console, the root account is locked.
+    # See sulogin(8) man page for more details.
+    "onboard_usb_hub"
+  ];
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${nixosSystemConfig.coreConfig.systemUser.username}".initialHashedPassword = lib.mkForce nixosSystemConfig.coreConfig.systemUser.hashedPassword;
