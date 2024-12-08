@@ -14,7 +14,7 @@ in {
   # Prevents a boot error that says:
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
-  boot.initrd.systemd.emergencyAccess = config.user.users.root.initialHashedPassword;
+  boot.initrd.systemd.emergencyAccess = config.users.users.root.initialHashedPassword;
   # Systems with memory less than 8G get an OOM kill on running `nixos-install`
   # so instead of having one swap device, use two swap devices.
   zramSwap.swapDevices = 2;
