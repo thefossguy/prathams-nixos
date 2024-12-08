@@ -8,15 +8,13 @@ in {
     ../qemu/qemu-guest.nix
   ];
 
-  boot.initrd.availableKernelModules = [
-    # Prevents a boot error that says:
-    # Cannot open access to console, the root account is locked.
-    # See sulogin(8) man page for more details.
-    "onboard_usb_hub"
-  ];
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${nixosSystemConfig.coreConfig.systemUser.username}".initialHashedPassword = lib.mkForce nixosSystemConfig.coreConfig.systemUser.hashedPassword;
+  # Prevents a boot error that says:
+  # Cannot open access to console, the root account is locked.
+  # See sulogin(8) man page for more details.
+  boot.initrd.systemd.emergencyAccess = config.user.users.root.initialHashedPassword;
   # Systems with memory less than 8G get an OOM kill on running `nixos-install`
   # so instead of having one swap device, use two swap devices.
   zramSwap.swapDevices = 2;
