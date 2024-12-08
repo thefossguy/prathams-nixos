@@ -11,7 +11,7 @@
     useMinimalConfig = lib.mkOption {
       description = "Install and configure as little stuff as possible. Defaults to `true`.";
       type = lib.types.bool;
-      default = config.customOptions.systemType == "server";
+      default = config.customOptions.systemType == "server" && config.customOptions.displayServer.guiSession != "unset";
     };
 
     isIso = lib.mkOption {
