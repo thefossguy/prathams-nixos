@@ -2,7 +2,7 @@
 
 lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
   nix = {
-    extraOptions = ''
+    extraOptions = lib.mkAfter ''
       keep-env-derivations = true
       keep-going = true
     '';

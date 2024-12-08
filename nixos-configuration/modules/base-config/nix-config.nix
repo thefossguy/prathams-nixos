@@ -26,7 +26,7 @@ in {
       trusted-users = lib.mkForce trustedNixUsers;
     };
 
-    extraOptions = ''
+    extraOptions = lib.mkBefore ''
       ${fsyncStorePaths}
       require-sigs = true
     '';
