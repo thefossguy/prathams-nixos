@@ -17,7 +17,7 @@
   # Prevents a boot error that says:
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
-  boot.initrd.systemd.enable = config.customOptions.isIso;
+  boot.initrd.systemd.enable = !config.customOptions.isIso;
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
