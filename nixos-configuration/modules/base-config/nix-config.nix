@@ -16,7 +16,7 @@ in {
       # Enabling `eval-cache` on ISOs helps a bit with dry building the NixOS
       # configuration that occurs before filesystem partitioning and formatting.
       # But disable on normal NixOS systems. :)
-      eval-cache = config.customOptions.isIso or false;
+      eval-cache = config.customOptions.isIso;
       experimental-features = [ "nix-command" "flakes" ];
       keep-going = false;
       log-lines = 9999;
