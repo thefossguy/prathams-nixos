@@ -51,5 +51,6 @@ nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
     ../nixos-configuration/modules
 
     inputChannel.homeManager.nixosModules.default
+    inputChannel.cosmic.nixosModules.default
   ];
 }
