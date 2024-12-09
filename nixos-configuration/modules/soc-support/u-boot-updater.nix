@@ -25,7 +25,7 @@ let
   };
 
   rk3588UbootUpgradeScript = if (config.customOptions.socSupport.armSoc == "rk3588") then ''
-    if [[ "$(cat /proc/sys/kernel/hostname)" != config.networking.hostName ]]; then
+    if [[ "$(cat /proc/sys/kernel/hostname)" != ${config.networking.hostName} ]]; then
         # We're not on the target machine, abort before **anything** happens.
         exit 0
     fi
