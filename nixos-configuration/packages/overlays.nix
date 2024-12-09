@@ -59,7 +59,6 @@ in {
           disable_fw_kms_setup=1
           disable_splash=0
           display_auto_detect=1
-          dtoverlay=vc4-kms-v3d
           dtparam=audio=on
           enable_tvout=0
           max_framebuffers=2
