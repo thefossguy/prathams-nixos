@@ -4,9 +4,7 @@ let
   localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; };
   kernelPackages = if nixosSystemConfig.kernelConfig.useLongtermKernel
     then pkgs.linux_6_6
-    else (if config.customOptions.socSupport.armSoc == "rk3588"
-        then pkgs.linux_testing
-        else pkgs.linux_latest);
+    else pkgs.linux_latest;
 
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
     zfs = nixosSystemConfig.kernelConfig.useLongtermKernel;
