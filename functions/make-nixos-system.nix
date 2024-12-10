@@ -29,6 +29,7 @@ let
       ipv4PrefixLength = thisSystem.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       filesystemsMountOptions = thisSystem.extraConfig.filesystemsMountOptions or nixosSystems.commonConfig.filesystemsMountOptions;
+      dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
       inherit inputChannel allServicesSet nixBuildArgs;
     };
     kernelConfig = {

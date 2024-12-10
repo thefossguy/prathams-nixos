@@ -130,6 +130,7 @@ in {
         primaryNetIface = "enx0e9c3f0bc29f";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "rockchip/rk3588-rock-5b.dtb";
     };
 
     # Xunlong Orange Pi 5 (4GB; RK3588S)
@@ -140,6 +141,7 @@ in {
         primaryNetIface = "enx326a3f36cd7e";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "rockchip/rk3588s-orangepi-5.dtb";
     };
 
     # FriendlyElec NanoPC-T6 (16GB; RK3588)
@@ -150,6 +152,7 @@ in {
         primaryNetIface = "enP4p65s0"; # second one from the right
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "rockchip/rk3588-nanopc-t6.dtb";
     };
 
     # FriendlyElec CM3588 NAS (16GB; RK3588)
@@ -160,6 +163,7 @@ in {
         primaryNetIface = "enP4p65s0";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "rockchip/rk3588-rock-5b.dtb";
       kernelConfig.useLongtermKernel = true;
     };
 

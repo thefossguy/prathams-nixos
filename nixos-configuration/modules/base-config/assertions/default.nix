@@ -4,5 +4,6 @@
   imports = [
     ./arm-soc-assertion.nix
     ./riscv-soc-assertion.nix
+    ./rk3588-ensure-dtb-path.nix
   ];
 }
