@@ -30,7 +30,6 @@ in {
         features.rust = enableRustSupport;
         structuredExtraConfig = with lib.kernel; {
           ARM64_64K_PAGES = if enableArm64kPages then yes else unset;
-          ROCKCHIP_DW_HDMI_QP = yes;
         };
       };
     }));
