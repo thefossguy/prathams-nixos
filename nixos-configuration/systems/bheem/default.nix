@@ -7,4 +7,5 @@
   boot.kernelParams = [
     "hid_apple.swap_opt_cmd=1"
   ];
+  customOptions.socSupport.armSoc = "m4";
 }

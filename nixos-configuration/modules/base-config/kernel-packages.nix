@@ -10,9 +10,6 @@ let
     zfs = nixosSystemConfig.kernelConfig.useLongtermKernel;
   };
 
-  # Disable ARM64_64K_PAGES pages on LTS kernels because of ZFS.
-  enableArm64kPages = (config.networking.hostName == "bheem")
-    && (!nixosSystemConfig.kernelConfig.useLongtermKernel) && pkgs.stdenv.isAarch64;
 in {
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
@@ -21,7 +18,7 @@ in {
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (kernelPackages.override {
       argsOverride = {
         structuredExtraConfig = with lib.kernel; {
-          ARM64_64K_PAGES = if enableArm64kPages then yes else unset;
+          ARM64_16K_PAGES = if (config.customOptions.socSupport.armSoc == "m4") then yes else unset;
         };
       };
     }));
