@@ -7,7 +7,6 @@
   system,
   nixBuildArgs,
   useLongtermKernel,
-  enableRustSupport,
 }:
 
 let
@@ -37,7 +36,7 @@ let
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
-      inherit useLongtermKernel enableRustSupport;
+      inherit useLongtermKernel;
     };
   };
 in
