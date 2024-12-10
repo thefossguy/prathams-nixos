@@ -81,11 +81,10 @@
         system,
         useLongtermKernel,
         nixpkgsInputChannel ? "default",
-        enableRustSupport ? false,
       }: import ./functions/make-iso-system.nix {
         inherit allInputChannels mkPkgs linuxSystems fullUserSet nixBuildArgs;
         inherit system useLongtermKernel;
-        inherit nixpkgsInputChannel enableRustSupport;
+        inherit nixpkgsInputChannel;
       };
 
       mkNonNixosHomeManager = { system, userSet, nixpkgsChannel ? "default" }: import ./functions/make-home-system.nix {
