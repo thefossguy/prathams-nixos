@@ -1,7 +1,6 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
-  localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; };
   kernelPackages = if nixosSystemConfig.kernelConfig.useLongtermKernel
     then pkgs.linux_6_6
     else pkgs.linux_latest;
