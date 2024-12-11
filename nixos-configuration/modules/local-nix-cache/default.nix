@@ -12,10 +12,10 @@ let
   };
 
   # Don't let the snake eat it's own tail.
-  nixSubstituters = if isBuilder then [] else [
+  nixSubstituters = lib.optionals (!isBuilder) [
     aarch64Linux.substituters
   ];
-  nixTrustedPublicKeys = if isBuilder then [] else [
+  nixTrustedPublicKeys = lib.optionals (!isBuilder) [
     aarch64Linux.trustedPublicKeys
   ];
 in

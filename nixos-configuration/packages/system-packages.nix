@@ -35,7 +35,8 @@ in {
 
     # utilities specific to Nix
     nvd # diff between NixOS generations
-  ]) ++ (if useMinimalConfig then [] else with pkgs; [
+  ])
+  ++ lib.optionals (!useMinimalConfig) (with pkgs; [
     # optional, misc packages
     cloud-utils # provides growpart
     dmidecode

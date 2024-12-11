@@ -5,7 +5,7 @@ let
   unstablePkgs = pkgsChannels.unstable;
 
   # more chromium flags in ~/.local/scripts/other-common-scripts/flatpak-manage.sh
-  commonChromiumFlags = if (!config.customOptions.displayServer.waylandEnabled) then [] else [
+  commonChromiumFlags = lib.optionals config.customOptions.displayServer.waylandEnabled [
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
     "--enable-features=UseOzonePlatform" # enable the Ozone Wayland thingy

@@ -14,7 +14,7 @@ let
 in {
   # While I'd like some of this to go in the networking and virtualisation-specific
   # modules, it maybe belongs here? I don't know.
-  environment.systemPackages = if virtualBridgeConditional then [ pkgs.bridge-utils ] else [];
+  environment.systemPackages = lib.optionals virtualBridgeConditional [ pkgs.bridge-utils ];
   networking = {
     defaultGateway = {
       address = nixosSystemConfig.extraConfig.gatewayAddr;
