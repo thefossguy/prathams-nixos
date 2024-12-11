@@ -87,18 +87,12 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     kalk # calculator
     kdeconnect-kde
     okular # the universal document viewer (good for previews)
-  ]) ++ (if waylandEnabled then (with pkgs; [
-    # Wayland-exclusive packages goes here
-    cliphist
-    wayland-utils
-    wl-clipboard
-  ]) else (with pkgs; [
-    # X11-exclusive packages goes here
-  ])) ++ (if pkgs.stdenv.isx86_64 then (with pkgs; [
+  ])
+  ++ lib.optionals pkgs.stdenv.isx86_64 (with pkgs; [
     kdePackages.kdenlive
     mpv
     tor-browser
-  ]) else []);
+  ]);
 
 
   fonts = {
