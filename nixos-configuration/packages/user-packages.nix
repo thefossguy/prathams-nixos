@@ -30,6 +30,7 @@ let
       cargo-update # update installed binaries
       cargo-vet # ensure that the third-party dependencies are audited by a trusted source
       cargo-watch # run cargo commands when the src changes
+      gcc # added to prevent adding a $CC to the PATH to compile with cargo and to neovim for treesitter
       rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
     ] ++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ]) );
   };
@@ -171,7 +172,6 @@ in {
 
         # misc
         dict
-        gcc # for nvim-tree's parsers
         tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
       ];
     };
