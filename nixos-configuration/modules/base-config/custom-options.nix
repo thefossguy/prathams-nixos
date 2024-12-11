@@ -1,4 +1,6 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+# TODO: Remove this let-in block after RISC-V support is added to nixpkgs
+let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; }; in
 
 {
   options.customOptions = {
@@ -177,4 +179,22 @@
       };
     };
   };
+
+  config.assertions = []
+
+    ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [{
+      assertion = pkgs.stdenv.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on Aarch64.";
+    }]
+
+    ++ lib.optionals (config.customOptions.socSupport.armSoc == "rk3588") [{
+      assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
+      message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
+    }]
+
+    ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [{
+      assertion = localStdenv.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
+    }]
+  ;
 }

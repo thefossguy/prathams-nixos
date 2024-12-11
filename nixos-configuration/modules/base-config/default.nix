@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ./assertions
     ./bootloader-configuration.nix
     ./configuration.nix
     ./custom-options.nix
