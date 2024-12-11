@@ -22,11 +22,11 @@ let
       inherit (thisSystem.coreConfig) hostname ipv4Address primaryNetIface system;
       isNixOS = true;
       hostId = nixosSystems.commonConfig.hostIds."${hostname}";
-      systemUser = thisSystem.systemUser or fullUserSet.pratham;
+      systemUser = thisSystem.coreConfig.systemUser or fullUserSet.pratham;
     };
     extraConfig = {
-      gatewayAddr = thisSystem.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
-      ipv4PrefixLength = thisSystem.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
+      gatewayAddr = thisSystem.extraConfig.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
+      ipv4PrefixLength = thisSystem.extraConfig.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       filesystemsMountOptions = thisSystem.extraConfig.filesystemsMountOptions or nixosSystems.commonConfig.filesystemsMountOptions;
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
