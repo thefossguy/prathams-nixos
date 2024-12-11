@@ -11,5 +11,6 @@
     autologinSettings.guiSession.enableAutologin = true;
     enablePasswordlessSudo = true;
     kernelDevelopment.enable = true;
+    useMinimalConfig = lib.mkForce false;
   };
 }
