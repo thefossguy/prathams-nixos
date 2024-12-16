@@ -1,0 +1,95 @@
+name: Build canary
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 9 * * *' # Everyday, at 04:00 IST
+  push:
+    branches: [ "master" ]
+
+
+jobs:
+
+  build-nixos:
+    name: Build NixOS Systems
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Starting build
+        run: |
+          nix flake update
+          ./scripts/nix-ci/builder.py --native-only --nixosConfigurations
+
+  build-homes:
+    name: Build standalone home-manager configurations
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Starting build
+        run: |
+          nix flake update
+          ./scripts/nix-ci/builder.py --native-only --homeConfigurations
+
+  build-packages:
+    name: Build packages
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Starting build
+        run: |
+          nix flake update
+          ./scripts/nix-ci/builder.py --native-only --packages
+
+  build-devshells:
+    name: Build devshells
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Starting build
+        run: |
+          nix flake update
+          ./scripts/nix-ci/builder.py --native-only --devShells
+
+  build-isos:
+    name: Build NixOS ISOs
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        architecture: [x64, arm64]
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Starting build
+        run: |
+          nix flake update
+          ./scripts/nix-ci/builder.py --native-only --isoImages

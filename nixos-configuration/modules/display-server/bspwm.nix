@@ -1,8 +1,6 @@
-{ pkgs, systemUser, ... }:
+{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-{
-  imports = [ ./base-display-server.nix ];
-
+lib.mkIf (config.customOptions.displayServer.guiSession == "bspwm") {
   xdg.portal = {
     configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
     extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
@@ -13,8 +11,8 @@
       windowManager = {
         bspwm = {
           enable = true;
-          configFile = "/home/${nixosSystem.systemUser.username}/.config/bspwm/bspwmrc";
-          sxhkd.configFile = "/home/${nixosSystem.systemUser.username}/.config/sxhkd/sxhkdrc";
+          configFile = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.config/bspwm/bspwmrc";
+          sxhkd.configFile = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.config/sxhkd/sxhkdrc";
         };
       };
 

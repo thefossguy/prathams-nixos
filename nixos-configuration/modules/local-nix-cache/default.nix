@@ -1,21 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-lib.mkIf (config.custom-options.isNixCacheMachine or false) {
-  services.nix-serve = {
-    enable = true;
-    openFirewall = true;
-    port = 5000;
-    secretKeyFile = "/my-nix-binary-cache/cache-priv-key.pem";
-    package = pkgs.nix-serve-ng;
-  };
+{
+  imports = [
+    ./builder.nix
+    ./server.nix
+  ];
 
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    virtualHosts = {
-      "nixcache.chaturvyas.localhost" = {
-        locations."/".proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
-      };
-    };
+  nix.settings = {
+    extra-substituters = [ "http://10.0.0.24" ];
+    extra-trusted-public-keys = [ "10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=" ];
   };
 }

@@ -1,5 +1,5 @@
-{ ... }:
+{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 {
-  imports = [ ./gui-autologin.nix ./tty-autologin.nix ];
+  imports = [ ./getty-autologin.nix ./guisesssion-autologin.nix ];
 }
