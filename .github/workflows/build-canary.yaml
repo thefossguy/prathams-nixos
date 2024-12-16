@@ -27,7 +27,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --native-only --nixosConfigurations
+          ./scripts/nix-ci/builder.py --nixosConfigurations
 
   build-homes:
     name: Build standalone home-manager configurations
@@ -47,7 +47,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --native-only --homeConfigurations
+          ./scripts/nix-ci/builder.py --homeConfigurations
 
   build-packages:
     name: Build packages
@@ -67,7 +67,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --native-only --packages
+          ./scripts/nix-ci/builder.py --packages
 
   build-devshells:
     name: Build devshells
@@ -87,7 +87,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --native-only --devShells
+          ./scripts/nix-ci/builder.py --devShells
 
   build-isos:
     name: Build NixOS ISOs
@@ -107,4 +107,4 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --native-only --isoImages
+          ./scripts/nix-ci/builder.py --isoImages

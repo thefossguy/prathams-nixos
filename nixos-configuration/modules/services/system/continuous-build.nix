@@ -22,7 +22,7 @@ in lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
         Type = "oneshot";
       };
 
-      script = "python3 /etc/nixos/scripts/nix-ci/builder.py --native-only --nixosConfigurations --homeConfigurations --devShells --packages";
+      script = "python3 /etc/nixos/scripts/nix-ci/builder.py --nixosConfigurations --homeConfigurations --devShells --packages";
     };
   };
 }

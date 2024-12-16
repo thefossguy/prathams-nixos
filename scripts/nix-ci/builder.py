@@ -41,7 +41,7 @@ def get_all_supported_systems() -> None:
         print('ERROR: Your system `{}` is unsupported.'.format(native_system))
         cleanup(1)
 
-    if '--native-only' not in sys.argv:
+    if '--use-emulation' in sys.argv:
         binfmt_dir = '/proc/sys/fs/binfmt_misc'
         if pathlib.Path('{}/status'.format(binfmt_dir)).is_file():
             with open('{}/status'.format(binfmt_dir), 'r') as binfmt_status_file:
