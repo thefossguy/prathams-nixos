@@ -16,6 +16,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         architecture: [x64, arm64]
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
@@ -33,6 +36,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         architecture: [x64, arm64]
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
@@ -50,6 +56,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         architecture: [x64, arm64]
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
@@ -67,6 +76,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         architecture: [x64, arm64]
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
@@ -84,6 +96,9 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         architecture: [x64, arm64]
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
