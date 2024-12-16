@@ -5,5 +5,4 @@
 
   customOptions.socSupport.armSoc = "rk3588";
   customOptions.localCaching.servesNixDerivations = true;
-  customOptions.localCaching.buildsNixDerivations = true;
 }
