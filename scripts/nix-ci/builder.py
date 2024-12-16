@@ -121,16 +121,13 @@ if __name__ == '__main__':
 
     get_all_supported_systems()
 
+    system_dep_attr_names = []
     if '--nixosConfigurations' in sys.argv:
         get_supported_nixos_systems()
-
-    system_dep_attr_names = []
     for supported_system_dep_attr_name in ci_variables['supported_system_dep_attr_names']:
         if '--{}'.format(supported_system_dep_attr_name) in sys.argv:
             system_dep_attr_names.append(supported_system_dep_attr_name)
     get_system_dep_attrs(system_dep_attr_names)
-
-
     ci_variables['nix_build_targets'] = ci_variables['nixosConfigurations'] + ci_variables['homeConfigurations'] + ci_variables['packages'] + ci_variables['devShells'] + ci_variables['isoImages']
 
     if len(ci_variables['nix_build_targets']) > 0:
@@ -145,7 +142,6 @@ if __name__ == '__main__':
                 else:
                     print('WARN: outPath for expression `{}` (`{}`) has not been sent to the store yet.'.format(nix_build_target, eval_out_path))
                     continue
-
             cleanup(0)
 
         else:
@@ -162,5 +158,15 @@ if __name__ == '__main__':
                         print('ERROR: Could not build `{}`.'.format(nix_build_target))
                         cleanup(process.returncode)
 
+                # Just in case the reason for failure to build multiple nix targets
+                # had nothing to do with my nix code and each target, when built
+                # individually, did build.
+                print('Retrying a rebuild of these targets: `{}`'.format(' '.join(ci_variables['nix_build_targets'])))
+                build_all_targets_process = subprocess.run(make_nix_build_command(ci_variables['nix_build_targets']), stdout=sys.stdout, stderr=sys.stderr, text=True, check=False)
+                cleanup(build_all_targets_process.returncode)
+            else:
+                cleanup(0)
+
+    else:
         print('WARN: No Nix build targets were specified so building nothing.')
         cleanup(0)
