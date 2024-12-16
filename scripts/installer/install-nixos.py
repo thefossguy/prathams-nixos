@@ -65,7 +65,6 @@ def dry_build_nixos_configuration() -> None:
         '--max-jobs', '1',
         '--print-build-logs',
         '--show-trace',
-        '--trace-verbose',
         '--verbose',
         '.#nixosConfigurations.' + hostname + '.config.system.build.toplevel'
     ]

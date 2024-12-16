@@ -77,7 +77,7 @@ in {
       XDG_CACHE_HOME = "$HOME/.cache";
 
       NIXOS_MACHINE_HOSTNAME = config.networking.hostName;
-      MY_NIX_BUILD_FLAGS = "--print-build-logs --show-trace --trace-verbose --verbose";
+      MY_NIX_BUILD_FLAGS = "--print-build-logs --show-trace --verbose";
     };
   };
 

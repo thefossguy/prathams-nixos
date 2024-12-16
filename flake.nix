@@ -61,7 +61,7 @@
 
       fullUserSet = import ./functions/full-user-set.nix;
 
-      nixBuildArgs = "--max-jobs 1 --print-build-logs --show-trace --trace-verbose --verbose";
+      nixBuildArgs = "--max-jobs 1 --print-build-logs --show-trace --verbose";
 
       mkNixosSystem = hostname: import ./functions/make-nixos-system.nix {
         inherit allInputChannels mkPkgs linuxSystems fullUserSet hostname nixBuildArgs;
