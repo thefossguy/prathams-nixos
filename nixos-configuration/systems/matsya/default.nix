@@ -10,6 +10,7 @@
     cpuMicrocodeVendor = "intel";
     enablePasswordlessSudo = true;
     gpuSupport = [ "intel" ];
+    localCaching.buildsNixDerivations = true;
     virtualisation.enable = true;
   };
 }
