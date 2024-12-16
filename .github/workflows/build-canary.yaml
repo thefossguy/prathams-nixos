@@ -2,7 +2,7 @@ name: Build canary
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 9 * * *' # Everyday, at 04:00 IST
+    - cron: '30 18 * * *' # Everyday, at 00:00 IST
   push:
     branches: [ "master" ]
 
