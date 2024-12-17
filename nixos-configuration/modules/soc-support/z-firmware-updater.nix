@@ -67,12 +67,13 @@ lib.mkIf config.customOptions.socSupport.handleFirmwareUpdates {
 
       ${appendedPath}
       export PATH
-      ${rpiUpdateScript}
-      ${rk3588UpdateScript}
 
       if grep -q 'custom_options.uboot_version=${selectedUbootPackage.version}' /proc/cmdline; then
           exit 0
       fi
+
+      ${rpiUpdateScript}
+      ${rk3588UpdateScript}
 
       echo 'The script finished but could not flash U-Boot.'
       exit 1
