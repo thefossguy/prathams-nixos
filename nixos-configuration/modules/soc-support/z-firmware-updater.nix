@@ -23,6 +23,7 @@ let
 
   rpiUpdateScript = lib.strings.optionalString ((config.customOptions.socSupport.armSoc == "rpi4") || (config.customOptions.socSupport.armSoc == "rpi5")) ''
     ${pkgs.rsync}/bin/rsync --quiet --no-motd --checksum --recursive --progress --stats ${selectedUbootPackage.outPath}/ /boot/
+    exit 0
   '';
 
   rk3588UpdateScript = lib.strings.optionalString (config.customOptions.socSupport.armSoc == "rk3588") ''
@@ -36,10 +37,9 @@ let
         exit 0
     fi
 
-    UBOOT_FLASHED=0
     if [[ -c /dev/mtd0 ]]; then
         dd ${ddFlags} of=/dev/mtd0 if=${selectedUbootPackage.outPath}/u-boot-rockchip-spi.bin
-        UBOOT_FLASHED=1
+        exit 0
     fi
 
     EMMC_DEVICES=( '/dev/mmcblk0' '/dev/mmcblk1' )
@@ -47,15 +47,10 @@ let
         if [[ -b "''${MMC_DEV}" ]]; then
             if fdisk -l "''${MMC_DEV}" | grep 'EFI System' | grep -q 131072; then
                 dd ${ddFlags} bs=512 seek=64 of="''${MMC_DEV}" if=${selectedUbootPackage.outPath}/u-boot-rockchip.bin
-                UBOOT_FLASHED=1
+                exit 0
             fi
         fi
     done
-
-    if [[ "''${UBOOT_FLASHED}" -eq 0 ]]; then
-        echo "Could not update U-Boot. Found no suitable media to flash."
-        exit 1
-    fi
   '';
 in
 
@@ -68,12 +63,15 @@ lib.mkIf config.customOptions.socSupport.handleFirmwareUpdates {
     loader.systemd-boot.extraInstallCommands = ''
       # ----[ cut ]----
       # U-Boot upgrade script starts here
-      set -x
+      set -xeuf -o pipefail
 
       ${appendedPath}
       export PATH
       ${rpiUpdateScript}
       ${rk3588UpdateScript}
+
+      echo 'The script finished but could not flash U-Boot.'
+      exit 1
     '';
   };
 }
