@@ -8,7 +8,7 @@ let
     timeZone = "Asia/Kolkata";
     # systemd.time format: ${weekday:-} YYYY-MM-DD hour:minute:second
     # The `weekday` must be [non-]abbreviated and not the catch-all `*`.
-    Hourly = { minute ? "00" }: "*-*-* *:${minute}*00 ${systemdTime.timeZone}";
+    Hourly = { minute ? "00" }: "*-*-* *:${minute}:00 ${systemdTime.timeZone}";
     Daily = { hour ? "00" }: "*-*-* ${hour}:00:00 ${systemdTime.timeZone}";
     Weekly = { weekday, hour ? "00" }: "${weekday} *-*-* ${hour}:00:00 ${systemdTime.timeZone}";
     Monthly = { weekday, day, hour ? "00" }: "${weekday} *-*-${day} ${hour}:00:00 ${systemdTime.timeZone}";
