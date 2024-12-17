@@ -2,13 +2,12 @@
 
 let
   kernelPackages = if nixosSystemConfig.kernelConfig.useLongtermKernel
-    then pkgs.linux_6_6
+    then pkgs.linux_6_12
     else pkgs.linux_latest;
 
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
     zfs = nixosSystemConfig.kernelConfig.useLongtermKernel;
   };
-
 in {
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
