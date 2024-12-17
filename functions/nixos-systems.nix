@@ -163,7 +163,7 @@ in {
         primaryNetIface = "enP4p65s0";
         system = linuxSystems.aarch64;
       };
-      extraConfig.dtbRelativePath = "rockchip/rk3588-rock-5b.dtb";
+      extraConfig.dtbRelativePath = "rockchip/rk3588-friendlyelec-cm3588-nas.dtb";
       kernelConfig.useLongtermKernel = true;
     };
 
