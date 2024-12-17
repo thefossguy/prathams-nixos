@@ -226,35 +226,7 @@ def partition_target_disk_nozfs() -> None:
 
     return
 
-def partition_target_disk_zfs() -> None:
-    if shutil.which('zfs') == None:
-        errorPrint('ZFS userspace utilities were not detected. Not partitioning anything.')
-        sys.exit(1)
-
-    hostname = installer_variables['hostname']
-    installer_variables['zpool_name'] = hostname + '-zpool'
-    target_disk = installer_variables['target_disk']
-    boot_part_sizes = installer_variables['boot_part_sizes']
-    boot_part_dev = installer_variables['boot_part_dev']
-    boot_part_uuid = get_partition_uuid('boot').replace('-','')
-
-    parted_command = [ 'parted', '--script', '--fix', target_disk,
-        'mklabel', 'gpt',
-        'mkpart', 'primary', 'fat32', '{}MiB'.format(boot_part_sizes[0]), '{}MiB'.format(boot_part_sizes[1]),
-        'set', '1', 'esp', 'on',
-    ]
-    parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
-    if parted_process.returncode != 0:
-        errorPrint('The partitioning script failed with the following error:\n```\n{}\n```'.format(parted_process.stderr))
-        sys.exit(1)
-
-    mkfs_command = [ 'mkfs.fat', '-F', '32', '-n', 'nixboot', boot_part_dev, '-i', boot_part_uuid ]
-    debugPrint('{}'.format(mkfs_command))
-    mkfs_process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True)
-    if mkfs_process.returncode != 0:
-        errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, mkfs_process.stderr))
-        sys.exit(1)
-
+def destroy_and_recreate_zpool() -> None:
     zpool_create_command = [
         'zpool', 'create',
         '-o', 'ashift=12',
@@ -278,8 +250,6 @@ def partition_target_disk_zfs() -> None:
     imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
     if installer_variables['zpool_name'] in imported_zpools_process.stdout:
         subprocess.run(['zpool', 'destroy', '-f', installer_variables['zpool_name']], check=True)
-
-
 
     if installer_variables['hostname'] == 'chaturvyas':
         zpool_create_command[zpool_create_command.index('ashift=12')] = 'ashift=13'
@@ -314,7 +284,40 @@ def partition_target_disk_zfs() -> None:
             sys.exit(1)
 
     subprocess.run(['zpool', 'export', installer_variables['zpool_name']], text=True, stderr=subprocess.PIPE, check=True)
-    subprocess.run(['zpool', 'import', installer_variables['zpool_name'], '-R', installer_variables['mount_path']], text=True, stderr=subprocess.PIPE, check=True)
+    return
+
+def partition_target_disk_zfs() -> None:
+    if shutil.which('zfs') == None:
+        errorPrint('ZFS userspace utilities were not detected. Not partitioning anything.')
+        sys.exit(1)
+
+    hostname = installer_variables['hostname']
+    installer_variables['zpool_name'] = hostname + '-zpool'
+    target_disk = installer_variables['target_disk']
+    boot_part_sizes = installer_variables['boot_part_sizes']
+    boot_part_dev = installer_variables['boot_part_dev']
+    boot_part_uuid = get_partition_uuid('boot').replace('-','')
+
+    parted_command = [ 'parted', '--script', '--fix', target_disk,
+        'mklabel', 'gpt',
+        'mkpart', 'primary', 'fat32', '{}MiB'.format(boot_part_sizes[0]), '{}MiB'.format(boot_part_sizes[1]),
+        'set', '1', 'esp', 'on',
+    ]
+    parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
+    if parted_process.returncode != 0:
+        errorPrint('The partitioning script failed with the following error:\n```\n{}\n```'.format(parted_process.stderr))
+        sys.exit(1)
+
+    mkfs_command = [ 'mkfs.fat', '-F', '32', '-n', 'nixboot', boot_part_dev, '-i', boot_part_uuid ]
+    debugPrint('{}'.format(mkfs_command))
+    mkfs_process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True)
+    if mkfs_process.returncode != 0:
+        errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, mkfs_process.stderr))
+        sys.exit(1)
+
+    if '--destroy-zpool' in sys.argv:
+        destroy_and_recreate_zpool()
+    subprocess.run(['zpool', 'import', '-f', installer_variables['zpool_name'], '-R', installer_variables['mount_path']], text=True, stderr=subprocess.PIPE, check=True)
     subprocess.run(['mount', '-o', 'umask=077', '--mkdir', boot_part_dev, installer_variables['mount_path'] + '/boot'])
     return
 
