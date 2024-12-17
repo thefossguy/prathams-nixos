@@ -188,6 +188,7 @@ def partition_target_disk_nozfs() -> None:
         'mkpart', 'primary', 'xfs',   '{}MiB'.format(varl_part_sizes[0]), '100%',
         'set', '1', 'esp', 'on',
     ]
+    debugPrint('{}'.format(parted_command))
     parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
     if parted_process.returncode != 0:
         errorPrint('The partitioning script failed with the following error:\n```\n{}\n```'.format(parted_process.stderr))
