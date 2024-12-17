@@ -29,6 +29,7 @@ in {
     extraOptions = lib.mkBefore ''
       ${fsyncStorePaths}
       require-sigs = true
+      fallback = true
     '';
   };
 }
