@@ -1,8 +1,7 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
-  disableSystemdInIinitrd = (config.customOptions.isIso ||
-    (config.fileSystems."/".fsType == "zfs"));
+  disableSystemdInIinitrd = config.customOptions.isIso;
 in {
   # The `nixpkgs.buildPlatform.system` option must be set for cross compilation
   # to work. Now, since I wish to perform cross compilation from a Linux
