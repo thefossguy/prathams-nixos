@@ -1,6 +1,9 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-{
+let
+  disableSystemdInIinitrd = (config.customOptions.isIso ||
+    (config.fileSystems."/".fsType == "zfs"));
+in {
   # The `nixpkgs.buildPlatform.system` option must be set for cross compilation
   # to work. Now, since I wish to perform cross compilation from a Linux
   # machine that is not always going to be an `x86_64-linux`, I am using the
@@ -17,7 +20,7 @@
   # Prevents a boot error that says:
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
-  boot.initrd.systemd.enable = !config.customOptions.isIso;
+  boot.initrd.systemd.enable = !disableSystemdInIinitrd;
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
