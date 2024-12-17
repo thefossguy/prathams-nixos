@@ -29,7 +29,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         # actually building it. So instead of signing every store path, sign
         # only the ones that are in /etc/nixos/result*. Reducing the time taken.
         pushd /etc/nixos || exit 1
-        python3 ./scripts/nix-ci/builder.py --link-only --nixosConfigurations --homeConfigurations --devShells --packages
+        python3 ./scripts/nix-ci/builder.py --use-emulation --link-only --nixosConfigurations --homeConfigurations --devShells --packages
         nix store sign --key-file /my-nix-binary-cache/cache-priv-key.pem /etc/nixos/result*
         popd || exit 0
       '';
