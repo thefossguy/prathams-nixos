@@ -78,13 +78,20 @@ def dry_build_nixos_configuration() -> None:
     return
 
 def get_target_disk_size() -> None:
-    min_disk_size_limit = 64
     block_dev_name = installer_variables['target_disk'].split('/')
     target_disk_size_filepath = '/sys/block/' + block_dev_name[2] + '/size'
     target_disk_size_file = open(target_disk_size_filepath, 'r')
     target_disk_size = target_disk_size_file.readline()
     target_disk_size_file.close()
     target_disk_size = int(math.floor((float(target_disk_size) / 2 / 1024 / 1024)))
+
+    zfs_in_use = subprocess.run([ 'nix', 'eval', '--json', '.#nixosConfigurations.{}.config.fileSystems'.format(installer_variables['hostname']), '--apply', 'fileMounts: builtins.mapAttrs (name: value: value.fsType) fileMounts' ], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    if '":"zfs"' in zfs_in_use.stdout:
+        installer_variables['zfs_in_use'] = True
+        min_disk_size_limit = 2
+    else:
+        installer_variables['zfs_in_use'] = False
+        min_disk_size_limit = 64
 
     if target_disk_size < min_disk_size_limit:
         errorPrint('The target disk `{}` is too small ({}G) for NixOS. A disk with the minimum size of {}G is required.'.format(installer_variables['target_disk'], target_disk_size, min_disk_size_limit))
@@ -322,15 +329,8 @@ def partition_target_disk_zfs() -> None:
     return
 
 def partition_target_disk() -> None:
-    hostname = installer_variables['hostname']
     target_disk = installer_variables['target_disk']
-    mount_path = installer_variables['mount_path']
     partition_suffix = ''
-
-    hostname_hardware_nix_filepath = 'nixos-configuration/systems/' + hostname + '/hardware-configuration.nix'
-    hostname_hardware_nix_file = open(hostname_hardware_nix_filepath, 'r')
-    hostname_hardware_nix = hostname_hardware_nix_file.read()
-    hostname_hardware_nix_file.close()
 
     if 'sd' in target_disk or 'vd' in target_disk:
         partition_suffix = ''
@@ -346,11 +346,9 @@ def partition_target_disk() -> None:
     installer_variables['home_part_dev'] = target_disk + partition_suffix + '3'
     installer_variables['varl_part_dev'] = target_disk + partition_suffix + '4'
 
-    if 'fsType = "zfs"' in hostname_hardware_nix:
-        installer_variables['zfs_in_use'] = True
+    if installer_variables['zfs_in_use']:
         partition_target_disk_zfs()
     else:
-        installer_variables['zfs_in_use'] = False
         partition_target_disk_nozfs()
     return
 
