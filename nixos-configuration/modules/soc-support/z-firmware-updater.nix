@@ -45,7 +45,7 @@ let
     EMMC_DEVICES=( '/dev/mmcblk0' '/dev/mmcblk1' )
     for MMC_DEV in "''${EMMC_DEVICES[@]}"; do
         if [[ -b "''${MMC_DEV}" ]]; then
-            if fdisk -l "''${MMC_DEV}" | grep 'EFI System' | grep -q 65536; then
+            if fdisk -l "''${MMC_DEV}" | grep 'EFI System' | grep -q 131072; then
                 dd ${ddFlags} bs=512 seek=64 of="''${MMC_DEV}" if=${selectedUbootPackage.outPath}/u-boot-rockchip.bin
                 UBOOT_FLASHED=1
             fi
