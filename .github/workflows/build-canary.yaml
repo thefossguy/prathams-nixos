@@ -11,11 +11,7 @@ jobs:
 
   build-nixos:
     name: Build NixOS Systems
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        architecture: [x64, arm64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
@@ -27,15 +23,11 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --nixosConfigurations
+          ./scripts/nix-ci/builder.py --cross-aarch64-linux --nixosConfigurations
 
   build-homes:
     name: Build standalone home-manager configurations
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        architecture: [x64, arm64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
@@ -47,15 +39,11 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --homeConfigurations
+          ./scripts/nix-ci/builder.py --cross-aarch64-linux --homeConfigurations
 
   build-packages:
     name: Build packages
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        architecture: [x64, arm64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
@@ -67,15 +55,11 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --packages
+          ./scripts/nix-ci/builder.py --cross-aarch64-linux --packages
 
   build-devshells:
     name: Build devshells
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        architecture: [x64, arm64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
@@ -87,15 +71,11 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --devShells
+          ./scripts/nix-ci/builder.py --cross-aarch64-linux --devShells
 
   build-isos:
     name: Build NixOS ISOs
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        architecture: [x64, arm64]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
@@ -107,4 +87,4 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --isoImages
+          ./scripts/nix-ci/builder.py --cross-aarch64-linux --isoImages
