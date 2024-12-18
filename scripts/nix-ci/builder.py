@@ -7,6 +7,7 @@ import subprocess
 import sys
 
 ci_variables = {}
+ci_variables['impure_build'] = False
 ci_variables['logfile'] = 'flake-ci-started.log'
 ci_variables['supported_systems'] = [
     'aarch64-linux',
@@ -55,6 +56,7 @@ def get_all_supported_systems() -> None:
     for cross_system in ci_variables['supported_systems']:
         if '--cross-{}'.format(cross_system) in sys.argv:
             if cross_system not in ci_variables['all_supported_systems']:
+                ci_variables['impure_build'] = True
                 ci_variables['all_supported_systems'].append(cross_system)
 
     ci_variables['all_supported_systems'].sort()
@@ -119,6 +121,8 @@ def make_nix_build_command(nix_build_targets):
         command = [ 'nix', 'run', 'nixpkgs#nix-output-monitor', '--', ] + command
     else:
         command = [ 'nix', ] + command
+    if ci_variables['impure_build']:
+        command = command + [ '--impure', ]
     return command
 
 if __name__ == '__main__':
