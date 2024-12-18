@@ -49,7 +49,13 @@ def get_all_supported_systems() -> None:
                     files_in_binfmt_dir = next(os.walk(binfmt_dir), (None, None, []))[2]
                     for emulated_system in files_in_binfmt_dir:
                         if emulated_system in ci_variables['supported_systems']:
-                            ci_variables['all_supported_systems'].append(emulated_system)
+                            if emulated_system not in ci_variables['all_supported_systems']:
+                                ci_variables['all_supported_systems'].append(emulated_system)
+
+    for cross_system in ci_variables['supported_systems']:
+        if '--cross-{}'.format(cross_system) in sys.argv:
+            if cross_system not in ci_variables['all_supported_systems']:
+                ci_variables['all_supported_systems'].append(cross_system)
 
     ci_variables['all_supported_systems'].sort()
     return
