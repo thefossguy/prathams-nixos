@@ -39,7 +39,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --cross-aarch64-linux --homeConfigurations
+          ./scripts/nix-ci/builder.py --homeConfigurations
 
   build-packages:
     name: Build packages
@@ -55,7 +55,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --cross-aarch64-linux --packages
+          ./scripts/nix-ci/builder.py --packages
 
   build-devshells:
     name: Build devshells
@@ -71,7 +71,7 @@ jobs:
       - name: Starting build
         run: |
           nix flake update
-          ./scripts/nix-ci/builder.py --cross-aarch64-linux --devShells
+          ./scripts/nix-ci/builder.py --devShells
 
   build-isos:
     name: Build NixOS ISOs
