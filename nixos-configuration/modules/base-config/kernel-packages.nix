@@ -16,8 +16,7 @@ in {
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (kernelPackages.override {
       argsOverride = {
         structuredExtraConfig = with lib.kernel; {
-          # 16K ARM kernels are disabled for a bit.
-          #ARM64_16K_PAGES = if (config.customOptions.socSupport.armSoc == "m4") then yes else unset;
+          ARM64_16K_PAGES = if (!nixosSystemConfig.kernelConfig.useLongtermKernel) then yes else unset;
         };
       };
     }));
