@@ -45,8 +45,7 @@ in rec {
 
   resetSystemdUserUnits = mkServiceConfig {
     unitName = "reset-systemd-user-units";
-    beforeUnits = [ "home-manager-${systemUserUsername}.service" ];
-    requiredByUnits = resetSystemdUserUnits.beforeUnits;
+    wantedByUnits = [ "multi-user.target" ];
   };
 
   scheduledReboots = mkServiceConfig {
