@@ -2,7 +2,7 @@
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.podmanInit;
-  appendedPath = import ../../../../../functions/make-podman-container-service.nix {
+  appendedPath = import ../../../../../functions/append-to-path.nix {
     packages = with pkgs; [
       bash
       choose
@@ -16,12 +16,11 @@ let
     ];
   };
 in lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
-  home.packages = with pkgs; [
-    #buildah
-    ctop
-    podman-compose
-    podman-tui
-  ];
+  home.packages = [
+    pkgs.ctop
+    pkgs.podman-compose
+    pkgs.podman-tui
+  ] ++ lib.optionals (osConfig.customOptions.useMinimalConfig or false) [ pkgs.buildah ];
 
   systemd.user.services."${serviceConfig.unitName}" = {
     Install = { WantedBy = [ "default.target" ]; };
@@ -43,7 +42,7 @@ in lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or fa
     Service = {
       Type = "oneshot";
       Environment = [ appendedPath ];
-      ExecStart = "bash /home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
+      ExecStart = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
     };
   };
 }

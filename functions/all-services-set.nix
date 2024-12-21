@@ -92,4 +92,8 @@ in rec {
     unitName = "update-rust";
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
+
+  podmanInit = mkServiceConfig {
+    unitName = "podman-init";
+  };
 }
