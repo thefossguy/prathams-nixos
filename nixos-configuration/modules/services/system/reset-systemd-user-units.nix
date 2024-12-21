@@ -7,21 +7,19 @@ in {
   systemd = {
     services."${serviceConfig.unitName}" = {
       enable = true;
-      wantedBy = serviceConfig.wantedBy;
+      before = serviceConfig.beforeUnits;
+      requiredBy = serviceConfig.requiredByUnits;
 
       unitConfig = {
-        RequiresMountsFor = "/home /home/${systemUserUsername}";
+        RequiresMountsFor = "/home/${systemUserUsername}";
       };
 
       serviceConfig = {
         User = "root";
         Type = "oneshot";
-        RemainAfterExit = true;
-        JobTimeoutSec = "infinity";
-        JobRunningTimeoutSec = "infinity";
-        ExecStart = "${pkgs.coreutils}/bin/true";
-        ExecStop = "rm -rf /home/${systemUserUsername}/.config/systemd/user";
       };
+
+      script = "rm -rf /home/${systemUserUsername}/.config/systemd/user";
     };
   };
 }

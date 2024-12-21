@@ -1,6 +1,5 @@
 { allInputChannels, mkPkgs, system, systemUser, nixpkgsChannel ? "default", nixBuildArgs }:
 let
-  allServicesSet = import ./all-services-set.nix { systemType = nixosSystemConfig.extraConfig.systemType; };
   inputChannel = allInputChannels."${nixpkgsChannel}";
   pkgsChannels = {
     pkgs = mkPkgs {
@@ -23,7 +22,12 @@ let
       isNixOS = false;
     };
     extraConfig = {
-      inherit inputChannel allServicesSet nixBuildArgs;
+      systemType = "server";
+      allServicesSet = import ./all-services-set.nix {
+        systemType = nixosSystemConfig.extraConfig.systemType;
+        systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
+      };
+      inherit inputChannel nixBuildArgs;
     };
   };
 in nixosSystemConfig.extraConfig.inputChannel.homeManager.lib.homeManagerConfiguration {

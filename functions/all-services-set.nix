@@ -1,4 +1,4 @@
-{ systemType }:
+{ systemType, systemUserUsername }:
 let
   isServer = systemType == "server";
   isDesktop = systemType == "desktop";
@@ -13,8 +13,13 @@ let
     Weekly = { weekday, hour ? "00" }: "${weekday} *-*-* ${hour}:00:00 ${systemdTime.timeZone}";
     Monthly = { weekday, day, hour ? "00" }: "${weekday} *-*-${day} ${hour}:00:00 ${systemdTime.timeZone}";
   };
-  mkServiceConfig = { unitName, onCalendar ? "", afterUnits ? [], requiredUnits ? [], wantedBy ? [], ... }: {
-    inherit unitName onCalendar afterUnits requiredUnits wantedBy;
+  mkServiceConfig = {
+    unitName, onCalendar ? "",
+    afterUnits ? [],  wantedUnits ? [],   requiredUnits ? [],
+    beforeUnits ? [], wantedByUnits ? [], requiredByUnits ? [], ... }: {
+    inherit unitName onCalendar
+      afterUnits  wantedUnits   requiredUnits
+      beforeUnits wantedByUnits requiredByUnits;
   };
 in rec {
   # System services
@@ -40,7 +45,8 @@ in rec {
 
   resetSystemdUserUnits = mkServiceConfig {
     unitName = "reset-systemd-user-units";
-    wantedBy = [ "multi-user.target" ];
+    beforeUnits = [ "home-manager-${systemUserUsername}.service" ];
+    requiredByUnits = resetSystemdUserUnits.beforeUnits;
   };
 
   scheduledReboots = mkServiceConfig {
