@@ -13,8 +13,8 @@ let
     Weekly = { weekday, hour ? "00" }: "${weekday} *-*-* ${hour}:00:00 ${systemdTime.timeZone}";
     Monthly = { weekday, day, hour ? "00" }: "${weekday} *-*-${day} ${hour}:00:00 ${systemdTime.timeZone}";
   };
-  mkServiceConfig = { unitName, onCalendar ? "", afterUnits ? [], requiredUnits ? [], ... }: {
-    inherit unitName onCalendar afterUnits requiredUnits;
+  mkServiceConfig = { unitName, onCalendar ? "", afterUnits ? [], requiredUnits ? [], wantedBy ? [], ... }: {
+    inherit unitName onCalendar afterUnits requiredUnits wantedBy;
   };
 in rec {
   # System services
@@ -36,6 +36,11 @@ in rec {
     unitName = "ensure-local-static-ip";
     afterUnits = [ "network-online.target" ];
     requiredUnits = ensureLocalStaticIp.afterUnits;
+  };
+
+  resetSystemdUserUnits = mkServiceConfig {
+    unitName = "reset-systemd-user-units";
+    wantedBy = [ "multi-user.target" ];
   };
 
   scheduledReboots = mkServiceConfig {
