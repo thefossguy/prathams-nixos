@@ -17,7 +17,7 @@ let
       openssl
     ];
   };
-in lib.mkIf pkgs.stdenv.isLinux {
+in lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = { RequiredBy = [ "timers.target" ]; };
