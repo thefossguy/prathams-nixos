@@ -61,6 +61,11 @@ in rec {
     afterUnits = customNixosUpgrade;
   };
 
+  syncNixBuildResults = mkServiceConfig {
+    unitName = "sync-nix-build-results";
+    onCalendar = continuousBuild.onCalendar;
+  };
+
   updateNixosFlakeInputs = mkServiceConfig {
     unitName = "update-nixos-flake-inputs";
   };

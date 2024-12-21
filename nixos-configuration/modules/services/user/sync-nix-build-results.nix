@@ -2,7 +2,7 @@
 
 let
   localCacheRemote = "chaturvyas";
-  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.continuousBuild;
+  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.syncNixBuildResults;
   appendedPath = import ../../../../functions/append-to-path.nix {
     packages = with pkgs; [
       coreutils
@@ -20,7 +20,6 @@ in lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) 
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
-        OnBootSec = "10m";
       };
     };
 
