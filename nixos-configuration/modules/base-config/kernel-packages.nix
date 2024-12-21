@@ -8,6 +8,10 @@ let
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
     zfs = nixosSystemConfig.kernelConfig.useLongtermKernel;
   };
+
+  enable16kPagesOnAarch64 = if ((!nixosSystemConfig.kernelConfig.useLongtermKernel) && pkgs.stdenv.isAarch64)
+    then lib.kernel.yes
+    else lib.kernel.unset;
 in {
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
@@ -16,7 +20,7 @@ in {
     kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (kernelPackages.override {
       argsOverride = {
         structuredExtraConfig = with lib.kernel; {
-          ARM64_16K_PAGES = if (!nixosSystemConfig.kernelConfig.useLongtermKernel) then yes else unset;
+          ARM64_16K_PAGES = enable16kPagesOnAarch64;
         };
       };
     }));
