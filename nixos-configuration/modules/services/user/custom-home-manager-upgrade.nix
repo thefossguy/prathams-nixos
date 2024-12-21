@@ -11,6 +11,7 @@ let
     packages = with pkgs; [
       git
       home-manager
+      iputils
       nix
       openssh
       openssl
@@ -41,6 +42,10 @@ in lib.mkIf pkgs.stdenv.isLinux {
           set -xeuf -o pipefail
 
           ${connectivityCheckScript}
+
+          if [[ ! -d ${localNixosConfigDir} ]]; then
+              git clone https://gitlab.com/thefossguy/prathams-nixos.git ${localNixosConfigDir}
+          fi
 
           pushd ${localNixosConfigDir} || exit 1
           git pull

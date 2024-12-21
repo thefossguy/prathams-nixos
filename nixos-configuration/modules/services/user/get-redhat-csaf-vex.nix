@@ -4,7 +4,9 @@ let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.getRedhatCsafVex;
   appendedPath = import ../../../../functions/append-to-path.nix {
     packages = with pkgs; [
+      coreutils-full
       gnutar
+      iputils
       wget
       zstd
     ];

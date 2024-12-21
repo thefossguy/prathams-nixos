@@ -1,6 +1,7 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{ config, lib, pkgs, osConfig ? null, pkgsChannels, nixosSystemConfig, ... }:
 
 let
+  enableService = (!(osConfig.customOptions.useMinimalConfig or false));
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.updateRust;
   scriptsDir = "${config.home.homeDirectory}/.local/scripts";
   appendedPath = import ../../../../functions/append-to-path.nix {
@@ -11,7 +12,7 @@ let
       openssl
     ];
   };
-in lib.mkIf pkgs.stdenv.isLinux {
+in lib.mkIf enableService {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = { RequiredBy = [ "timers.target" ]; };
@@ -28,7 +29,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
         Type = "oneshot";
         Environment = [ appendedPath ];
 
-        ExecStart = "bash ${scriptsDir}/other-common-scripts/rust-manage.sh ${pkgs.rustup}/bin/rustup";
+        ExecStart = "${scriptsDir}/other-common-scripts/rust-manage.sh ${pkgs.rustup}/bin/rustup";
       };
     };
   };

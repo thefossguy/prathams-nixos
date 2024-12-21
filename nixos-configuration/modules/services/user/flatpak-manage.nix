@@ -1,6 +1,10 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{ config, lib, pkgs, osConfig ? null, pkgsChannels, nixosSystemConfig, ... }:
 
 let
+  enableService = if nixosSystemConfig.coreConfig.isNixOS
+    then ((osConfig.customOptions.displayServer.guiSession or "unset") != "unset")
+    else pkgs.stdenv.isLinux;
+
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.flatpakManage;
   scriptsDir = "${config.home.homeDirectory}/.local/scripts";
   appendedPath = import ../../../../functions/append-to-path.nix {
@@ -14,7 +18,7 @@ let
       gnused
     ];
   };
-in lib.mkIf pkgs.stdenv.isLinux {
+in lib.mkIf enableService {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = { RequiredBy = [ "timers.target" ]; };
@@ -30,7 +34,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];
-        ExecStart = "bash ${scriptsDir}/other-common-scripts/flatpak-manage.sh";
+        ExecStart = "${scriptsDir}/other-common-scripts/flatpak-manage.sh";
       };
     };
   };

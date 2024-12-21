@@ -12,7 +12,7 @@ let
 in {
   systemd.services."${serviceConfig.unitName}" = {
     enable = true;
-    path = with pkgs; [ gitMinimal nix ];
+    path = with pkgs; [ gitMinimal iputils nix ];
 
     serviceConfig = {
       User = "root";

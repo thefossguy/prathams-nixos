@@ -6,7 +6,9 @@ let
   appendedPath = import ../../../../functions/append-to-path.nix {
     packages = with pkgs; [
       bash
+      coreutils
       git
+      iputils
       openssh
       openssl
     ];
@@ -27,7 +29,7 @@ in lib.mkIf pkgs.stdenv.isLinux {
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];
-        ExecStart = "bash ${scriptsDir}/other-common-scripts/dotfiles-pull.sh";
+        ExecStart = "${scriptsDir}/other-common-scripts/dotfiles-pull.sh";
       };
     };
   };
