@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{ config, lib, pkgs, osConfig ? null, pkgsChannels, nixosSystemConfig, ... }:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.continuousBuild;
@@ -10,7 +10,7 @@ let
       openssl
     ];
   };
-in lib.mkIf (config.customOptions.localCaching.buildsNixDerivations or false) {
+in lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = { RequiredBy = [ "timers.target" ]; };

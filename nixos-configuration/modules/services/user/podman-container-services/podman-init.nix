@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{ config, lib, pkgs, osConfig ? null, pkgsChannels, nixosSystemConfig, ... }:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.podmanInit;
@@ -15,7 +15,7 @@ let
       podman
     ];
   };
-in lib.mkIf (config.customOptions.podmanContainers.enableHomelabServices or false) {
+in lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
   home.packages = with pkgs; [
     #buildah
     ctop
