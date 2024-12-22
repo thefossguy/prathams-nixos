@@ -30,7 +30,6 @@ let
       cargo-update # update installed binaries
       cargo-vet # ensure that the third-party dependencies are audited by a trusted source
       cargo-watch # run cargo commands when the src changes
-      gcc # added to prevent adding a $CC to the PATH to compile with cargo and to neovim for treesitter
       rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
     ] ++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ]) );
   };
@@ -85,6 +84,7 @@ let
 
   commonPackagesMinimal = with pkgs; [
     # utilities specific to Nix
+    gcc # added to prevent adding a $CC to the PATH to compile with cargo and to neovim for treesitter
     home-manager
     nix-diff # a better `nvd`
     nix-output-monitor
@@ -169,6 +169,7 @@ in {
         nodePackages.bash-language-server
         ruff
         shellcheck
+        gcc
 
         # misc
         dict
