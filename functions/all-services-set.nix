@@ -43,6 +43,11 @@ in rec {
     requiredUnits = ensureLocalStaticIp.afterUnits;
   };
 
+  nixGc = mkServiceConfig {
+    unitName = "nix-gc";
+    beforeUnits = customNixosUpgrade.afterUnits ++ [ "${customNixosUpgrade.unitName}.service" ];
+  };
+
   resetSystemdUserUnits = mkServiceConfig {
     unitName = "reset-systemd-user-units";
     wantedByUnits = [ "multi-user.target" ];

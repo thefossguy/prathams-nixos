@@ -14,7 +14,6 @@ lib.mkIf (config.customOptions.systemType == "server") {
       timerConfig.Unit = serviceConfig.unitName;
     };
 
-
     services."${serviceConfig.unitName}" = {
       enable = true;
       after = serviceConfig.afterUnits;
