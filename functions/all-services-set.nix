@@ -46,6 +46,7 @@ in rec {
   nixGc = mkServiceConfig {
     unitName = "nix-gc";
     beforeUnits = customNixosUpgrade.afterUnits ++ [ "${customNixosUpgrade.unitName}.service" ];
+    wantedUnits = nixGc.beforeUnits;
   };
 
   resetSystemdUserUnits = mkServiceConfig {
