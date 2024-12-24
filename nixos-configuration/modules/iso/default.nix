@@ -59,7 +59,7 @@
 
   isoImage = {
     squashfsCompression = "zstd -Xcompression-level 22"; # Highest compression ratio.
-    isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${nixosSystemConfig.kernelConfig.kernelVersion}-${config.boot.kernelPackages.kernel.version}${pkgs.stdenv.hostPlatform.system}.iso";
+    isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${nixosSystemConfig.kernelConfig.kernelVersion}-${config.boot.kernelPackages.kernel.version}-${pkgs.stdenv.hostPlatform.system}.iso";
 
     #squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
   };
