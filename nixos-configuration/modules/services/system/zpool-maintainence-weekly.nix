@@ -3,7 +3,7 @@
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.zpoolMaintainenceWeekly;
 in
-lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "lts") {
+lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
   systemd = {
     timers."${serviceConfig.unitName}" = {
       enable = true;

@@ -119,17 +119,17 @@
       });
 
       isoImages = forEachSupportedLinuxSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
-        lts = mkNixosIso {
+        mainline = mkNixosIso {
           inherit system;
-          kernelVersion = "lts";
+          kernelVersion = "mainline";
         };
-        latest = mkNixosIso {
+        stable = mkNixosIso {
           inherit system;
-          kernelVersion = "latest";
+          kernelVersion = "stable";
         };
-        testing = mkNixosIso {
+        longterm = mkNixosIso {
           inherit system;
-          kernelVersion = "testing";
+          kernelVersion = "longterm";
         };
       });
     };

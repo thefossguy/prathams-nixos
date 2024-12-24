@@ -1,6 +1,6 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
-lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "lts") {
+lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
   # Do not set `boot.zfs.enabled` because the default is not `true` (direct
   # assigned boolean) but it **evaluates to `true`**. Rather, toggling ZFS is
   # done using the `boot.initrd.supportedFilesystems.zfs` and

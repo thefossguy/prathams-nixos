@@ -7,9 +7,9 @@ let
   };
 
   kernelVersions = {
-    lts = "lts";
-    latest = "latest";
-    testing = "testing";
+    mainline = "mainline";
+    stable = "stable";
+    longterm = "longterm";
   };
 in {
   commonConfig = {
@@ -85,7 +85,7 @@ in {
         primaryNetIface = "enx9c6b002245ab";
         system = linuxSystems.x86_64;
       };
-      kernelConfig.kernelVersion = kernelVersions.lts;
+      kernelConfig.kernelVersion = kernelVersions.longterm;
     };
 
     # Radxa X4 (12GB; N100)
@@ -170,7 +170,7 @@ in {
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588-friendlyelec-cm3588-nas.dtb";
-      kernelConfig.kernelVersion = kernelVersions.lts;
+      kernelConfig.kernelVersion = kernelVersions.longterm;
     };
 
     # ARM64 VM (16G; 8x M4) guest on `bheem`
