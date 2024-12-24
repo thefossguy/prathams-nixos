@@ -88,7 +88,7 @@ let
     home-manager
     nix-diff # a better `nvd`
     nix-output-monitor
-    nixfmt-classic
+    nixfmt-rfc-style
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (with pkgs; [
     # misc utilities + shells
