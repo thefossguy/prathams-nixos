@@ -33,7 +33,7 @@ nixos_systems = [
 
 async def print_eval_val(nixosSystem, config) -> None:
     eval_string = nixosSystem + ".config." + config
-    nix_eval_cmd = [ 'nix', 'eval', '--apply', 'builtins.attrNames', eval_string ]
+    nix_eval_cmd = [ 'nix', 'eval', eval_string ]
     proc = await asyncio.get_event_loop().run_in_executor(
         None,
         lambda: subprocess.run(nix_eval_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
