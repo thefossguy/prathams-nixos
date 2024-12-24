@@ -5,12 +5,15 @@ import subprocess
 import sys
 
 nixos_systems = [
-    ".#isoImages.aarch64-linux.nozfs",
-    ".#isoImages.aarch64-linux.zfs",
-    ".#isoImages.riscv64-linux.nozfs",
-    ".#isoImages.riscv64-linux.zfs",
-    ".#isoImages.x86_64-linux.nozfs",
-    ".#isoImages.x86_64-linux.zfs",
+    ".#isoImages.aarch64-linux.lts",
+    ".#isoImages.aarch64-linux.latest",
+    ".#isoImages.aarch64-linux.testing",
+    ".#isoImages.riscv64-linux.lts",
+    ".#isoImages.riscv64-linux.latest",
+    ".#isoImages.riscv64-linux.testing",
+    ".#isoImages.x86_64-linux.lts",
+    ".#isoImages.x86_64-linux.latest",
+    ".#isoImages.x86_64-linux.testing",
     ".#nixosConfigurations.bheem",
     ".#nixosConfigurations.bhim",
     ".#nixosConfigurations.chaturvyas",

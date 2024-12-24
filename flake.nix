@@ -119,13 +119,17 @@
       });
 
       isoImages = forEachSupportedLinuxSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
-        zfs = mkNixosIso {
+        lts = mkNixosIso {
           inherit system;
           kernelVersion = "lts";
         };
-        nozfs = mkNixosIso {
+        latest = mkNixosIso {
           inherit system;
           kernelVersion = "latest";
+        };
+        testing = mkNixosIso {
+          inherit system;
+          kernelVersion = "testing";
         };
       });
     };
