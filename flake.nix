@@ -69,11 +69,11 @@
 
       mkNixosIso = {
         system,
-        useLongtermKernel,
+        kernelVersion,
         nixpkgsInputChannel ? "default",
       }: import ./functions/make-iso-system.nix {
         inherit allInputChannels mkPkgs linuxSystems fullUserSet nixBuildArgs;
-        inherit system useLongtermKernel;
+        inherit system kernelVersion;
         inherit nixpkgsInputChannel;
       };
 
@@ -121,11 +121,11 @@
       isoImages = forEachSupportedLinuxSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
         zfs = mkNixosIso {
           inherit system;
-          useLongtermKernel = true;
+          kernelVersion = "lts";
         };
         nozfs = mkNixosIso {
           inherit system;
-          useLongtermKernel = false;
+          kernelVersion = "latest";
         };
       });
     };

@@ -1,7 +1,7 @@
 { config, lib, modulesPath, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
-  isoZfsString = if nixosSystemConfig.kernelConfig.useLongtermKernel then "zfs-" else "nozfs-";
+  isoZfsString = if (nixosSystemConfig.kernelConfig.kernelVersion == "lts") then "zfs-" else "nozfs-";
 in {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")

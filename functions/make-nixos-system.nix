@@ -37,7 +37,7 @@ let
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
-      useLongtermKernel = thisSystem.kernelConfig.useLongtermKernel or false;
+      kernelVersion = thisSystem.kernelConfig.kernelVersion or "latest";
     };
   };
 in nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {

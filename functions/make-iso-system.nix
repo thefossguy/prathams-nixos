@@ -6,7 +6,7 @@
   fullUserSet,
   system,
   nixBuildArgs,
-  useLongtermKernel,
+  kernelVersion,
 }:
 
 let
@@ -36,7 +36,7 @@ let
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
-      inherit useLongtermKernel;
+      inherit kernelVersion;
     };
   };
 in

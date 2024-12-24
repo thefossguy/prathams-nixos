@@ -1,15 +1,18 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
-  kernelPackages = if nixosSystemConfig.kernelConfig.useLongtermKernel
-    then pkgs.linux_6_12
-    else pkgs.linux_latest;
-
-  supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
-    zfs = nixosSystemConfig.kernelConfig.useLongtermKernel;
+  kernelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
+  kernelPackagesSet = {
+    lts = pkgs.linux_6_12;
+    latest = pkgs.linux_latest;
+    testing = pkgs.linux_testing;
   };
 
-  enable16kPagesOnAarch64 = if ((!nixosSystemConfig.kernelConfig.useLongtermKernel) && pkgs.stdenv.isAarch64)
+  supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
+    zfs = (nixosSystemConfig.kernelConfig.kernelVersion == "lts");
+  };
+
+  enable16kPagesOnAarch64 = if ((nixosSystemConfig.kernelConfig.kernelVersion != "lts") && pkgs.stdenv.isAarch64)
     then lib.kernel.yes
     else lib.kernel.unset;
 in {
