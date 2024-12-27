@@ -11,7 +11,7 @@ lib.mkIf (config.customOptions.systemType == "server") {
       enable = true;
       requiredBy = [ "timers.target" ];
       timerConfig.OnCalendar = serviceConfig.onCalendar;
-      timerConfig.Unit = serviceConfig.unitName;
+      timerConfig.Unit = "${serviceConfig.unitName}.service";
     };
 
     services."${serviceConfig.unitName}" = {

@@ -8,7 +8,7 @@ in lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       enable = true;
       requiredBy = [ "timers.target" ];
       timerConfig.OnCalendar = serviceConfig.onCalendar;
-      timerConfig.Unit = serviceConfig.unitName;
+      timerConfig.Unit = "${serviceConfig.unitName}.service";
     };
 
     services."${serviceConfig.unitName}" = {
