@@ -42,7 +42,7 @@ in lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) 
           done
 
           nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
-          for targetFile in ''${nixbuildResults}; do
+          for targetFile in "''${nixbuildResults[@]}"; do
               nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} "''${targetFile}"
           done
         ''}";
