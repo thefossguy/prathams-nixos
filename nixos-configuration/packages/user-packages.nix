@@ -172,7 +172,7 @@ in {
         gcc
 
         # misc
-        dict
+        pkgsChannels.stable.dict
         tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
       ];
     };
