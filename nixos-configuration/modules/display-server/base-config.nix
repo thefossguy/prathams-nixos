@@ -15,8 +15,10 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   };
 
   services = {
-    printing.enable = lib.mkForce false;
+    blueman.enable = true;
+    bluetooth.enable = true;
     flatpak.enable = true;
+    printing.enable = lib.mkForce false;
 
     pipewire = {
       enable = true;
