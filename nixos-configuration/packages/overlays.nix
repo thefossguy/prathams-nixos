@@ -14,7 +14,10 @@ in {
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
-      mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
+      mpv = prev.mpv.override {
+        scripts = [ prev.mpvScripts.mpris ];
+        waylandSupport = config.customOptions.displayServer.waylandEnabled or false;
+      };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
       brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
