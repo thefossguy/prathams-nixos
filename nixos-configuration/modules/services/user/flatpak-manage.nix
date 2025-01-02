@@ -1,4 +1,4 @@
-{ config, lib, pkgs, osConfig ? null, pkgsChannels, nixosSystemConfig, ... }:
+{ config, lib, pkgs, osConfig ? {}, pkgsChannels, nixosSystemConfig, ... }:
 
 let
   enableService = if nixosSystemConfig.coreConfig.isNixOS
