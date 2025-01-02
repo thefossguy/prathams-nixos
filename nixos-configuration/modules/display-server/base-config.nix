@@ -3,6 +3,7 @@
 let
   waylandEnabled = config.customOptions.displayServer.waylandEnabled;
 in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
+  hardware.bluetooth.enable = true;
   hardware.graphics.enable = true;
   security.rtkit.enable = true; # For pulseaudio
   xdg.portal.enable = true;
@@ -16,7 +17,6 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
 
   services = {
     blueman.enable = true;
-    bluetooth.enable = true;
     flatpak.enable = true;
     printing.enable = lib.mkForce false;
 
