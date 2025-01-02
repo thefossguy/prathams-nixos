@@ -1,6 +1,8 @@
 { config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
 
 let
+  systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
+
   sudoRules = with pkgs; [
     { package = coreutils; command = "sync"; }
     { package = hdparm; command = "hdparm"; }
@@ -28,17 +30,17 @@ in {
     mutableUsers = lib.mkForce false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
     users."root".hashedPassword = "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
 
-    groups.${nixosSystemConfig.coreConfig.systemUser.username} = {
-      name = "${nixosSystemConfig.coreConfig.systemUser.username}";
+    groups.${systemUserUsername} = {
+      name = systemUserUsername;
       gid = 1000;
     };
 
-    users.${nixosSystemConfig.coreConfig.systemUser.username} = {
+    users.${systemUserUsername} = {
       createHome = true;
       description = nixosSystemConfig.coreConfig.systemUser.fullname;
-      group = nixosSystemConfig.coreConfig.systemUser.username;
+      group = systemUserUsername;
       hashedPassword = nixosSystemConfig.coreConfig.systemUser.hashedPassword;
-      home = "/home/${nixosSystemConfig.coreConfig.systemUser.username}";
+      home = "/home/${systemUserUsername}";
       isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
       isSystemUser = false;
       linger = nixosSystemConfig.coreConfig.systemUser.enableLingering or false;
@@ -98,7 +100,7 @@ in {
       '';
 
       extraRules = [{
-        users = [ "${nixosSystemConfig.coreConfig.systemUser.username}" ];
+        users = [ "${systemUserUsername}" ];
         commands = sudoCommands;
       }];
     };
