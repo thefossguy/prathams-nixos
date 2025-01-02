@@ -79,7 +79,7 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     fractal # matrix client
     mediainfo-gui
     metadata-cleaner # exif removal
-    #neovide # haz nice neovim animations
+    neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
     ungoogled-chromium
