@@ -11,24 +11,24 @@ let
     rust = lib.optionals (!useMinimalConfig) (with pkgs; [
       #cargo-deb # generate .deb packages solely based on Cargo.toml
       #cargo-ndk # extension for building Android NDK projects
-      cargo-audit # audit crates for security vulnerabilities
-      cargo-benchcmp # compare Rust micro-benchmarks
-      cargo-binstall # install Rust binaries instead of building them from src
-      cargo-bisect-rustc # find exactly which rustc commit/release-version which prevents your code from building now
-      cargo-bloat # find what takes the most space in the executable
+      #cargo-audit # audit crates for security vulnerabilities
+      #cargo-benchcmp # compare Rust micro-benchmarks
+      #cargo-binstall # install Rust binaries instead of building them from src
+      #cargo-bisect-rustc # find exactly which rustc commit/release-version which prevents your code from building now
+      #cargo-bloat # find what takes the most space in the executable
       cargo-cache # manage cargo cache (${CARGO_HOME}); print and remove dirs selectively
-      cargo-chef # for speeding up container builds using layer caching
-      cargo-dist # distribute on crates.io
-      cargo-flamegraph # flamegraphs without Perl or pipes
-      cargo-hack # build project with all the possible variations of options/flags and check which ones fail and/or succeed
-      cargo-outdated # show outdated deps
-      cargo-profiler # profile Rust binaries
-      cargo-public-api # detect breaking API changes and semver violations
-      cargo-show-asm # display ASM, LLVM-IR, MIR and WASM for the Rust src
-      cargo-sweep # cleanup unused build files
-      cargo-udeps # find unused dependencies
-      cargo-update # update installed binaries
-      cargo-vet # ensure that the third-party dependencies are audited by a trusted source
+      #cargo-chef # for speeding up container builds using layer caching
+      #cargo-dist # distribute on crates.io
+      #cargo-flamegraph # flamegraphs without Perl or pipes
+      #cargo-hack # build project with all the possible variations of options/flags and check which ones fail and/or succeed
+      #cargo-outdated # show outdated deps
+      #cargo-profiler # profile Rust binaries
+      #cargo-public-api # detect breaking API changes and semver violations
+      #cargo-show-asm # display ASM, LLVM-IR, MIR and WASM for the Rust src
+      #cargo-sweep # cleanup unused build files
+      #cargo-udeps # find unused dependencies
+      #cargo-update # update installed binaries
+      #cargo-vet # ensure that the third-party dependencies are audited by a trusted source
       cargo-watch # run cargo commands when the src changes
       rustup # provides rustfmt, cargo-clippy, rustup, cargo, rust-lldb, rust-analyzer, rustc, rust-gdb, cargo-fmt
     ] ++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ]) );
@@ -47,7 +47,7 @@ let
       rpm
       ventoy
     ]);
-    mozilla =  lib.optionals (!useMinimalConfig && nixosPackagesCheck) (with pkgs; [
+    mozilla = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (with pkgs; [
       firefox-esr
       thunderbird
     ]);
@@ -172,9 +172,8 @@ in {
         gcc
 
         # misc
-        pkgsChannels.stable.dict
         tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
-      ];
+      ] ++ [ pkgsChannels.stable.dict ];
     };
   };
 }
