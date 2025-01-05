@@ -79,11 +79,11 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     fractal # matrix client
     mediainfo-gui
     metadata-cleaner # exif removal
-    neovide # haz nice neovim animations
     paper-clip # PDF editor
     snapshot # camera
     ungoogled-chromium
-  ]) ++ (with pkgs.kdePackages; [
+  ])
+  ++ (with pkgs.kdePackages; [
     filelight # visualize disk space
     ghostwriter # markdown editor
     kalk # calculator
@@ -94,6 +94,9 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     kdePackages.kdenlive
     mpv
     tor-browser
+  ])
+  ++ (with pkgsChannels.stable; [
+    neovide # haz nice neovim animations
   ]);
 
 
