@@ -51,8 +51,8 @@ in lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
           git pull
           nix flake update
           nix build ${nixosSystemConfig.extraConfig.nixBuildArgs} .#homeConfigurations.${pkgs.stdenv.system}.${nixosSystemConfig.coreConfig.systemUser.username}.activationPackage
-          ./result/activate
-          popd || exit 1
+          ./result/activate || echo 'home-manager activation failed but exiting cleanly'
+          popd || exit 0
         ''}";
       };
     };
