@@ -84,5 +84,34 @@
 
     ## Allow rootless containers to get pinged and/or ping each other
     "net.ipv4.ping_group_range" = "0 165536";
+
+    ## Taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
+    # No longer necessary, disable this.
+    "dev.tty.ldisc_autoload" = 0;
+    "fs.protected_fifos" = 2;
+    "fs.protected_hardlinks" = 1;
+    "fs.protected_regular" = 2;
+    "fs.protected_symlinks" = 1;
+    "fs.suid_dumpable" = 0;
+    "kernel.dmesg_restrict" = 1;
+    "kernel.io_uring_disabled" = 1;
+    "kernel.kexec_load_disabled" = 1;
+    "kernel.kptr_restrict" = 2;
+    "kernel.printk" = "3 3 3 3";
+    "kernel.randomize_va_space" = 2;
+    "kernel.unprivileged_bpf_disabled" = 1;
+    "kernel.unprivileged_userns_clone" = if (config.virtualisation.podman.enable || config.virtualisation.docker.enable) then 1 else 0;
+    "kernel.yama.ptrace_scope" = 3;
+    "net.core.bpf_jit_harden" = 2;
+    "net.ipv4.conf.all.arp_announce" = 2;
+    "net.ipv4.conf.default.arp_announce" = 2;
+    "net.ipv4.conf.all.log_martians" = 1;
+    "net.ipv4.conf.default.log_martians" = 1;
+    "net.ipv4.conf.all.shared_media" = 0;
+    "net.ipv4.conf.default.shared_media" = 0;
+    "vm.mmap_min_addr" = 65536;
+    "vm.mmap_rnd_bits" = 32;
+    "vm.mmap_rnd_compat_bits" = 16;
+    "vm.unprivileged_userfaultfd" = 0;
   };
 }
