@@ -17,12 +17,6 @@ in {
     ipv4PrefixLength = 24;
     systemTypes = systemTypes;
 
-    filesystemsMountOptions = [
-      "async"
-      "relatime"
-      "lazytime"
-    ];
-
     supportedFilesystemsSansZfs = {
       cifs = true;
       ext4 = true;

@@ -4,6 +4,7 @@
   imports = [
     ../autologin
     ../services
+    ./filesystem-configuration.nix
     ./podman.nix
     ./static-ip-and-virt-bridge.nix
     ./user-configuration.nix
