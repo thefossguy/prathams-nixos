@@ -17,6 +17,8 @@
     # please do not use this for including drivers for non-storage hardware
     initrd.availableKernelModules = [ "nvme" "usb_storage" "usbhid" ];
 
+    kernelModules = [ "jitterentropy_rng" ];
+
     kernelParams = [
       # Some of the options were taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
       "amd_iommu=force_isolation" # Force IOMMU isolation with AMD's IOMMU driver
