@@ -18,18 +18,40 @@
     initrd.availableKernelModules = [ "nvme" "usb_storage" "usbhid" ];
 
     kernelParams = [
-      "audit=0"
-      "ignore_loglevel"
+      # Some of the options were taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
+      "amd_iommu=force_isolation" # Force IOMMU isolation with AMD's IOMMU driver
+      "amd_iommu=on" # Enable AMD's IOMMU driver
+      "audit=0" # Disable the audit system to prevent dmesg cluttering
+      "debugfs=${if config.customOptions.kernelDevelopment.virt.enable then "on" else "off"}" # Toggle debugfs being mounted or not
+      "extra_latent_entropy" # Gather more entropy on boot
+      "ignore_loglevel" # Print all messages to the console, helps debug
+      "init_on_alloc=1" # Initialize new pages with zeroes
+      "init_on_free=1" # Fill freed pages with zeroes
+      "intel_iommu=on" # Enable Intel's IOMMU driver
+      "iommu.passthrough=0" # Forces DMA to go through IOMMU
+      "iommu.strict=1" # DMA unmap operations invalidate IOMMU hardware TLBs synchronously
+      "iommu=force" # Force IOMMU isolation
+      "mitigations=auto,nosmt" # Apply relevant CPU exploit mitigations
+      "module.sig_enforce=1" # Load only signed modules
+      "no_console_suspend" # Never suspend/hibernate the console
+      "page_alloc.shuffle=1" # Enable page randomisation
+      "pti=on" # Mitigates Meltdown, some KASLR bypasses
+      "random.trust_bootloader=off" # Do not trust bootloader provided RNG seed
+      "random.trust_cpu=off" # Do not trust CPU's RNG
+      "randomize_kstack_offset=on" # Enable kernel stack offset randomisation
+      "slab_nomerge" # Disable merging of slabs with similar size
+      "vsyscall=none" # Disable fixed address syscalls; mostly used by old glibc
 
-      "boot.shell_on_fail"
+      "boot.shell_on_fail" # Enable recovery shell if boot fails
+      "boot.trace" # Use `set -x` to trace the shell scripts
 
       "fsck.mode=auto"
       "fsck.repair=preen"
 
       "plymouth.enable=0"
       "rd.plymouth=0"
-
-      "no_console_suspend"
+    ] ++ lib.optionals pkgs.stdenv.isx86_64 [
+      "ia32_emulation=0" # Disable multilib/32-bit applications
     ];
 
     loader = {
