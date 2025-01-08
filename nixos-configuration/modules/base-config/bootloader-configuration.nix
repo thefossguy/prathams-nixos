@@ -15,9 +15,15 @@
     # present in the initrd but only loaded on-demand
     # **ONLY INCLUDE MODULES NECESSARY TO MOUNT ROT ROOT DEVICE**
     # please do not use this for including drivers for non-storage hardware
-    initrd.availableKernelModules = [ "nvme" "usb_storage" "usbhid" ];
+    initrd.availableKernelModules = [
+      # Storage drivers
+      "nvme"
+      "usb_storage"
+      "usbhid"
 
-    kernelModules = [ "jitterentropy_rng" ];
+      # This is an exception for security and arguably better privacy because of better RNG.
+      "jitterentropy_rng"
+    ];
 
     kernelParams = [
       # Some of the options were taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
