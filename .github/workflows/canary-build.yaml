@@ -15,6 +15,13 @@ jobs:
       contents: "read"
     steps:
       - uses: actions/checkout@main
+
+      - name: Setting up QEMU User Emulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes binfmt-support qemu-user-static
+          sudo update-binfmts --display
+
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux"
@@ -24,11 +31,15 @@ jobs:
         with:
           name: thefossguy
 
-      - name: Setting up QEMU User Emulation
+      - name: Check QEMU User Emulation (binfmt)
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes binfmt-support qemu-user-static
-          sudo update-binfmts --display
+          wget 'https://github.com/aristocratos/btop/releases/download/v1.4.0/btop-aarch64-linux-musl.tbz'
+          tar xf btop-aarch64-linux-musl.tbz
+          ./btop/bin/btop --version
+
+      - name: Check QEMU User Emulation (Nix)
+        run: |
+          nix config show
 
       - name: Running CI
         run: |
