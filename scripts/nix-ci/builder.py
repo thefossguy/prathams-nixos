@@ -16,8 +16,8 @@ ci_variables['supported_systems'] = [
     'x86_64-linux',
 
     # For QEMU on non-NixOS Linux systems
-    'qemu-aarch64'
-    #'qemu-riscv64'
+    'qemu-aarch64',
+    #'qemu-riscv64',
 
     'aarch64-darwin',
     'x86_64-darwin',
