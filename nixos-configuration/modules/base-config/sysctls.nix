@@ -86,7 +86,6 @@
     "net.ipv4.ping_group_range" = "0 165536";
 
     ## Taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
-    # No longer necessary, disable this.
     "dev.tty.ldisc_autoload" = 0;
     "fs.protected_fifos" = 2;
     "fs.protected_hardlinks" = 1;
