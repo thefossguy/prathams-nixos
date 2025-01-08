@@ -55,6 +55,7 @@ def get_all_supported_systems() -> None:
                 if binfmt_status_file.read().strip() == 'enabled':
                     files_in_binfmt_dir = next(os.walk(binfmt_dir), (None, None, []))[2]
                     for emulated_system in files_in_binfmt_dir:
+                        print('CI_DEBUG: {}, {}'.format(emulated_system, ci_variables['supported_systems']))
                         if emulated_system in ci_variables['supported_systems']:
                             if emulated_system not in ci_variables['all_supported_systems']:
                                 ci_variables['all_supported_systems'].append(emulated_system)
