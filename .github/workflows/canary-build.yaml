@@ -31,11 +31,14 @@ jobs:
         with:
           name: thefossguy
 
-      - name: Check QEMU User Emulation (binfmt)
+      - name: Test QEMU User Emulation (binfmt)
         run: |
           wget 'https://github.com/aristocratos/btop/releases/download/v1.4.0/btop-aarch64-linux-musl.tbz'
           tar xf btop-aarch64-linux-musl.tbz
           ./btop/bin/btop --version
+
+      - name: View registered binfmts
+        run: ls -alh /proc/sys/fs/binfmt_misc/
 
       - name: Check QEMU User Emulation (Nix)
         run: |
