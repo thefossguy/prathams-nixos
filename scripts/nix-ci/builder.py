@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import asyncio
 import json
 import os
 import pathlib
@@ -24,6 +25,7 @@ ci_variables['isoImages'] = []
 ci_variables['homeConfigurations'] = []
 ci_variables['devShells'] = []
 ci_variables['packages'] = []
+ci_variables['outPaths'] = {}
 
 def cleanup(exit_code) -> None:
     os.remove(ci_variables['logfile'])
@@ -125,7 +127,19 @@ def make_nix_build_command(nix_build_targets):
         command = command + [ '--impure', ]
     return command
 
-if __name__ == '__main__':
+async def get_outPath(nix_build_target) -> None:
+    proc = await asyncio.get_event_loop().run_in_executor(
+        None,
+        lambda: subprocess.run(['nix', 'eval', nix_build_target + '.outPath'], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    )
+    # No need to error out if the stdout is empty because failure to evaluate
+    # the `outPath` is more to do with fixing the build than what concerns the
+    # binary cache.
+    if proc.stdout.strip() != "":
+        ci_variables['outPaths'][nix_build_target] = proc.stdout.strip().split('"')[1]
+    return
+
+async def main():
     tmpFile = open(ci_variables['logfile'], 'w')
     tmpFile.close()
 
@@ -142,16 +156,24 @@ if __name__ == '__main__':
 
     if len(ci_variables['nix_build_targets']) > 0:
         if '--link-only' in sys.argv:
-            i = 0
-            for nix_build_target in ci_variables['nix_build_targets']:
-                i = i + 1
-                eval_out_path_command = subprocess.run(["nix", "eval", '{}.outPath'.format(nix_build_target)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
-                eval_out_path = eval_out_path_command.stdout.strip().split('"')[1]
-                if pathlib.Path(eval_out_path).exists():
-                    os.symlink(eval_out_path, 'result-{}'.format(i))
+            missing_paths = []
+            print('DEBUG: Evaluating the `outPath`s for each Nix build target. This may take a while.')
+            async_tasks = [ get_outPath(nix_build_target) for nix_build_target in ci_variables['nix_build_targets'] ]
+            await asyncio.gather(*async_tasks)
+            for i, nix_build_target in enumerate(ci_variables['nix_build_targets']):
+                if nix_build_target in ci_variables['outPaths']:
+                    eval_out_path = ci_variables['outPaths'][nix_build_target]
+                    print('DEBUG: `{}` ==> `{}`'.format(nix_build_target, eval_out_path))
+                    if pathlib.Path(eval_out_path).exists():
+                        os.symlink(eval_out_path, 'result-' + '{}'.format(i).zfill(2))
+                    else:
+                        missing_paths.append(eval_out_path)
+                        continue
                 else:
-                    print('WARN: outPath for expression `{}` (`{}`) has not been sent to the store yet.'.format(nix_build_target, eval_out_path))
-                    continue
+                    print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
+            for missing_path in missing_paths:
+                print('WARN: `{}` does not exist on this cache'.format(missing_path))
+
             cleanup(0)
 
         else:
@@ -180,3 +202,7 @@ if __name__ == '__main__':
     else:
         print('WARN: No Nix build targets were specified so building nothing.')
         cleanup(0)
+    return
+
+if __name__ == '__main__':
+    asyncio.run(main())
