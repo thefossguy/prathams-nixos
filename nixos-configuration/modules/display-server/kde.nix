@@ -15,7 +15,6 @@ lib.mkIf (config.customOptions.displayServer.guiSession == "kde") {
 
       sddm = {
         enable = true;
-        wayland.enable = lib.mkDefault false; # wayland support is experimental
         enableHidpi = true;
       };
     };
