@@ -16,10 +16,17 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
+      - name: Prepare for NixOS-like QEMU binfmt registrations
+        run: |
+          sudo mkdir -vp /etc/binfmt.d
+          sed -i "s/^:$(uname -m).*//g" ./scripts/nix-ci/ci-ubuntu-binfmt.conf
+          sudo cp ./scripts/nix-ci/ci-ubuntu-binfmt.conf /etc/binfmt.d/ci-ubuntu-binfmt.conf
+
       - name: Setting up QEMU User Emulation
         run: |
           sudo apt-get update
           sudo apt-get install --yes binfmt-support qemu-user-static
+          ls -alh /proc/sys/fs/binfmt_misc/ | grep linux
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
