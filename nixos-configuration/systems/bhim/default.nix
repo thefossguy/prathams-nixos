@@ -8,6 +8,10 @@
 
   zramSwap.memoryPercent = lib.mkForce 100;
 
+  environment.systemPackages = with pkgs; [
+    cachix
+  ];
+
   customOptions = {
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
