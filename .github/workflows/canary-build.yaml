@@ -29,10 +29,11 @@ jobs:
 
       - name: Enable NixOS-like QEMU binfmt registrations
         run: |
-          sed -i "s/^:$(uname -m).*//g" ./scripts/nix-ci/ci-ubuntu-binfmt.conf
-          while read nixosStyleBinfmt; do
-              sudo echo -n "${nixosStyleBinfmt}" > /proc/sys/fs/binfmt_misc/register
-          done <./scripts/nix-ci/ci-ubuntu-binfmt.conf
+          rm -vf ./scripts/nix-ci/binfmts/"$(uname -m)-linux"
+          sudo cp -v scripts/nix-ci/binfmts/*-linux /usr/share/binfmts/
+          for nixosStyleBinfmt in /usr/share/binfmts/*-linux; do
+              sudo update-binfmts --enable "$(basename "${nixosStyleBinfmt}")"
+          done
           ls -alh /proc/sys/fs/binfmt_misc/
 
       - uses: DeterminateSystems/nix-installer-action@main
