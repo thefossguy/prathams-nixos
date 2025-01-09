@@ -11,7 +11,7 @@ let
     "nosuid"
   ];
   bootMountOptions = commonMountOptions ++ hardenedMountOptions ++ [ "noexec" ];
-  rootMountOptions = commonMountOptions ++ hardenedMountOptions ++ [ "noexec" ];
+  rootMountOptions = commonMountOptions ++ hardenedMountOptions;
   homeMountOptions = commonMountOptions ++ hardenedMountOptions;
   varlMountOptions = commonMountOptions ++ hardenedMountOptions;
 in {
