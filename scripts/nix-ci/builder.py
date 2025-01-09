@@ -171,8 +171,10 @@ async def main():
                         continue
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
-            for missing_path in missing_paths:
-                print('WARN: `{}` does not exist on this cache'.format(missing_path))
+
+            if '--no-print-missing-paths' not in sys.argv:
+                for missing_path in missing_paths:
+                    print('WARN: `{}` does not exist on this cache'.format(missing_path))
 
             cleanup(0)
 
