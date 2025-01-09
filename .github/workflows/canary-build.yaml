@@ -44,10 +44,14 @@ jobs:
         with:
           name: thefossguy
 
+      - name: Updating flake.lock
+        run: nix flake update
+
+      - name: Evaluating the `outPath`s for buildable Nix targets
+        run: python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages --link-only --no-print-missing-paths
+
       - name: Running CI
-        run: |
-          nix flake update
-          python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages
+        run: python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages
 
       - name: Look at results
         run: |
