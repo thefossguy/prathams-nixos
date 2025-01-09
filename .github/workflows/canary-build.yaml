@@ -16,16 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Prepare for NixOS-like QEMU binfmt registrations
-        run: |
-          sudo mkdir -vp /etc/binfmt.d
-          sed -i "s/^:$(uname -m).*//g" ./scripts/nix-ci/ci-ubuntu-binfmt.conf
-          sudo cp ./scripts/nix-ci/ci-ubuntu-binfmt.conf /etc/binfmt.d/ci-ubuntu-binfmt.conf
-
       - name: Setting up QEMU User Emulation
         run: |
           sudo apt-get update
           sudo apt-get install --yes binfmt-support qemu-user-static
+
+      - name: Removing unnecessary registered binfmts
+        run: |
+          for registeredBinfmt in /proc/sys/fs/binfmt_misc/qemu-*; do
+              sudo update-binfmts --disable "$(basename "${registeredBinfmt}")"
+          done
+
+      - name: Enable NixOS-like QEMU binfmt registrations
+        run: |
+          sudo mkdir -vp /etc/binfmt.d
+          sed -i "s/^:$(uname -m).*//g" ./scripts/nix-ci/ci-ubuntu-binfmt.conf
+          sudo cp ./scripts/nix-ci/ci-ubuntu-binfmt.conf /etc/binfmt.d/ci-ubuntu-binfmt.conf
+          while read nixosStyleBinfmt; do
+              sudo echo -n "${nixosStyleBinfmt}" > /proc/sys/fs/binfmt_misc/register
+          done </etc/binfmt.d/ci-ubuntu-binfmt.conf
           ls -alh /proc/sys/fs/binfmt_misc/
 
       - uses: DeterminateSystems/nix-installer-action@main
