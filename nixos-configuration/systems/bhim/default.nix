@@ -6,6 +6,8 @@
     ../../modules/qemu/qemu-guest.nix
   ];
 
+  zramSwap.memoryPercent = lib.mkForce 100;
+
   customOptions = {
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
