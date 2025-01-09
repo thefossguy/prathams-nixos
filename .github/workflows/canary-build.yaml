@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes binfmt-support qemu-user-static
-          ls -alh /proc/sys/fs/binfmt_misc/ | grep linux
+          ls -alh /proc/sys/fs/binfmt_misc/
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
