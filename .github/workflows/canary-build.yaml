@@ -21,27 +21,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes binfmt-support qemu-user-static
 
-      - name: Removing unnecessary registered binfmts
-        run: |
-          for registeredBinfmt in /proc/sys/fs/binfmt_misc/qemu-*; do
-              sudo update-binfmts --disable "$(basename "${registeredBinfmt}")"
-          done
-
-      - name: Enable NixOS-like QEMU binfmt registrations
-        run: |
-          rm -vf ./scripts/nix-ci/binfmts/"$(uname -m)-linux"
-          sudo update-binfmts --importdir ./scripts/nix-ci/binfmts --import
-          ls -alh /proc/sys/fs/binfmt_misc/
-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux\nextra-sandbox-paths = /usr/bin/qemu-aarch64-static /usr/bin/qemu-riscv64-static /usr/bin/qemu-x86_64-static /usr/libexec/qemu-binfmt"
-
-      - name: Restarting the Nix daemon
-        run: |
-          sudo systemctl restart nix-daemon.service
-          nix store ping --json
-          nix config show
+          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
