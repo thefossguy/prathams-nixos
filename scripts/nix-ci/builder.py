@@ -45,15 +45,14 @@ def get_all_supported_systems() -> None:
         cleanup(1)
 
     if '--use-emulation' in sys.argv:
-        binfmt_dir = '/proc/sys/fs/binfmt_misc'
-        if pathlib.Path('{}/status'.format(binfmt_dir)).is_file():
-            with open('{}/status'.format(binfmt_dir), 'r') as binfmt_status_file:
-                if binfmt_status_file.read().strip() == 'enabled':
-                    files_in_binfmt_dir = next(os.walk(binfmt_dir), (None, None, []))[2]
-                    for emulated_system in files_in_binfmt_dir:
-                        if emulated_system in ci_variables['supported_systems']:
-                            if emulated_system not in ci_variables['all_supported_systems']:
-                                ci_variables['all_supported_systems'].append(emulated_system)
+        for nix_system in ci_variables['supported_systems']:
+            emulation_check_command = [ 'nix', 'run', '.#miscPackages.{}.binfmtCheck'.format(nix_system)]
+            emulation_check_process = subprocess.run(emulation_check_command, stdout=subprocess.STDOUT, stderr=subprocess.DEVNULL, text=True)
+            if emulation_check_process.returncode == 0:
+                emulated_system = emulation_check_process.stdout.strip()
+                if emulated_system == nix_system:
+                    if emulated_system not in ci_variables['all_supported_systems']:
+                        ci_variables['all_supported_systems'].append(emulated_system)
 
     for cross_system in ci_variables['supported_systems']:
         if '--cross-{}'.format(cross_system) in sys.argv:
