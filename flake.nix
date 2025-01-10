@@ -119,6 +119,7 @@
       });
 
       miscPackages = forEachSupportedUnixSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
+      }) // forEachSupportedLinuxSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
         binfmtCheck = pkgs.writeShellApplication {
           name = "binfmtCheck.sh";
           runtimeInputs = with pkgs; [ python3 ];
