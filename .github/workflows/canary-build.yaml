@@ -38,7 +38,7 @@ jobs:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux\nextra-sandbox-paths = /usr/bin/qemu-aarch64-static /usr/bin/qemu-riscv64-static /usr/bin/qemu-x86_64-static /usr/libexec/qemu-binfmt"
 
       - name: Restarting the Nix daemon
-      - run: |
+        run: |
           sudo pkill nix-daemon
           sudo systemctl restart nix-daemon.service
           nix store ping --json
