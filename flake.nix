@@ -118,6 +118,16 @@
       packages = forEachSupportedUnixSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
       });
 
+      miscPackages = forEachSupportedUnixSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
+        binfmtCheck = pkgs.writeShellApplication {
+          name = "binfmtCheck.sh";
+          runtimeInputs = with pkgs; [ python3 ];
+          text = ''
+            python3 -c 'import os; print("{}-{}".format(os.uname().machine.lower(),os.uname().sysname.lower()))'
+          '';
+        };
+      });
+
       isoImages = forEachSupportedLinuxSystem ({ pkgs, pkgsStable, pkgsUnstable, system, ... }: {
         mainline = mkNixosIso {
           inherit system;
