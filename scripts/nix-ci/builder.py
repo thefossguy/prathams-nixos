@@ -46,9 +46,9 @@ def get_all_supported_systems() -> None:
 
     if '--use-emulation' in sys.argv:
         for nix_system in ci_variables['supported_systems']:
-            emulation_check_command = [ 'nix', 'run', '.#miscPackages.{}.binfmtCheck'.format(nix_system)]
+            emulation_check_command = [ 'nix', 'run', '.#miscPackages.{}.binfmtCheck'.format(nix_system), ]
             print('DEBUG: Checking emulation for `{}`'.format(emulation_check_command))
-            emulation_check_process = subprocess.run(emulation_check_command, stdout=subprocess.STDOUT, stderr=subprocess.DEVNULL, text=True)
+            emulation_check_process = subprocess.run(emulation_check_command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
             if emulation_check_process.returncode == 0:
                 emulated_system = emulation_check_process.stdout.strip()
                 if emulated_system == nix_system:
