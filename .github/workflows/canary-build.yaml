@@ -8,31 +8,24 @@ on:
 
 jobs:
   canary-build:
-    name: Build NixOS Systems
+    name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystems }}
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
       contents: "read"
+    strategy:
+      matrix:
+        nixSystems: [ aarch64-linux, riscv64-linux, x86_64-linux, ]
+        nixTargets: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
     steps:
       - uses: actions/checkout@main
 
       - run: df -kh
-      - name: Running `rm -rf`
-        run: sudo rm -rf /usr/local/lib/android /usr/share/miniconda /usr/bin/conda /usr/share/kotlinc /usr/local/lib/lein /usr/local/lib/node_modules /usr/local/bin/vercel /usr/local/share/phantomjs-* /usr/share/sbt /usr/bin/sbt /usr/share/java /usr/local/sqlpackage /usr/share/swift /usr/local/bin/swift* /usr/local/lib/libsourcekitdInProc.so /usr/local/share/vcpkg
-
-      - run: df -kh
-      - name: Running `apt-get autoremove`
+      - name: Cleaning up the junk GH populated this disk with
         run: |
-          pkgsToRM=(ant ant-optional apache2 buildah chrpath clang clang-format clang-tidy gcc gfortran git-ftp git-lfs google-cloud-cli heroku kubectl libmysqlclient-dev libpq-dev libxft-dev lld lldb microsoft-edge-stable mono-complete mssql-tools mysql-client mysql-server nginx nuget php* podman powershell r-base ruby-full skopeo snmp temurin-*-jdk unixodbc-dev)
-          set -x
-          for pkgRM in "${pkgsToRM[@]}"; do
-            sudo apt-get autoremove --purge --assume-yes "${pkgRM}"
-          done
-
-      - run: df -kh
-      - run: sudo apt-get clean
-
-      # Final check, after complete cleanup
+          sudo rm -rf /usr/local/lib/android /usr/share/miniconda /usr/bin/conda /usr/share/kotlinc /usr/local/lib/lein /usr/local/lib/node_modules /usr/local/bin/vercel /usr/local/share/phantomjs-* /usr/share/sbt /usr/bin/sbt /usr/share/java /usr/local/sqlpackage /usr/share/swift /usr/local/bin/swift* /usr/local/lib/libsourcekitdInProc.so /usr/local/share/vcpkg
+          sudo apt-get autoremove --purge --assume-yes ant ant-optional apache2 buildah chrpath clang clang-format clang-tidy gcc gfortran git-ftp git-lfs google-cloud-cli heroku kubectl libmysqlclient-dev libpq-dev libxft-dev lld lldb microsoft-edge-stable mono-complete mssql-tools mysql-client mysql-server nginx nuget php* podman powershell r-base ruby-full skopeo snmp temurin-*-jdk unixodbc-dev
+          sudo apt-get clean
       - run: df -kh
 
       - name: Setting up QEMU User Emulation
@@ -42,24 +35,18 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
+          extra-conf: "extra-platforms = ${{ matrix.nixSystems }}\nextra-substituters = https//thefossguy.cachix.org\nextra-trusted-public-keys = thefossguy.cachix.org-1:/gMdFQnu+BtfjSYsnxZbtNdA2s4EX3mvNFWkqovpN24="
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
-
-      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
-      - uses: cachix/cachix-action@master
-        with:
-          name: thefossguy
 
       - name: Updating flake.lock
         run: nix flake update
 
       - name: Evaluating the `outPath`s for buildable Nix targets
-        run: |
-          python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages --link-only --no-print-missing-paths
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }} --link-only --no-print-missing-paths
 
       - name: Running CI
-        run: python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }}
 
       - name: Look at results
         run: |
