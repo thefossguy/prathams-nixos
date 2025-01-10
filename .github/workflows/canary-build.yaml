@@ -36,7 +36,13 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux\nextra-sandbox-paths = /usr/bin/qemu-aarch64-static /usr/bin/qemu-riscv64-static /usr/bin/qemu-x86_64-static /usr/libexec/qemu-binfmt"
-      - run: nix config show
+
+      - name: Restarting the Nix daemon
+      - run: |
+          sudo pkill nix-daemon
+          sudo systemctl restart nix-daemon.service
+          nix store ping --json
+          nix config show
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
