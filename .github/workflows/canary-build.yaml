@@ -10,11 +10,11 @@ jobs:
   canary-build:
     name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystems }}
     runs-on: ubuntu-latest
+    continue-on-error: true
     permissions:
       id-token: "write"
       contents: "read"
     strategy:
-      continue-on-error: true
       matrix:
         nixSystems: [ aarch64-linux, riscv64-linux, x86_64-linux, ]
         nixTargets: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
