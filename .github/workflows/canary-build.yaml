@@ -39,7 +39,6 @@ jobs:
 
       - name: Restarting the Nix daemon
         run: |
-          sudo pkill nix-daemon
           sudo systemctl restart nix-daemon.service
           nix store ping --json
           nix config show
