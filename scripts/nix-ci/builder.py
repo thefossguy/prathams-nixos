@@ -32,6 +32,22 @@ def cleanup(exit_code) -> None:
     sys.exit(exit_code)
 
 def get_all_supported_systems() -> None:
+    for exclusive_nix_system in ci_variables['supported_systems']:
+        if '--exclusive-nix-system-{}'.format(exclusive_nix_system) in sys.argv:
+            exclusive_nix_system_check_command = [ 'nix', 'run', '.#miscPackages.{}.binfmtCheck'.format(exclusive_nix_system), ]
+            print('DEBUG: Verifying buildability for `{}`'.format(exclusive_nix_system_check_command))
+            exclusive_nix_system_check_process = subprocess.run(exclusive_nix_system_check_command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+            if exclusive_nix_system_check_process.returncode == 0:
+                exclusive_system = exclusive_nix_system_check_process.stdout.strip()
+                if exclusive_system == exclusive_nix_system:
+                    if exclusive_nix_system not in ci_variables['all_supported_systems']:
+                        print('DEBUG: Will build for `{}`'.format(exclusive_nix_system))
+                        ci_variables['all_supported_systems'].append(exclusive_nix_system)
+    if ci_variables['all_supported_systems'] != []:
+        ci_variables['all_supported_systems'].sort()
+        print('DEBUG: all_supported_systems: `{}`'.format(ci_variables['all_supported_systems']))
+        return
+
     system_arch = os.uname().machine.lower()
     system_kernel = os.uname().sysname.lower()
     if system_arch == 'arm64':
@@ -39,6 +55,7 @@ def get_all_supported_systems() -> None:
 
     native_system = '{}-{}'.format(system_arch, system_kernel)
     if native_system in ci_variables['supported_systems']:
+        print('DEBUG: Native system: `{}`'.format(native_system))
         ci_variables['all_supported_systems'].append(native_system)
     else:
         print('ERROR: Your system `{}` is unsupported.'.format(native_system))
