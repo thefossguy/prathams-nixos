@@ -37,9 +37,6 @@ jobs:
 
       - name: Evaluating the `outPath`s for buildable Nix targets
         run: |
-          nix eval .#nixosConfigurations.bhim.config.system.build.toplevel.outPath
-          nix eval .#homeConfigurations.aarch64-linux.ppatel.activationPackage.outPath
-          nix eval .#homeConfigurations.aarch64-linux.pratham.activationPackage.outPath
           python3 ./scripts/nix-ci/builder.py --use-emulation --nixosConfigurations --homeConfigurations --devShells --packages --link-only --no-print-missing-paths
 
       - name: Running CI
