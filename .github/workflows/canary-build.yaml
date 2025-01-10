@@ -21,7 +21,8 @@ jobs:
         run: sudo rm -rf /usr/local/lib/android /usr/share/miniconda /usr/bin/conda /usr/share/kotlinc /usr/local/lib/lein /usr/local/lib/node_modules /usr/local/bin/vercel /usr/local/share/phantomjs-* /usr/share/sbt /usr/bin/sbt /usr/share/java /usr/local/sqlpackage /usr/share/swift /usr/local/bin/swift* /usr/local/lib/libsourcekitdInProc.so /usr/local/share/vcpkg
       - name: Running `apt-get autoremove`
         run: |
-          pkgsToRM=(ant ant-optional apache2 buildah chrpath clang clang-format clang-tidy gcc gfortran git-ftp git-lfs google-cloud-cli heroku kubectl libfontconfig1 libfontconfig1-dev libfreetype6 libfreetype6-dev libmysqlclient-dev libpq-dev libxft-dev lld lldb microsoft-edge-stable mono-complete mssql-tools mysql-client mysql-server nginx nuget php* podman powershell r-base ruby-full skopeo snmp temurin-*-jdk unixodbc-dev)
+          pkgsToRM=(ant ant-optional apache2 buildah chrpath clang clang-format clang-tidy gcc gfortran git-ftp git-lfs google-cloud-cli heroku kubectl libfontconfig1 libfontconfig1-dev libfreetype6 libfreetype6-dev libmysqlclient-dev libpq-dev libxft-dev lld lldb microsoft-edge-stable mono-complete mssql-tools mysql-client mysql-server nuget php* podman powershell r-base ruby-full skopeo snmp temurin-*-jdk unixodbc-dev)
+          set -x
           for pkgRM in "${pkgsToRM[@]}"; do
             sudo apt-get autoremove --purge --assume-yes "${pkgRM}"
           done
