@@ -50,4 +50,4 @@ jobs:
 
       - name: Look at results
         run: |
-          ls -alh ./result*
+          ls -alh | grep result || echo 'Nothing was built'
