@@ -142,7 +142,7 @@ in {
     aria2.enable = true;
     bat.enable = true;
     bottom.enable = !useMinimalConfig;
-    broot.enable = !useMinimalConfig;
+    broot.enable = !useMinimalConfig && pkgs.stdenv.isx86_64;
     btop.enable = true;
     ripgrep.enable = true;
     tealdeer.enable = !useMinimalConfig;
