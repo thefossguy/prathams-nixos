@@ -46,9 +46,14 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "extra-platforms = ${{ matrix.nixSystems }}\nextra-substituters = https//thefossguy.cachix.org\nextra-trusted-public-keys = thefossguy.cachix.org-1:/gMdFQnu+BtfjSYsnxZbtNdA2s4EX3mvNFWkqovpN24="
+          extra-conf: "extra-platforms = ${{ matrix.nixSystems }}"
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
+      - uses: cachix/cachix-action@master
+        with:
+          name: thefossguy
 
       - uses: actions/download-artifact@v4
         with:
