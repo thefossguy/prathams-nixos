@@ -32,6 +32,11 @@ jobs:
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
+      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
+      - uses: cachix/cachix-action@master
+        with:
+          name: thefossguy
+
       - name: Updating flake.lock
         run: nix flake update
 
