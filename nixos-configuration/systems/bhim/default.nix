@@ -16,7 +16,7 @@
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
     enablePasswordlessSudo = true;
-    kernelDevelopment.enable = true;
+    #kernelDevelopment.enable = true;
     localCaching.buildsNixDerivations = true;
     useMinimalConfig = lib.mkForce false;
   };
