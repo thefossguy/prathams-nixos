@@ -100,6 +100,7 @@ in {
         primaryNetIface = "enxdca6322f1a7c";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "broadcom/bcm2711-rpi-4-b.dtb";
     };
 
     # Raspberry Pi 4 Model B (8GB)
@@ -110,6 +111,7 @@ in {
         primaryNetIface = "enxe45f015fa482";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "broadcom/bcm2711-rpi-4-b.dtb";
     };
 
     # Raspberry Pi 5 Model B (8GB)
@@ -120,6 +122,7 @@ in {
         primaryNetIface = "end0";
         system = linuxSystems.aarch64;
       };
+      extraConfig.dtbRelativePath = "broadcom/bcm2712-rpi-5-b.dtb";
     };
 
     # Radxa ROCK 5 Model B (16GB; RK3588)
