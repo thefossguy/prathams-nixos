@@ -50,13 +50,15 @@ in {
           mkdir $out
           cp -r ${unstablePkgs.raspberrypifw}/share/raspberrypi/boot/* $out
           rm -vf $out/kernel*.img
-          cp -r ${final.ubootRaspberryPiGeneric_64bit}/u-boot.bin $out/u-boot.bin
+          cp -r ${final.ubootRaspberryPiGeneric_64bit}/u-boot.bin $out/rpi-u-boot.bin
 
           cat << EOF > $out/config.txt
           # http://rptl.io/configtxt
           arm_64bit=1
+          arm_boost=1
           enable_uart=1
-          kernel=u-boot.bin
+          kernel=rpi-u-boot.bin
+
           disable_fw_kms_setup=1
           disable_splash=0
           display_auto_detect=1
@@ -65,7 +67,6 @@ in {
           max_framebuffers=2
 
           [pi4]
-          arm_boost=1
           hdmi_enable_4kp60=0 # increases power consumption and no longer needed
 
           [cm4]
