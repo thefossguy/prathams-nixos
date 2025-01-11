@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./devicetree.nix
     ./raspberry-pi
     ./rockchip
     ./z-firmware-updater.nix

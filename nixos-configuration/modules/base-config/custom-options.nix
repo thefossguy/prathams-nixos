@@ -193,7 +193,11 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
       message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on Aarch64.";
     }]
 
-    ++ lib.optionals (config.customOptions.socSupport.armSoc == "rk3588") [{
+    ++ lib.optionals (
+      config.customOptions.socSupport.armSoc == "rk3588" ||
+      config.customOptions.socSupport.armSoc == "rpi4" ||
+      config.customOptions.socSupport.armSoc == "rpi5"
+    ) [{
       assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
       message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
     }]
