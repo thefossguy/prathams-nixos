@@ -17,6 +17,7 @@ let
       (
         (nixosSystemConfig.kernelConfig.kernelVersion != "longterm")
         && (config.customOptions.socSupport.armSoc != "rpi4")
+        && (!config.customOptions.isIso)
         && pkgs.stdenv.isAarch64
       )
     then
