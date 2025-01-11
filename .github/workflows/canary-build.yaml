@@ -7,7 +7,25 @@ on:
 
 
 jobs:
+  update-flake-lock:
+    name: Update `flake.lock`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix flake update
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flake-lock
+          path: flake.lock
+          retention-days: 1
+          overwrite: true
+          if-no-files-found: error
+          compression-level: 9
+
   canary-build:
+    needs: update-flake-lock
     name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystems }}
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -32,24 +50,13 @@ jobs:
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
-      - uses: cachix/cachix-action@master
+      - uses: actions/download-artifact@v4
         with:
-          name: thefossguy
-
-      - name: Updating flake.lock
-        run: nix flake update
+          name: flake-lock
+          path: .
 
       - name: Evaluating the `outPath`s for buildable Nix targets
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }} --link-only --no-print-missing-paths
-
-      - run: df -kh
-      - name: Cleaning up the junk GH populated this disk with
-        run: |
-          sudo rm -rf /usr/local/lib/android /usr/share/miniconda /usr/bin/conda /usr/share/kotlinc /usr/local/lib/lein /usr/local/lib/node_modules /usr/local/bin/vercel /usr/local/share/phantomjs-* /usr/share/sbt /usr/bin/sbt /usr/share/java /usr/local/sqlpackage /usr/share/swift /usr/local/bin/swift* /usr/local/lib/libsourcekitdInProc.so /usr/local/share/vcpkg
-          sudo apt-get autoremove --purge --assume-yes ant ant-optional apache2 buildah chrpath clang clang-format clang-tidy gcc gfortran git-ftp git-lfs google-cloud-cli heroku kubectl libmysqlclient-dev libpq-dev libxft-dev lld lldb microsoft-edge-stable mono-complete mssql-tools mysql-client mysql-server nginx nuget php* podman powershell r-base ruby-full skopeo snmp temurin-*-jdk unixodbc-dev 1>/dev/null
-          sudo apt-get clean
-      - run: df -kh
 
       - name: Running CI
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }}
