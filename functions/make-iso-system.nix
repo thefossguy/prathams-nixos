@@ -32,6 +32,7 @@ let
     };
     extraConfig = {
       systemType = nixosSystems.commonConfig.systemTypes.server;
+      dtbRelativePath = null;
       inherit inputChannel nixBuildArgs;
     };
     kernelConfig = {
