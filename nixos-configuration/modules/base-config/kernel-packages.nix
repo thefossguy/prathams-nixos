@@ -12,9 +12,17 @@ let
     zfs = (nixosSystemConfig.kernelConfig.kernelVersion == "longterm");
   };
 
-  enable16kPagesOnAarch64 = if ((nixosSystemConfig.kernelConfig.kernelVersion != "longterm") && pkgs.stdenv.isAarch64)
-    then lib.kernel.yes
-    else lib.kernel.unset;
+  enable16kPagesOnAarch64 =
+    if
+      (
+        (nixosSystemConfig.kernelConfig.kernelVersion != "longterm")
+        && (config.customOptions.socSupport.armSoc != "rpi4")
+        && pkgs.stdenv.isAarch64
+      )
+    then
+      lib.kernel.yes
+    else
+      lib.kernel.unset;
 in {
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
