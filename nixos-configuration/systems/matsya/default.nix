@@ -7,7 +7,7 @@
   hardware.bluetooth.enable = lib.mkForce false;
 
   customOptions = {
-    cpuMicrocodeVendor = "intel";
+    x86CpuVendor = "intel";
     enablePasswordlessSudo = true;
     gpuSupport = [ "intel" ];
     localCaching.buildsNixDerivations = true;

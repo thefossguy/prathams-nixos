@@ -101,7 +101,7 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
       };
     };
 
-    cpuMicrocodeVendor = lib.mkOption {
+    x86CpuVendor = lib.mkOption {
       description = "List of GPU vendors to enable support for.";
       default = null;
       type = lib.types.enum [

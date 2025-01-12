@@ -7,7 +7,7 @@
   boot.extraModprobeConfig = "options kvm_intel nested=1";
 
   customOptions = {
-    cpuMicrocodeVendor = "intel";
+    x86CpuVendor = "intel";
     displayServer.guiSession = "hyprland";
     gpuSupport = [ "intel" ];
     virtualisation.enable = true;

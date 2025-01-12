@@ -3,6 +3,6 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions.cpuMicrocodeVendor = "amd";
+  customOptions.x86CpuVendor = "amd";
   customOptions.displayServer.guiSession = "kde";
 }
