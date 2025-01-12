@@ -1,4 +1,12 @@
-{ config, lib, pkgs, osConfig ? {}, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? { },
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.podmanInit;
@@ -15,7 +23,8 @@ let
       podman
     ];
   };
-in lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
+in
+lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
   home.packages = [
     pkgs.ctop
     pkgs.podman-compose
@@ -23,7 +32,9 @@ in lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or fa
   ] ++ lib.optionals (osConfig.customOptions.useMinimalConfig or false) [ pkgs.buildah ];
 
   systemd.user.services."${serviceConfig.unitName}" = {
-    Install = { WantedBy = [ "default.target" ]; };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
 
     Unit = {
       Description = "A service to initialize Podman";

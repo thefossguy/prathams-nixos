@@ -1,4 +1,12 @@
-{ config, lib, modulesPath, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];

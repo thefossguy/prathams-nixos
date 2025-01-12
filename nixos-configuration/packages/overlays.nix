@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   stablePkgs = pkgsChannels.stable;
@@ -10,7 +17,8 @@ let
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
     "--enable-features=UseOzonePlatform" # enable the Ozone Wayland thingy
   ];
-in {
+in
+{
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
@@ -18,17 +26,21 @@ in {
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
       brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
-      chromium = prev.chromium.override { commandLineArgs = commonChromiumFlags; enableWideVine = false; };
-      ungoogled-chromium = prev.ungoogled-chromium.override { commandLineArgs = commonChromiumFlags; enableWideVine = false; };
+      chromium = prev.chromium.override {
+        commandLineArgs = commonChromiumFlags;
+        enableWideVine = false;
+      };
+      ungoogled-chromium = prev.ungoogled-chromium.override {
+        commandLineArgs = commonChromiumFlags;
+        enableWideVine = false;
+      };
     })
-
 
     # Package overrides where no matter what, a given package is always used
     # from the stable channel, goes here.
     (final: prev: {
       google-cloud-sdk-gce = stablePkgs.google-cloud-sdk-gce;
     })
-
 
     # Custom (new) packages go here.
     (final: prev: {

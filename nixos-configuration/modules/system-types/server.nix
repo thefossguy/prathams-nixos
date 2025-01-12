@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf (config.customOptions.systemType == "server") {
   boot.kernelParams = [

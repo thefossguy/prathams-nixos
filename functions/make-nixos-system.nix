@@ -1,4 +1,11 @@
-{ allInputChannels, mkPkgs, linuxSystems, fullUserSet, hostname, nixBuildArgs }:
+{
+  allInputChannels,
+  mkPkgs,
+  linuxSystems,
+  fullUserSet,
+  hostname,
+  nixBuildArgs,
+}:
 let
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };
   thisSystem = nixosSystems.systems."${hostname}";
@@ -18,7 +25,12 @@ let
   # this is the core building block for **EVERY** NixOS System
   nixosSystemConfig = {
     coreConfig = {
-      inherit (thisSystem.coreConfig) hostname ipv4Address primaryNetIface system;
+      inherit (thisSystem.coreConfig)
+        hostname
+        ipv4Address
+        primaryNetIface
+        system
+        ;
       isNixOS = true;
       hostId = nixosSystems.commonConfig.hostIds."${hostname}";
       systemUser = thisSystem.coreConfig.systemUser or fullUserSet.pratham;
@@ -39,7 +51,8 @@ let
       kernelVersion = thisSystem.kernelConfig.kernelVersion or "stable";
     };
   };
-in nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
+in
+nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
   # nix eval .#nixosConfigurations."${nixosSystemConfig.coreConfig.hostname}"._module.specialArgs.nixosSystemConfig
   specialArgs = { inherit pkgsChannels nixosSystemConfig; };
   modules = [

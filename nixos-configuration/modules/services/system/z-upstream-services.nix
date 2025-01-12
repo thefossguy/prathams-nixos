@@ -1,9 +1,17 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   userHome = "/home/${nixosSystemConfig.coreConfig.systemUser.username}";
   useMinimalConfig = config.customOptions.useMinimalConfig;
-in {
+in
+{
 
   services = {
     fstrim.enable = true;

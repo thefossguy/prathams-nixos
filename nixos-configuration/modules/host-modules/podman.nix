@@ -1,11 +1,20 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf (config.customOptions.podmanContainers.enableHomelabServices) {
   virtualisation = {
     oci-containers.backend = "podman";
     podman = {
       enable = true;
-      defaultNetwork.settings = { dns_enabled = true; };
+      defaultNetwork.settings = {
+        dns_enabled = true;
+      };
       dockerCompat = true;
       dockerSocket.enable = true;
       networkSocket.openFirewall = true;

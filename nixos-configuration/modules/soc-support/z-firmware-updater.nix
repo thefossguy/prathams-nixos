@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   ubootPackages = {
@@ -21,10 +28,13 @@ let
     ];
   };
 
-  rpiUpdateScript = lib.strings.optionalString ((config.customOptions.socSupport.armSoc == "rpi4") || (config.customOptions.socSupport.armSoc == "rpi5")) ''
-    ${pkgs.rsync}/bin/rsync --quiet --no-motd --checksum --recursive --progress --stats ${selectedUbootPackage.outPath}/ /boot/
-    exit 0
-  '';
+  rpiUpdateScript =
+    lib.strings.optionalString
+      ((config.customOptions.socSupport.armSoc == "rpi4") || (config.customOptions.socSupport.armSoc == "rpi5"))
+      ''
+        ${pkgs.rsync}/bin/rsync --quiet --no-motd --checksum --recursive --progress --stats ${selectedUbootPackage.outPath}/ /boot/
+        exit 0
+      '';
 
   rk3588UpdateScript = lib.strings.optionalString (config.customOptions.socSupport.armSoc == "rk3588") ''
     if [[ "$(cat /proc/sys/kernel/hostname)" != '${config.networking.hostName}' ]]; then

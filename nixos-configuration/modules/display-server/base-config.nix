@@ -1,8 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   waylandEnabled = config.customOptions.displayServer.waylandEnabled;
-in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
+in
+lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   hardware.bluetooth.enable = true;
   hardware.graphics.enable = true;
   security.rtkit.enable = true; # For pulseaudio
@@ -69,36 +77,39 @@ in lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     virt-manager.enable = config.customOptions.virtualisation.enable;
   };
 
-  environment.systemPackages = (with pkgs; [
-    alacritty
-    authenticator # alt to Google Authenticator on iOS/Android
-    brave
-    desktop-file-utils
-    emojipick
-    foot
-    fractal # matrix client
-    mediainfo-gui
-    metadata-cleaner # exif removal
-    paper-clip # PDF editor
-    snapshot # camera
-    ungoogled-chromium
-  ])
-  ++ (with pkgs.kdePackages; [
-    filelight # visualize disk space
-    ghostwriter # markdown editor
-    kalk # calculator
-    kdeconnect-kde
-    okular # the universal document viewer (good for previews)
-  ])
-  ++ lib.optionals pkgs.stdenv.isx86_64 (with pkgs; [
-    kdePackages.kdenlive
-    mpv
-    tor-browser
-  ])
-  ++ (with pkgsChannels.stable; [
-    neovide # haz nice neovim animations
-  ]);
-
+  environment.systemPackages =
+    (with pkgs; [
+      alacritty
+      authenticator # alt to Google Authenticator on iOS/Android
+      brave
+      desktop-file-utils
+      emojipick
+      foot
+      fractal # matrix client
+      mediainfo-gui
+      metadata-cleaner # exif removal
+      paper-clip # PDF editor
+      snapshot # camera
+      ungoogled-chromium
+    ])
+    ++ (with pkgs.kdePackages; [
+      filelight # visualize disk space
+      ghostwriter # markdown editor
+      kalk # calculator
+      kdeconnect-kde
+      okular # the universal document viewer (good for previews)
+    ])
+    ++ lib.optionals pkgs.stdenv.isx86_64 (
+      with pkgs;
+      [
+        kdePackages.kdenlive
+        mpv
+        tor-browser
+      ]
+    )
+    ++ (with pkgsChannels.stable; [
+      neovide # haz nice neovim animations
+    ]);
 
   fonts = {
     fontDir.enable = true;

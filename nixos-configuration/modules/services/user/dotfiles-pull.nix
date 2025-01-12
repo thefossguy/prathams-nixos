@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.dotfilesPull;
@@ -13,10 +20,13 @@ let
       openssl
     ];
   };
-in lib.mkIf pkgs.stdenv.isLinux {
+in
+lib.mkIf pkgs.stdenv.isLinux {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
-      Install = { RequiredBy = [ "timers.target" ]; };
+      Install = {
+        RequiredBy = [ "timers.target" ];
+      };
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
@@ -25,7 +35,9 @@ in lib.mkIf pkgs.stdenv.isLinux {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

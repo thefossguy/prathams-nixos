@@ -1,9 +1,9 @@
 { linuxSystems, fullUserSet }:
 let
   systemTypes = {
-    server  = "server";
+    server = "server";
     desktop = "desktop";
-    laptop  = "laptop";
+    laptop = "laptop";
   };
 
   kernelVersions = {
@@ -11,7 +11,8 @@ let
     stable = "stable";
     longterm = "longterm";
   };
-in {
+in
+{
   commonConfig = {
     gatewayAddr = "10.0.0.1";
     ipv4PrefixLength = 24;
@@ -30,21 +31,21 @@ in {
 
     hostIds = {
       # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`
-      flameboi   = "20c95fe3";
-      indra      = "d92f6246";
-      madhav     = "102b6927";
-      matsya     = "3852eff0";
-      sentinel   = "041d6ae7";
-      reddish    = "996ccb68";
-      mahadev    = "c06c1a49";
-      pawandev   = "2fefd3b2";
-      stuti      = "07ca9dd4";
+      flameboi = "20c95fe3";
+      indra = "d92f6246";
+      madhav = "102b6927";
+      matsya = "3852eff0";
+      sentinel = "041d6ae7";
+      reddish = "996ccb68";
+      mahadev = "c06c1a49";
+      pawandev = "2fefd3b2";
+      stuti = "07ca9dd4";
       chaturvyas = "6e52044b";
-      raajan     = "337088b4";
-      bhim       = "03c38aa0";
-      bheem      = "6cca5083";
-      vaaman     = "3c8077f9";
-      vaayu      = "d81cd923";
+      raajan = "337088b4";
+      bhim = "03c38aa0";
+      bheem = "6cca5083";
+      vaaman = "3c8077f9";
+      vaayu = "d81cd923";
     };
   };
 
@@ -57,7 +58,9 @@ in {
         primaryNetIface = "eth0";
         system = linuxSystems.x86_64;
       };
-      extraConfig = { systemType = systemTypes.desktop; };
+      extraConfig = {
+        systemType = systemTypes.desktop;
+      };
     };
 
     # Lenovo Yoga Slim 6 (16GB; i5-13500H; Iris Xe)
@@ -68,7 +71,9 @@ in {
         primaryNetIface = "wlp0s20f3";
         system = linuxSystems.x86_64;
       };
-      extraConfig = { systemType = systemTypes.laptop; };
+      extraConfig = {
+        systemType = systemTypes.laptop;
+      };
     };
 
     # x86_64 NAS (16GB ECC; R5 3500X)

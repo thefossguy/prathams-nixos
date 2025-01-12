@@ -1,12 +1,27 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 # TODO: Remove this let-in block after RISC-V support is added to nixpkgs
-let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV; }; in
+let
+  localStdenv = pkgs.stdenv // {
+    isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
+  };
+in
 
 {
   options.customOptions = {
     systemType = lib.mkOption {
       description = "Enable configuration that is specific to a Server/Desktop/Laptop.";
-      type = lib.types.enum [ "server" "desktop" "laptop" ];
+      type = lib.types.enum [
+        "server"
+        "desktop"
+        "laptop"
+      ];
       default = "server";
     };
 
@@ -25,7 +40,9 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
     socSupport = {
       enabled = lib.mkOption {
         description = "An internal-only option.";
-        default = ((config.customOptions.socSupport.armSoc != "unset") || (config.customOptions.socSupport.riscvSoc != "unset"));
+        default = (
+          (config.customOptions.socSupport.armSoc != "unset") || (config.customOptions.socSupport.riscvSoc != "unset")
+        );
         type = lib.types.bool;
       };
       handleFirmwareUpdates = lib.mkOption {
@@ -115,7 +132,13 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
     gpuSupport = lib.mkOption {
       description = "List of GPU vendors to enable support for.";
       default = [ ];
-      type = lib.types.listOf (lib.types.enum [ "amd" "intel" "nvidia" ]);
+      type = lib.types.listOf (
+        lib.types.enum [
+          "amd"
+          "intel"
+          "nvidia"
+        ]
+      );
     };
 
     displayServer = {
@@ -139,8 +162,9 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
           so that browsers work well on NixOS (exporting NIXOS_OZONE_WL
           correctly).
         '';
-        default = (config.customOptions.displayServer.guiSession != "unset"
-          && config.customOptions.displayServer.guiSession != "bspwm");
+        default = (
+          config.customOptions.displayServer.guiSession != "unset" && config.customOptions.displayServer.guiSession != "bspwm"
+        );
         type = lib.types.bool;
       };
     };
@@ -186,25 +210,34 @@ let localStdenv = pkgs.stdenv // { isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
     };
   };
 
-  config.assertions = []
+  config.assertions =
+    [ ]
 
-    ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [{
-      assertion = pkgs.stdenv.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
-      message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on Aarch64.";
-    }]
+    ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
+      {
+        assertion = pkgs.stdenv.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
+        message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on Aarch64.";
+      }
+    ]
 
-    ++ lib.optionals (
-      config.customOptions.socSupport.armSoc == "rk3588" ||
-      config.customOptions.socSupport.armSoc == "rpi4" ||
-      config.customOptions.socSupport.armSoc == "rpi5"
-    ) [{
-      assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
-      message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
-    }]
+    ++
+      lib.optionals
+        (
+          config.customOptions.socSupport.armSoc == "rk3588"
+          || config.customOptions.socSupport.armSoc == "rpi4"
+          || config.customOptions.socSupport.armSoc == "rpi5"
+        )
+        [
+          {
+            assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
+            message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
+          }
+        ]
 
-    ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [{
-      assertion = localStdenv.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
-      message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
-    }]
-  ;
+    ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
+      {
+        assertion = localStdenv.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
+        message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
+      }
+    ];
 }

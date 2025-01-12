@@ -1,9 +1,17 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.resetSystemdUserUnits;
   systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
-in {
+in
+{
   systemd = {
     services."${serviceConfig.unitName}" = {
       enable = true;

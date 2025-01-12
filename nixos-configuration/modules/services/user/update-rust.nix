@@ -1,4 +1,12 @@
-{ config, lib, pkgs, osConfig ? {}, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? { },
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   enableService = (!(osConfig.customOptions.useMinimalConfig or false));
@@ -12,10 +20,13 @@ let
       openssl
     ];
   };
-in lib.mkIf enableService {
+in
+lib.mkIf enableService {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
-      Install = { RequiredBy = [ "timers.target" ]; };
+      Install = {
+        RequiredBy = [ "timers.target" ];
+      };
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
@@ -24,7 +35,9 @@ in lib.mkIf enableService {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

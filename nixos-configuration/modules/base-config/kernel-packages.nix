@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   kernelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
@@ -24,17 +31,22 @@ let
       lib.kernel.yes
     else
       lib.kernel.unset;
-in {
+in
+{
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
     supportedFilesystems = lib.mkForce supportedFileSystems;
 
-    kernelPackages = lib.mkForce (pkgs.linuxPackagesFor (kernelPackages.override {
-      argsOverride = {
-        structuredExtraConfig = with lib.kernel; {
-          ARM64_16K_PAGES = enable16kPagesOnAarch64;
-        };
-      };
-    }));
+    kernelPackages = lib.mkForce (
+      pkgs.linuxPackagesFor (
+        kernelPackages.override {
+          argsOverride = {
+            structuredExtraConfig = with lib.kernel; {
+              ARM64_16K_PAGES = enable16kPagesOnAarch64;
+            };
+          };
+        }
+      )
+    );
   };
 }

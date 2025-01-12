@@ -1,4 +1,12 @@
-{ config, lib, pkgs, osConfig ? {}, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? { },
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   localCacheRemote = "chaturvyas";
@@ -13,10 +21,13 @@ let
       openssl
     ];
   };
-in lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
+in
+lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
-      Install = { RequiredBy = [ "timers.target" ]; };
+      Install = {
+        RequiredBy = [ "timers.target" ];
+      };
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
@@ -24,7 +35,9 @@ in lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) 
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

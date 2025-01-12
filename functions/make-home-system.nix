@@ -1,4 +1,11 @@
-{ allInputChannels, mkPkgs, system, systemUser, nixpkgsChannel ? "default", nixBuildArgs }:
+{
+  allInputChannels,
+  mkPkgs,
+  system,
+  systemUser,
+  nixpkgsChannel ? "default",
+  nixBuildArgs,
+}:
 let
   inputChannel = allInputChannels."${nixpkgsChannel}";
   pkgsChannels = {
@@ -30,7 +37,8 @@ let
       inherit inputChannel nixBuildArgs;
     };
   };
-in nixosSystemConfig.extraConfig.inputChannel.homeManager.lib.homeManagerConfiguration {
+in
+nixosSystemConfig.extraConfig.inputChannel.homeManager.lib.homeManagerConfiguration {
   pkgs = pkgsChannels.pkgs;
   # nix eval .#homeConfigurations."${nixosSystemConfig.coreConfig.system}"."${nixosSystemConfig.coreConfig.systemUser.username}".options._module.specialArgs.value.nixosSystemConfig
   extraSpecialArgs = { inherit pkgsChannels nixosSystemConfig; };

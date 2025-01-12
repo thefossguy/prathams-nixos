@@ -1,19 +1,56 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
 
   sudoRules = with pkgs; [
-    { package = coreutils; command = "sync"; }
-    { package = hdparm; command = "hdparm"; }
-    { package = nix; command = "nix-collect-garbage"; }
-    { package = nixos-rebuild; command = "nixos-rebuild"; }
-    { package = nvme-cli; command = "nvme"; }
-    { package = systemd; command = "poweroff"; }
-    { package = systemd; command = "reboot"; }
-    { package = systemd; command = "shutdown"; }
-    { package = systemd; command = "systemctl"; }
-    { package = util-linux; command = "dmesg"; }
+    {
+      package = coreutils;
+      command = "sync";
+    }
+    {
+      package = hdparm;
+      command = "hdparm";
+    }
+    {
+      package = nix;
+      command = "nix-collect-garbage";
+    }
+    {
+      package = nixos-rebuild;
+      command = "nixos-rebuild";
+    }
+    {
+      package = nvme-cli;
+      command = "nvme";
+    }
+    {
+      package = systemd;
+      command = "poweroff";
+    }
+    {
+      package = systemd;
+      command = "reboot";
+    }
+    {
+      package = systemd;
+      command = "shutdown";
+    }
+    {
+      package = systemd;
+      command = "systemctl";
+    }
+    {
+      package = util-linux;
+      command = "dmesg";
+    }
   ];
 
   mkSudoRule = rule: {
@@ -22,7 +59,8 @@ let
   };
 
   sudoCommands = map mkSudoRule sudoRules;
-in {
+in
+{
   users = {
     allowNoPasswordLogin = lib.mkForce false;
     defaultUserShell = pkgs.bashInteractive;
@@ -48,14 +86,18 @@ in {
       useDefaultShell = true;
 
       # Necessary for rootless Podman but no reason to keep it exclusive to it.
-      subGidRanges = [{
-        startGid = 10000;
-        count = 65536;
-      }];
-      subUidRanges = [{
-        startUid = 10000;
-        count = 65536;
-      }];
+      subGidRanges = [
+        {
+          startGid = 10000;
+          count = 65536;
+        }
+      ];
+      subUidRanges = [
+        {
+          startUid = 10000;
+          count = 65536;
+        }
+      ];
 
       extraGroups = [
         "adbusers"
@@ -116,10 +158,12 @@ in {
         Defaults lecture = never
       '';
 
-      extraRules = [{
-        users = [ "${systemUserUsername}" ];
-        commands = sudoCommands;
-      }];
+      extraRules = [
+        {
+          users = [ "${systemUserUsername}" ];
+          commands = sudoCommands;
+        }
+      ];
     };
   };
 }

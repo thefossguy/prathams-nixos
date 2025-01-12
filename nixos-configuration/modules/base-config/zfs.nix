@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
   # Do not set `boot.zfs.enabled` because the default is not `true` (direct

@@ -46,15 +46,19 @@
 
   Install = {
     WantedBy = [ "default.target" ];
-    RequiredBy = serviceConfig.containerConfig.requiredBy or [];
+    RequiredBy = serviceConfig.containerConfig.requiredBy or [ ];
   };
 
   Unit = {
     Description = "Container service for ${serviceConfig.containerConfig.description}";
-    Documentation = [ "man:podman-run(1)" "man:podman-stop(1)" "man:podman-rm(1)" ];
+    Documentation = [
+      "man:podman-run(1)"
+      "man:podman-stop(1)"
+      "man:podman-rm(1)"
+    ];
     After = serviceConfig.containerConfig.after;
-    Wants = serviceConfig.containerConfig.wants or [];
-    Requires = serviceConfig.containerConfig.requires or [];
+    Wants = serviceConfig.containerConfig.wants or [ ];
+    Requires = serviceConfig.containerConfig.requires or [ ];
     RequiresMountsFor = [ "%t/containers" ];
   };
 }

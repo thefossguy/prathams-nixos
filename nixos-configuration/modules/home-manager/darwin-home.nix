@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf pkgs.stdenv.isDarwin {
   # TODO: Install the following with homebrew
@@ -17,7 +24,7 @@ lib.mkIf pkgs.stdenv.isDarwin {
     };
   };
   # home-manager does not need to overwrite these files
-  xdg.configFile = {};
+  xdg.configFile = { };
   home.file = {
     ".bash_profile".enable = false;
     ".bashrc".enable = false;
@@ -25,7 +32,9 @@ lib.mkIf pkgs.stdenv.isDarwin {
   };
 
   targets.darwin = {
-    currentHostDefaults = { "com.apple.controlcenter".BatteryShowPercentage = true; };
+    currentHostDefaults = {
+      "com.apple.controlcenter".BatteryShowPercentage = true;
+    };
     defaults = {
       NSGlobalDomain = {
         NSAutomaticCapitalizationEnabled = false;

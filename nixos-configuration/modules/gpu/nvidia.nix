@@ -1,10 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
   boot.blacklistedKernelModules = lib.mkForce [ "nouveau" ];
-  services.xserver.videoDrivers = if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia")
-    then (lib.mkBefore [ "nvidia" ])
-    else [ "nvidia" ];
+  services.xserver.videoDrivers =
+    if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia") then (lib.mkBefore [ "nvidia" ]) else [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;

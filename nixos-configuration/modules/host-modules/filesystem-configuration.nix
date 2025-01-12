@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   commonMountOptions = [
@@ -14,7 +21,8 @@ let
   rootMountOptions = commonMountOptions ++ hardenedMountOptions;
   homeMountOptions = commonMountOptions ++ hardenedMountOptions;
   varlMountOptions = commonMountOptions ++ hardenedMountOptions;
-in {
+in
+{
   fileSystems."/boot" = {
     fsType = "vfat";
     options = bootMountOptions;

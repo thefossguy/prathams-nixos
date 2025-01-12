@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   kernelPackage = config.boot.kernelPackages.kernel;
@@ -9,6 +16,10 @@ lib.mkIf config.customOptions.kernelDevelopment.enable {
       KDIR = "${kernelPackage.dev}/lib/modules/${kernelPackage.modDirVersion}/build";
     };
 
-    systemPackages = kernelPackage.buildInputs ++ kernelPackage.nativeBuildInputs ++ kernelPackage.propagatedBuildInputs ++ kernelPackage.propagatedNativeBuildInputs;
+    systemPackages =
+      kernelPackage.buildInputs
+      ++ kernelPackage.nativeBuildInputs
+      ++ kernelPackage.propagatedBuildInputs
+      ++ kernelPackage.propagatedNativeBuildInputs;
   };
 }

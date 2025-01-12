@@ -1,8 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.continuousBuild;
-in lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
+in
+lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
   systemd = {
     timers."${serviceConfig.unitName}" = {
       enable = true;
@@ -15,7 +23,12 @@ in lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       enable = true;
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
-      path = with pkgs; [ git nix nix-output-monitor python3 ];
+      path = with pkgs; [
+        git
+        nix
+        nix-output-monitor
+        python3
+      ];
 
       serviceConfig = {
         User = "root";

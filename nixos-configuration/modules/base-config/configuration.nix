@@ -1,8 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   disableSystemdInIinitrd = config.customOptions.isIso;
-in {
+in
+{
   # The `nixpkgs.buildPlatform.system` option must be set for cross compilation
   # to work. Now, since I wish to perform cross compilation from a Linux
   # machine that is not always going to be an `x86_64-linux`, I am using the

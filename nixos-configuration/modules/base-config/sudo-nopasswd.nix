@@ -1,11 +1,22 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 lib.mkIf config.customOptions.enablePasswordlessSudo {
-  security.sudo.extraRules = [{
-    users = [ nixosSystemConfig.coreConfig.systemUser.username ];
-    commands = [{
-      command = "ALL";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = [ nixosSystemConfig.coreConfig.systemUser.username ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 }

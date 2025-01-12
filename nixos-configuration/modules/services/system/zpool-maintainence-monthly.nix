@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.zpoolMaintainenceMonthly;
@@ -16,7 +23,10 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
       enable = true;
       serviceConfig.User = "root";
       serviceConfig.Type = "oneshot";
-      path = [ config.boot.kernelPackages.zfs.userspaceTools pkgs.gawk ];
+      path = [
+        config.boot.kernelPackages.zfs.userspaceTools
+        pkgs.gawk
+      ];
 
       script = ''
         set -xuf -o pipefail

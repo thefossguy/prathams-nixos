@@ -1,7 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
-let zpoolName = "${config.networking.hostName}-zpool";
-in {
+let
+  zpoolName = "${config.networking.hostName}-zpool";
+in
+{
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/3A4D-C659";
   };

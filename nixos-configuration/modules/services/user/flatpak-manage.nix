@@ -1,9 +1,19 @@
-{ config, lib, pkgs, osConfig ? {}, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  osConfig ? { },
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
-  enableService = if nixosSystemConfig.coreConfig.isNixOS
-    then ((osConfig.customOptions.displayServer.guiSession or "unset") != "unset")
-    else pkgs.stdenv.isLinux;
+  enableService =
+    if nixosSystemConfig.coreConfig.isNixOS then
+      ((osConfig.customOptions.displayServer.guiSession or "unset") != "unset")
+    else
+      pkgs.stdenv.isLinux;
 
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.flatpakManage;
   scriptsDir = "${config.home.homeDirectory}/.local/scripts";
@@ -18,10 +28,13 @@ let
       gnused
     ];
   };
-in lib.mkIf enableService {
+in
+lib.mkIf enableService {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
-      Install = { RequiredBy = [ "timers.target" ]; };
+      Install = {
+        RequiredBy = [ "timers.target" ];
+      };
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
@@ -30,7 +43,9 @@ in lib.mkIf enableService {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

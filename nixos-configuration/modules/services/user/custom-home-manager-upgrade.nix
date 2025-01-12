@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.customHomeManagerUpgrade;
@@ -17,10 +24,13 @@ let
       openssl
     ];
   };
-in lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
+in
+lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
-      Install = { RequiredBy = [ "timers.target" ]; };
+      Install = {
+        RequiredBy = [ "timers.target" ];
+      };
       Timer = {
         Unit = "${serviceConfig.unitName}.service";
         OnCalendar = serviceConfig.onCalendar;
@@ -29,7 +39,9 @@ in lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
       Unit = {
         After = serviceConfig.afterUnits;
         Requires = serviceConfig.requiredUnits;

@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.signNixStorePaths;
@@ -14,7 +21,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
     services."${serviceConfig.unitName}" = {
       enable = true;
-      path = with pkgs; [ nix python3 ];
+      path = with pkgs; [
+        nix
+        python3
+      ];
 
       serviceConfig = {
         User = "root";

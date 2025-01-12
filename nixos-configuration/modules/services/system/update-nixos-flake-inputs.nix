@@ -1,4 +1,11 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   connectivityCheckScript = import ../../misc-imports/check-network.nix {
@@ -9,10 +16,15 @@ let
 
   nixosConfigDir = "/etc/nixos";
   nixosConfigRemoteUrl = "https://gitlab.com/thefossguy/prathams-nixos.git";
-in {
+in
+{
   systemd.services."${serviceConfig.unitName}" = {
     enable = true;
-    path = with pkgs; [ gitMinimal iputils nix ];
+    path = with pkgs; [
+      gitMinimal
+      iputils
+      nix
+    ];
 
     serviceConfig = {
       User = "root";

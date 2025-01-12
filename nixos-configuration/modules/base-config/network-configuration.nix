@@ -1,8 +1,21 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
-  domainNameServers = [ "1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4" ];
-in {
+  domainNameServers = [
+    "1.1.1.1"
+    "1.0.0.1"
+    "8.8.8.8"
+    "8.8.4.4"
+  ];
+in
+{
   systemd.network = {
     enable = true;
     wait-online.enable = lib.mkForce false; # handled by my custom service

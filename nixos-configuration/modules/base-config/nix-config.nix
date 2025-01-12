@@ -1,9 +1,20 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   fsyncStorePaths = if (lib.versionAtLeast config.nix.package.version "2.25") then "fsync-store-paths = true" else "";
-  trustedNixUsers = [ "root" nixosSystemConfig.coreConfig.systemUser.username ];
-in {
+  trustedNixUsers = [
+    "root"
+    nixosSystemConfig.coreConfig.systemUser.username
+  ];
+in
+{
   nix = {
     checkConfig = true;
     gc.automatic = true;
@@ -17,7 +28,10 @@ in {
       # configuration that occurs before filesystem partitioning and formatting.
       # But disable on normal NixOS systems and home-manager. :)
       eval-cache = config.customOptions.isIso or false;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       keep-going = false;
       log-lines = 9999;
       max-jobs = 1;

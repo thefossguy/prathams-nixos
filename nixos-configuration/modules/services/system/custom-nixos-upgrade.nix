@@ -1,8 +1,16 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.customNixosUpgrade;
-in {
+in
+{
   # we disable the systemd service that NixOS ships because we have our own "special sauce"
   system.autoUpgrade.enable = lib.mkForce false;
 
@@ -18,7 +26,12 @@ in {
       enable = true;
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
-      path = with pkgs; [ gitMinimal nix nixos-rebuild systemd ];
+      path = with pkgs; [
+        gitMinimal
+        nix
+        nixos-rebuild
+        systemd
+      ];
 
       serviceConfig = {
         User = "root";

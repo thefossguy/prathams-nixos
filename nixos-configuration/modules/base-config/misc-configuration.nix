@@ -1,11 +1,19 @@
-{ config, lib, pkgs, pkgsChannels, nixosSystemConfig, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
 
 let
   userLocale = "en_IN";
   envLocale = "${userLocale}.UTF-8";
   useMinimalConfig = config.customOptions.useMinimalConfig;
   isIso = config.customOptions.isIso;
-in {
+in
+{
   time = {
     timeZone = "Asia/Kolkata";
     hardwareClockInLocalTime = true;

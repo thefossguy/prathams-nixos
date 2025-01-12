@@ -8,24 +8,60 @@ let
     timeZone = "Asia/Kolkata";
     # systemd.time format: ${weekday:-} YYYY-MM-DD hour:minute:second
     # The `weekday` must be [non-]abbreviated and not the catch-all `*`.
-    Hourly = { minute ? "00" }: "*-*-* *:${minute}:00 ${systemdTime.timeZone}";
-    Daily = { hour ? "00" }: "*-*-* ${hour}:00:00 ${systemdTime.timeZone}";
-    Weekly = { weekday, hour ? "00" }: "${weekday} *-*-* ${hour}:00:00 ${systemdTime.timeZone}";
-    Monthly = { weekday, day, hour ? "00" }: "${weekday} *-*-${day} ${hour}:00:00 ${systemdTime.timeZone}";
+    Hourly =
+      {
+        minute ? "00",
+      }:
+      "*-*-* *:${minute}:00 ${systemdTime.timeZone}";
+    Daily =
+      {
+        hour ? "00",
+      }:
+      "*-*-* ${hour}:00:00 ${systemdTime.timeZone}";
+    Weekly =
+      {
+        weekday,
+        hour ? "00",
+      }:
+      "${weekday} *-*-* ${hour}:00:00 ${systemdTime.timeZone}";
+    Monthly =
+      {
+        weekday,
+        day,
+        hour ? "00",
+      }:
+      "${weekday} *-*-${day} ${hour}:00:00 ${systemdTime.timeZone}";
   };
-  mkServiceConfig = {
-    unitName, onCalendar ? "",
-    afterUnits ? [],  wantedUnits ? [],   requiredUnits ? [],
-    beforeUnits ? [], wantedByUnits ? [], requiredByUnits ? [], ... }: {
-    inherit unitName onCalendar
-      afterUnits  wantedUnits   requiredUnits
-      beforeUnits wantedByUnits requiredByUnits;
-  };
-in rec {
+  mkServiceConfig =
+    {
+      unitName,
+      onCalendar ? "",
+      afterUnits ? [ ],
+      wantedUnits ? [ ],
+      requiredUnits ? [ ],
+      beforeUnits ? [ ],
+      wantedByUnits ? [ ],
+      requiredByUnits ? [ ],
+      ...
+    }:
+    {
+      inherit
+        unitName
+        onCalendar
+        afterUnits
+        wantedUnits
+        requiredUnits
+        beforeUnits
+        wantedByUnits
+        requiredByUnits
+        ;
+    };
+in
+rec {
   # System services
   continuousBuild = mkServiceConfig {
     unitName = "continuous-build";
-    onCalendar = systemdTime.Hourly {};
+    onCalendar = systemdTime.Hourly { };
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
     requiredUnits = continuousBuild.afterUnits;
   };
@@ -34,7 +70,7 @@ in rec {
     unitName = "custom-nixos-upgrade";
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
     requiredUnits = customNixosUpgrade.afterUnits;
-    onCalendar = if isLaptop then systemdTime.Hourly {} else (systemdTime.Daily { hour = "05"; });
+    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "05"; });
   };
 
   ensureLocalStaticIp = mkServiceConfig {
@@ -56,7 +92,10 @@ in rec {
 
   scheduledReboots = mkServiceConfig {
     unitName = "scheduled-reboots";
-    onCalendar = systemdTime.Weekly { weekday = "Mon"; hour = "04"; };
+    onCalendar = systemdTime.Weekly {
+      weekday = "Mon";
+      hour = "04";
+    };
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
     requiredUnits = scheduledReboots.afterUnits;
   };
@@ -83,13 +122,19 @@ in rec {
 
   zpoolMaintainenceMonthly = mkServiceConfig {
     unitName = "zpool-maintainence-monthly";
-    onCalendar = systemdTime.Monthly { weekday = "Fri"; day = "01..07"; };
+    onCalendar = systemdTime.Monthly {
+      weekday = "Fri";
+      day = "01..07";
+    };
   };
 
   # User services
   customHomeManagerUpgrade = mkServiceConfig {
     unitName = "custom-home-manager-upgrade";
-    onCalendar = systemdTime.Weekly { weekday = "Mon"; hour = "05"; };
+    onCalendar = systemdTime.Weekly {
+      weekday = "Mon";
+      hour = "05";
+    };
     afterUnits = [ "${dotfilesPull.unitName}.service" ];
     requiredUnits = customHomeManagerUpgrade.afterUnits;
   };
