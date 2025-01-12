@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.mkIf (config.customOptions.virtualisation.enable) {
+lib.mkIf config.customOptions.virtualisation.enable {
   environment.systemPackages = with pkgs; [
     qemu_kvm
   ];

@@ -29,7 +29,7 @@ let
     ];
   };
 in
-lib.mkIf enableService {
+lib.attrsets.optionalAttrs enableService {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = {

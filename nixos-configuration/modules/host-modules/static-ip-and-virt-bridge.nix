@@ -42,7 +42,7 @@ in
           "${primaryNetIface}" = staticIpConfig;
         };
 
-    bridges = lib.mkIf virtualBridgeConditional {
+    bridges = lib.attrsets.optionalAttrs virtualBridgeConditional {
       "virbr0" = {
         rstp = lib.mkForce false;
         interfaces = [ "${primaryNetIface}" ];

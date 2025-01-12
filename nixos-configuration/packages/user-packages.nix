@@ -205,7 +205,7 @@ in
     yt-dlp.enable = true;
     zoxide.enable = true;
 
-    direnv = lib.mkIf (!useMinimalConfig) {
+    direnv = lib.attrsets.optionalAttrs (!useMinimalConfig) {
       enable = true;
       enableBashIntegration = true;
       nix-direnv.enable = true;

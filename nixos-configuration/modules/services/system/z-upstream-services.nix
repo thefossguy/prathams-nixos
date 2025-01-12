@@ -21,14 +21,15 @@ in
     timesyncd.enable = lib.mkForce true; # NTP
     udisks2.enable = true;
 
-    locate = lib.mkIf (!useMinimalConfig) {
+    locate = lib.attrsets.optionalAttrs (!useMinimalConfig) {
       enable = true;
       localuser = null;
       package = pkgs.mlocate;
       pruneBindMounts = true;
 
-      # Should be `if (nixosSystemConfig.extraConfig.systemType == "server") then "daily" else "hourly"`
-      # but the `mkIf (!useMinimalConfig)` disables `locate` for servers.
+      # The previous `locate = lib.attrsets.optionalAttrs (!useMinimalConfig)`
+      # disables mlocate on servers entirely, so this is enabled only on
+      # desktops and laptops. Hence the hourly interval.
       interval = "hourly";
 
       prunePaths = [

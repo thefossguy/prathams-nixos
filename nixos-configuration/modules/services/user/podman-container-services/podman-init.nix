@@ -24,7 +24,7 @@ let
     ];
   };
 in
-lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
+lib.attrsets.optionalAttrs (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
   home.packages = [
     pkgs.ctop
     pkgs.podman-compose

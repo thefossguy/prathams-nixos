@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.mkIf (config.customOptions.podmanContainers.enableHomelabServices) {
+lib.mkIf config.customOptions.podmanContainers.enableHomelabServices {
   virtualisation = {
     oci-containers.backend = "podman";
     podman = {
