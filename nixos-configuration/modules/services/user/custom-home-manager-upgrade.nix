@@ -25,7 +25,7 @@ let
     ];
   };
 in
-lib.attrsets.optionalAttrs (!nixosSystemConfig.coreConfig.isNixOS) {
+lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = {

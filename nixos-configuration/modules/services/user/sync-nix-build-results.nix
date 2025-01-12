@@ -22,7 +22,7 @@ let
     ];
   };
 in
-lib.attrsets.optionalAttrs (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
+lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = {

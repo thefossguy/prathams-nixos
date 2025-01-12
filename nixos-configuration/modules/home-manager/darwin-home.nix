@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.attrsets.optionalAttrs pkgs.stdenv.isDarwin {
+lib.mkIf pkgs.stdenv.isDarwin {
   # TODO: Install the following with homebrew
   # - bash
   # - homebrew/cask/mpv

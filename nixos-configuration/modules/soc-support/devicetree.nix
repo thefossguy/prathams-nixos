@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.attrsets.optionalAttrs (nixosSystemConfig.extraConfig.dtbRelativePath != null) {
+lib.mkIf (nixosSystemConfig.extraConfig.dtbRelativePath != null) {
   hardware.deviceTree = {
     enable = true;
     name = nixosSystemConfig.extraConfig.dtbRelativePath;

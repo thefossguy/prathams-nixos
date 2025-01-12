@@ -21,7 +21,7 @@ let
     ];
   };
 in
-lib.attrsets.optionalAttrs pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.isLinux {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = {

@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.attrsets.optionalAttrs nixosSystemConfig.coreConfig.isNixOS {
+lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
   home.activation = {
     OVMFActivation = lib.hm.dag.entryAfter [ "installPackages" ] ''
       if [[ "$(uname -m)" == 'aarch64' ]]; then
