@@ -8,7 +8,7 @@
 }:
 
 let
-  fsyncStorePaths = if (lib.versionAtLeast "2.25" config.nix.package.version) then "fsync-store-paths = true" else "";
+  fsyncStorePaths = lib.strings.optionalString (lib.versionAtLeast config.nix.package.version "2.25") "fsync-store-paths = true";
   trustedNixUsers = [
     "root"
     nixosSystemConfig.coreConfig.systemUser.username
