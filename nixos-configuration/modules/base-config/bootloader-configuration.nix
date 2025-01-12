@@ -27,15 +27,12 @@
 
     kernelParams = [
       # Some of the options were taken from [nix-mineral](https://github.com/cynicsketch/nix-mineral)
-      "amd_iommu=force_isolation" # Force IOMMU isolation with AMD's IOMMU driver
-      "amd_iommu=on" # Enable AMD's IOMMU driver
       "audit=0" # Disable the audit system to prevent dmesg cluttering
       "debugfs=${if config.customOptions.kernelDevelopment.virt.enable then "on" else "off"}" # Toggle debugfs being mounted or not
       "extra_latent_entropy" # Gather more entropy on boot
       "ignore_loglevel" # Print all messages to the console, helps debug
       "init_on_alloc=1" # Initialize new pages with zeroes
       "init_on_free=1" # Fill freed pages with zeroes
-      "intel_iommu=on" # Enable Intel's IOMMU driver
       "iommu.passthrough=0" # Forces DMA to go through IOMMU
       "iommu.strict=1" # DMA unmap operations invalidate IOMMU hardware TLBs synchronously
       "iommu=force" # Force IOMMU isolation
@@ -59,7 +56,10 @@
       "plymouth.enable=0"
       "rd.plymouth=0"
     ] ++ lib.optionals pkgs.stdenv.isx86_64 [
+      "amd_iommu=force_isolation" # Force IOMMU isolation with AMD's IOMMU driver
+      "amd_iommu=on" # Enable AMD's IOMMU driver
       "ia32_emulation=0" # Disable multilib/32-bit applications
+      "intel_iommu=on" # Enable Intel's IOMMU driver
     ];
 
     loader = {
