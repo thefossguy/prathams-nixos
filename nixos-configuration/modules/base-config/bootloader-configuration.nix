@@ -56,9 +56,11 @@
       "plymouth.enable=0"
       "rd.plymouth=0"
     ] ++ lib.optionals pkgs.stdenv.isx86_64 [
+      "ia32_emulation=0" # Disable multilib/32-bit applications
+    ] ++ lib.optionals (config.customOptions.x86CpuVendor == "amd") [
       "amd_iommu=force_isolation" # Force IOMMU isolation with AMD's IOMMU driver
       "amd_iommu=on" # Enable AMD's IOMMU driver
-      "ia32_emulation=0" # Disable multilib/32-bit applications
+    ] ++ lib.optionals (config.customOptions.x86CpuVendor == "intel") [
       "intel_iommu=on" # Enable Intel's IOMMU driver
     ];
 
