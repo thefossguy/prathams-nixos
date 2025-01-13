@@ -84,13 +84,19 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
       brave
       desktop-file-utils
       emojipick
+      foliate # GNOME's book reader
       foot
       fractal # matrix client
+      handbrake
       mediainfo-gui
+      meld # GUI side-by-side git diff
       metadata-cleaner # exif removal
+      obsidian
       paper-clip # PDF editor
+      rpi-imager
       snapshot # camera
       ungoogled-chromium
+      video-trimmer # https://gitlab.gnome.org/YaLTeR/video-trimmer
     ])
     ++ (with pkgs.kdePackages; [
       filelight # visualize disk space
