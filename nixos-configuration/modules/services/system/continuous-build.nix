@@ -38,7 +38,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       script = ''
         pushd /etc/nixos || exit 1
         rm -vf ./result*
-        python3 ./scripts/nix-ci/builder.py --nixosConfigurations --homeConfigurations --devShells --packages
+        ./scripts/nix-ci/wrapped-builder.sh
         popd || exit 0
       '';
     };
