@@ -24,6 +24,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
+        bash
         git
         nix
         nix-output-monitor
