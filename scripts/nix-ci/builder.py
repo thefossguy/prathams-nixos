@@ -139,7 +139,7 @@ def get_system_dep_attrs(system_dep_attr_names=[]) -> None:
     return
 
 def make_nix_build_command(nix_build_targets):
-    command = [ 'build', '--max-jobs', '1', '--print-build-logs', '--show-trace', '--verbose', ] + nix_build_targets
+    command = [ 'build', '--max-jobs', '1', '--print-build-logs', '--show-trace', ] + nix_build_targets
     if '--use-nom' in sys.argv:
         command = [ 'nix', 'run', 'nixpkgs#nix-output-monitor', '--', ] + command
     else:
