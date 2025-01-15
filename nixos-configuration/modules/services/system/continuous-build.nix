@@ -39,7 +39,10 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       script = ''
         pushd /etc/nixos || exit 1
         rm -vf ./result*
-        ./scripts/nix-ci/wrapped-builder.sh
+        if ! ./scripts/nix-ci/wrapped-builder.sh; then
+            git checkout master
+            exit 1
+        fi
         popd || exit 0
       '';
     };
