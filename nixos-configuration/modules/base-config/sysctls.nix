@@ -106,8 +106,6 @@
     "kernel.printk" = "3 3 3 3";
     "kernel.randomize_va_space" = 2;
     "kernel.unprivileged_bpf_disabled" = 1;
-    "kernel.unprivileged_userns_clone" =
-      if (config.virtualisation.podman.enable || config.virtualisation.docker.enable) then 1 else 0;
     "kernel.yama.ptrace_scope" = 3;
     "net.core.bpf_jit_harden" = 2;
     "net.ipv4.conf.all.arp_announce" = 2;
