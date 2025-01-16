@@ -92,7 +92,7 @@ def get_supported_nixos_systems() -> None:
     nixosSystems = json.loads(nix_eval_process.stdout)
     for hostname in nixosSystems:
         if nixosSystems[hostname] in ci_variables['all_supported_systems']:
-            ci_variables['nixosConfigurations'].append(".#nixosConfigurations.{}.config.system.build.toplevel".format(hostname))
+            ci_variables['nixosConfigurations'].append(".#nixosConfigurations.{}.config.customOptions.finalBuildTarget".format(hostname))
     return
 
 def make_nix_eval_command(attr_name):
@@ -119,7 +119,7 @@ def get_system_dep_attrs(system_dep_attr_names=[]) -> None:
                 continue
 
             if attr_name == 'isoImages':
-                nix_build_target = '.#{}.{}.config.system.build.isoImage'.format(attr_name, attr_value)
+                nix_build_target = '.#{}.{}.config.customOptions.finalBuildTarget'.format(attr_name, attr_value)
 
             elif attr_name == 'homeConfigurations':
                 nix_build_target = '.#{}.{}.activationPackage'.format(attr_name, attr_value)

@@ -66,7 +66,7 @@ def dry_build_nixos_configuration() -> None:
         '--print-build-logs',
         '--show-trace',
         '--verbose',
-        '.#nixosConfigurations.' + hostname + '.config.system.build.toplevel'
+        '.#nixosConfigurations.' + hostname + '.config.customOptions.finalBuildTarget'
     ]
     debugPrint('Performing a dry build of `{}`. This may take a while.'.format(hostname))
     nix_dry_build_process = subprocess.run(nix_dry_build_command, stderr=subprocess.PIPE, text=True)
