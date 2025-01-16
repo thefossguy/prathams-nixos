@@ -15,6 +15,12 @@ in
 
 {
   options.customOptions = {
+    finalBuildTarget = lib.mkOption {
+      description = "A shorthand build target that builds the final target for NixOS system and the ISO.";
+      type = lib.types.package;
+      default = if (!config.customOptions.isIso) then config.system.build.toplevel else config.system.build.isoImage;
+    };
+
     systemType = lib.mkOption {
       description = "Enable configuration that is specific to a Server/Desktop/Laptop.";
       type = lib.types.enum [
