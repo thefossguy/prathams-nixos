@@ -1,0 +1,71 @@
+name: Canary Build
+on:
+  push:
+    branches: [ "master" ]
+  schedule:
+    - cron: '30 18 * * *' # Everyday, at 00:00 IST
+
+
+jobs:
+  update-flake-lock:
+    name: Update `flake.lock`
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix flake update
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flake-lock
+          path: flake.lock
+          retention-days: 1
+          overwrite: true
+          if-no-files-found: error
+          compression-level: 9
+
+  canary-build:
+    needs: update-flake-lock
+    name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystems }}
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      id-token: "write"
+      contents: "read"
+    strategy:
+      matrix:
+        nixSystems: [ aarch64-linux, riscv64-linux, x86_64-linux, ]
+        nixTargets: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Setting up QEMU User Emulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes binfmt-support qemu-user-static
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: "extra-platforms = ${{ matrix.nixSystems }}"
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
+      - uses: cachix/cachix-action@master
+        with:
+          name: thefossguy
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: flake-lock
+          path: .
+
+      - name: Evaluating the `outPath`s for buildable Nix targets
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }} --link-only --no-print-missing-paths
+
+      - name: Running CI
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }}
+
+      - name: Look at results
+        run: |
+          ls -alh | grep result || echo 'Nothing was built'
