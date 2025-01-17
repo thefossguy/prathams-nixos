@@ -27,18 +27,15 @@ jobs:
   canary-build:
     needs: update-flake-lock
     name: Building ${{ matrix.nixTarget }} for ${{ matrix.nixSystem }}
-    runs-on: ${{ matrix.runnerImage }}
+    runs-on: ${{ matrix.nixSystem == 'x86_64-linux' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
     continue-on-error: true
     permissions:
       id-token: "write"
       contents: "read"
     strategy:
       matrix:
-        - nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
-        - runnerImage: ubuntu-24.04
-          nixSystem: x86_64-linux
-        - runnerImage: ubuntu-24.04-arm
-          nixSystem: aarch64-linux
+        nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
+        nixSystem: [ aarch64-linux, x86_64-linux, ]
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
