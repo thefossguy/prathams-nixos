@@ -34,7 +34,7 @@ jobs:
       contents: "read"
     strategy:
       matrix:
-        nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
+        - nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
         - runnerImage: ubuntu-24.04
           nixSystem: x86_64-linux
         - runnerImage: ubuntu-24.04-arm
