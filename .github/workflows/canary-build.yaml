@@ -26,23 +26,23 @@ jobs:
 
   canary-build:
     needs: update-flake-lock
-    name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystems }}
-    runs-on: ubuntu-latest
+    name: Building ${{ matrix.nixTargets }} for ${{ matrix.nixSystem }}
+    runs-on: ${{ matrix.runner }}
     continue-on-error: true
     permissions:
       id-token: "write"
       contents: "read"
     strategy:
       matrix:
-        nixSystems: [ aarch64-linux, riscv64-linux, x86_64-linux, ]
+        include:
+          - runner: ubuntu-24.04
+            nixSystem: x86_64-linux
+          - runner: ubuntu-24.04-arm
+            nixSystem: aarch64-linux
         nixTargets: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
     steps:
       - uses: actions/checkout@main
-
       - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: "extra-platforms = ${{ matrix.nixSystems }}"
-
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
@@ -56,10 +56,10 @@ jobs:
           path: .
 
       - name: Evaluating the `outPath`s for buildable Nix targets
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }} --link-only --no-print-missing-paths
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystem }} --link-only --no-print-missing-paths
 
       - name: Running CI
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystems }}
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTargets }} --exclusive-nix-system-${{ matrix.nixSystem }}
 
       - name: Look at results
         run: |
