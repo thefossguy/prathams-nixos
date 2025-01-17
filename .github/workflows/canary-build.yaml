@@ -45,6 +45,8 @@ jobs:
       - uses: cachix/cachix-action@master
         with:
           name: thefossguy
+        env:
+          XDG_CONFIG_HOME: ~/.config
 
       - uses: actions/download-artifact@main
         with:
