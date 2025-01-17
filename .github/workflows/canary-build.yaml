@@ -39,11 +39,6 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Setting up QEMU User Emulation
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes binfmt-support qemu-user-static
-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "extra-platforms = ${{ matrix.nixSystems }}"
