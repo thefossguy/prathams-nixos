@@ -40,15 +40,10 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-
-      # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
-      - uses: cachix/cachix-action@master
-        if: ${{ matrix.nixSystem == 'aarch64-linux' }}
         with:
-          name: thefossguy
-        env:
-          XDG_CONFIG_HOME: ~/.config
+          extra-conf:
+            extra-substituters = s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com?priority=10
+            extra-trusted-public-keys = thefossguy-public-nix-binary-cache:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
 
       - name: View the Nix config
         run: nix config show
@@ -62,6 +57,9 @@ jobs:
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --exclusive-nix-system-${{ matrix.nixSystem }} --link-only --no-print-missing-paths
 
       - name: Running CI
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --exclusive-nix-system-${{ matrix.nixSystem }}
 
       - name: Look at results
