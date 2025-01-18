@@ -41,7 +41,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         pushd /etc/nixos || exit 1
         rm -vf result*
         python3 ./scripts/nix-ci/builder.py --use-emulation --link-only --nixosConfigurations --homeConfigurations --devShells --packages
-        nix store sign --key-file /my-nix-binary-cache/cache-priv-key.pem /etc/nixos/result*
+        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem /etc/nixos/result*
         popd || exit 0
       '';
     };
