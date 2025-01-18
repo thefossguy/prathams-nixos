@@ -17,6 +17,7 @@
     ./scheduled-reboots.nix
     ./sign-nix-store-paths.nix
     ./update-nixos-flake-inputs.nix
+    ./verify-nix-store-paths.nix
     ./z-upstream-services.nix
     ./zpool-maintainence-monthly.nix
     ./zpool-maintainence-weekly.nix
