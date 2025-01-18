@@ -50,6 +50,12 @@ jobs:
         env:
           XDG_CONFIG_HOME: ~/.config
 
+      - name: Perform a Nix config check
+        run: nix config check
+
+      - name: View the Nix config
+        run: nix config show
+
       - uses: actions/download-artifact@main
         with:
           name: flake-lock
