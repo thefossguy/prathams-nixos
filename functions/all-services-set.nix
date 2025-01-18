@@ -111,7 +111,6 @@ rec {
     unitName = "sign-nix-store-paths";
     onCalendar = systemdTime.Hourly { minute = "50"; };
     afterUnits = customNixosUpgrade;
-    beforeUnits = [ "${verifyNixStorePaths.unitName}.service" ];
   };
 
   verifyNixStorePaths = mkServiceConfig {
