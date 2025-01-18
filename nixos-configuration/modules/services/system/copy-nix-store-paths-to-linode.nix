@@ -24,6 +24,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
+        coreutils-full
+        findutils
         nix
       ];
 
@@ -34,12 +36,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
       script = ''
         set -xeuf -o pipefail
-
-        nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
-        for targetFile in "''${nixbuildResults[@]}"; do
-            realPath="$(realpath "''${targetFile}")"
-            nix copy --to s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com "''${realPath}"
-        done
+        nix copy --to s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
       '';
     };
   };

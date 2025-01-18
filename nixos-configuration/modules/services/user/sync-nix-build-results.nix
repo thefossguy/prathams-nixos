@@ -13,7 +13,7 @@ let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.syncNixBuildResults;
   appendedPath = import ../../../../functions/append-to-path.nix {
     packages = with pkgs; [
-      coreutils
+      coreutils-full
       findutils
       git
       nix
@@ -54,11 +54,7 @@ lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
               sleep 10
           done
 
-          nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
-          for targetFile in "''${nixbuildResults[@]}"; do
-              realPath="$(realpath "''${targetFile}")"
-              nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} "''${realPath}"
-          done
+          nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
         ''}";
       };
     };

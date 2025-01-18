@@ -24,6 +24,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
+        coreutils-full
+        findutils
         nix
       ];
 
@@ -34,12 +36,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
       script = ''
         set -xeuf -o pipefail
-
-        nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
-        for targetFile in "''${nixbuildResults[@]}"; do
-            realPath="$(realpath "''${targetFile}")"
-            nix store verify --recursive --sigs-needed 1 "''${realPath}"
-        done
+        nix store verify --recursive --sigs-needed 1 $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
       '';
     };
   };
