@@ -37,7 +37,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
         nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
         for targetFile in "''${nixbuildResults[@]}"; do
-            nix store verify --recursive --sigs-needed 1 "/etc/nixos/''${targetFile}"
+            realPath="$(realpath "''${targetFile}")"
+            nix store verify --recursive --sigs-needed 1 "''${realPath}"
         done
       '';
     };

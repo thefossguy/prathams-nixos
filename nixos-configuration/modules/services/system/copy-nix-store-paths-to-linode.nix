@@ -37,7 +37,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
         nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
         for targetFile in "''${nixbuildResults[@]}"; do
-            nix copy --to s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com "/etc/nixos/''${targetFile}"
+            realPath="$(realpath "''${targetFile}")"
+            nix copy --to s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com "''${realPath}"
         done
       '';
     };

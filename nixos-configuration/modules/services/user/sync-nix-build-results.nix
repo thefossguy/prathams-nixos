@@ -56,7 +56,8 @@ lib.mkIf (osConfig.customOptions.localCaching.buildsNixDerivations or false) {
 
           nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
           for targetFile in "''${nixbuildResults[@]}"; do
-              nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} "''${targetFile}"
+              realPath="$(realpath "''${targetFile}")"
+              nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} "''${realPath}"
           done
         ''}";
       };
