@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "extra-substituters = s3://thefossguy-public-nix-binary-cache?endpoint=us-lax-1.linodeobjects.com?priority=10\nextra-trusted-public-keys = thefossguy-public-nix-binary-cache:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
+          extra-conf: "extra-substituters = s3://thefossguy-public-nix-binary-cache&endpoint=us-lax-1.linodeobjects.com?priority=10\nextra-trusted-public-keys = thefossguy-public-nix-binary-cache:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
       - name: View the Nix config
         run: nix config show
