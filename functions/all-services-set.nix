@@ -66,6 +66,13 @@ rec {
     requiredUnits = continuousBuild.afterUnits;
   };
 
+  copyNixStorePathsToLinode = mkServiceConfig {
+    unitName = "copy-nix-store-paths-to-linode";
+    onCalendar = systemdTime.Hourly { minute = "50"; };
+    afterUnits = [ "${verifyNixStorePaths.unitName}.service" ];
+    requiredUnits = copyNixStorePathsToLinode.afterUnits;
+  };
+
   customNixosUpgrade = mkServiceConfig {
     unitName = "custom-nixos-upgrade";
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
