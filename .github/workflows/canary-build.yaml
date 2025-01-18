@@ -44,13 +44,11 @@ jobs:
 
       # Remove the `cachix` after my fork with `16k-kernel` is no longer necessary
       - uses: cachix/cachix-action@master
+        if: ${{ matrix.nixSystem == 'aarch64-linux' }}
         with:
           name: thefossguy
         env:
           XDG_CONFIG_HOME: ~/.config
-
-      - name: Perform a Nix config check
-        run: nix config check
 
       - name: View the Nix config
         run: nix config show
