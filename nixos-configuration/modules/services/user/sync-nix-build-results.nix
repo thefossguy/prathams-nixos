@@ -15,7 +15,6 @@ let
     packages = with pkgs; [
       coreutils-full
       findutils
-      git
       nix
       openssh
       openssl
