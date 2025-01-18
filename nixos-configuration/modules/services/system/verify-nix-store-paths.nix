@@ -32,7 +32,14 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         Type = "oneshot";
       };
 
-      script = "nix store verify --all";
+      script = ''
+        set -xeuf -o pipefail
+
+        nixbuildResults=( $(find /etc/nixos -type l | tr '\r\n' ' ') )
+        for targetFile in "''${nixbuildResults[@]}"; do
+            nix store verify --recursive --sigs-needed 1 "/etc/nixos/''${targetFile}"
+        done
+      '';
     };
   };
 }
