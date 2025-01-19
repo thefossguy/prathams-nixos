@@ -77,7 +77,7 @@ rec {
     unitName = "custom-nixos-upgrade";
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
     requiredUnits = customNixosUpgrade.afterUnits;
-    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "05"; });
+    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
   };
 
   ensureLocalStaticIp = mkServiceConfig {
@@ -120,15 +120,15 @@ rec {
     requiredUnits = syncNixBuildResults.afterUnits;
   };
 
+  updateNixosFlakeInputs = mkServiceConfig {
+    unitName = "update-nixos-flake-inputs";
+  };
+
   verifyNixStorePaths = mkServiceConfig {
     unitName = "verify-nix-store-paths";
     onCalendar = continuousBuild.onCalendar;
     afterUnits = [ "${signNixStorePaths.unitName}.service" ];
     requiredUnits = verifyNixStorePaths.afterUnits;
-  };
-
-  updateNixosFlakeInputs = mkServiceConfig {
-    unitName = "update-nixos-flake-inputs";
   };
 
   zpoolMaintainenceWeekly = mkServiceConfig {
