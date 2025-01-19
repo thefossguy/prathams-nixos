@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = thefossguy-public-nix-binary-cache-1:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
+          extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
       - name: Verify nix cache availability
         run: nix store info --store 's3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com'
