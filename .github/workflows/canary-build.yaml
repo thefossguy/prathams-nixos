@@ -49,15 +49,23 @@ jobs:
         with:
           extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
+        # Almost all of the jobs fail and I suspect it is because of the rate
+        # limit that's on Linode's side. Add this cache to cushion the impact
+        # of ~8 jobs querying the cache almost at once.
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
       - uses: actions/download-artifact@main
         with:
           name: flake-lock
           path: .
 
-      - run: time nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
+      - name: Testing out the binary cache
+        run: time nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
+        timeout-minutes: 2
 
       - name: Running CI
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
+        timeout-minutes: 10
 
       - name: Look at results
         run: ls -alh | grep result || echo 'Nothing was built'
