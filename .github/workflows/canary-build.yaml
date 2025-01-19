@@ -39,31 +39,31 @@ jobs:
         nixSystem: [ aarch64-linux, x86_64-linux, ]
     steps:
       - uses: actions/checkout@main
+
+      - name: Provide AWS Secrets to nix-daemon
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
+        run: |
+          sudo mkdir -vp /etc/systemd/system/nix-daemon.service.d
+          sudo tee /etc/systemd/system/nix-daemon.service.d/99_aws_credentials.conf << EOF
+          [Service]
+          Environment="AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}"
+          Environment="AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}"
+          EOF
+
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
-      - name: Verify nix cache availability
-        run: nix store info --store 's3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com'
-
-      - name: View the Nix config
-        run: |
-          set -x
-          sudo cat /etc/nix/nix.conf
-          nix config show
+      - run: nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
 
       - uses: actions/download-artifact@main
         with:
           name: flake-lock
           path: .
 
-      - name: Evaluating the `outPath`s for buildable Nix targets
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --link-only --no-print-missing-paths
-
       - name: Running CI
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
 
       - name: Look at results
