@@ -49,13 +49,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
         run: |
-          sudo mkdir -vp /etc/systemd/system/nix-daemon.service.d
-          sudo tee /etc/systemd/system/nix-daemon.service.d/99_my_aws_credentials.conf << EOF
-          [Service]
-          Environment="AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}"
-          Environment="AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}"
+          sudo mkdir -vp /root/.aws
+          sudo tee /root/.aws/credentials << EOF
+          [default]
+          aws_access_key_id = ${{ env.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key = ${{ env.AWS_SECRET_ACCESS_KEY }}
           EOF
-          sudo systemctl restart nix-daemon.service
           nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
 
       - uses: actions/download-artifact@main
