@@ -17,6 +17,7 @@
     ./reset-systemd-user-units.nix
     ./scheduled-reboots.nix
     ./sign-nix-store-paths.nix
+    ./sync-nix-build-results.nix
     ./update-nixos-flake-inputs.nix
     ./verify-nix-store-paths.nix
     ./z-upstream-services.nix

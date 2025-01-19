@@ -68,7 +68,7 @@ rec {
 
   copyNixStorePathsToLinode = mkServiceConfig {
     unitName = "copy-nix-store-paths-to-linode";
-    onCalendar = systemdTime.Hourly { minute = "50"; };
+    onCalendar = continuousBuild.onCalendar;
     afterUnits = [ "${verifyNixStorePaths.unitName}.service" ];
     requiredUnits = copyNixStorePathsToLinode.afterUnits;
   };
@@ -109,20 +109,22 @@ rec {
 
   signNixStorePaths = mkServiceConfig {
     unitName = "sign-nix-store-paths";
-    onCalendar = systemdTime.Hourly { minute = "50"; };
+    onCalendar = continuousBuild.onCalendar;
     afterUnits = customNixosUpgrade;
-  };
-
-  verifyNixStorePaths = mkServiceConfig {
-    unitName = "verify-nix-store-paths";
-    onCalendar = systemdTime.Hourly { minute = "50"; };
-    afterUnits = [ "${signNixStorePaths.unitName}.service" ];
-    requiredUnits = verifyNixStorePaths.afterUnits;
   };
 
   syncNixBuildResults = mkServiceConfig {
     unitName = "sync-nix-build-results";
     onCalendar = continuousBuild.onCalendar;
+    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
+    requiredUnits = syncNixBuildResults.afterUnits;
+  };
+
+  verifyNixStorePaths = mkServiceConfig {
+    unitName = "verify-nix-store-paths";
+    onCalendar = continuousBuild.onCalendar;
+    afterUnits = [ "${signNixStorePaths.unitName}.service" ];
+    requiredUnits = verifyNixStorePaths.afterUnits;
   };
 
   updateNixosFlakeInputs = mkServiceConfig {

@@ -14,7 +14,6 @@
     ./flatpak-manage.nix
     ./get-redhat-csaf-vex.nix
     ./podman-container-services
-    ./sync-nix-build-results.nix
     ./update-rust.nix
   ];
 }
