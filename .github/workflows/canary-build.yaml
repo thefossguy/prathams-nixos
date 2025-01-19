@@ -35,9 +35,6 @@ jobs:
         nixSystem: [ aarch64-linux, x86_64-linux, ]
     steps:
       - uses: actions/checkout@main
-      - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
       - name: Provide AWS Secrets to nix-daemon
         run: |
@@ -47,6 +44,10 @@ jobs:
           aws_access_key_id = ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
           aws_secret_access_key = ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
           EOF
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
       - uses: actions/download-artifact@main
         with:
