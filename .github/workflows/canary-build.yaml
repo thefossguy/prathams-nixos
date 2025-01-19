@@ -58,13 +58,13 @@ jobs:
           path: .
 
       - name: Evaluating the `outPath`s for buildable Nix targets
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --exclusive-nix-system-${{ matrix.nixSystem }} --link-only --no-print-missing-paths
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --link-only --no-print-missing-paths
 
       - name: Running CI
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --exclusive-nix-system-${{ matrix.nixSystem }}
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
 
       - name: Look at results
         run: ls -alh | grep result || echo 'Nothing was built'
