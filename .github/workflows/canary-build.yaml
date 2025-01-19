@@ -28,8 +28,8 @@ jobs:
     needs: update-flake-lock
     name: Building ${{ matrix.nixTarget }} for ${{ matrix.nixSystem }}
     runs-on: ${{ matrix.nixSystem == 'x86_64-linux' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
-    continue-on-error: true
     strategy:
+      fail-fast: false
       matrix:
         nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
         nixSystem: [ aarch64-linux, x86_64-linux, ]
@@ -61,3 +61,10 @@ jobs:
 
       - name: Look at results
         run: ls -alh | grep result || echo 'Nothing was built'
+
+  final-check:
+    needs: canary-build
+    name: Final check
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'All jobs build succeeded.'
