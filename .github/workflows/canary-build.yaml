@@ -30,32 +30,24 @@ jobs:
     name: Building ${{ matrix.nixTarget }} for ${{ matrix.nixSystem }}
     runs-on: ${{ matrix.nixSystem == 'x86_64-linux' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
     continue-on-error: true
-    permissions:
-      id-token: "write"
-      contents: "read"
     strategy:
       matrix:
         nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
         nixSystem: [ aarch64-linux, x86_64-linux, ]
     steps:
       - uses: actions/checkout@main
-
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           extra-conf: "substituters = s3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
       - name: Provide AWS Secrets to nix-daemon
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
         run: |
           sudo mkdir -vp /root/.aws
           sudo tee /root/.aws/credentials << EOF
           [default]
-          aws_access_key_id = ${{ env.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key = ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws_access_key_id = ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_ACCESS_KEY }}
+          aws_secret_access_key = ${{ secrets.S3_THEFOSSGUY_LINODE_CACHE_SECRET_KEY }}
           EOF
-          nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
 
       - uses: actions/download-artifact@main
         with:
