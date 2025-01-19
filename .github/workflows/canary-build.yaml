@@ -53,6 +53,8 @@ jobs:
           name: flake-lock
           path: .
 
+      - run: time nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
+
       - name: Running CI
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
 
