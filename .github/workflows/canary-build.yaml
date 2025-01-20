@@ -63,6 +63,10 @@ jobs:
         run: time nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
         timeout-minutes: 2
 
+      - name: Evaluating buildable Nix expressions
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --link-only
+        timeout-minutes: 10
+
       - name: Running CI
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
         timeout-minutes: 10
