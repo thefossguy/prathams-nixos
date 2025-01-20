@@ -9,7 +9,6 @@ import sys
 
 ci_variables = {}
 ci_variables['impure_build'] = False
-ci_variables['logfile'] = 'flake-ci-started.log'
 ci_variables['supported_systems'] = [
     'aarch64-linux',
     #'riscv64-linux',
@@ -28,7 +27,6 @@ ci_variables['packages'] = []
 ci_variables['outPaths'] = {}
 
 def cleanup(exit_code) -> None:
-    os.remove(ci_variables['logfile'])
     sys.exit(exit_code)
 
 def get_all_supported_systems() -> None:
@@ -161,9 +159,6 @@ async def get_outPath(nix_build_target) -> None:
     return
 
 async def main():
-    tmpFile = open(ci_variables['logfile'], 'w')
-    tmpFile.close()
-
     get_all_supported_systems()
 
     system_dep_attr_names = []
