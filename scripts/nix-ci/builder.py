@@ -176,27 +176,30 @@ async def main():
     ci_variables['nix_build_targets'] = ci_variables['nixosConfigurations'] + ci_variables['homeConfigurations'] + ci_variables['packages'] + ci_variables['devShells'] + ci_variables['isoImages']
 
     if len(ci_variables['nix_build_targets']) > 0:
-        if '--link-only' in sys.argv:
-            missing_paths = []
+        if '--evaluate-outPaths' in sys.argv:
             print('DEBUG: Evaluating the `outPath`s for each Nix build target. This may take a while.')
             async_tasks = [ get_outPath(nix_build_target) for nix_build_target in ci_variables['nix_build_targets'] ]
             await asyncio.gather(*async_tasks)
+
             for i, nix_build_target in enumerate(ci_variables['nix_build_targets']):
                 if nix_build_target in ci_variables['outPaths']:
                     eval_out_path = ci_variables['outPaths'][nix_build_target]
                     print('DEBUG: `{}` ==> `{}`'.format(nix_build_target, eval_out_path))
-                    if pathlib.Path(eval_out_path).exists():
-                        os.symlink(eval_out_path, 'result-' + '{}'.format(i).zfill(2))
-                    else:
-                        missing_paths.append(eval_out_path)
-                        continue
+
+                    if '--link-outPaths' in sys.argv:
+                        if pathlib.Path(eval_out_path).exists():
+                            os.symlink(eval_out_path, 'result-' + '{}'.format(i).zfill(2))
+                        elif '--no-print-missing-paths' not in sys.argv:
+                            print('WARN: `{}` does not exist on this cache'.format(eval_out_path))
+
+                    if '--github-ci-shortcut' in sys.argv:
+                        nix_path_info_command = [ 'nix', 'path-info', '--store', 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088', eval_out_path, ]
+                        nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False, )
+                        if nix_path_info_process.returncode != 0:
+                            cleanup(1)
+
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
-
-            if '--no-print-missing-paths' not in sys.argv:
-                for missing_path in missing_paths:
-                    print('WARN: `{}` does not exist on this cache'.format(missing_path))
-
             cleanup(0)
 
         else:

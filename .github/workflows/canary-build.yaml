@@ -64,7 +64,7 @@ jobs:
         timeout-minutes: 2
 
       - name: Evaluating buildable Nix expressions
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --link-only
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --evaluate-outPaths --link-outPaths
         timeout-minutes: 10
 
       - name: Running CI
