@@ -22,6 +22,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     services."${serviceConfig.unitName}" = {
       enable = true;
       path = with pkgs; [
+        coreutils-full
+        findutils
         nix
         python3
       ];
@@ -41,8 +43,9 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         pushd /etc/nixos || exit 1
         rm -vf result*
         python3 ./scripts/nix-ci/builder.py --use-emulation --link-only --nixosConfigurations --homeConfigurations --devShells --packages
-        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem /etc/nixos/result*
-        popd || exit 0
+        popd || exit 1
+
+        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
       '';
     };
   };
