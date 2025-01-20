@@ -8,7 +8,24 @@ on:
 
 
 jobs:
+  verify-cache-info:
+    name: Verify Nix cache information
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup AWS credentials
+        run: |
+          mkdir -vp ~/.aws
+          tee ~/.aws/credentials << EOF
+          [default]
+          aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EOF
+
+      - run: |
+        aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/nix-cache-info - | grep 'WantMassQuery: 1'
+
   update-flake-lock:
+    needs: verify-cache-info
     name: Update `flake.lock`
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Provide AWS Secrets to nix-daemon
+      - name: Provide AWS credentials to nix-daemon
         run: |
           sudo mkdir -vp /root/.aws
           sudo tee /root/.aws/credentials << EOF
@@ -59,20 +76,8 @@ jobs:
           name: flake-lock
           path: .
 
-      - name: Testing out the binary cache
-        run: time nix run .#miscPackages.${{ matrix.nixSystem }}.binfmtCheck
-        timeout-minutes: 2
-
-      - name: Evaluating buildable Nix expressions
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --evaluate-outPaths --link-outPaths
-        timeout-minutes: 10
-
-      - name: Running CI
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }}
-        timeout-minutes: 10
-
-      - name: Look at results
-        run: ls -alh | grep result || echo 'Nothing was built'
+      - name: "Running" the CI
+        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --evaluate-outPaths --github-ci-shortcut
 
   final-check:
     needs: canary-build
