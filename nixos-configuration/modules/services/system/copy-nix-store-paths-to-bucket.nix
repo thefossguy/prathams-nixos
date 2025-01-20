@@ -8,7 +8,7 @@
 }:
 
 let
-  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.copyNixStorePathsToLinode;
+  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.copyNixStorePathsToBucket;
 in
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
   systemd = {

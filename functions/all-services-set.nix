@@ -66,11 +66,11 @@ rec {
     requiredUnits = continuousBuild.afterUnits;
   };
 
-  copyNixStorePathsToLinode = mkServiceConfig {
-    unitName = "copy-nix-store-paths-to-linode";
+  copyNixStorePathsToBucket = mkServiceConfig {
+    unitName = "copy-nix-store-paths-to-bucket";
     onCalendar = continuousBuild.onCalendar;
     afterUnits = [ "${verifyNixStorePaths.unitName}.service" ];
-    requiredUnits = copyNixStorePathsToLinode.afterUnits;
+    requiredUnits = copyNixStorePathsToBucket.afterUnits;
   };
 
   customNixosUpgrade = mkServiceConfig {

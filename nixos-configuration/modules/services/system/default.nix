@@ -10,7 +10,7 @@
 {
   imports = [
     ./continuous-build.nix
-    ./copy-nix-store-paths-to-linode.nix
+    ./copy-nix-store-paths-to-bucket.nix
     ./custom-nixos-upgrade.nix
     ./ensure-local-static-ip.nix
     ./nix-gc.nix
