@@ -36,7 +36,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
       script = ''
         set -xeuf -o pipefail
-        nix copy --to 's3://thefossguy-public-nix-binary-cache?region=us-lax&endpoint=us-lax-1.linodeobjects.com' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
       '';
     };
   };
