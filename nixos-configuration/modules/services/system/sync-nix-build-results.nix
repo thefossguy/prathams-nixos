@@ -42,7 +42,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       script = ''
         set -xeuf -o pipefail
         nix store ping --store 'ssh-ng://${localCacheRemoteUser}@${localCacheRemote}?ssh-key=/home/pratham/.ssh/ssh'
-        nix copy --no-check-sigs --to ssh-ng://${localCacheRemote} $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nix copy --no-check-sigs --to 'ssh-ng://${localCacheRemoteUser}@${localCacheRemote}?ssh-key=/home/pratham/.ssh/ssh' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
       '';
     };
   };
