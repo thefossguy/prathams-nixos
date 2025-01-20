@@ -1,8 +1,6 @@
 name: Canary Build
 on:
   workflow_dispatch:
-  push:
-    branches: [ "master" ]
   schedule:
     - cron: '30 18 * * *' # Everyday, at 00:00 IST
 
