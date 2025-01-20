@@ -14,6 +14,7 @@
     ./custom-nixos-upgrade.nix
     ./ensure-local-static-ip.nix
     ./nix-gc.nix
+    ./overwrite-bucket-store-info.nix
     ./reset-systemd-user-units.nix
     ./scheduled-reboots.nix
     ./sign-nix-store-paths.nix

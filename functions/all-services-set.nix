@@ -92,6 +92,11 @@ rec {
     wantedUnits = nixGc.beforeUnits;
   };
 
+  overwriteBucketStoreInfo = mkServiceConfig {
+    unitName = "overwrite-bucket-store-info";
+    onCalendar = systemdTime.Daily {};
+  };
+
   resetSystemdUserUnits = mkServiceConfig {
     unitName = "reset-systemd-user-units";
     wantedByUnits = [ "multi-user.target" ];

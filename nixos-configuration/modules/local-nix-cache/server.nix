@@ -8,6 +8,10 @@
 }:
 
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
+  environment.systemPackages = with pkgs; [
+    awscli2
+  ];
+
   services.nix-serve = {
     enable = true;
     openFirewall = true;
