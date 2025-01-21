@@ -24,9 +24,12 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
-        git
+        coreutils-full
+        findutils
         nix
         nix-output-monitor
+        openssh
+        openssl
         python3
       ];
 
