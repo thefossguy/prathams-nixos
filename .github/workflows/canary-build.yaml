@@ -50,24 +50,20 @@ jobs:
         nixSystem: [ aarch64-linux, x86_64-linux, ]
     steps:
       - uses: actions/checkout@main
-
-      - name: Provide AWS credentials to nix-daemon
-        run: |
-          sudo mkdir -vp /root/.aws
-          sudo tee /root/.aws/credentials << EOF
-          [default]
-          aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          EOF
-
       - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: "substituters = s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
-
       - uses: actions/download-artifact@main
         with:
           name: flake-lock
           path: .
+
+      - name: Setting up AWS credentials
+        run: |
+          mkdir -vp ~/.aws
+          tee ~/.aws/credentials << EOF
+          [default]
+          aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          EOF
 
       - name: Running the CI
         run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --evaluate-outPaths --github-ci-shortcut
@@ -77,4 +73,4 @@ jobs:
     name: Final check
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'All jobs build succeeded.'
+      - run: echo 'All jobs succeeded.'
