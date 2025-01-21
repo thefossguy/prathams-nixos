@@ -24,7 +24,6 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
-        bash
         git
         nix
         nix-output-monitor
@@ -39,10 +38,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       script = ''
         pushd /etc/nixos || exit 1
         rm -vf ./result*
-        if ! ./scripts/nix-ci/wrapped-builder.sh; then
-            git switch master
-            exit 1
-        fi
+        python3 ./scripts/nix-ci/builder.py --nixosConfigurations --homeConfigurations --devShells --packages
         popd || exit 0
       '';
     };
