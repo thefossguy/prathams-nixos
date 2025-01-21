@@ -18,6 +18,19 @@ let
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
     zfs = (nixosSystemConfig.kernelConfig.kernelVersion == "longterm");
   };
+
+  enable16kPagesOnAarch64 =
+    if
+      (
+        (nixosSystemConfig.kernelConfig.kernelVersion != "longterm")
+        && (config.customOptions.socSupport.armSoc != "rpi4")
+        && (!config.customOptions.isIso)
+        && pkgs.stdenv.isAarch64
+      )
+    then
+      lib.kernel.yes
+    else
+      lib.kernel.unset;
 in
 {
   boot = {
@@ -28,26 +41,9 @@ in
       pkgs.linuxPackagesFor (
         kernelPackages.override {
           argsOverride = {
-            structuredExtraConfig =
-              with lib.kernel;
-              {
-              }
-              // lib.attrsets.optionalAttrs pkgs.stdenv.isAarch64 {
-                ARM64_4K_PAGES =
-                  if ((nixosSystemConfig.kernelConfig.kernelVersion == "longterm") || (config.customOptions.isIso)) then yes else no;
-                ARM64_16K_PAGES =
-                  if
-                    (
-                      (config.customOptions.socSupport.armSoc == "m4")
-                      || (config.customOptions.socSupport.armSoc == "rpi5")
-                      || (config.customOptions.socSupport.armSoc == "rk3588")
-                    )
-                  then
-                    yes
-                  else
-                    no;
-                ARM64_64K_PAGES = if (config.customOptions.socSupport.armSoc == "rpi4") then yes else no;
-              };
+            structuredExtraConfig = with lib.kernel; {
+              ARM64_16K_PAGES = enable16kPagesOnAarch64;
+            };
           };
         }
       )
