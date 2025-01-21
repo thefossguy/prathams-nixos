@@ -9,7 +9,7 @@
 
 let
   localCacheRemoteUser = "pratham";
-  localCacheRemote = "chaturvyas";
+  localCacheRemote = "10.0.0.24";
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.syncNixBuildResults;
 in
 lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
