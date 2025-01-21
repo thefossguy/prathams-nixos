@@ -59,11 +59,11 @@ let
 in
 rec {
   # System services
-  continuousBuild = mkServiceConfig {
-    unitName = "continuous-build";
+  continuousBuildAndPush = mkServiceConfig {
+    unitName = "continuous-build-and-push";
     onCalendar = systemdTime.Hourly { };
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
-    requiredUnits = continuousBuild.afterUnits;
+    requiredUnits = continuousBuildAndPush.afterUnits;
   };
 
   customNixosUpgrade = mkServiceConfig {
@@ -102,13 +102,13 @@ rec {
 
   signVerifyAndPushNixStorePaths = mkServiceConfig {
     unitName = "sign-verify-and-push-nix-store-paths";
-    onCalendar = continuousBuild.onCalendar;
+    onCalendar = continuousBuildAndPush.onCalendar;
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
   };
 
   syncNixBuildResults = mkServiceConfig {
     unitName = "sync-nix-build-results";
-    onCalendar = continuousBuild.onCalendar;
+    onCalendar = continuousBuildAndPush.onCalendar;
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
     requiredUnits = syncNixBuildResults.afterUnits;
   };
