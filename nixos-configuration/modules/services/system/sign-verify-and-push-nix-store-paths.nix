@@ -8,7 +8,7 @@
 }:
 
 let
-  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.signNixStorePaths;
+  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.signVerifyAndPushNixStorePaths;
 in
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
   systemd = {
@@ -22,6 +22,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     services."${serviceConfig.unitName}" = {
       enable = true;
       path = with pkgs; [
+        awscli2
         coreutils-full
         findutils
         nix
@@ -34,6 +35,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       };
 
       script = ''
+        set -xeuf -o pipefail
+
         # Using the `--link-outPaths` option in the `scripts/nix-ci/builder.py` script
         # creates a symlink for each expression that is to be built, but is built
         # by the builders and is sent to the local cache. Therefore, it is
@@ -49,6 +52,9 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         popd || exit 1
 
         nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nix store verify --recursive --sigs-needed 1 $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 10' | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/nix-cache-info
       '';
     };
   };

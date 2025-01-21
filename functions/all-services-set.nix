@@ -66,18 +66,11 @@ rec {
     requiredUnits = continuousBuild.afterUnits;
   };
 
-  copyNixStorePathsToBucket = mkServiceConfig {
-    unitName = "copy-nix-store-paths-to-bucket";
-    onCalendar = continuousBuild.onCalendar;
-    afterUnits = [ "${verifyNixStorePaths.unitName}.service" ];
-    requiredUnits = copyNixStorePathsToBucket.afterUnits;
-  };
-
   customNixosUpgrade = mkServiceConfig {
     unitName = "custom-nixos-upgrade";
+    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
     requiredUnits = customNixosUpgrade.afterUnits;
-    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
   };
 
   ensureLocalStaticIp = mkServiceConfig {
@@ -90,11 +83,6 @@ rec {
     unitName = "nix-gc";
     beforeUnits = customNixosUpgrade.afterUnits ++ [ "${customNixosUpgrade.unitName}.service" ];
     wantedUnits = nixGc.beforeUnits;
-  };
-
-  overwriteBucketStoreInfo = mkServiceConfig {
-    unitName = "overwrite-bucket-store-info";
-    onCalendar = systemdTime.Daily {};
   };
 
   resetSystemdUserUnits = mkServiceConfig {
@@ -112,10 +100,10 @@ rec {
     requiredUnits = scheduledReboots.afterUnits;
   };
 
-  signNixStorePaths = mkServiceConfig {
-    unitName = "sign-nix-store-paths";
+  signVerifyAndPushNixStorePaths = mkServiceConfig {
+    unitName = "sign-verify-and-push-nix-store-paths";
     onCalendar = continuousBuild.onCalendar;
-    afterUnits = customNixosUpgrade;
+    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
   };
 
   syncNixBuildResults = mkServiceConfig {
@@ -127,13 +115,6 @@ rec {
 
   updateNixosFlakeInputs = mkServiceConfig {
     unitName = "update-nixos-flake-inputs";
-  };
-
-  verifyNixStorePaths = mkServiceConfig {
-    unitName = "verify-nix-store-paths";
-    onCalendar = continuousBuild.onCalendar;
-    afterUnits = [ "${signNixStorePaths.unitName}.service" ];
-    requiredUnits = verifyNixStorePaths.afterUnits;
   };
 
   zpoolMaintainenceWeekly = mkServiceConfig {
