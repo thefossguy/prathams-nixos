@@ -42,9 +42,13 @@ in
       pkgs.linuxPackagesFor (
         kernelPackages.override {
           argsOverride = {
-            structuredExtraConfig = lib.attrsets.optionalAttrs (pkgs.stdenv.isAarch64 && enable16kPagesOnAarch64) {
-              ARM64_16K_PAGES = lib.kernel.yes;
-            };
+            structuredExtraConfig =
+              {
+
+              }
+              // lib.attrsets.optionalAttrs (pkgs.stdenv.isAarch64 && enable16kPagesOnAarch64) {
+                ARM64_16K_PAGES = lib.kernel.yes;
+              };
           };
         }
       )
