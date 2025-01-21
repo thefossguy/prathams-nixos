@@ -64,11 +64,6 @@ jobs:
         with:
           extra-conf: "substituters = s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1\nextra-trusted-public-keys = 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU="
 
-        # Almost all of the jobs fail and I suspect it is because of the rate
-        # limit that's on Linode's side. Add this cache to cushion the impact
-        # of ~8 jobs querying the cache almost at once.
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-
       - uses: actions/download-artifact@main
         with:
           name: flake-lock
