@@ -51,9 +51,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
             --evaluate-outPaths --link-outPaths
         popd || exit 1
 
-        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
-        nix store verify --recursive --sigs-needed 1 $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
-        nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nixResults=( $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath) )
+        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults}"
+        nix store verify --recursive --sigs-needed 1 "''${nixResults}"
+        nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' "''${nixResults}"
         echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 10' | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/nix-cache-info
       '';
     };
