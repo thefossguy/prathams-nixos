@@ -188,10 +188,20 @@ async def main():
                             print('WARN: `{}` does not exist on this cache'.format(eval_out_path))
 
                     if '--github-ci-shortcut' in sys.argv:
-                        nix_path_info_command = [ 'nix', 'path-info', '--store', 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088', eval_out_path, ]
-                        nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False, )
-                        if nix_path_info_process.returncode != 0:
-                            cleanup(1)
+                        nix_hash = eval_out_path[11:43]
+                        nix_path_info_command = [ 'aws', 's3', 'cp', 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/{}.narinfo'.format(nix_hash), '-', ]
+                        nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, text=True, )
+                        if nix_path_info_process.returncode == 0:
+                            if 'StorePath: {}'.format(eval_out_path) not in nix_path_info_process.stdout:
+                                print('ERROR: `{}` not in S3 bucket, very weird'.format(eval_out_path))
+                                cleanup(1)
+                        else:
+                            if 'An error occurred (404) when calling the HeadObject operation: Not Found' in nix_path_info_process.stderr:
+                                print('ERROR: `{}` not in S3 bucket'.format(eval_out_path))
+                                cleanup(1)
+                            else:
+                                print('ERROR: `{}`'.format(nix_path_info_process.stderr))
+                                cleanup(1)
 
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
