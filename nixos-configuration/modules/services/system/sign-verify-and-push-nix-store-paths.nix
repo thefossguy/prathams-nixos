@@ -34,10 +34,11 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         Type = "oneshot";
       };
 
+      preStart = "rm -vf /etc/nixos/result*";
+
       script = ''
         set -xeuf -o pipefail
 
-        rm -vf /etc/nixos/result*
         # Using the `--link-outPaths` option in the `scripts/nix-ci/builder.py` script
         # creates a symlink for each expression that is to be built, but is built
         # by the builders and is sent to the local cache. Therefore, it is
