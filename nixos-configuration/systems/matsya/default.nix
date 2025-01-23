@@ -10,6 +10,10 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  environment.systemPackages = with pkgs; [
+    picocom
+  ];
+
   boot.extraModprobeConfig = "options kvm_intel nested=1";
   hardware.bluetooth.enable = lib.mkForce false;
 
