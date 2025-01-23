@@ -25,6 +25,20 @@ in
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
+      # QEMU requires the `librados` library for Ceph support and I don't need
+      # it. Plus, something is always going on in Python/Ceph space so disable
+      # Ceph support outright.
+      qemu =
+        (prev.qemu.overrideAttrs (oldAttrs: {
+          configureFlags = (oldAttrs.configureFlags or [ ]) ++ [
+            "--disable-rbd"
+          ];
+        })).override
+          {
+            cephSupport = false;
+            ceph = null;
+          };
+
       brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
       chromium = prev.chromium.override {
         commandLineArgs = commonChromiumFlags;
