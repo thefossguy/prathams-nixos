@@ -38,9 +38,9 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
         Type = "oneshot";
       };
 
-      script = ''
-        rm -vf /etc/nixos/result*
+      preStart = "rm -vf /etc/nixos/result*";
 
+      script = ''
         pushd /etc/nixos || exit 1
         python3 ./scripts/nix-ci/builder.py --nixosConfigurations --homeConfigurations --devShells --packages
         popd || exit 1
