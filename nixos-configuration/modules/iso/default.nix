@@ -76,10 +76,7 @@ in
       };
   };
 
-  isoImage = {
-    squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
-    isoName = lib.mkForce "${config.isoImage.isoBaseName}-${config.system.nixos.label}-${nixosSystemConfig.kernelConfig.kernelVersion}-${config.boot.kernelPackages.kernel.version}-${pkgs.stdenv.hostPlatform.system}.iso";
-
-    #squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
-  };
+  image.baseName = lib.mkForce "nixos-${config.isoImage.edition}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}-${config.boot.kernelPackages.kernel.version}-${nixosSystemConfig.kernelConfig.kernelVersion}";
+  isoImage.squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
+  #isoImage.squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
 }
