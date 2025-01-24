@@ -125,6 +125,7 @@ let
     # utilities specific to Nix
     gcc # added to prevent adding a $CC to the PATH to compile with cargo and to neovim for treesitter
     home-manager
+    hydra-check
     nix-diff # a better `nvd`
     nix-output-monitor
     nixfmt-rfc-style
