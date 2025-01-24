@@ -43,6 +43,7 @@ in
       vim # it is a necessity
 
       # utilities specific to Nix
+      nix-output-monitor
       nvd # diff between NixOS generations
     ])
     ++ lib.optionals (!useMinimalConfig) (
