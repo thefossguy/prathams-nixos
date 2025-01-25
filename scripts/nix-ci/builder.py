@@ -172,6 +172,7 @@ async def main():
 
     if len(ci_variables['nix_build_targets']) > 0:
         if '--evaluate-outPaths' in sys.argv:
+            missingPathsAndTargets = []
             print('DEBUG: Evaluating the `outPath`s for each Nix build target. This may take a while.')
             async_tasks = [ get_outPath(nix_build_target) for nix_build_target in ci_variables['nix_build_targets'] ]
             await asyncio.gather(*async_tasks)
@@ -184,8 +185,8 @@ async def main():
                     if '--link-outPaths' in sys.argv:
                         if pathlib.Path(eval_out_path).exists():
                             os.symlink(eval_out_path, 'result-' + '{}'.format(i).zfill(2))
-                        elif '--no-print-missing-paths' not in sys.argv:
-                            print('WARN: `{}` does not exist on this cache'.format(eval_out_path))
+                        else:
+                            missingPathsAndTargets.append([nix_build_target, eval_out_path])
 
                     if '--github-ci-shortcut' in sys.argv:
                         nix_hash = eval_out_path[11:43]
@@ -205,6 +206,13 @@ async def main():
 
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
+
+            if '--no-print-missing-paths' not in sys.argv:
+                print('--------------------------------------------------------------------------------')
+                for missingPathAndTarget in missingPathsAndTargets:
+                    missing_target = missingPathAndTarget[0]
+                    missing_path = missingPathAndTarget[1]
+                    print('WARN: Target `{}` (`{}`) is missing.'.format(missing_target, missing_path))
             cleanup(0)
 
         else:
