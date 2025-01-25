@@ -8,7 +8,7 @@
 }:
 
 let
-  kernelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
+  zeKernelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
   kernelPackagesSet = {
     mainline = pkgs.linux_testing;
     stable = pkgs.linux_latest;
@@ -40,7 +40,7 @@ in
 
     kernelPackages = lib.mkForce (
       pkgs.linuxPackagesFor (
-        kernelPackages.override {
+        zeKernelPackages.override {
           argsOverride = {
             structuredExtraConfig =
               {
