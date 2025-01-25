@@ -43,9 +43,7 @@ in
         colonelPackages.override {
           argsOverride = {
             structuredExtraConfig =
-              {
-
-              }
+              (colonelPackages.structuredExtraConfig or { })
               // lib.attrsets.optionalAttrs (pkgs.stdenv.isAarch64 && enable16kPagesOnAarch64) {
                 ARM64_16K_PAGES = lib.kernel.yes;
               };
