@@ -2,59 +2,23 @@ name: Canary Build
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 18 * * *' # Everyday, at 00:00 IST
-
+    - cron: '00 * * * *' # Hourly
 
 jobs:
-  verify-cache-info:
-    name: Verify Nix cache information
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup AWS credentials
-        run: |
-          mkdir -vp ~/.aws
-          tee ~/.aws/credentials << EOF
-          [default]
-          aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          EOF
-
-      - run: |
-          aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/nix-cache-info - | grep 'WantMassQuery: 1'
-
-  update-flake-lock:
-    needs: verify-cache-info
-    name: Update `flake.lock`
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@main
-      - uses: DeterminateSystems/nix-installer-action@main
-      - run: nix flake update
-      - uses: actions/upload-artifact@main
-        with:
-          name: flake-lock
-          path: flake.lock
-          retention-days: 1
-          overwrite: true
-          if-no-files-found: error
-          compression-level: 9
-
   canary-build:
-    needs: update-flake-lock
-    name: Building ${{ matrix.nixTarget }} for ${{ matrix.nixSystem }}
-    runs-on: ${{ matrix.nixSystem == 'x86_64-linux' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        nixTarget: [ nixosConfigurations, homeConfigurations, devShells, packages, ]
-        nixSystem: [ aarch64-linux, x86_64-linux, ]
+    name: Canary build
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
+
+      - name: Setting up QEMU User Emulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes binfmt-support qemu-user-static
+
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: actions/download-artifact@main
         with:
-          name: flake-lock
-          path: .
+          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
 
       - name: Setting up AWS credentials
         run: |
@@ -65,12 +29,19 @@ jobs:
           aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           EOF
 
-      - name: Running the CI
-        run: python3 ./scripts/nix-ci/builder.py --${{ matrix.nixTarget }} --evaluate-outPaths --github-ci-shortcut
+      - run: |
+          nix flake update
 
-  final-check:
-    needs: canary-build
-    name: Final check
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'All jobs succeeded.'
+      - name: Evaluating build targets
+        run: |
+          python3 ./scripts/nix-ci/builder.py \
+              --nixosConfigurations --homeConfigurations --devShells --packages \
+              --evaluate-outPaths --link-outPaths \
+              --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
+
+      - name: Running the CI
+        run: |
+          python3 ./scripts/nix-ci/builder.py \
+              --nixosConfigurations --homeConfigurations --devShells --packages \
+              --evaluate-outPaths --github-ci-shortcut \
+              --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
