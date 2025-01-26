@@ -58,19 +58,21 @@ in
 
     # Custom (new) packages go here.
     (final: prev: {
-      ubootRaspberryPiGeneric_64bit = unstablePkgs.buildUBoot {
-        defconfig = "rpi_arm64_defconfig";
-        extraMeta.platforms = [ "aarch64-linux" ];
-        filesToInstall = [ "u-boot.bin" ];
-      } // lib.attrsets.optionalAttrs (lib.versionAtLeast "2025.01" prev.ubootTools.version) {
-        version = "2025.01";
-        src = prev.fetchFromGitHub {
-          owner = "u-boot";
-          repo = "u-boot";
-          tag = "v2025.01";
-          hash = "sha256-n63E3AHzbkn/SAfq+DHYDsBMY8qob+cbcoKgPKgE4ps=";
+      ubootRaspberryPiGeneric_64bit =
+        unstablePkgs.buildUBoot {
+          defconfig = "rpi_arm64_defconfig";
+          extraMeta.platforms = [ "aarch64-linux" ];
+          filesToInstall = [ "u-boot.bin" ];
+        }
+        // lib.attrsets.optionalAttrs (lib.versionAtLeast "2025.01" prev.ubootTools.version) {
+          version = "2025.01";
+          src = prev.fetchFromGitHub {
+            owner = "u-boot";
+            repo = "u-boot";
+            tag = "v2025.01";
+            hash = "sha256-n63E3AHzbkn/SAfq+DHYDsBMY8qob+cbcoKgPKgE4ps=";
+          };
         };
-      };
 
       rpiUbootAndFirmware = prev.stdenvNoCC.mkDerivation {
         version = final.ubootRaspberryPiGeneric_64bit.version;
