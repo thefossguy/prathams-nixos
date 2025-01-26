@@ -76,7 +76,8 @@
       ]
       ++ lib.optionals (config.customOptions.x86CpuVendor == "intel") [
         "intel_iommu=on" # Enable Intel's IOMMU driver
-      ];
+      ]
+      ++ lib.optionals config.customOptions.kernelDevelopment.virt.enable [ "nokaslr" ];
 
     loader = {
       timeout = lib.mkForce 10;
