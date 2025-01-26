@@ -12,14 +12,13 @@ let
   useMinimalConfig = config.customOptions.useMinimalConfig;
 in
 {
-
+  systemd.oomd.enable = true;
   services = {
     earlyoom.enable = true;
     fstrim.enable = true;
     fwupd.enable = true;
     journald.storage = "persistent";
     logrotate.enable = true;
-    oomd.enable = true;
     timesyncd.enable = lib.mkForce true; # NTP
     udisks2.enable = true;
 
