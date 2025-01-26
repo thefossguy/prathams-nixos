@@ -37,6 +37,13 @@ in
           argsOverride = {
             structuredExtraConfig =
               (colonelPackages.structuredExtraConfig or { })
+              // lib.attrsets.optionalAttrs config.customOptions.kernelDevelopment.virt.enable {
+                DEBUG_DRIVER = lib.kernel.yes;
+                DEBUG_INFO = lib.kernel.yes;
+                FRAME_POINTER = lib.kernel.yes;
+                GDB_SCRIPTS = lib.kernel.yes;
+                RANDOMIZE_BASE = lib.kernel.yes;
+              }
               // lib.attrsets.optionalAttrs enable16kPagesOnAarch64 {
                 ARM64_16K_PAGES = lib.kernel.yes;
               };
