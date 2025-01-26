@@ -14,6 +14,7 @@ in
 {
 
   services = {
+    earlyoom.enable = true;
     fstrim.enable = true;
     fwupd.enable = true;
     journald.storage = "persistent";
