@@ -19,19 +19,12 @@ let
     zfs = (nixosSystemConfig.kernelConfig.kernelVersion == "longterm");
   };
 
+  enable16kPagesOnAarch64 = (pkgs.stdenv.isAarch64 && (!enable4kPagesOnAarch64));
   enable4kPagesOnAarch64 = (
     (nixosSystemConfig.kernelConfig.kernelVersion == "longterm")
     || (config.customOptions.isIso)
     || (config.customOptions.socSupport.armSoc == "rpi4")
   );
-
-  enable16kPagesOnAarch64 =
-    (!enable4kPagesOnAarch64)
-    && (
-      (config.customOptions.socSupport.armSoc == "rk3588")
-      || (config.customOptions.socSupport.armSoc == "rpi5")
-      || (config.customOptions.socSupport.armSoc == "m4")
-    );
 in
 {
   boot = {
@@ -44,7 +37,7 @@ in
           argsOverride = {
             structuredExtraConfig =
               (colonelPackages.structuredExtraConfig or { })
-              // lib.attrsets.optionalAttrs (pkgs.stdenv.isAarch64 && enable16kPagesOnAarch64) {
+              // lib.attrsets.optionalAttrs enable16kPagesOnAarch64 {
                 ARM64_16K_PAGES = lib.kernel.yes;
               };
           };
