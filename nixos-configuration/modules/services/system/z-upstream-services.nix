@@ -18,6 +18,7 @@ in
     fwupd.enable = true;
     journald.storage = "persistent";
     logrotate.enable = true;
+    oomd.enable = true;
     timesyncd.enable = lib.mkForce true; # NTP
     udisks2.enable = true;
 
