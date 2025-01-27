@@ -24,8 +24,7 @@ in
 
     locate = lib.attrsets.optionalAttrs (!useMinimalConfig) {
       enable = true;
-      localuser = null;
-      package = pkgs.mlocate;
+      package = pkgs.plocate;
       pruneBindMounts = true;
 
       # The previous `locate = lib.attrsets.optionalAttrs (!useMinimalConfig)`
