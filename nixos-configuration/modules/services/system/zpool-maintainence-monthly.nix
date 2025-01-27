@@ -24,7 +24,7 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
       serviceConfig.User = "root";
       serviceConfig.Type = "oneshot";
       path = [
-        config.boot.kernelPackages.zfs.userspaceTools
+        config.boot.kernelPackages.${pkgs.zfs.kernelModuleAttribute}.userspaceTools
         pkgs.gawk
       ];
 
