@@ -23,7 +23,7 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
       enable = true;
       serviceConfig.User = "root";
       serviceConfig.Type = "oneshot";
-      path = [ config.boot.kernelPackages.zfs.userspaceTools ];
+      path = [ config.boot.kernelPackages.${pkgs.zfs.kernelModuleAttribute}.userspaceTools ];
 
       script = ''
         set -xuf -o pipefail
