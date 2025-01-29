@@ -11,15 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Setting up QEMU User Emulation
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes binfmt-support qemu-user-static
-
-      - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
-
       - name: Setting up AWS credentials
         run: |
           mkdir -vp ~/.aws
@@ -28,6 +19,15 @@ jobs:
           aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           EOF
+
+      - name: Setting up QEMU User Emulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes binfmt-support qemu-user-static
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
 
       - run: |
           nix flake update
