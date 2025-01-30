@@ -107,13 +107,6 @@ rec {
     requiredUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
   };
 
-  syncNixBuildResults = mkServiceConfig {
-    unitName = "sync-nix-build-results";
-    onCalendar = continuousBuildAndPush.onCalendar;
-    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
-    requiredUnits = syncNixBuildResults.afterUnits;
-  };
-
   updateNixosFlakeInputs = mkServiceConfig {
     unitName = "update-nixos-flake-inputs";
   };
