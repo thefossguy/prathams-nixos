@@ -21,6 +21,9 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
     services."${serviceConfig.unitName}" = {
       enable = true;
+      after = serviceConfig.afterUnits;
+      requires = serviceConfig.requiredUnits;
+
       path = with pkgs; [
         awscli2
         coreutils-full
