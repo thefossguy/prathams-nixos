@@ -12,4 +12,5 @@
 
   customOptions.x86CpuVendor = "amd";
   customOptions.displayServer.guiSession = "kde";
+  customOptions.virtualisation.enable = true;
 }
