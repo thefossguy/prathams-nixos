@@ -15,7 +15,7 @@ lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
   hardware.nvidia = {
     modesetting.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidia_x11_vulkan_beta_open;
+    #package = config.boot.kernelPackages.nvidia_x11_vulkan_beta_open;
 
     # NixOS now defaults to using the open source kernel driver
     # https://github.com/NixOS/nixpkgs/pull/337289
