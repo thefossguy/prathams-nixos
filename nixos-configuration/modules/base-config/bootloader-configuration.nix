@@ -16,9 +16,9 @@
     # so it is always safe to assume that EFI vars cannot be modified
     # but, we can always override it from the host-specific configuration file
     loader.efi.canTouchEfiVariables = lib.mkDefault false;
-    blacklistedKernelModules = [
-      "nvidia"
+    blacklistedKernelModules = lib.optionals (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) [
       "nouveau"
+      "nvidia"
     ];
     plymouth.enable = lib.mkForce false;
 
