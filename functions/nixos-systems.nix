@@ -54,8 +54,8 @@ in
     flameboi = {
       coreConfig = {
         hostname = "flameboi";
-        ipv4Address = "10.0.0.13";
-        primaryNetIface = "eth0";
+        ipv4Address = "10.0.0.36";
+        primaryNetIface = "enxb42e9998034e";
         system = linuxSystems.x86_64;
       };
       extraConfig = {
