@@ -10,8 +10,10 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions.x86CpuVendor = "amd";
-  customOptions.displayServer.guiSession = "kde";
-  customOptions.virtualisation.enable = true;
-  customOptions.gpuSupport = [ "nvidia" ];
+  customOptions = {
+    displayServer.guiSession = "kde";
+    gpuSupport = [ "nvidia" ];
+    virtualisation.enable = true;
+    x86CpuVendor = "amd";
+  };
 }
