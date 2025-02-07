@@ -8,7 +8,7 @@
 }:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
-  boot.blacklistedKernelModules = lib.mkForce [ "nouveau" ];
+  boot.blacklistedKernelModules = [ "nouveau" ];
   services.xserver.videoDrivers =
     if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia") then (lib.mkBefore [ "nvidia" ]) else [ "nvidia" ];
 
