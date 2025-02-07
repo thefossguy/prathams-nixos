@@ -74,7 +74,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         "full-screen-api.warning.timeout" = "0";
       };
     };
-    virt-manager.enable = config.customOptions.virtualisation.enable;
+    virt-manager.enable = lib.mkForce config.customOptions.virtualisation.enable;
   };
 
   environment.systemPackages =

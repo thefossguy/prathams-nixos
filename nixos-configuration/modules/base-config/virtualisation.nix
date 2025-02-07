@@ -8,6 +8,10 @@
 }:
 
 lib.mkIf config.customOptions.virtualisation.enable {
+  # virt-manager gets installed when a GUI session is enabled
+  # this exists in case a GUI session is not enabled
+  programs.virt-manager.enable = true;
+
   environment.systemPackages = with pkgs; [
     qemu_kvm
   ];
