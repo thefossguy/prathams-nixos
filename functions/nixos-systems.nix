@@ -58,9 +58,6 @@ in
         primaryNetIface = "enxb42e9998034e";
         system = linuxSystems.x86_64;
       };
-      extraConfig = {
-        systemType = systemTypes.desktop;
-      };
     };
 
     # Lenovo Yoga Slim 6 (16GB; i5-13500H; Iris Xe)
