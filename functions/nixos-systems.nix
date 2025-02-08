@@ -94,6 +94,16 @@ in
       };
     };
 
+    # x86 VM (24G; 12x Zen4) guest on `flameboi`
+    aatman = {
+      coreConfig = {
+        hostname = "aatman";
+        ipv4Address = "10.0.0.144";
+        primaryNetIface = "enx525400000000";
+        system = linuxSystems.x86_64;
+      };
+    };
+
     # Raspberry Pi 4 Model B (4GB)
     sentinel = {
       coreConfig = {
