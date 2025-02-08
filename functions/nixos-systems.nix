@@ -35,6 +35,7 @@ in
       indra = "d92f6246";
       madhav = "102b6927";
       matsya = "3852eff0";
+      aatman = "192bc1e8";
       sentinel = "041d6ae7";
       reddish = "996ccb68";
       mahadev = "c06c1a49";
