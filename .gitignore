@@ -1,6 +1,7 @@
 *.iso
 *.iso.sha*
 *.log
+*.swp
 *template.nix*
 .direnv/*
 flake.lock.old
