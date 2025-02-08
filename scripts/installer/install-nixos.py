@@ -438,6 +438,10 @@ def memtotal_warning() -> None:
     return
 
 if __name__ == '__main__':
+    if not pathlib.Path('/sys/firmware/efi').exists():
+        errorPrint('An EFI environment is necessary for the installed NixOS system to boot.')
+        sys.exit(1)
+
     installer_variables['system_kernel'] = os.uname().sysname.lower()
     installer_variables['system_arch'] = os.uname().machine.lower()
     if installer_variables['system_arch'] == 'arm64':
