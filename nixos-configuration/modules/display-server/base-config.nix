@@ -115,7 +115,8 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     )
     ++ (with pkgsChannels.stable; [
       neovide # haz nice neovim animations
-    ]);
+    ])
+    ++ lib.optionals config.customOptions.virtualisation.enable (with pkgs; [ virt-viewer ]);
 
   fonts = {
     fontDir.enable = true;
