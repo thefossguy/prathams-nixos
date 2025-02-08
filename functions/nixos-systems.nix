@@ -50,7 +50,7 @@ in
   };
 
   systems = {
-    # "former" (now dead) "AI" "learning" PC (64GB; R9 3900XT; RTX 3070)
+    # VM box (64GB; R9 3900XT; RTX 3070)
     flameboi = {
       coreConfig = {
         hostname = "flameboi";
