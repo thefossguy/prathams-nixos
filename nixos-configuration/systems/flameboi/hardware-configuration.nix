@@ -24,7 +24,7 @@
     device = "/dev/disk/by-uuid/6e310ca4-9af3-48e6-80cd-5f9d32b60eca";
   };
 
-  fileSystems."/storage/virt" = {
+  fileSystems."/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/share/images" = {
     device = "/dev/disk/by-uuid/66ddb971-c54e-43e5-966a-5d8fcd0fc4e0";
   };
 }
