@@ -17,6 +17,10 @@ in
     ../qemu/qemu-guest.nix
   ];
 
+  boot.kernelParams = [
+    # Helps on aarch64-linux **and** x86_64-linux
+    "console=ttyS0"
+  ];
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${sysuser.username}".initialHashedPassword = lib.mkForce sysuser.hashedPassword;
