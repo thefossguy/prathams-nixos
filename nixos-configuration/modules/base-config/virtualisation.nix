@@ -14,7 +14,6 @@ lib.mkIf config.customOptions.virtualisation.enable {
 
   environment.systemPackages = with pkgs; [
     qemu_kvm
-    virtiofsd
   ];
 
   virtualisation = {
@@ -27,6 +26,10 @@ lib.mkIf config.customOptions.virtualisation.enable {
         ovmf.enable = true;
         package = pkgs.qemu_kvm;
         swtpm.enable = true;
+
+        vhostUserPackages = with pkgs; [
+          virtiofsd
+        ];
 
         # when set to `true`, will let me specify the user and group in `verbatimConfig` (i.e. not override)
         runAsRoot = true;
