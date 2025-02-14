@@ -88,7 +88,7 @@ let
   nixosPackages = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
     with pkgs;
     [
-    ]
+    ] ++ lib.optionals config.customOptions.virtualisation.enable [ pykickstart ]
   );
 
   tuxPackagesCheck = (pkgs.stdenv.isLinux && (!nixosSystemConfig.coreConfig.isNixOS));
