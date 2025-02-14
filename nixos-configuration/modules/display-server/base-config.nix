@@ -78,26 +78,35 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   };
 
   environment.systemPackages =
-    (with pkgs; [
-      alacritty
-      authenticator # alt to Google Authenticator on iOS/Android
-      brave
-      desktop-file-utils
-      emojipick
-      foliate # GNOME's book reader
-      foot
-      fractal # matrix client
-      handbrake
-      mediainfo-gui
-      meld # GUI side-by-side git diff
-      metadata-cleaner # exif removal
-      obsidian
-      paper-clip # PDF editor
-      rpi-imager
-      snapshot # camera
-      ungoogled-chromium
-      video-trimmer # https://gitlab.gnome.org/YaLTeR/video-trimmer
-    ])
+    (
+      with pkgs;
+      [
+        alacritty
+        authenticator # alt to Google Authenticator on iOS/Android
+        brave
+        desktop-file-utils
+        emojipick
+        foliate # GNOME's book reader
+        foot
+        fractal # matrix client
+        handbrake
+        mediainfo-gui
+        meld # GUI side-by-side git diff
+        metadata-cleaner # exif removal
+        obsidian
+        paper-clip # PDF editor
+        rpi-imager
+        snapshot # camera
+        ungoogled-chromium
+        video-trimmer # https://gitlab.gnome.org/YaLTeR/video-trimmer
+      ]
+      ++ lib.optionals config.customOptions.virtualisation.enable [ virt-viewer ]
+      ++ lib.optionals pkgs.stdenv.isx86_64 [
+        kdePackages.kdenlive
+        mpv
+        tor-browser
+      ]
+    )
     ++ (with pkgs.kdePackages; [
       filelight # visualize disk space
       ghostwriter # markdown editor
@@ -105,18 +114,9 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
       kdeconnect-kde
       okular # the universal document viewer (good for previews)
     ])
-    ++ lib.optionals pkgs.stdenv.isx86_64 (
-      with pkgs;
-      [
-        kdePackages.kdenlive
-        mpv
-        tor-browser
-      ]
-    )
     ++ (with pkgsChannels.stable; [
       neovide # haz nice neovim animations
-    ])
-    ++ lib.optionals config.customOptions.virtualisation.enable (with pkgs; [ virt-viewer ]);
+    ]);
 
   fonts = {
     fontDir.enable = true;

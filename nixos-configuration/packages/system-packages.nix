@@ -12,8 +12,9 @@ let
 in
 {
   imports = [ ./overlays.nix ];
-  environment.systemPackages =
-    (with pkgs; [
+  environment.systemPackages = (
+    with pkgs;
+    [
       # should be already included in the base image
       #bzip2
       #curl
@@ -45,27 +46,25 @@ in
       # utilities specific to Nix
       nix-output-monitor
       nvd # diff between NixOS generations
-    ])
-    ++ lib.optionals (!useMinimalConfig) (
-      with pkgs;
-      [
-        # optional, misc packages
-        cloud-utils # provides growpart
-        dmidecode
-        hdparm
-        lsof
-        minisign
-        nvme-cli
-        parted
-        pv
-        smartmontools
-        usbutils
+    ]
+    ++ lib.optionals (!useMinimalConfig) [
+      # optional, misc packages
+      cloud-utils # provides growpart
+      dmidecode
+      hdparm
+      lsof
+      minisign
+      nvme-cli
+      parted
+      pv
+      smartmontools
+      usbutils
 
-        # power management
-        acpi
-        lm_sensors
-      ]
-    );
+      # power management
+      acpi
+      lm_sensors
+    ]
+  );
 
   programs = {
     adb.enable = !useMinimalConfig;

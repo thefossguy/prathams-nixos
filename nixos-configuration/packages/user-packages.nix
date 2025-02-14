@@ -88,7 +88,8 @@ let
   nixosPackages = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
     with pkgs;
     [
-    ] ++ lib.optionals config.customOptions.virtualisation.enable [ pykickstart ]
+    ]
+    ++ lib.optionals config.customOptions.virtualisation.enable [ pykickstart ]
   );
 
   tuxPackagesCheck = (pkgs.stdenv.isLinux && (!nixosSystemConfig.coreConfig.isNixOS));
@@ -131,49 +132,45 @@ let
     nix-output-monitor
     nixfmt-rfc-style
   ];
-  commonPackages =
-    lib.optionals (!useMinimalConfig) (
-      with pkgs;
-      [
-        # misc utilities + shells
-        asciinema
-        choose
-        dash
-        delta
-        dig # provides `dig` and `nslookup`
-        dpkg
-        du-dust
-        dua
-        fd
-        fzf
-        hyperfine
-        iperf # this is `iperf3`
-        iperf2 # this is what is usually `iperf` on other distros
-        mediainfo
-        nload
-        parallel
-        picocom
-        procs
-        python3
-        sd
-        tre-command
-        unzip
-        wget2
-        zip
+  commonPackages = lib.optionals (!useMinimalConfig) (
+    with pkgs;
+    [
+      # misc utilities + shells
+      asciinema
+      choose
+      dash
+      delta
+      dig # provides `dig` and `nslookup`
+      dpkg
+      du-dust
+      dua
+      fd
+      fzf
+      hyperfine
+      iperf # this is `iperf3`
+      iperf2 # this is what is usually `iperf` on other distros
+      mediainfo
+      nload
+      parallel
+      picocom
+      procs
+      python3
+      sd
+      tre-command
+      unzip
+      wget2
+      zip
 
-        # utilities specific to Nix
-        nix-prefetch
-        nix-prefetch-git
-        nix-prefetch-github
-        nixpkgs-review
-      ]
-    )
-    ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) (
-      with pkgs;
-      [
-        ffmpeg
-      ]
-    );
+      # utilities specific to Nix
+      nix-prefetch
+      nix-prefetch-git
+      nix-prefetch-github
+      nixpkgs-review
+    ]
+    ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) [
+      ffmpeg
+    ]
+  );
 in
 {
   imports = [ ./overlays.nix ];
