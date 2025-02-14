@@ -89,7 +89,7 @@ let
     with pkgs;
     [
     ]
-    ++ lib.optionals config.customOptions.virtualisation.enable [ pykickstart ]
+    ++ lib.optionals (osConfig.customOptions.virtualisation.enable or false) [ pykickstart ]
   );
 
   tuxPackagesCheck = (pkgs.stdenv.isLinux && (!nixosSystemConfig.coreConfig.isNixOS));
