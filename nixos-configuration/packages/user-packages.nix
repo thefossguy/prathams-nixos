@@ -222,7 +222,7 @@ in
         [
           # language servers
           clang-tools # provides clangd
-          #lldb # provides lldb-vscode
+          lldb # provides lldb-vscode
           lua-language-server
           nil # language server for Nix
           nodePackages.bash-language-server
