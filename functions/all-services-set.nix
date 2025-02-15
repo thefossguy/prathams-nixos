@@ -150,6 +150,10 @@ rec {
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 
+  manuallyAutostartLibvirtVms = mkServiceConfig {
+    unitName = "manually-autostart-libvirt-vms";
+  };
+
   updateRust = mkServiceConfig {
     unitName = "update-rust";
     onCalendar = systemdTime.Daily { hour = "05"; };

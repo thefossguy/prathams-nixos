@@ -13,6 +13,7 @@
     ./dotfiles-pull.nix
     ./flatpak-manage.nix
     ./get-redhat-csaf-vex.nix
+    ./manually-autostart-libvirt-vms.nix
     ./podman-container-services
     ./update-rust.nix
   ];
