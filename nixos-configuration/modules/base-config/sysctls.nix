@@ -7,6 +7,13 @@
   ...
 }:
 
+let
+  # This is done because if the VM has a bride of its own, the VM gets disconnected
+  # from the network after getting a "martian source" message in the kernel log.
+  rpFilterValue =
+    if (config.services.qemuGuest.enable && config.customOptions.virtualisation.enableVirtualBridge) then 2 else 1;
+in
+
 {
   boot.kernel.sysctl = {
     ## Z-RAM-Swap
@@ -60,8 +67,8 @@
     "net.ipv4.icmp_ignore_bogus_error_responses" = 1;
     # Reverse path filtering causes the kernel to do source validation of
     # packets received from all interfaces. This can mitigate IP spoofing.
-    "net.ipv4.conf.default.rp_filter" = 1;
-    "net.ipv4.conf.all.rp_filter" = 1;
+    "net.ipv4.conf.default.rp_filter" = rpFilterValue;
+    "net.ipv4.conf.all.rp_filter" = rpFilterValue;
     # Do not accept IP source route packets (we're not a router)
     "net.ipv4.conf.all.accept_source_route" = 0;
     "net.ipv6.conf.all.accept_source_route" = 0;
