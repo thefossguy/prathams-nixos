@@ -19,7 +19,7 @@ lib.mkIf config.customOptions.virtualisation.enable {
   virtualisation = {
     libvirtd = {
       enable = true;
-      allowedBridges = [ "virbr0" ];
+      allowedBridges = lib.optionals config.customOptions.virtualisation.enableVirtualBridge [ "virbr0" ];
       onShutdown = "shutdown";
 
       qemu = {
