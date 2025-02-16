@@ -173,7 +173,7 @@ let
   );
 in
 {
-  imports = [ ./overlays.nix ];
+  imports = lib.optionals (!nixosSystemConfig.coreConfig.isNixOS) [ ./overlays.nix ];
 
   home.packages =
     nixosPackagesMinimal
