@@ -103,7 +103,10 @@ rec {
   signVerifyAndPushNixStorePaths = mkServiceConfig {
     unitName = "sign-verify-and-push-nix-store-paths";
     onCalendar = continuousBuildAndPush.onCalendar;
-    afterUnits = [ "${customNixosUpgrade.unitName}.service" "${updateNixosFlakeInputs.unitName}.service" ];
+    afterUnits = [
+      "${customNixosUpgrade.unitName}.service"
+      "${updateNixosFlakeInputs.unitName}.service"
+    ];
     requiredUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
   };
 

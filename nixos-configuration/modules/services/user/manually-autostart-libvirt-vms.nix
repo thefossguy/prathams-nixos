@@ -20,20 +20,20 @@ let
 in
 lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
   systemd.user.services."${serviceConfig.unitName}" = {
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-      Service = {
-        Type = "oneshot";
-        Environment = [ appendedPath ];
-        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
-          set -xeuf -o pipefail
-          VMS_TO_AUTOSTART=( $(virsh --connect qemu:///session list --autostart --state-shutoff --name | tr '\r\n' ' ') )
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      Environment = [ appendedPath ];
+      ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
+        set -xeuf -o pipefail
+        VMS_TO_AUTOSTART=( $(virsh --connect qemu:///session list --autostart --state-shutoff --name | tr '\r\n' ' ') )
 
-          for VM_NOT_AUTOSTARTED in "''${VMS_TO_AUTOSTART[@]}"; do
-              virsh --connect qemu:///session start "''${VM_NOT_AUTOSTARTED}"
-          done
-        ''}";
+        for VM_NOT_AUTOSTARTED in "''${VMS_TO_AUTOSTART[@]}"; do
+            virsh --connect qemu:///session start "''${VM_NOT_AUTOSTARTED}"
+        done
+      ''}";
     };
   };
 }
