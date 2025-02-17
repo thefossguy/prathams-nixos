@@ -19,8 +19,17 @@ in
     fwupd.enable = true;
     journald.storage = "persistent";
     logrotate.enable = true;
-    timesyncd.enable = lib.mkForce true; # NTP
     udisks2.enable = true;
+
+    timesyncd = {
+      enable = lib.mkForce true; # NTP
+      servers = [
+        "0.in.pool.ntp.org"
+        "1.in.pool.ntp.org"
+        "2.in.pool.ntp.org"
+        "3.in.pool.ntp.org"
+      ];
+    };
 
     locate = lib.attrsets.optionalAttrs (!useMinimalConfig) {
       enable = true;
