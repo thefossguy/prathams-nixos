@@ -28,6 +28,7 @@ lib.mkIf pkgs.stdenv.isDarwin {
   home.file = {
     ".bash_profile".enable = false;
     ".bashrc".enable = false;
+    ".gitconfig".enable = false;
     ".profile".enable = false;
   };
 
@@ -68,6 +69,9 @@ lib.mkIf pkgs.stdenv.isDarwin {
   };
 
   programs = {
-    git.enable = true;
+    git = {
+      enable = true;
+      signing.format = "ssh";
+    };
   };
 }
