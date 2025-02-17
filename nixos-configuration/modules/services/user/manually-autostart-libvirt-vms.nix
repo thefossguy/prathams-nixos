@@ -14,6 +14,7 @@ let
     packages = with pkgs; [
       bash
       coreutils
+      findutils
       libvirt
     ];
   };
@@ -23,16 +24,25 @@ lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
     Install = {
       WantedBy = [ "default.target" ];
     };
+
+    Unit = {
+      RequiresMountsFor = "%t/libvirt";
+      After = [ "default.target" ];
+      PartOf = [ "default.target" ];
+    };
+
     Service = {
-      Type = "oneshot";
+      Type = "forking";
       Environment = [ appendedPath ];
+      Restart = "on-failure";
+      RestartSec = "10s";
+
       ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
         set -xeuf -o pipefail
-        VMS_TO_AUTOSTART=( $(virsh --connect qemu:///session list --autostart --state-shutoff --name | tr '\r\n' ' ') )
 
-        for VM_NOT_AUTOSTARTED in "''${VMS_TO_AUTOSTART[@]}"; do
-            virsh --connect qemu:///session start "''${VM_NOT_AUTOSTARTED}"
-        done
+        # Manually append `/run/wrappers/bin` to PATH for `qemu-bridge-helper`
+        export PATH=$PATH:/run/wrappers/bin
+        virsh --connect qemu:///session list --autostart --state-shutoff --name | xargs -n 1 -r virsh --connect qemu:///session start --force-boot --reset-nvram
       ''}";
     };
   };
