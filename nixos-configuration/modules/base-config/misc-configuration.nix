@@ -16,7 +16,7 @@ in
 {
   time = {
     timeZone = "Asia/Kolkata";
-    hardwareClockInLocalTime = true;
+    hardwareClockInLocalTime = false;
   };
 
   console = {
