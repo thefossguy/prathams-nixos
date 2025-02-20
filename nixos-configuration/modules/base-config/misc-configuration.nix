@@ -46,6 +46,7 @@ in
     etc."issue.d/ip.issue".text = ''
       IPv4: \4
       IPv6: \6
+      Up since: \d \t
 
     '';
 
