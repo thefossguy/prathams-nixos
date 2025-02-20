@@ -19,7 +19,8 @@ in
 
   boot.kernelParams = [
     # Helps on aarch64-linux **and** x86_64-linux
-    "console=tty0" "console=ttyS0"
+    "console=tty0"
+    "console=ttyS0"
   ];
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
