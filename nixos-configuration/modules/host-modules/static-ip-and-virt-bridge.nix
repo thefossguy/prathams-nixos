@@ -35,7 +35,11 @@ in
       if virtualBridgeConditional then
         {
           "virbr0" = staticIpConfig;
-          "${primaryNetIface}".useDHCP = lib.mkForce false; # slave to virbr0
+          "${primaryNetIface}" = {
+            useDHCP = lib.mkForce false; # slave to virbr0
+            ipv4.addresses = lib.mkForce [ ]; # empty because DHCP is disabled
+            ipv6.addresses = lib.mkForce [ ]; # empty because DHCP is disabled
+          };
         }
       else
         {
