@@ -53,4 +53,20 @@ in
       };
     };
   };
+
+  systemd.network.networks = lib.attrsets.optionalAttrs virtualBridgeConditional {
+    "40-${primaryNetIface}" = {
+      matchConfig = {
+        Name = primaryNetIface;
+      };
+      linkConfig = {
+        Unmanaged = "yes";
+        ActivationPolicy = "manual";
+      };
+      networkConfig = {
+        LinkLocalAddressing = "no";
+        DHCP = "no";
+      };
+    };
+  };
 }
