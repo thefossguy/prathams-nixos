@@ -28,7 +28,7 @@ in
   };
 
   networking = {
-    firewall.enable = false; # this uses iptables AFAIK, use nftables instead
+    firewall.enable = true;
     nameservers = domainNameServers;
     networkmanager.enable = true;
     nftables.enable = true;
