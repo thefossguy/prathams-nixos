@@ -13,7 +13,8 @@
     ../../modules/qemu/qemu-guest.nix
   ];
 
-  zramSwap.memoryPercent = lib.mkForce 100;
+  # Host has zramswap enabled, not necessary inside guest
+  zramSwap.enable = lib.mkForce false;
 
   customOptions = {
     autologinSettings.getty.enableAutologin = true;
