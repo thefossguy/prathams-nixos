@@ -22,7 +22,7 @@
     enablePasswordlessSudo = true;
     kernelDevelopment.enable = true;
     useMinimalConfig = lib.mkForce false;
-    virtualisation.enable = true;
+    virtualisation.enable = false; # explicitly disable virtualisation
     x86CpuVendor = "amd";
   };
 }
