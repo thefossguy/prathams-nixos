@@ -7,9 +7,6 @@
   ...
 }:
 
-let
-  waylandEnabled = config.customOptions.displayServer.waylandEnabled;
-in
 lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   hardware.bluetooth.enable = true;
   hardware.graphics.enable = true;
@@ -19,6 +16,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   services.displayManager.hiddenUsers = [ "root" ];
   services.xserver = {
     enable = true;
+    desktopManager.runXdgAutostartIfNone = true;
     xkb.layout = "us";
     xkb.variant = "";
   };
