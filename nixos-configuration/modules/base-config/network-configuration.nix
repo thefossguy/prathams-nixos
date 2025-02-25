@@ -28,7 +28,14 @@ in
   };
 
   networking = {
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      allowedUDPPorts = [ 51820 ];
+    };
+    wireguard = {
+      enable = true;
+      useNetworkd = true;
+    };
     nameservers = domainNameServers;
     networkmanager.enable = true;
     nftables.enable = true;
