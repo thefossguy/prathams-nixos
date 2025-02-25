@@ -124,6 +124,25 @@ in
       };
     };
 
+    wireguardOptions = {
+      routes = lib.mkOption {
+        description = "A list of all `networking.dhcpcd.runHook`s for routing wireguard traffic.";
+        default = [ ];
+        type = lib.types.listOf lib.types.str;
+      };
+      enabledVPNs = lib.mkOption {
+        description = "A list of all enabled wireguard VPNs.";
+        default = [ ];
+        type = lib.types.listOf (
+          lib.types.enum [
+            "wg0x0"
+            "wg0x1"
+            "wg0x2"
+          ]
+        );
+      };
+    };
+
     x86CpuVendor = lib.mkOption {
       description = "List of GPU vendors to enable support for.";
       default = null;

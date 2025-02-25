@@ -19,5 +19,6 @@
     ./qemu
     ./soc-support
     ./system-types
+    ./wg-vpn
   ];
 }
