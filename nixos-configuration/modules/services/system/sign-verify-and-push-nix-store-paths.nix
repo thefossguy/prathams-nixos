@@ -64,7 +64,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}"
 
         for nixIndvHash in "''${nixHashes[@]}"; do
-            echo 'exists' | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
+            echo "''${nixIndvHash}" | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
         done
         sha512sum /etc/nixos/flake.lock | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeLock
         git -C /etc/nixos rev-parse HEAD | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeHead
