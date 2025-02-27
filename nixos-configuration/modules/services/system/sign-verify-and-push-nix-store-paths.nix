@@ -57,11 +57,14 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         popd || exit 1
 
         nixResults=( $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
+        nixHashes=$( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
+
         nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults[@]}"
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}"
-        nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' "''${nixResults[@]}"
 
-        echo -e 'StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 10' | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/nix-cache-info
+        for nixIndvHash in "''${nixHashes[@]}"; do
+            echo 'exists' | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
+        done
         sha512sum /etc/nixos/flake.lock | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeLock
         git -C /etc/nixos rev-parse HEAD | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeHead
       '';
