@@ -9,7 +9,7 @@
 
 let
   wgIfaceName = "wg0x0";
-  wgEndpiontIp = "185.159.158.77";
+  wgEndpointIp = "185.159.158.77";
   wgEndpiontCidr = "32";
   wgPublicKey = "8PG6wZzij1kPTYivtEh4bNbTrP/WOVQBja9g2+8/i3A=";
   wgLocalIp = "10.2.0.2";
@@ -24,7 +24,7 @@ import ../../../functions/make-wireguard-vpn.nix {
     nixosSystemConfig
     ;
   inherit
-    wgEndpiontIp
+    wgEndpointIp
     wgEndpiontCidr
     wgIfaceName
     wgLocalIp

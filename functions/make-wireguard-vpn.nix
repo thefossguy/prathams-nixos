@@ -4,7 +4,7 @@
   pkgs,
   nixosSystemConfig,
   ifaceEnabled,
-  wgEndpiontIp,
+  wgEndpointIp,
   wgEndpiontCidr,
   wgIfaceName,
   wgLocalIp,
@@ -14,7 +14,7 @@
 
 lib.mkIf ifaceEnabled {
   customOptions.wireguardOptions.routes = [
-    "${pkgs.iproute2}/bin/ip route add ${wgEndpiontIp}/${wgEndpiontCidr} via ${nixosSystemConfig.extraConfig.gatewayAddr} dev ${nixosSystemConfig.coreConfig.primaryNetIface}"
+    "${pkgs.iproute2}/bin/ip route add ${wgEndpointIp}/${wgEndpiontCidr} via ${nixosSystemConfig.extraConfig.gatewayAddr} dev ${nixosSystemConfig.coreConfig.primaryNetIface}"
   ];
 
   networking.wireguard.interfaces = {
@@ -28,7 +28,7 @@ lib.mkIf ifaceEnabled {
       peers = [
         {
           publicKey = wgPublicKey;
-          endpoint = "${wgEndpiontIp}:51820";
+          endpoint = "${wgEndpointIp}:51820";
           allowedIPs = [ "0.0.0.0/0" ];
         }
       ];
