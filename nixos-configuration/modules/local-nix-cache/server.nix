@@ -17,6 +17,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     openFirewall = false; # Handled by Nginx
     port = 5000;
     secretKeyFile = "/my-nix-binary-cache/cache-priv-key.pem";
+    extraParams = "--priority 10";
     package = pkgs.nix-serve-ng;
   };
 
