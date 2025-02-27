@@ -14,11 +14,13 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
   services.nix-serve = {
     enable = true;
-    openFirewall = true;
+    openFirewall = false; # Handled by Nginx
     port = 5000;
     secretKeyFile = "/my-nix-binary-cache/cache-priv-key.pem";
     package = pkgs.nix-serve-ng;
   };
+
+  networking.firewall.allowedTCPPorts = [ 80 ];
 
   services.nginx = {
     enable = true;
