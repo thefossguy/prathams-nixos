@@ -42,7 +42,7 @@ lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
 
         # Manually append `/run/wrappers/bin` to PATH for `qemu-bridge-helper`
         export PATH=$PATH:/run/wrappers/bin
-        virsh --connect qemu:///session list --autostart --state-shutoff --name | xargs -n 1 -r virsh --connect qemu:///session start --force-boot --reset-nvram
+        virsh --connect qemu:///session list --autostart --state-shutoff --name | xargs --no-run-if-empty --max-args 1 virsh --connect qemu:///session start --force-boot --reset-nvram
       ''}";
     };
   };
