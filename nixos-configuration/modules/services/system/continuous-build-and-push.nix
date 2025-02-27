@@ -45,7 +45,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
         python3 ./scripts/nix-ci/builder.py --nixosConfigurations --homeConfigurations --devShells --packages
         popd || exit 1
 
-        nix copy --no-check-sigs --refresh --to 'ssh-ng://pratham@10.0.0.24?ssh-key=/home/pratham/.ssh/ssh' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath)
+        nix copy --no-check-sigs --refresh --to 'ssh-ng://pratham@10.0.0.24?ssh-key=/home/pratham/.ssh/ssh' $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath)
       '';
     };
   };

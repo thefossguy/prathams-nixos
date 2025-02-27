@@ -56,7 +56,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
             --evaluate-outPaths --link-outPaths
         popd || exit 1
 
-        nixResults=( $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs realpath) )
+        nixResults=( $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
         nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults[@]}"
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}"
         nix copy --to 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088?region=us-east-1' "''${nixResults[@]}"
