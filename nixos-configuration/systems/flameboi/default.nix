@@ -14,5 +14,6 @@
     virtualisation.enable = true;
     x86CpuVendor = "amd";
     useMinimalConfig = lib.mkForce false;
+    localCaching.buildsNixDerivations = true;
   };
 }
