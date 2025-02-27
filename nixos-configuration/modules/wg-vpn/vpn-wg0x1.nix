@@ -9,9 +9,9 @@
 
 let
   wgIfaceName = "wg0x1";
-  wgEndpiontIp = "185.159.156.162";
+  wgEndpiontIp = "79.135.104.85";
   wgEndpiontCidr = "32";
-  wgPublicKey = "cFQgn6VKZphGOdOGHux2xUf/QBWSExfg6koDuU68k28=";
+  wgPublicKey = "tEz96jcHEtBtZOmwMK7Derw0AOih8usKFM+n4Svhr1E=";
   wgIp = "10.2.0.2";
 in
 
