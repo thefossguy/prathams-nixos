@@ -7,7 +7,7 @@
   wgEndpiontIp,
   wgEndpiontCidr,
   wgIfaceName,
-  wgIp,
+  wgLocalIp,
   wgPublicKey,
   ...
 }:
@@ -23,7 +23,7 @@ lib.mkIf ifaceEnabled {
       # the interface is **deleted** and brought up at said interval, not good.
       dynamicEndpointRefreshSeconds = if config.networking.wireguard.useNetworkd then 0 else 30;
       privateKeyFile = "/etc/nixos/nixos-configuration/modules/wg-vpn/${wgIfaceName}.priv";
-      ips = [ "${wgIp}/${wgEndpiontCidr}" ];
+      ips = [ "${wgLocalIp}/${wgEndpiontCidr}" ];
 
       peers = [
         {

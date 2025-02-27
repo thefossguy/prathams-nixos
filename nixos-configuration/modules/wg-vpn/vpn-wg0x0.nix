@@ -12,7 +12,7 @@ let
   wgEndpiontIp = "185.159.158.77";
   wgEndpiontCidr = "32";
   wgPublicKey = "8PG6wZzij1kPTYivtEh4bNbTrP/WOVQBja9g2+8/i3A=";
-  wgIp = "10.2.0.2";
+  wgLocalIp = "10.2.0.2";
 in
 
 import ../../../functions/make-wireguard-vpn.nix {
@@ -27,7 +27,7 @@ import ../../../functions/make-wireguard-vpn.nix {
     wgEndpiontIp
     wgEndpiontCidr
     wgIfaceName
-    wgIp
+    wgLocalIp
     wgPublicKey
     ;
 }
