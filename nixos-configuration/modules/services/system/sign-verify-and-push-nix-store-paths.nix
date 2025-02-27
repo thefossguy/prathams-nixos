@@ -28,6 +28,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         awscli2
         coreutils-full
         findutils
+        gawk
         git
         nix
         python3
