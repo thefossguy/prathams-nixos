@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   nixosSystemConfig,
@@ -21,7 +20,7 @@ lib.mkIf ifaceEnabled {
     "${wgIfaceName}" = {
       # If `networking.wireguard.useNetworkd` is enabled,
       # the interface is **deleted** and brought up at said interval, not good.
-      dynamicEndpointRefreshSeconds = if config.networking.wireguard.useNetworkd then 0 else 30;
+      dynamicEndpointRefreshSeconds = 0; # with `networking.wireguard.useNetworkd` enabled, the iface goes down and up so disable it
       privateKeyFile = "/etc/nixos/nixos-configuration/modules/wg-vpn/${wgIfaceName}.priv";
       ips = [ "${wgLocalIp}/${wgEndpiontCidr}" ];
 
@@ -35,4 +34,3 @@ lib.mkIf ifaceEnabled {
     };
   };
 }
-
