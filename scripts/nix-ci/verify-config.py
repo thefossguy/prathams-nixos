@@ -14,6 +14,7 @@ nixos_systems = [
     ".#isoImages.x86_64-linux.longterm",
     ".#isoImages.x86_64-linux.mainline",
     ".#isoImages.x86_64-linux.stable",
+    ".#nixosConfigurations.aatman",
     ".#nixosConfigurations.bheem",
     ".#nixosConfigurations.bhim",
     ".#nixosConfigurations.chaturvyas",
