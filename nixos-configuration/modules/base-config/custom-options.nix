@@ -125,6 +125,11 @@ in
     };
 
     wireguardOptions = {
+      wgPrivateKeyDir = lib.mkOption {
+        description = "A global option to ensure consistency of the wireguard connection's private key file's path.";
+        default = "/etc/nixos/nixos-configuration/modules/wg-vpn";
+        type = lib.types.str;
+      };
       routes = lib.mkOption {
         description = "A list of all `networking.dhcpcd.runHook`s for routing wireguard traffic.";
         default = [ ];
