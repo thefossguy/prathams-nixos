@@ -80,7 +80,7 @@
       ++ lib.optionals config.customOptions.kernelDevelopment.virt.enable [ "nokaslr" ];
 
     loader = {
-      timeout = lib.mkForce (if (config.services.qemuGuest.enable && (!config.customOptions.isIso)) then 1 else 10);
+      timeout = if (config.services.qemuGuest.enable && (!config.customOptions.isIso)) then 1 else 10;
       systemd-boot = {
         enable = lib.mkForce true;
         editor = lib.mkForce false;
