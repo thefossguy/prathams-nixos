@@ -30,6 +30,7 @@ in
   networking = {
     firewall = {
       enable = true;
+      checkReversePath = "loose";
     };
     wireguard = {
       enable = true;
