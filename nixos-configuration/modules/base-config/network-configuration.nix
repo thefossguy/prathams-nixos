@@ -30,7 +30,6 @@ in
   networking = {
     firewall = {
       enable = true;
-      allowedUDPPorts = [ 51820 ];
     };
     wireguard = {
       enable = true;
