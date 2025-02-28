@@ -1,4 +1,9 @@
-{ pkgs, serviceConfig }:
+{
+  lib,
+  pkgs,
+  containerConfig,
+  serviceConfig,
+}:
 
 {
   Service = {
@@ -32,33 +37,34 @@
         --cidfile %t/%n.ctr-id \
         --detach \
         --env TZ=Asia/Kolkata \
-        --label io.containers.autoupdate=registry \
-        --name ${serviceConfig.containerConfig.name} \
+        ${lib.strings.optionalString containerConfig.enableAutoUpdates "--label io.containers.autoupdate=registry"} \
+        --name ${containerConfig.name} \
         --network containers_default \
-        --network-alias ${serviceConfig.containerConfig.name} \
+        --network-alias ${containerConfig.name} \
         --pull missing \
         --replace \
         --rm \
         --sdnotify conmon \
-        ${serviceConfig.containerConfig.extraExecStart}
+        ${containerConfig.extraExecStart}
     '';
   };
 
   Install = {
-    WantedBy = [ "default.target" ];
-    RequiredBy = serviceConfig.containerConfig.requiredBy or [ ];
+    Before = serviceConfig.beforeUnits;
+    WantedBy = serviceConfig.wantedByUnits;
+    RequiredBy = serviceConfig.requiredByUnits;
   };
 
   Unit = {
-    Description = "Container service for ${serviceConfig.containerConfig.description}";
+    Description = "Container service for ${containerConfig.description}";
     Documentation = [
       "man:podman-run(1)"
       "man:podman-stop(1)"
       "man:podman-rm(1)"
     ];
-    After = serviceConfig.containerConfig.after;
-    Wants = serviceConfig.containerConfig.wants or [ ];
-    Requires = serviceConfig.containerConfig.requires or [ ];
+    After = serviceConfig.afterUnits;
+    Wants = serviceConfig.wantedUnits;
+    Requires = serviceConfig.requiredUnits;
     RequiresMountsFor = [ "%t/containers" ];
   };
 }
