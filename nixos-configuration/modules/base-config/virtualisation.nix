@@ -23,9 +23,13 @@ lib.mkIf config.customOptions.virtualisation.enable {
       onShutdown = "shutdown";
 
       qemu = {
-        ovmf.enable = true;
         package = pkgs.qemu_kvm;
         swtpm.enable = true;
+
+        ovmf = {
+          enable = true;
+          packages = [ pkgs.OVMFFull.fd ];
+        };
 
         vhostUserPackages = with pkgs; [
           virtiofsd
