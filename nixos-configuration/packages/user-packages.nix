@@ -131,6 +131,7 @@ let
     nix-diff # a better `nvd`
     nix-output-monitor
     nixfmt-rfc-style
+    yq # like `jq` but for TOML, XML and YAML
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (
     with pkgs;
