@@ -28,6 +28,7 @@ in
   };
 
   networking = {
+    dhcpcd.persistent = true;
     enableIPv6 = false;
     nameservers = domainNameServers;
     networkmanager.enable = true;
