@@ -14,6 +14,11 @@ let
   isIso = config.customOptions.isIso;
 in
 {
+  hardware.ksm = {
+    enable = true;
+    sleep = 1200000;
+  };
+
   time = {
     timeZone = "Asia/Kolkata";
     hardwareClockInLocalTime = false;
