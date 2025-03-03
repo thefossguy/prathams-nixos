@@ -30,6 +30,7 @@ in
   boot.initrd.systemd.emergencyAccess = config.users.users."root".hashedPassword;
   boot.initrd.systemd.enable = !disableSystemdInIinitrd;
   boot.runSize = "256m"; # Max so far is 32MB, so 256MB is a **long** shot
+  boot.tmp.cleanOnBoot = true; # There really is no reason for /tmp to persist across boots
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
