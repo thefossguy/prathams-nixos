@@ -7,6 +7,9 @@
   ...
 }:
 
+let
+  userUsername = nixosSystemConfig.coreConfig.systemUser.username;
+in
 lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
   home.activation = {
     OVMFActivation = lib.hm.dag.entryAfter [ "installPackages" ] ''
@@ -20,7 +23,7 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       EDKII_CODE_SEC_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${CODE_ARCH}-secure-code.fd"
       EDKII_VARS_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${VARS_ARCH}-vars.fd"
 
-      EDKII_DIR_HOME='/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/share/edk2'
+      EDKII_DIR_HOME='/home/${userUsername}/.local/share/edk2'
 
       if [ -d "''${EDKII_DIR_HOME}" ]; then
           rm -rf "''${EDKII_DIR_HOME}"
@@ -35,10 +38,8 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       ln -s "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/edk2_code_secure"
       ln -s "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/edk2_vars"
 
+      chown ${userUsername}:${userUsername} -v "''${EDKII_DIR_HOME}/EDK2_"*
       chmod 644 -v "''${EDKII_DIR_HOME}/EDK2_"*
-
-      chown "''${LOGNAME}":"''${LOGNAME}" "''${EDKII_CODE_HOME}" "''${EDKII_VARS_HOME}"
-      chmod 644 "''${EDKII_CODE_HOME}" "''${EDKII_VARS_HOME}"
     '';
   };
 
@@ -49,7 +50,7 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       enable = true;
       text = ''
         nvram = [
-          "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/share/edk2/EDK2_CODE:/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/share/edk2/EDK2_VARS",
+          "/home/${userUsername}/.local/share/edk2/EDK2_CODE:/home/${userUsername}/.local/share/edk2/EDK2_VARS",
           "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd",
           "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"
         ]
