@@ -17,6 +17,7 @@ let
       coreutils
       findutils
       gawk
+      gnused
       jq
       libvirt
     ];
