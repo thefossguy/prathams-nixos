@@ -28,6 +28,7 @@ in
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
   boot.initrd.systemd.enable = !disableSystemdInIinitrd;
+  boot.runSize = "256m"; # Max so far is 32MB, so 256MB is a **long** shot
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
