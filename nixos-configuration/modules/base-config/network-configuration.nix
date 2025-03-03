@@ -33,6 +33,7 @@ in
     nameservers = domainNameServers;
     networkmanager.enable = true;
     nftables.enable = true;
+    tcpcrypt.enable = true;
     useDHCP = lib.mkDefault true;
     wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
 
