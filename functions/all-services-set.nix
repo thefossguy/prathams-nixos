@@ -114,6 +114,12 @@ rec {
     unitName = "update-nixos-flake-inputs";
   };
 
+  updateQemuFirmwarePaths = mkServiceConfig {
+    unitName = "update-qemu-firmware-paths";
+    beforeUnits = [ "libvirtd.socket" ];
+    requiredByUnits = [ "libvirtd.socket" ];
+  };
+
   zpoolMaintainenceWeekly = mkServiceConfig {
     unitName = "zpool-maintainence-weekly";
     onCalendar = systemdTime.Weekly { weekday = "Fri"; };
