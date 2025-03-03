@@ -49,7 +49,9 @@ lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
         cat << EOF > ${editorVar}
         #!/usr/bin/env bash
         set -xeuf -o pipefail
-        sed -i 's@/nix/store/.*-qemu-.*/share/qemu/@/nix/store/''${BUNDLED_QEMU_FIRMWARE_PATH}/share/qemu/@g' \$1
+        if ! grep -q "''${BUNDLED_QEMU_FIRMWARE_PATH}" \$1; then
+            sed -i 's@/nix/store/.*-qemu-.*/share/qemu/@/nix/store/''${BUNDLED_QEMU_FIRMWARE_PATH}/share/qemu/@g' \$1
+        fi
         EOF
 
         echo '--------------------------------------------------------------------------------'
