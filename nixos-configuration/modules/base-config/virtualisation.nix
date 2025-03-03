@@ -47,6 +47,10 @@ lib.mkIf config.customOptions.virtualisation.enable {
           # to match the configured user/group above. Defaults to 1.
           # Set to 0 to disable file ownership changes.
           dynamic_ownership = 1
+
+          # Just for my own sanity, make libvirtd aware about the absolute path
+          # to the qemu-bridge-helper's sgid+suid wrapper.
+          bridge_helper = "/run/wrappers/bin/qemu-bridge-helper"
         '';
       };
     };
