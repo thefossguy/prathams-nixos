@@ -46,6 +46,7 @@ lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
         BUNDLED_QEMU_FIRMWARE_PATH="$(jq --raw-output '.mapping.executable.filename' /var/lib/qemu/firmware/60-edk2-"$(uname -m)".json | awk -F '/' '{print $4}')"
 
         cat << EOF > ${editorVar}
+        #!/usr/bin/env bash
         set -xeuf -o pipefail
         sed -i 's@/nix/store/.*-qemu-.*/share/qemu/@/nix/store/''${BUNDLED_QEMU_FIRMWARE_PATH}/share/qemu/@g' \$1
         EOF
