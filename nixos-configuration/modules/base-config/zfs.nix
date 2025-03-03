@@ -13,6 +13,8 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
   # done using the `boot.initrd.supportedFilesystems.zfs` and
   # `boot.supportedFilesystems.zfs`.
 
+  boot.zfs.removeLinuxDRM = true;
+
   security.pam.services.login.zfs = true;
   security.pam.zfs.enable = true;
   security.pam.zfs.noUnmount = true;
