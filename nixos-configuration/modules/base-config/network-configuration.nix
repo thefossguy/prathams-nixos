@@ -28,6 +28,7 @@ in
   };
 
   networking = {
+    enableIPv6 = false;
     nameservers = domainNameServers;
     networkmanager.enable = true;
     nftables.enable = true;
