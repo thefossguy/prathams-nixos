@@ -47,4 +47,7 @@ in
       useNetworkd = true;
     };
   };
+
+  users.users.tcpcryptd.group = "tcpcryptd";
+  users.groups.tcpcryptd = {};
 }
