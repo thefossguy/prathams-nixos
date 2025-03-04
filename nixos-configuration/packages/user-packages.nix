@@ -53,7 +53,7 @@ let
     email = lib.optionals (!useMinimalConfig && (!darwinPackagesCheck)) (
       with pkgs;
       [
-        aerc
+        #aerc
         catimg # fur email (aerc); print image on ze terminal
         protonmail-bridge
       ]
