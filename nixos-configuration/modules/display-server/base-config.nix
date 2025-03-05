@@ -35,6 +35,8 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   };
 
   programs = {
+    virt-manager.enable = lib.mkForce config.customOptions.virtualisation.enable;
+
     firefox = {
       enable = true;
       preferencesStatus = "user";
@@ -71,8 +73,85 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         "full-screen-api.warning.delay" = "0";
         "full-screen-api.warning.timeout" = "0";
       };
+
+      # https://mozilla.github.io/policy-templates/
+      policies = {
+        AutofillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+        DefaultDownloadDirectory = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/Downloads";
+        DisableBuiltinPDFViewer = false;
+        DisableFirefoxAccounts = false;
+        DisableFirefoxScreenshots = false;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableProfileImport = true;
+        DisableSetDesktopBackground = true;
+        DisableTelemetry = true;
+        DisplayBookmarksToolbar = "always";
+        DisplayMenuBar = "default-off";
+        DontCheckDefaultBrowser = true;
+        HardwareAcceleration = true;
+        OverrideFirstRunPage = "";
+        OverridePostUpdatePage = "";
+        SearchBar = "unified";
+        StartDownloadsInTempDirectory = false;
+
+        DNSOverHTTPS = {
+          Enabled = true;
+          Fallback = true;
+          Locked = true;
+          # https://github.com/curl/curl/wiki/DNS-over-HTTPS#publicly-available-servers
+          ProviderURL = "https://mozilla.cloudflare-dns.com/dns-query";
+        };
+
+        EnableTrackingProtection = {
+          Cryptomining = true;
+          EmailTracking = true;
+          Fingerprinting = true;
+          Locked = true;
+          Value = true;
+        };
+
+        PictureInPicture = {
+          Enbaled = false;
+          Locked = true;
+        };
+
+        # Valid strings for installation_mode are
+        # - allowed
+        # - blocked
+        # - force_installed
+        # - normal_installed
+        ExtensionSettings = {
+          # Blocks all addons except the ones specified below
+          "*".installation_mode = "blocked";
+
+          # Old Reddit Redirect
+          "{9063c2e9-e07c-4c2c-9646-cfe7ca8d0498}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/old-reddit-redirect/latest.xpi";
+            installation_mode = "force_installed";
+          };
+
+          # uBlock Origin
+          "uBlock0@raymondhill.net" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            installation_mode = "force_installed";
+          };
+
+          # Privacy Badger
+          "jid1-MnnxcxisBPnSXQ@jetpack" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger17/latest.xpi";
+            installation_mode = "force_installed";
+          };
+
+          # Bitwarden
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+            installation_mode = "force_installed";
+          };
+        };
+      };
     };
-    virt-manager.enable = lib.mkForce config.customOptions.virtualisation.enable;
   };
 
   environment.systemPackages =
