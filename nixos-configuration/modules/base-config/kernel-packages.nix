@@ -8,11 +8,16 @@
 }:
 
 let
+  smallChannel =
+    if ((lib.versions.majorMinor pkgsChannels.stable.lib.version) == (lib.versions.majorMinor lib.version)) then
+      pkgsChannels.stableSmall
+    else
+      pkgsChannels.unstableSmall;
   colonelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
   kernelPackagesSet = {
-    mainline = pkgs.linux_testing;
-    stable = pkgs.linux_latest;
-    longterm = pkgs.linux_6_12;
+    mainline = smallChannel.linux_testing;
+    stable = smallChannel.linux_latest;
+    longterm = smallChannel.linux_6_12;
   };
 
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
@@ -32,7 +37,7 @@ in
     supportedFilesystems = lib.mkForce supportedFileSystems;
 
     kernelPackages = lib.mkForce (
-      pkgs.linuxPackagesFor (
+      smallChannel.linuxPackagesFor (
         colonelPackages.override {
           argsOverride = {
             structuredExtraConfig =
