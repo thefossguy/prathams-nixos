@@ -193,7 +193,7 @@ async def main():
                         nix_path_info_command = [ 'aws', 's3', 'cp', 's3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/{}.narinfo'.format(nix_hash), '-', ]
                         nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, text=True, )
                         if nix_path_info_process.returncode == 0:
-                            if eval_out_path not in nix_path_info_process.stdout:
+                            if nix_hash not in nix_path_info_process.stdout:
                                 print('ERROR: `{}` not in S3 bucket, very weird'.format(eval_out_path))
                                 cleanup(1)
                         else:
