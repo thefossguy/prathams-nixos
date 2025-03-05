@@ -20,6 +20,14 @@ let
       inherit system;
       passedNixpkgs = allInputChannels.unstable.nixpkgs;
     };
+    stableSmall = mkPkgs {
+      inherit system;
+      passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
+    };
+    unstableSmall = mkPkgs {
+      inherit system;
+      passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
+    };
   };
 
   # this is the core building block for **EVERY** NixOS System

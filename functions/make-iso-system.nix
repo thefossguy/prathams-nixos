@@ -19,6 +19,14 @@ let
       inherit system;
       passedNixpkgs = allInputChannels.unstable.nixpkgs;
     };
+    stableSmall = mkPkgs {
+      inherit system;
+      passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
+    };
+    unstableSmall = mkPkgs {
+      inherit system;
+      passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
+    };
   };
 
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };

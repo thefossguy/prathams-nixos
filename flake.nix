@@ -7,11 +7,25 @@
       inputs.nixpkgs.follows = "nixpkgsStable";
     };
 
+    # stable-small
+    nixpkgsStableSmall.url = "github:NixOS/nixpkgs/nixos-24.11-small";
+    homeManagerStableSmall = {
+      url = "github:nix-community/home-manager/release-24.11";
+      inputs.nixpkgs.follows = "nixpkgsStableSmall";
+    };
+
     # unstable channel
     nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     homeManagerUnstable = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgsUnstable";
+    };
+
+    # unstable-small
+    nixpkgsUnstableSmall.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    homeManagerUnstableSmall = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgsUnstableSmall";
     };
   };
 
@@ -21,6 +35,10 @@
       homeManagerStable,
       nixpkgsUnstable,
       homeManagerUnstable,
+      nixpkgsStableSmall,
+      homeManagerStableSmall,
+      nixpkgsUnstableSmall,
+      homeManagerUnstableSmall,
       self,
       ...
     }:
@@ -36,6 +54,14 @@
         unstable = {
           nixpkgs = nixpkgsUnstable;
           homeManager = homeManagerUnstable;
+        };
+        stableSmall = {
+          nixpkgs = nixpkgsStableSmall;
+          homeManager = homeManagerStableSmall;
+        };
+        unstableSmall = {
+          nixpkgs = nixpkgsUnstableSmall;
+          homeManager = homeManagerUnstableSmall;
         };
       };
 
@@ -58,6 +84,14 @@
             pkgsUnstable = mkPkgs {
               inherit system;
               passedNixpkgs = allInputChannels.unstable.nixpkgs;
+            };
+            pkgsStableSmall = mkPkgs {
+              inherit system;
+              passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
+            };
+            pkgsUnstableSmall = mkPkgs {
+              inherit system;
+              passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
             };
           }
         );
