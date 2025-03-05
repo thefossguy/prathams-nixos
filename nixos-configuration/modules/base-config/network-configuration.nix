@@ -49,5 +49,5 @@ in
   };
 
   users.users.tcpcryptd.group = "tcpcryptd";
-  users.groups.tcpcryptd = {};
+  users.groups.tcpcryptd = { };
 }
