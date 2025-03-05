@@ -8,6 +8,7 @@ import subprocess
 import sys
 
 ci_variables = {}
+ci_variables['late_exit_code'] = 0
 ci_variables['impure_build'] = False
 ci_variables['supported_systems'] = [
     'aarch64-linux',
@@ -194,15 +195,15 @@ async def main():
                         nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, text=True, )
                         if nix_path_info_process.returncode == 0:
                             if nix_hash not in nix_path_info_process.stdout:
-                                print('ERROR: `{}` not in S3 bucket, very weird'.format(eval_out_path))
-                                cleanup(1)
+                                print('ERROR: `{}` not really in S3 bucket, very weird'.format(eval_out_path))
+                                ci_variables['late_exit_code'] = 1
                         else:
                             if 'An error occurred (404) when calling the HeadObject operation: Not Found' in nix_path_info_process.stderr:
-                                print('ERROR: `{}` not in S3 bucket'.format(eval_out_path))
-                                cleanup(1)
+                                print("ERROR: `{}` doesn't appear to have been built yet".format(eval_out_path))
+                                ci_variables['late_exit_code'] = 1
                             else:
                                 print('ERROR: `{}`'.format(nix_path_info_process.stderr))
-                                cleanup(1)
+                                ci_variables['late_exit_code'] = 1
 
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
@@ -241,6 +242,8 @@ async def main():
     else:
         print('WARN: No Nix build targets were specified so building nothing.')
         cleanup(0)
+
+    cleanup(ci_variables['late_exit_code'])
     return
 
 if __name__ == '__main__':
