@@ -59,7 +59,7 @@ in
     # Custom (new) packages go here.
     (final: prev: {
       ubootRaspberryPiGeneric_64bit =
-        unstablePkgs.buildUBoot {
+        prev.buildUBoot {
           defconfig = "rpi_arm64_defconfig";
           extraMeta.platforms = [ "aarch64-linux" ];
           filesToInstall = [ "u-boot.bin" ];
@@ -84,7 +84,7 @@ in
           set -x
 
           mkdir $out
-          cp -r ${unstablePkgs.raspberrypifw}/share/raspberrypi/boot/* $out
+          cp -r ${prev.raspberrypifw}/share/raspberrypi/boot/* $out
           rm -vf $out/kernel*.img
           cp -r ${final.ubootRaspberryPiGeneric_64bit}/u-boot.bin $out/rpi-u-boot.bin
 
