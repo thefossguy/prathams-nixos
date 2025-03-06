@@ -12,9 +12,17 @@ let
   useMinimalConfig = config.customOptions.useMinimalConfig;
 in
 {
-  systemd.oomd.enable = true;
+  systemd.oomd = {
+    enable = true;
+    extraConfig = {
+      SwapUsedLimit = "75%";
+      DefaultMemoryPressureLimit = "50%";
+      DefaultMemoryPressureDurationSec = 60;
+    };
+  };
+
   services = {
-    earlyoom.enable = true;
+    earlyoom.enable = false;
     fstrim.enable = true;
     fwupd.enable = true;
     journald.storage = "persistent";
