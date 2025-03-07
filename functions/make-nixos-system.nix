@@ -50,7 +50,6 @@ let
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
       allServicesSet = import ./all-services-set.nix {
         systemType = nixosSystemConfig.extraConfig.systemType;
-        systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
       };
       inherit inputChannel nixBuildArgs;
     };

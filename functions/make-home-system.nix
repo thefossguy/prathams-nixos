@@ -40,7 +40,6 @@ let
       systemType = "server";
       allServicesSet = import ./all-services-set.nix {
         systemType = nixosSystemConfig.extraConfig.systemType;
-        systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
       };
       inherit inputChannel nixBuildArgs;
     };
