@@ -50,7 +50,6 @@
   };
 
   Install = {
-    Before = serviceConfig.beforeUnits;
     WantedBy = serviceConfig.wantedByUnits;
     RequiredBy = serviceConfig.requiredByUnits;
   };
@@ -62,6 +61,7 @@
       "man:podman-stop(1)"
       "man:podman-rm(1)"
     ];
+    Before = serviceConfig.beforeUnits;
     After = serviceConfig.afterUnits;
     Wants = serviceConfig.wantedUnits;
     Requires = serviceConfig.requiredUnits;
