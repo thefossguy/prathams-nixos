@@ -13,7 +13,14 @@
 
     Environment = [
       "PODMAN_SYSTEMD_UNIT=%n"
-      ''PATH="${pkgs.podman}/bin:$PATH"''
+      "PATH=${
+        builtins.concatStringsSep ":" [
+          "${pkgs.coreutils-full}/bin"
+          "${pkgs.podman}/bin"
+          "/run/wrappers/bin" # required for a setuid wrapper of `newuidmap`
+          "$PATH"
+        ]
+      }"
     ];
 
     ExecStart = ''
