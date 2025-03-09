@@ -35,6 +35,19 @@ lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false
     ]
     ++ lib.optionals (osConfig.customOptions.useMinimalConfig or false) [ buildah ];
 
+  xdg.configFile = {
+    "containers/policy.json" = {
+      enable = true;
+      text = ''
+        {
+          "default": [
+            "type": "insecureAcceptAnything"
+          ]
+        }
+      '';
+    };
+  };
+
   systemd.user.services."${serviceConfig.unitName}" = {
     Install = {
       WantedBy = [ "default.target" ];
