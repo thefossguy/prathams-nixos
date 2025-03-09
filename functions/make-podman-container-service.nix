@@ -16,21 +16,6 @@
       ''PATH="${pkgs.podman}/bin:$PATH"''
     ];
 
-    ExecStop = ''
-      podman stop \
-        --cidfile %t/%n.ctr-id \
-        --ignore \
-        --time 120
-    '';
-
-    ExecStopPost = ''
-      podman rm \
-        --cidfile %t/%n.ctr-id \
-        --ignore \
-        --time 120 \
-        --force
-    '';
-
     ExecStart = ''
       podman run \
         --cgroups no-conmon \
@@ -46,6 +31,21 @@
         --rm \
         --sdnotify conmon \
         ${containerConfig.extraExecStart}
+    '';
+
+    ExecStop = ''
+      podman stop \
+        --cidfile %t/%n.ctr-id \
+        --ignore \
+        --time 120
+    '';
+
+    ExecStopPost = ''
+      podman rm \
+        --cidfile %t/%n.ctr-id \
+        --ignore \
+        --time 120 \
+        --force
     '';
   };
 
