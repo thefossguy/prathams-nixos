@@ -29,6 +29,7 @@ lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false
     with pkgs;
     [
       ctop
+      podman
       podman-compose
       podman-tui
     ]
