@@ -32,7 +32,7 @@
       set -xeuf -o pipefail
       podman run \
         --cgroups no-conmon \
-        --cidfile %t/%n.ctr-id \
+        --cidfile "''${XDG_RUNTIME_DIR}/containers/''${PODMAN_SYSTEMD_UNIT}.ctr-id" \
         --detach \
         --env TZ=Asia/Kolkata \
         ${lib.strings.optionalString containerConfig.enableAutoUpdates "--label io.containers.autoupdate=registry"} \
@@ -49,7 +49,7 @@
     ExecStop = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStop.sh" ''
       set -xeuf -o pipefail
       podman stop \
-        --cidfile %t/%n.ctr-id \
+        --cidfile "''${XDG_RUNTIME_DIR}/containers/''${PODMAN_SYSTEMD_UNIT}.ctr-id" \
         --ignore \
         --time 120
     ''}";
@@ -57,7 +57,7 @@
     ExecStopPost = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStopPost.sh" ''
       set -xeuf -o pipefail
       podman rm \
-        --cidfile %t/%n.ctr-id \
+        --cidfile "''${XDG_RUNTIME_DIR}/containers/''${PODMAN_SYSTEMD_UNIT}.ctr-id" \
         --ignore \
         --time 120 \
         --force
