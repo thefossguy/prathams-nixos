@@ -46,7 +46,7 @@ lib.mkIf pkgs.stdenv.isLinux {
         Type = "oneshot";
         Environment = [ appendedPath ];
 
-        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
+        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
           set -xeuf -o pipefail
 
           TZ='UTC'

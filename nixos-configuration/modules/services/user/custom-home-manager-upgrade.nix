@@ -50,7 +50,7 @@ lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
         Type = "oneshot";
         Environment = [ appendedPath ];
 
-        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
+        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
           set -xeuf -o pipefail
 
           ${connectivityCheckScript}

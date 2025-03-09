@@ -37,7 +37,7 @@ lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
       Restart = "on-failure";
       RestartSec = "10s";
 
-      ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
+      ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
         set -xeuf -o pipefail
 
         # Manually append `/run/wrappers/bin` to PATH for `qemu-bridge-helper`
