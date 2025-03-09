@@ -69,6 +69,7 @@ lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false
 
     Service = {
       Type = "oneshot";
+      RequiresMountsFor = [ "%t/containers" ];
       Environment = [ appendedPath ];
       ExecStart = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/scripts/other-common-scripts/podman-initialization.sh";
     };
