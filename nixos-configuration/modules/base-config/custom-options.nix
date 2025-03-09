@@ -120,11 +120,11 @@ in
           typically include self-hosted software like Nextcloud, Gitea, etc.
         '';
         type = lib.types.bool;
-        default = config.customOptions.podmanContainers.homelabServices != [];
+        default = config.customOptions.podmanContainers.homelabServices != [ ];
       };
       homelabServices = lib.mkOption {
         description = "Rootless podman services to enable.";
-        default = [];
+        default = [ ];
         type = lib.types.listOf (
           lib.types.enum [
             "transmission0x0"
