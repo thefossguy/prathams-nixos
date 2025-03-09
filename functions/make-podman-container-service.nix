@@ -44,7 +44,7 @@
         --cidfile "''${XDG_RUNTIME_DIR}/containers/''${PODMAN_SYSTEMD_UNIT}.ctr-id" \
         --detach \
         --env TZ=Asia/Kolkata \
-        ${lib.strings.optionalString containerConfig.enableAutoUpdates "--label io.containers.autoupdate=registry"} \
+        --label io.containers.autoupdate=${if containerConfig.enableAutoUpdates then "registry" else "disabled"} \
         --name ${containerConfig.name} \
         --network containers_default \
         --network-alias ${containerConfig.name} \
