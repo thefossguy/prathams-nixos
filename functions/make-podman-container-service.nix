@@ -70,6 +70,9 @@
         --ignore \
         --time 120 \
         --force
+
+      podman rmi ${containerConfig.containerImage.name} || \
+          echo 'Failed to remove image, probably being used by another container'
     ''}";
   };
 
