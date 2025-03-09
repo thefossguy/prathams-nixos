@@ -12,7 +12,12 @@
     Type = "notify";
 
     Environment = [
+      # Need to manually assign them to environment variables
+      # because sometimes the `%t` doesn't expand
+      # so better expand the environment variables with Bash than "systemd ones"
       "PODMAN_SYSTEMD_UNIT=%n"
+      "XDG_RUNTIME_DIR=%t"
+
       "PATH=${
         builtins.concatStringsSep ":" [
           "${pkgs.coreutils-full}/bin"
