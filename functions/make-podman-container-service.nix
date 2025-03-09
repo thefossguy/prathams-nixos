@@ -28,6 +28,15 @@
       }"
     ];
 
+    ExecStartPre = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStartPre.sh" ''
+      set -xeuf -o pipefail
+
+      # execStartPre
+      ${serviceConfig.execStartPre or ""}
+
+      podman load --quiet --input ${containerConfig.containerImage}
+    ''}";
+
     ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
       set -xeuf -o pipefail
       podman run \
