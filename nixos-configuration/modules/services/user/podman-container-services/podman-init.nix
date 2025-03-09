@@ -25,11 +25,14 @@ let
   };
 in
 lib.mkIf (osConfig.customOptions.podmanContainers.enableHomelabServices or false) {
-  home.packages = [
-    pkgs.ctop
-    pkgs.podman-compose
-    pkgs.podman-tui
-  ] ++ lib.optionals (osConfig.customOptions.useMinimalConfig or false) [ pkgs.buildah ];
+  home.packages =
+    with pkgs;
+    [
+      ctop
+      podman-compose
+      podman-tui
+    ]
+    ++ lib.optionals (osConfig.customOptions.useMinimalConfig or false) [ buildah ];
 
   systemd.user.services."${serviceConfig.unitName}" = {
     Install = {
