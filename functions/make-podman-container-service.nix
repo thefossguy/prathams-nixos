@@ -46,7 +46,7 @@
         --env TZ=Asia/Kolkata \
         --label io.containers.autoupdate=${if containerConfig.enableAutoUpdates then "registry" else "disabled"} \
         --name ${serviceConfig.unitName} \
-        --network ${containerConfig.network}
+        --network ${containerConfig.network} \
         --network-alias ${containerConfig.name} \
         --pull missing \
         --replace \
