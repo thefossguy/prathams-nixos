@@ -23,7 +23,8 @@
       }"
     ];
 
-    ExecStart = ''
+    ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstart.sh" ''
+      set -xeuf -o pipefail
       podman run \
         --cgroups no-conmon \
         --cidfile %t/%n.ctr-id \
@@ -38,22 +39,24 @@
         --rm \
         --sdnotify conmon \
         ${containerConfig.extraExecStart}
-    '';
+    ''}";
 
-    ExecStop = ''
+    ExecStop = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstop.sh" ''
+      set -xeuf -o pipefail
       podman stop \
         --cidfile %t/%n.ctr-id \
         --ignore \
         --time 120
-    '';
+    ''}";
 
-    ExecStopPost = ''
+    ExecStopPost = "${pkgs.writeShellScript "${serviceConfig.unitName}-execstoppost.sh" ''
+      set -xeuf -o pipefail
       podman rm \
         --cidfile %t/%n.ctr-id \
         --ignore \
         --time 120 \
         --force
-    '';
+    ''}";
   };
 
   Install = {
