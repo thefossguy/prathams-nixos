@@ -22,13 +22,12 @@ in
 lib.mkIf (osConfig.customOptions.virtualisation.enable or false) {
   systemd.user.services."${serviceConfig.unitName}" = {
     Install = {
-      WantedBy = [ "default.target" ];
+      WantedBy = serviceConfig.wantedByUnits;
     };
 
     Unit = {
       RequiresMountsFor = [ "%t/libvirt" ];
-      After = [ "default.target" ];
-      PartOf = [ "default.target" ];
+      Before = serviceConfig.beforeUnits;
     };
 
     Service = {

@@ -39,9 +39,6 @@ lib.mkIf pkgs.stdenv.isLinux {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

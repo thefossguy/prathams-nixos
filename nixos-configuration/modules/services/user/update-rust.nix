@@ -35,9 +35,6 @@ lib.mkIf enableService {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
       Service = {
         Type = "oneshot";
         Environment = [ appendedPath ];

@@ -140,8 +140,6 @@ rec {
       weekday = "Mon";
       hour = "05";
     };
-    afterUnits = [ "${dotfilesPull.unitName}.service" ];
-    requiredUnits = customHomeManagerUpgrade.afterUnits;
   };
 
   dotfilesPull = mkServiceConfig {
@@ -161,6 +159,8 @@ rec {
 
   manuallyAutostartLibvirtVms = mkServiceConfig {
     unitName = "manually-autostart-libvirt-vms";
+    beforeUnits = [ "default.target" ];
+    wantedByUnits = manuallyAutostartLibvirtVms.beforeUnits;
   };
 
   updateRust = mkServiceConfig {

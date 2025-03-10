@@ -39,9 +39,6 @@ lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
     };
 
     services."${serviceConfig.unitName}" = {
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
       Unit = {
         After = serviceConfig.afterUnits;
         Requires = serviceConfig.requiredUnits;
