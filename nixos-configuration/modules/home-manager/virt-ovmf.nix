@@ -23,7 +23,7 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       EDKII_CODE_SEC_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${CODE_ARCH}-secure-code.fd"
       EDKII_VARS_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${VARS_ARCH}-vars.fd"
 
-      EDKII_DIR_HOME='/home/${userUsername}/.local/share/edk2'
+      EDKII_DIR_HOME='${config.customOptions.userHomeDir}/.local/share/edk2'
 
       if [ -d "''${EDKII_DIR_HOME}" ]; then
           rm -rf "''${EDKII_DIR_HOME}"
@@ -50,7 +50,7 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       enable = true;
       text = ''
         nvram = [
-          "/home/${userUsername}/.local/share/edk2/EDK2_CODE:/home/${userUsername}/.local/share/edk2/EDK2_VARS",
+          "${config.customOptions.userHomeDir}/.local/share/edk2/EDK2_CODE:${config.customOptions.userHomeDir}/.local/share/edk2/EDK2_VARS",
           "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd",
           "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"
         ]

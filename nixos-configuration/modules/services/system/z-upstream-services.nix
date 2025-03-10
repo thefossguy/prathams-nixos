@@ -8,7 +8,6 @@
 }:
 
 let
-  userHome = "/home/${nixosSystemConfig.coreConfig.systemUser.username}";
   useMinimalConfig = config.customOptions.useMinimalConfig;
 in
 {
@@ -50,17 +49,17 @@ in
       interval = "hourly";
 
       prunePaths = [
-        "${userHome}/.cache"
-        "${userHome}/.dotfiles"
-        "${userHome}/.local/share"
-        "${userHome}/.local/state"
-        "${userHome}/.nix-defexpr"
-        "${userHome}/.nix-profile"
-        "${userHome}/.nvim/undodir"
-        "${userHome}/.prathams-nixos"
-        "${userHome}/.rustup"
-        "${userHome}/.vms"
-        "${userHome}/.zkbd"
+        "${config.customOptions.userHomeDir}/.cache"
+        "${config.customOptions.userHomeDir}/.dotfiles"
+        "${config.customOptions.userHomeDir}/.local/share"
+        "${config.customOptions.userHomeDir}/.local/state"
+        "${config.customOptions.userHomeDir}/.nix-defexpr"
+        "${config.customOptions.userHomeDir}/.nix-profile"
+        "${config.customOptions.userHomeDir}/.nvim/undodir"
+        "${config.customOptions.userHomeDir}/.prathams-nixos"
+        "${config.customOptions.userHomeDir}/.rustup"
+        "${config.customOptions.userHomeDir}/.vms"
+        "${config.customOptions.userHomeDir}/.zkbd"
         "/nix"
       ];
     };

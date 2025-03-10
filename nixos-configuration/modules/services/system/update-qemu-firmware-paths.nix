@@ -31,7 +31,7 @@ lib.mkIf config.customOptions.virtualisation.enable {
 
     script = ''
       set -xeuf -o pipefail
-      find /home/${userUsername}/.config/libvirt/qemu -maxdepth 1 -iname '*.xml' | tr '\r\n' ' ' | xargs --no-run-if-empty sed -i 's@/nix/store/.*-qemu-.*/share/qemu/@${config.virtualisation.libvirtd.qemu.package.outPath}/share/qemu/@g'
+      find ${config.customOptions.userHomeDir}/.config/libvirt/qemu -maxdepth 1 -iname '*.xml' | tr '\r\n' ' ' | xargs --no-run-if-empty sed -i 's@/nix/store/.*-qemu-.*/share/qemu/@${config.virtualisation.libvirtd.qemu.package.outPath}/share/qemu/@g'
     '';
   };
 }

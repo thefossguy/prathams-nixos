@@ -15,6 +15,12 @@ in
 
 {
   options.customOptions = {
+    userHomeDir = lib.mkOption {
+      description = "An internal option to track the $HOME dir for non-root user.";
+      type = lib.types.string;
+      default = config.users.users.${nixosSystemConfig.coreConfig.systemUser.username}.home;
+    };
+
     finalBuildTarget = lib.mkOption {
       description = "A shorthand build target that builds the final target for NixOS system and the ISO.";
       type = lib.types.package;

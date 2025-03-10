@@ -91,7 +91,7 @@ in
       shellAliases =
         let
           nixosRebuildCommand = "${pkgs.nixos-rebuild}/bin/nixos-rebuild boot --show-trace --verbose --flake /etc/nixos#${config.networking.hostName}";
-          paranoidFlushScript = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.local/scripts/other-common-scripts/paranoid-flush.sh";
+          paranoidFlushScript = "${config.customOptions.userHomeDir}/.local/scripts/other-common-scripts/paranoid-flush.sh";
         in
         {
           "e" = "${pkgs.vim}/bin/vim";

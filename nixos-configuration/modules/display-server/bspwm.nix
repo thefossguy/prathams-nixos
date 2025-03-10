@@ -18,8 +18,8 @@ lib.mkIf (config.customOptions.displayServer.guiSession == "bspwm") {
       windowManager = {
         bspwm = {
           enable = true;
-          configFile = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.config/bspwm/bspwmrc";
-          sxhkd.configFile = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/.config/sxhkd/sxhkdrc";
+          configFile = "${config.customOptions.userHomeDir}/.config/bspwm/bspwmrc";
+          sxhkd.configFile = "${config.customOptions.userHomeDir}/.config/sxhkd/sxhkdrc";
         };
       };
 

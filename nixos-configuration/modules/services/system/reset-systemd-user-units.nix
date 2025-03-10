@@ -9,7 +9,6 @@
 
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.resetSystemdUserUnits;
-  systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
 in
 {
   systemd = {
@@ -18,7 +17,7 @@ in
       wantedBy = serviceConfig.wantedByUnits;
 
       unitConfig = {
-        RequiresMountsFor = "/home/${systemUserUsername}";
+        RequiresMountsFor = "${config.customOptions.userHomeDir}";
       };
 
       serviceConfig = {
@@ -28,7 +27,7 @@ in
         JobTimeoutSec = "infinity";
         JobRunningTimeoutSec = "infinity";
         ExecStart = "${pkgs.coreutils}/bin/true";
-        ExecStop = "rm -rf /home/${systemUserUsername}/.config/systemd/user";
+        ExecStop = "rm -rf ${config.customOptions.userHomeDir}/.config/systemd/user";
       };
     };
   };
