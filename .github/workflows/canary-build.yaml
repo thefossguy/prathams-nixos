@@ -47,7 +47,7 @@ jobs:
           if sha512sum --check zeLock && grep -q "$(git rev-parse HEAD)" zeHead; then
               python3 ./scripts/nix-ci/builder.py \
                   --nixosConfigurations --homeConfigurations --devShells --packages \
-                  --evaluate-outPaths --github-ci-shortcut \
+                  --evaluate-outPaths --github-ci-shortcut --no-print-missing-paths \
                   --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
           else
               exit 0
