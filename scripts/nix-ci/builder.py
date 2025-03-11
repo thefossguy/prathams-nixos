@@ -207,6 +207,9 @@ async def main():
 
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
+                    if '--github-ci-shortcut' in sys.argv:
+                        ci_variables['late_exit_code'] = 1
+
 
             if '--no-print-missing-paths' not in sys.argv:
                 print('--------------------------------------------------------------------------------')
@@ -214,7 +217,6 @@ async def main():
                     missing_target = missingPathAndTarget[0]
                     missing_path = missingPathAndTarget[1]
                     print('WARN: Target `{}` (`{}`) is missing.'.format(missing_target, missing_path))
-            cleanup(0)
 
         else:
             print('Building these targets: `{}`'.format(' '.join(ci_variables['nix_build_targets'])))
@@ -236,15 +238,12 @@ async def main():
                 print('Retrying a rebuild of these targets: `{}`'.format(' '.join(ci_variables['nix_build_targets'])))
                 build_all_targets_process = subprocess.run(make_nix_build_command(ci_variables['nix_build_targets']), stdout=sys.stdout, stderr=sys.stderr, text=True, check=False)
                 cleanup(build_all_targets_process.returncode)
-            else:
-                cleanup(0)
 
     else:
         print('WARN: No Nix build targets were specified so building nothing.')
-        cleanup(0)
 
-    cleanup(ci_variables['late_exit_code'])
     return
 
 if __name__ == '__main__':
     asyncio.run(main())
+    cleanup(ci_variables['late_exit_code'])
