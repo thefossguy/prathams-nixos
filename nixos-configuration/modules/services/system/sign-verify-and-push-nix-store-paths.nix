@@ -62,7 +62,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         nixHashes=( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
 
         nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults[@]}"
-        nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}"
+        nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}" >/dev/null 2>&1
 
         for nixIndvHash in "''${nixHashes[@]}"; do
             echo "''${nixIndvHash}" | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
