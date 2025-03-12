@@ -40,7 +40,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         Type = "oneshot";
       };
 
-      preStart = "rm -vf /etc/nixos/result*";
+      preStart = "rm -vf /etc/nixos/*result*";
 
       script = ''
         set -xeuf -o pipefail
