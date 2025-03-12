@@ -17,7 +17,7 @@ in
   options.customOptions = {
     userHomeDir = lib.mkOption {
       description = "An internal option to track the $HOME dir for non-root user.";
-      type = lib.types.string;
+      type = lib.types.str;
       default = config.users.users.${nixosSystemConfig.coreConfig.systemUser.username}.home;
     };
 
