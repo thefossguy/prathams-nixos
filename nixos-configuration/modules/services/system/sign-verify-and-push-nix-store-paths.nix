@@ -68,7 +68,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
             echo "''${nixIndvHash}" | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
         done
         aws s3 cp /etc/nixos/flake.lock s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/flake.lock
-        git -C /etc/nixos rev-parse HEAD | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeHead
+        git -C /etc/nixos rev-parse HEAD | aws s3 cp - s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/gitHeadSha
       '';
     };
   };
