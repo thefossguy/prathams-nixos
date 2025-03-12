@@ -187,6 +187,7 @@ async def main():
                         if pathlib.Path(eval_out_path).exists():
                             os.symlink(eval_out_path, 'result-' + '{}'.format(i).zfill(2))
                         else:
+                            os.symlink('/missing{}'.format(eval_out_path), 'missing-result-' + '{}'.format(i).zfill(2))
                             missingPathsAndTargets.append([nix_build_target, eval_out_path])
 
                     if '--github-ci-shortcut' in sys.argv:
