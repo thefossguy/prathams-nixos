@@ -29,8 +29,11 @@ jobs:
         with:
           extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
 
+      - name: Update lockfile
       - run: |
-          nix flake update
+          aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/flake.lock flake.lock
+          git add flake.lock
+          git commit -m 'update the flake lockfile'
 
       - name: Evaluating build targets
         run: |
@@ -42,9 +45,8 @@ jobs:
       - name: Running the CI
         run: |
           aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeHead zeHead
-          aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/zeLock zeLock
 
-          if sha512sum --check zeLock && grep -q "$(git rev-parse HEAD)" zeHead; then
+          if grep -q "$(git rev-parse HEAD)" zeHead; then
               python3 ./scripts/nix-ci/builder.py \
                   --nixosConfigurations --homeConfigurations --devShells --packages \
                   --evaluate-outPaths --github-ci-shortcut --no-print-missing-paths \
