@@ -58,7 +58,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
             --evaluate-outPaths --link-outPaths
         popd || exit 1
 
-        nixResults=( $(find /etc/nixos -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
+        nixResults=( $(find /etc/nixos -iname 'result*' -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
         nixHashes=( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
 
         nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults[@]}"
