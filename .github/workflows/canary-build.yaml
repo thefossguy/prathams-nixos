@@ -39,13 +39,7 @@ jobs:
 
       - name: Running the CI
         run: |
-          aws s3 cp s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/gitHeadSha gitHeadSha
-
-          if grep "$(git rev-parse HEAD)" gitHeadSha; then
-              python3 ./scripts/nix-ci/builder.py \
-                  --nixosConfigurations --homeConfigurations --devShells --packages \
-                  --evaluate-outPaths --github-ci-shortcut --no-print-missing-paths \
-                  --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
-          else
-              exit 0
-          fi
+          python3 ./scripts/nix-ci/builder.py \
+              --nixosConfigurations --homeConfigurations --devShells --packages \
+              --evaluate-outPaths --github-ci-shortcut --no-print-missing-paths \
+              --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
