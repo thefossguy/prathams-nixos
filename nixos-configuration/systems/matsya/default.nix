@@ -21,7 +21,7 @@
     x86CpuVendor = "intel";
     enablePasswordlessSudo = true;
     gpuSupport = [ "intel" ];
-    localCaching.buildsNixDerivations = true;
+    #localCaching.buildsNixDerivations = true;
     virtualisation.enable = true;
   };
 }
