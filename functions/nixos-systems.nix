@@ -90,7 +90,7 @@ in
       coreConfig = {
         hostname = "matsya";
         ipv4Address = "10.0.0.109";
-        primaryNetIface = "enx1002b586054e";
+        primaryNetIface = "enx1002b5860d8c";
         system = linuxSystems.x86_64;
       };
     };
