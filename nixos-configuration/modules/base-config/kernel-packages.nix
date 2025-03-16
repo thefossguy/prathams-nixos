@@ -49,15 +49,17 @@ in
       smallPkgs.linuxPackagesFor (
         colonelPackages.override {
           argsOverride = {
-            kernelPatches = (colonelPackages.kernelPatches or [ ]) ++ [
-              {
-                name = "EDAC-igen6-Fix-the-flood-of-invalid-error-reports";
-                patch = pkgs.fetchpatch {
-                  url = "https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/patch/drivers/edac/igen6_edac.c?id=267e5b1d267539d9a927dc04aab6f15aca57da92";
-                  hash = "sha256-6ySJjfhDo7CyUM8x+Rfgdjmh8bVlfTaWI/v6xAhv5iY=";
-                };
-              }
-            ];
+            kernelPatches =
+              (colonelPackages.kernelPatches or [ ])
+              ++ lib.optionals pkgs.stdenv.isx86_64 [
+                {
+                  name = "EDAC-igen6-Fix-the-flood-of-invalid-error-reports";
+                  patch = pkgs.fetchpatch {
+                    url = "https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/patch/drivers/edac/igen6_edac.c?id=267e5b1d267539d9a927dc04aab6f15aca57da92";
+                    hash = "sha256-6ySJjfhDo7CyUM8x+Rfgdjmh8bVlfTaWI/v6xAhv5iY=";
+                  };
+                }
+              ];
 
             structuredExtraConfig =
               (colonelPackages.structuredExtraConfig or { })
