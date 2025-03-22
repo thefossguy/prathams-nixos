@@ -23,5 +23,6 @@
     gpuSupport = [ "intel" ];
     #localCaching.buildsNixDerivations = true;
     virtualisation.enable = true;
+    socSupport.disableIntelPstate = true;
   };
 }
