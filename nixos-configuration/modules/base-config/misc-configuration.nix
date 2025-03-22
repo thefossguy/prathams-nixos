@@ -24,6 +24,10 @@ in
     hardwareClockInLocalTime = false;
   };
 
+  systemd.globalEnvironment = {
+    TZ = "Asia/Kolkata";
+  };
+
   console = {
     enable = true;
     earlySetup = true;
