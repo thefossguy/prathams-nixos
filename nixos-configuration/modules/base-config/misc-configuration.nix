@@ -26,6 +26,7 @@ in
 
   systemd.globalEnvironment = {
     TZ = "Asia/Kolkata";
+    NIXOS_OZONE_WL = if (config.customOptions.displayServer.waylandEnabled or false) then "1" else "0";
   };
 
   console = {
