@@ -18,11 +18,11 @@
   hardware.bluetooth.enable = lib.mkForce false;
 
   customOptions = {
-    x86CpuVendor = "intel";
     enablePasswordlessSudo = true;
     gpuSupport = [ "intel" ];
     #localCaching.buildsNixDerivations = true;
-    virtualisation.enable = true;
     socSupport.disableIntelPstate = true;
+    virtualisation.enable = true;
+    x86CpuVendor = "intel";
   };
 }
