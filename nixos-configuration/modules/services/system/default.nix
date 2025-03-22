@@ -11,6 +11,7 @@
   imports = [
     ./continuous-build-and-push.nix
     ./custom-nixos-upgrade.nix
+    ./disable-intel-pstate.nix
     ./ensure-local-static-ip.nix
     ./nix-gc.nix
     ./reset-systemd-user-units.nix

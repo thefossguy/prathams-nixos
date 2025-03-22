@@ -63,6 +63,11 @@ in
         default = ((config.customOptions.socSupport.armSoc != "unset") && (config.customOptions.socSupport.armSoc != "m4"));
         type = lib.types.bool;
       };
+      disableIntelPstate = lib.mkOption {
+        description = "Disable Intel pstate on some thermally sensitive systems.";
+        default = false;
+        type = lib.types.bool;
+      };
       armSoc = lib.mkOption {
         description = "Enable support for some Aarch64 SoCs.";
         default = "unset";
@@ -261,7 +266,7 @@ in
     ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
       {
         assertion = pkgs.stdenv.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on Aarch64.";
+        message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
       }
     ]
 

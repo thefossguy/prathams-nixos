@@ -73,6 +73,12 @@ rec {
     requiredUnits = customNixosUpgrade.afterUnits;
   };
 
+  disableIntelPstate = mkServiceConfig {
+    unitName = "disable-intel-pstate";
+    beforeUnits = [ "default.target" ];
+    wantedByUnits = disableIntelPstate.beforeUnits;
+  };
+
   ensureLocalStaticIp = mkServiceConfig {
     unitName = "ensure-local-static-ip";
     afterUnits = [ "network-online.target" ];
