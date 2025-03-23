@@ -173,4 +173,11 @@ rec {
     unitName = "update-rust";
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
+
+  # Podman containers (subset of **user** services)
+  containerTransmission0x0 = mkServiceConfig {
+    unitName = "transmission0x0";
+    beforeUnits = [ "default.target" ];
+    wantedByUnits = containerTransmission0x0.beforeUnits;
+  };
 }
