@@ -128,10 +128,16 @@ let
     home-manager
     hydra-check
     jq
-    nix-diff # a better `nvd`
-    nix-output-monitor
-    nixfmt-rfc-style
     yq # like `jq` but for TOML, XML and YAML
+
+    # utilities specific to Nix
+    nix-diff # a better `nvd`
+    nix-du
+    nix-output-monitor
+    nix-top
+    nix-tree
+    nixfmt-rfc-style
+    nvd # diff between NixOS generations
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (
     with pkgs;

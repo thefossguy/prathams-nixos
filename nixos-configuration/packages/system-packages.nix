@@ -44,7 +44,12 @@ in
       vim # it is a necessity
 
       # utilities specific to Nix
+      nix-diff # a better `nvd`
+      nix-du
       nix-output-monitor
+      nix-top
+      nix-tree
+      nixfmt-rfc-style
       nvd # diff between NixOS generations
     ]
     ++ lib.optionals (!useMinimalConfig) [
