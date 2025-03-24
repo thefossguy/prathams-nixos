@@ -168,9 +168,12 @@ let
       nix-prefetch-github
       nixpkgs-review
     ]
-    ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) [
-      ffmpeg
-    ]
+    ++
+      lib.optionals
+        ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin))
+        [
+          ffmpeg
+        ]
   );
 in
 {

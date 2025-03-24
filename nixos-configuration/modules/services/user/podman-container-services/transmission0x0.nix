@@ -11,5 +11,7 @@
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.containerTransmission0x0;
 in
-lib.mkIf (builtins.elem serviceConfig.unitName osConfig.customOptions.podmanContainers.homelabServices) {
-}
+lib.mkIf
+  (builtins.elem serviceConfig.unitName osConfig.customOptions.podmanContainers.homelabServices)
+  {
+  }

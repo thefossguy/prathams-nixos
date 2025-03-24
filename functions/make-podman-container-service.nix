@@ -44,10 +44,16 @@
         --cidfile "''${XDG_RUNTIME_DIR}/containers/''${PODMAN_SYSTEMD_UNIT}.ctr-id" \
         --detach \
         --env TZ=Asia/Kolkata \
-        --label io.containers.autoupdate=${if containerConfig.enableAutoUpdates then "registry" else "disabled"} \
+        --label io.containers.autoupdate=${
+          if containerConfig.enableAutoUpdates then "registry" else "disabled"
+        } \
         --name ${serviceConfig.unitName} \
         --network ${containerConfig.network} \
-        ${lib.strings.optionalString (containerConfig.network != "host") "--network-alias ${serviceConfig.unitName}"} \
+        ${
+          lib.strings.optionalString (
+            containerConfig.network != "host"
+          ) "--network-alias ${serviceConfig.unitName}"
+        } \
         --pull missing \
         --replace \
         --rm \

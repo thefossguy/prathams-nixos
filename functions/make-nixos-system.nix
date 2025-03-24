@@ -45,7 +45,8 @@ let
     };
     extraConfig = {
       gatewayAddr = thisSystem.extraConfig.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
-      ipv4PrefixLength = thisSystem.extraConfig.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
+      ipv4PrefixLength =
+        thisSystem.extraConfig.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
       allServicesSet = import ./all-services-set.nix {
