@@ -26,6 +26,7 @@ ci_variables['homeConfigurations'] = []
 ci_variables['devShells'] = []
 ci_variables['packages'] = []
 ci_variables['outPaths'] = {}
+ci_variables['ci_errors'] = []
 
 def cleanup(exit_code) -> None:
     sys.exit(exit_code)
@@ -196,15 +197,20 @@ async def main():
                         nix_path_info_process = subprocess.run(nix_path_info_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, text=True, )
                         if nix_path_info_process.returncode == 0:
                             if nix_hash not in nix_path_info_process.stdout:
-                                print('ERROR: `{}` not really in S3 bucket, very weird'.format(eval_out_path))
+                                ci_variables['ci_errors'].append('ERROR: `{}` not really in S3 bucket, very weird'.format(eval_out_path))
                                 ci_variables['late_exit_code'] = 1
                         else:
                             if 'An error occurred (404) when calling the HeadObject operation: Not Found' in nix_path_info_process.stderr:
-                                print("ERROR: `{}` doesn't appear to have been built yet".format(eval_out_path))
+                                ci_variables['ci_errors'].append("ERROR: `{}` doesn't appear to have been built yet".format(eval_out_path))
                                 ci_variables['late_exit_code'] = 1
                             else:
-                                print('ERROR: `{}`'.format(nix_path_info_process.stderr))
+                                ci_variables['ci_errors'].append('ERROR: `{}`'.format(nix_path_info_process.stderr))
                                 ci_variables['late_exit_code'] = 1
+
+            if '--github-ci-shortcut' in sys.argv:
+                print('--------------------------------------------------------------------------------')
+                for ci_error_msg in ci_variables['ci_errors']:
+                    print(ci_error_msg)
 
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
