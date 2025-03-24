@@ -207,16 +207,15 @@ async def main():
                                 ci_variables['ci_errors'].append('ERROR: `{}`'.format(nix_path_info_process.stderr))
                                 ci_variables['late_exit_code'] = 1
 
-            if '--github-ci-shortcut' in sys.argv:
-                print('--------------------------------------------------------------------------------')
-                for ci_error_msg in ci_variables['ci_errors']:
-                    print(ci_error_msg)
-
                 else:
                     print('WARN: Nix build target `{}` probably cannot be built for some reason, please check.'.format(nix_build_target))
                     if '--github-ci-shortcut' in sys.argv:
                         ci_variables['late_exit_code'] = 1
 
+            if '--github-ci-shortcut' in sys.argv:
+                print('--------------------------------------------------------------------------------')
+                for ci_error_msg in ci_variables['ci_errors']:
+                    print(ci_error_msg)
 
             if '--no-print-missing-paths' not in sys.argv:
                 print('--------------------------------------------------------------------------------')
