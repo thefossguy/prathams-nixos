@@ -3,7 +3,17 @@
   pkgs,
   containerConfig,
   serviceConfig,
+  extraPkgsInPath ? [],
 }:
+
+let
+  extraPkgsInPath' = extraPkgsInPath ++ [
+    "${pkgs.coreutils-full}/bin"
+    "${pkgs.podman}/bin"
+    "/run/wrappers/bin" # required for a setuid wrapper of `newuidmap`
+    "$PATH"
+  ];
+in
 
 {
   Service = {
@@ -18,14 +28,7 @@
       "PODMAN_SYSTEMD_UNIT=%n"
       "XDG_RUNTIME_DIR=%t"
 
-      "PATH=${
-        builtins.concatStringsSep ":" [
-          "${pkgs.coreutils-full}/bin"
-          "${pkgs.podman}/bin"
-          "/run/wrappers/bin" # required for a setuid wrapper of `newuidmap`
-          "$PATH"
-        ]
-      }"
+      "PATH=${builtins.concatStringsSep ":" extraPkgsInPath'}"
     ];
 
     ExecStartPre = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStartPre.sh" ''
