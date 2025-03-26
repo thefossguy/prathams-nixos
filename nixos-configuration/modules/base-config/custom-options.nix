@@ -24,11 +24,7 @@ in
     finalBuildTarget = lib.mkOption {
       description = "A shorthand build target that builds the final target for NixOS system and the ISO.";
       type = lib.types.package;
-      default =
-        if (!config.customOptions.isIso) then
-          config.system.build.toplevel
-        else
-          config.system.build.isoImage;
+      default = if (!config.customOptions.isIso) then config.system.build.toplevel else config.system.build.isoImage;
     };
 
     systemType = lib.mkOption {
@@ -57,18 +53,14 @@ in
       enabled = lib.mkOption {
         description = "An internal-only option.";
         default = (
-          (config.customOptions.socSupport.armSoc != "unset")
-          || (config.customOptions.socSupport.riscvSoc != "unset")
+          (config.customOptions.socSupport.armSoc != "unset") || (config.customOptions.socSupport.riscvSoc != "unset")
         );
         type = lib.types.bool;
       };
       handleFirmwareUpdates = lib.mkOption {
         description = "If a given SoC requires NixOS to handle the firmware updates.";
         # TODO: Enable RISC-V support once nixpkgs has it too.
-        default = (
-          (config.customOptions.socSupport.armSoc != "unset")
-          && (config.customOptions.socSupport.armSoc != "m4")
-        );
+        default = ((config.customOptions.socSupport.armSoc != "unset") && (config.customOptions.socSupport.armSoc != "m4"));
         type = lib.types.bool;
       };
       disableIntelPstate = lib.mkOption {
@@ -226,8 +218,7 @@ in
           correctly).
         '';
         default = (
-          config.customOptions.displayServer.guiSession != "unset"
-          && config.customOptions.displayServer.guiSession != "bspwm"
+          config.customOptions.displayServer.guiSession != "unset" && config.customOptions.displayServer.guiSession != "bspwm"
         );
         type = lib.types.bool;
       };

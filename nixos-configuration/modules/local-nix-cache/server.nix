@@ -28,8 +28,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     recommendedProxySettings = true;
     virtualHosts = {
       "nixcache.${config.networking.hostName}.localhost" = {
-        locations."/".proxyPass =
-          "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+        locations."/".proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
       };
     };
   };

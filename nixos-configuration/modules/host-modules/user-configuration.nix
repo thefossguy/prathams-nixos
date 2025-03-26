@@ -66,8 +66,7 @@ in
     defaultUserShell = pkgs.bashInteractive;
     enforceIdUniqueness = lib.mkForce true;
     mutableUsers = lib.mkForce false; # setting this to `false` means users/groups cannot be added with `useradd`/`groupadd`
-    users."root".hashedPassword =
-      "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
+    users."root".hashedPassword = "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
 
     groups.${systemUserUsername} = {
       name = systemUserUsername;

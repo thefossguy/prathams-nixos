@@ -30,43 +30,38 @@ let
 
   rpiUpdateScript =
     lib.strings.optionalString
-      (
-        (config.customOptions.socSupport.armSoc == "rpi4")
-        || (config.customOptions.socSupport.armSoc == "rpi5")
-      )
+      ((config.customOptions.socSupport.armSoc == "rpi4") || (config.customOptions.socSupport.armSoc == "rpi5"))
       ''
         ${pkgs.rsync}/bin/rsync --quiet --no-motd --checksum --recursive --progress --stats ${selectedUbootPackage.outPath}/ /boot/
         exit 0
       '';
 
-  rk3588UpdateScript =
-    lib.strings.optionalString (config.customOptions.socSupport.armSoc == "rk3588")
-      ''
-        if [[ "$(cat /proc/sys/kernel/hostname)" != '${config.networking.hostName}' ]]; then
-            echo 'Refusing to proceed further because'
-            echo '1. The NixOS System is being built in a CI and updating U-Boot'
-            echo '   will actually cause damage.'
-            echo '2. NixOS is being installed and I cannot guarantee (without'
-            echo '   overly complicating this script) that the target machine is'
-            echo '   the same as the host machine.'
-            exit 0
-        fi
+  rk3588UpdateScript = lib.strings.optionalString (config.customOptions.socSupport.armSoc == "rk3588") ''
+    if [[ "$(cat /proc/sys/kernel/hostname)" != '${config.networking.hostName}' ]]; then
+        echo 'Refusing to proceed further because'
+        echo '1. The NixOS System is being built in a CI and updating U-Boot'
+        echo '   will actually cause damage.'
+        echo '2. NixOS is being installed and I cannot guarantee (without'
+        echo '   overly complicating this script) that the target machine is'
+        echo '   the same as the host machine.'
+        exit 0
+    fi
 
-        if [[ -c /dev/mtd0 ]]; then
-            dd ${ddFlags} of=/dev/mtd0 if=${selectedUbootPackage.outPath}/u-boot-rockchip-spi.bin
-            exit 0
-        fi
+    if [[ -c /dev/mtd0 ]]; then
+        dd ${ddFlags} of=/dev/mtd0 if=${selectedUbootPackage.outPath}/u-boot-rockchip-spi.bin
+        exit 0
+    fi
 
-        EMMC_DEVICES=( '/dev/mmcblk0' '/dev/mmcblk1' )
-        for MMC_DEV in "''${EMMC_DEVICES[@]}"; do
-            if [[ -b "''${MMC_DEV}" ]]; then
-                if fdisk -l "''${MMC_DEV}" | grep 'EFI System' | grep -q 131072; then
-                    dd ${ddFlags} bs=512 seek=64 of="''${MMC_DEV}" if=${selectedUbootPackage.outPath}/u-boot-rockchip.bin
-                    exit 0
-                fi
+    EMMC_DEVICES=( '/dev/mmcblk0' '/dev/mmcblk1' )
+    for MMC_DEV in "''${EMMC_DEVICES[@]}"; do
+        if [[ -b "''${MMC_DEV}" ]]; then
+            if fdisk -l "''${MMC_DEV}" | grep 'EFI System' | grep -q 131072; then
+                dd ${ddFlags} bs=512 seek=64 of="''${MMC_DEV}" if=${selectedUbootPackage.outPath}/u-boot-rockchip.bin
+                exit 0
             fi
-        done
-      '';
+        fi
+    done
+  '';
 in
 
 lib.mkIf config.customOptions.socSupport.handleFirmwareUpdates {

@@ -140,39 +140,35 @@ let
   };
 in
 
-lib.mkIf
-  (builtins.elem serviceConfig.unitName config.customOptions.podmanContainers.homelabServices)
-  {
-    home-manager.users."${nixosSystemConfig.coreConfig.systemUser.username}" =
-      {
-        config,
-        lib,
-        osConfig,
-        pkg,
-        pkgsChannels,
-        nixosSystemConfig,
-        ...
-      }:
-      {
-        systemd.user.services."${serviceConfig.unitName}" =
-          import ../../../../functions/make-podman-container-service.nix
-            {
-              inherit
-                lib
-                pkgs
-                serviceConfig
-                containerConfig
-                ;
-            };
+lib.mkIf (builtins.elem serviceConfig.unitName config.customOptions.podmanContainers.homelabServices) {
+  home-manager.users."${nixosSystemConfig.coreConfig.systemUser.username}" =
+    {
+      config,
+      lib,
+      osConfig,
+      pkg,
+      pkgsChannels,
+      nixosSystemConfig,
+      ...
+    }:
+    {
+      systemd.user.services."${serviceConfig.unitName}" = import ../../../../functions/make-podman-container-service.nix {
+        inherit
+          lib
+          pkgs
+          serviceConfig
+          containerConfig
+          ;
       };
-
-    networking.firewall = {
-      allowedTCPPorts = [
-        hostPortConfig.peerPortTcp
-        hostPortConfig.rpcPort
-      ];
-      allowedUDPPorts = [
-        hostPortConfig.peerPortUdp
-      ];
     };
-  }
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      hostPortConfig.peerPortTcp
+      hostPortConfig.rpcPort
+    ];
+    allowedUDPPorts = [
+      hostPortConfig.peerPortUdp
+    ];
+  };
+}

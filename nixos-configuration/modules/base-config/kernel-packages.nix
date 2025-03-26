@@ -9,9 +9,7 @@
 
 let
   smallPkgs =
-    if
-      ((lib.versions.majorMinor pkgsChannels.stable.lib.version) == (lib.versions.majorMinor lib.version))
-    then
+    if ((lib.versions.majorMinor pkgsChannels.stable.lib.version) == (lib.versions.majorMinor lib.version)) then
       pkgsChannels.stableSmall
     else
       pkgsChannels.unstableSmall;
