@@ -10,6 +10,13 @@
 
 let
   enableHomelabServices = osConfig.customOptions.podmanContainers.enableHomelabServices or false;
+  containersPolicy = {
+    default = [
+      {
+        type = "insecureAcceptAnything";
+      }
+    ];
+  };
 in
 
 {
@@ -24,13 +31,7 @@ in
   xdg.configFile = lib.attrsets.optionalAttrs enableHomelabServices {
     "containers/policy.json" = {
       enable = true;
-      text = ''
-        {
-          "default": [
-            "type": "insecureAcceptAnything"
-          ]
-        }
-      '';
+      text = builtins.toJSON containersPolicy;
     };
   };
 }
