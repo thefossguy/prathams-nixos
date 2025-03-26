@@ -10,6 +10,7 @@
 
 let
   useMinimalConfig = (osConfig.customOptions.useMinimalConfig or false);
+  enableHomelabServices = (osConfig.customOptions.podmanContainers.enableHomelabServices or false);
 
   devPackages = {
     generic = lib.optionals (!useMinimalConfig) (
@@ -73,6 +74,15 @@ let
       [
         firefox-esr
         thunderbird
+      ]
+    );
+    podman = lib.optionals enableHomelabServices (
+      with pkgs;
+      [
+        ctop
+        podman
+        podman-compose
+        podman-tui
       ]
     );
   };
@@ -197,6 +207,7 @@ in
     ++ devPackages.rust
     ++ packageSets.misc
     ++ packageSets.mozilla
+    ++ packageSets.podman
     ++ packageSets.email;
 
   programs = {

@@ -3,7 +3,7 @@
   pkgs,
   containerConfig,
   serviceConfig,
-  extraPkgsInPath ? [],
+  extraPkgsInPath ? [ ],
 }:
 
 let

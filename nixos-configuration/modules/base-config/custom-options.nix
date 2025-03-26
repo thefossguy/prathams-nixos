@@ -132,6 +132,11 @@ in
     };
 
     podmanContainers = {
+      containersDirPath = lib.mkOption {
+        description = "The basedir for all podman containers' volumes.";
+        type = lib.types.str;
+        default = "/home/${nixosSystemConfig.coreConfig.systemUser.username}/containers/volumes";
+      };
       enableHomelabServices = lib.mkOption {
         description = ''
           Enable Podman containers (as rootless systemd services) for
