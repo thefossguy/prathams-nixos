@@ -39,6 +39,16 @@ in
             ceph = null;
           };
 
+      qemu_full = final.qemu.override {
+        # Since we're building qemu anyways, let's do it only for some ISAs
+        hostCpuTargets = [
+          "aarch64-softmmu"
+          "riscv64-softmmu"
+          "i386-softmmu" # not directly consumed but present for compatibility reasons
+          "x86_64-softmmu"
+        ];
+      };
+
       brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
       chromium = prev.chromium.override {
         commandLineArgs = commonChromiumFlags;
