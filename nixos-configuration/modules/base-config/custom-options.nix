@@ -68,6 +68,15 @@ in
         default = false;
         type = lib.types.bool;
       };
+      x86Soc = lib.mkOption {
+        description = "Enable support for some x86_64 SoCs.";
+        default = "unset";
+        type = lib.types.enum [
+          "n100"
+
+          "unset"
+        ];
+      };
       armSoc = lib.mkOption {
         description = "Enable support for some Aarch64 SoCs.";
         default = "unset";
@@ -267,6 +276,13 @@ in
 
   config.assertions =
     [ ]
+
+    ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
+      {
+        assertion = pkgs.stdenv.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
+        message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
+      }
+    ]
 
     ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
       {
