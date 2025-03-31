@@ -11,7 +11,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   customOptions = {
-    displayServer.guiSession = "hyprland";
     gpuSupport = [ "nvidia" ];
     localCaching.buildsNixDerivations = true;
     useMinimalConfig = lib.mkForce false;
