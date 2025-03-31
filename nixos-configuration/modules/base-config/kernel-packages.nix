@@ -8,16 +8,11 @@
 }:
 
 let
-  smallPkgs =
-    if ((lib.versions.majorMinor pkgsChannels.stable.lib.version) == (lib.versions.majorMinor lib.version)) then
-      pkgsChannels.stableSmall
-    else
-      pkgsChannels.unstableSmall;
   colonelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
   kernelPackagesSet = {
-    mainline = smallPkgs.linux_testing;
-    stable = smallPkgs.linux_latest;
-    longterm = smallPkgs.linux_6_12;
+    mainline = pkgs.linux_testing;
+    stable = pkgs.linux_latest;
+    longterm = pkgs.linux_6_12;
   };
 
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
@@ -32,21 +27,12 @@ let
   );
 in
 {
-  # NixOS doesn't like it when zfs is from non-small channel but the kmod
-  # is from a small channel. So override the ZFS package to match the kernel.
-  # Otherwise you get this nasty error:
-  # ```
-  # Failed assertions:
-  # The kernel module and the userspace tooling versions are not matching, this is an unsupported usecase.
-  # ```
-  nixpkgs.overlays = [ (final: prev: { zfs = smallPkgs.zfs; }) ];
-
   boot = {
     initrd.supportedFilesystems = lib.mkForce supportedFileSystems;
     supportedFilesystems = lib.mkForce supportedFileSystems;
 
     kernelPackages = lib.mkForce (
-      smallPkgs.linuxPackagesFor (
+      pkgs.linuxPackagesFor (
         colonelPackages.override {
           argsOverride = {
             kernelPatches =
