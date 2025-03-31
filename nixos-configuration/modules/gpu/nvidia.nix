@@ -8,9 +8,9 @@
 }:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
-  boot.blacklistedKernelModules = [ "nouveau" ];
+  hardware.graphics.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
   services.xserver.videoDrivers =
-    if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia") then (lib.mkBefore [ "nvidia" ]) else [ "nvidia" ];
+    if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia") then (lib.mkBefore [ "nvidia" "nouveau" ]) else [ "nvidia" "nouveau" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
