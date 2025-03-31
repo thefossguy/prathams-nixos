@@ -65,7 +65,7 @@ in
       };
       disableIntelPstate = lib.mkOption {
         description = "Disable Intel pstate on some thermally sensitive systems.";
-        default = false;
+        default = (config.customOptions.socSupport.x86Soc == "n100");
         type = lib.types.bool;
       };
       x86Soc = lib.mkOption {
