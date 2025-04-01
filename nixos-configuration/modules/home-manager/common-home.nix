@@ -25,7 +25,7 @@ in
     ../services/user
   ];
 
-  home.stateVersion = lib.versions.majorMinor lib.version;
+  home.stateVersion = "25.05";
   home.username = nixosSystemConfig.coreConfig.systemUser.username;
 
   xdg.configFile = lib.attrsets.optionalAttrs enableHomelabServices {
