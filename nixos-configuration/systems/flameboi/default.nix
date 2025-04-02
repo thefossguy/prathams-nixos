@@ -11,6 +11,7 @@
   imports = [ ./hardware-configuration.nix ];
 
   customOptions = {
+    displayServer.guiSession = "cosmic";
     gpuSupport = [ "nvidia" ];
     localCaching.buildsNixDerivations = true;
     useMinimalConfig = lib.mkForce false;
