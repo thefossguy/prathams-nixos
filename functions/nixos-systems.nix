@@ -93,6 +93,7 @@ in
         primaryNetIface = "enx1002b5860d8c";
         system = linuxSystems.x86_64;
       };
+      kernelConfig.kernelVersion = kernelVersions.mainline;
     };
 
     # x86 VM (24G; 12x Zen4) guest on `flameboi`
