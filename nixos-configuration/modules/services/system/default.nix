@@ -19,6 +19,7 @@
     ./sign-verify-and-push-nix-store-paths.nix
     ./update-nixos-flake-inputs.nix
     ./update-qemu-firmware-paths.nix
+    ./verify-nix-store-paths.nix
     ./z-upstream-services.nix
     ./zpool-maintainence-monthly.nix
     ./zpool-maintainence-weekly.nix

@@ -126,6 +126,19 @@ rec {
     requiredByUnits = [ "libvirtd.socket" ];
   };
 
+  verifyNixStorePaths = mkServiceConfig {
+    unitName = "verify-nix-store-paths";
+    beforeUnits = [
+      "${updateNixosFlakeInputs.unitName}.service"
+      "${nixGc.unitName}.service"
+      "${scheduledReboots.unitName}.service"
+      "${zpoolMaintainenceWeekly.unitName}.service"
+      "${zpoolMaintainenceMonthly.unitName}.service"
+    ];
+    requiredByUnits = verifyNixStorePaths.beforeUnits;
+    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
+  };
+
   zpoolMaintainenceWeekly = mkServiceConfig {
     unitName = "zpool-maintainence-weekly";
     onCalendar = systemdTime.Weekly { weekday = "Fri"; };
