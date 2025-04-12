@@ -10,7 +10,7 @@
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.verifyNixStorePaths;
 in
-{
+lib.mkIf (!config.customOptions.localCaching.servesNixDerivations) {
   systemd = {
     timers."${serviceConfig.unitName}" = {
       enable = true;
