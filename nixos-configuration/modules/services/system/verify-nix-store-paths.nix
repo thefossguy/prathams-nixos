@@ -10,49 +10,31 @@
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.verifyNixStorePaths;
 in
-{
-  systemd = {
-    timers."${serviceConfig.unitName}" = {
-      enable = true;
-      requiredBy = [ "timers.target" ];
-      timerConfig.OnCalendar = serviceConfig.onCalendar;
-      timerConfig.Unit = "${serviceConfig.unitName}.service";
-    };
+lib.mkIf
+  ((!config.customOptions.localCaching.servesNixDerivations) || (!config.customOptions.localCaching.buildsNixDerivations))
+  {
 
-    services."${serviceConfig.unitName}" = {
-      enable = true;
-      before = serviceConfig.beforeUnits;
-      requiredBy = serviceConfig.requiredByUnits;
-
-      path = [ pkgs.nix ];
-
-      serviceConfig = {
-        User = "root";
-        Type = "oneshot";
+    systemd = {
+      timers."${serviceConfig.unitName}" = {
+        enable = true;
+        requiredBy = [ "timers.target" ];
+        timerConfig.OnCalendar = serviceConfig.onCalendar;
+        timerConfig.Unit = "${serviceConfig.unitName}.service";
       };
 
-      script = ''
-        set -x
+      services."${serviceConfig.unitName}" = {
+        enable = true;
+        before = serviceConfig.beforeUnits;
+        requiredBy = serviceConfig.requiredByUnits;
 
-        verificationCode=0
-        isBuilder=${if (config.customOptions.localCaching.buildsNixDerivations or false) then "1" else "0"}
+        path = [ pkgs.nix ];
 
-        nix store verify --all --recursive --sigs-needed 1 >/dev/null 2>&1 || verificationCode=$?
+        serviceConfig = {
+          User = "root";
+          Type = "oneshot";
+        };
 
-        if [[ "''${verificationCode}" -eq 2 ]]; then
-            if [[ "''${isBuilder}" -eq 1 ]]; then
-                # Exit cleanly only if the `nix store verify` command exits
-                # with return code 2 on a builder.
-                exit 0
-            else
-                # Exit with the original return code
-                exit "''${verificationCode}"
-            fi
-        else
-            # Exit with the original return code
-            exit "''${verificationCode}"
-        fi
-      '';
+        script = "nix store verify --all --recursive --sigs-needed 1 >/dev/null 2>&1";
+      };
     };
-  };
-}
+  }
