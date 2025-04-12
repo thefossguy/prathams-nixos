@@ -12,7 +12,7 @@
     ./bootloader-configuration.nix
     ./configuration.nix
     ./custom-options.nix
-    ./ether-dev-names-with-mac-addr.nix
+    ./dev-names-with-mac-addr.nix
     ./kernel-packages.nix
     ./misc-configuration.nix
     ./network-configuration.nix
