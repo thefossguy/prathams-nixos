@@ -5,6 +5,7 @@
 *template.nix*
 .direnv/*
 flake.lock.old
+missing-result*
 nixos-configuration/modules/wg-vpn/*.priv
 result*
 scripts/nix-ci/__pycache__/
