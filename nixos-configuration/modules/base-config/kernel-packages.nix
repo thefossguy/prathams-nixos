@@ -44,9 +44,9 @@ in
                 FRAME_POINTER = lib.kernel.yes;
                 GDB_SCRIPTS = lib.kernel.yes;
                 RANDOMIZE_BASE = lib.kernel.yes;
-              #}
-              #// lib.attrsets.optionalAttrs enable16kPagesOnAarch64 {
-              #  ARM64_16K_PAGES = lib.kernel.yes;
+                #}
+                #// lib.attrsets.optionalAttrs enable16kPagesOnAarch64 {
+                #  ARM64_16K_PAGES = lib.kernel.yes;
               };
           };
         }
