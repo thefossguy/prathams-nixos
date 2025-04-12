@@ -49,6 +49,12 @@ in
       default = ((config.isoImage.isoName or "") != "");
     };
 
+    enableWlanPersistentNames =lib.mkOption {
+      description = "Weather to enable persistent naming for wlan interfaces. Enable only when said iface has a `permaddr`.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     socSupport = {
       enabled = lib.mkOption {
         description = "An internal-only option.";
