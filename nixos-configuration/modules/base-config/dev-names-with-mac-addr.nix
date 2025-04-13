@@ -8,10 +8,10 @@
 }:
 
 {
-  boot.initrd.extraFiles."etc/systemd/network/10-use-mac-addr-in-ifnames.link".source = pkgs.etherDevNamesWithMacAddr;
+  boot.initrd.extraFiles."etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
 
   systemd.network.links = {
-    "10-use-mac-addr-in-ifnames" = {
+    "10-use-mac-addr-in-ifnames-ether" = {
       enable = true;
       matchConfig = {
         Type = "ether";
@@ -35,8 +35,8 @@
           set -x
           mkdir -p $out
           cp ${
-            config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames.link".source
-          } $out/10-use-mac-addr-in-ifnames.link
+            config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames-ether.link".source
+          } $out/10-use-mac-addr-in-ifnames-ether.link
           set +x
         '';
       };
