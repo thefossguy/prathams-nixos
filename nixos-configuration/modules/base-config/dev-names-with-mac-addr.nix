@@ -10,6 +10,7 @@
 {
   boot.initrd.extraFiles = {
     "etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
+    "etc/systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source = lib.mkIf config.customOptions.enableWlanPersistentNames pkgs.etherDevNamesWithMacAddr;
   };
 
   systemd.network.links = {
@@ -17,6 +18,18 @@
       enable = true;
       matchConfig = {
         Type = "ether";
+      };
+      linkConfig = {
+        MACAddressPolicy = "persistent";
+        NamePolicy = "mac keep kernel database onboard slot path";
+        AlternativeNamesPolicy = "database onboard slot path";
+      };
+    };
+
+    "10-use-mac-addr-in-ifnames-wlan" = lib.mkIf config.customOptions.enableWlanPersistentNames {
+      enable = true;
+      matchConfig = {
+        Type = "wlan";
       };
       linkConfig = {
         MACAddressPolicy = "persistent";
@@ -39,6 +52,21 @@
           cp ${
             config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames-ether.link".source
           } $out/10-use-mac-addr-in-ifnames-ether.link
+          set +x
+        '';
+      };
+
+      wlanDevNamesWithMacAddr = pkgs.stdenvNoCC.mkDerivation {
+        pname = "wlan-dev-names-with-mac-addr";
+        version = "v2025.04";
+
+        phases = [ "buildPhase" ];
+        buildPhase = ''
+          set -x
+          mkdir -p $out
+          cp ${
+            config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source
+          } $out/10-use-mac-addr-in-ifnames-wlan.link
           set +x
         '';
       };
