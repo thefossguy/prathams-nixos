@@ -10,7 +10,8 @@
 {
   boot.initrd.extraFiles = {
     "etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
-    "etc/systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source = lib.mkIf config.customOptions.enableWlanPersistentNames pkgs.etherDevNamesWithMacAddr;
+    "etc/systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source =
+      lib.mkIf config.customOptions.enableWlanPersistentNames pkgs.etherDevNamesWithMacAddr;
   };
 
   systemd.network.links = {
