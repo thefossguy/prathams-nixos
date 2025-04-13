@@ -8,7 +8,9 @@
 }:
 
 {
-  boot.initrd.extraFiles."etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
+  boot.initrd.extraFiles = {
+    "etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
+  };
 
   systemd.network.links = {
     "10-use-mac-addr-in-ifnames-ether" = {
