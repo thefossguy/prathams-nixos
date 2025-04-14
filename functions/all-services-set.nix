@@ -135,7 +135,15 @@ rec {
       "${zpoolMaintainenceWeekly.unitName}.service"
       "${zpoolMaintainenceMonthly.unitName}.service"
     ];
-    requiredByUnits = verifyNixStorePaths.beforeUnits;
+    requiredByUnits = [
+      # Don't be "RequiredBy" for the `update-nixos-flake-inputs` service
+      # or we will need to verify the Nix store every time either
+      # `custom-nixos-upgrade` or `continuous-build-and-push` will start.
+      "${nixGc.unitName}.service"
+      "${scheduledReboots.unitName}.service"
+      "${zpoolMaintainenceWeekly.unitName}.service"
+      "${zpoolMaintainenceMonthly.unitName}.service"
+    ];
     onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
   };
 
