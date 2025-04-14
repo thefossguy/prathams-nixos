@@ -22,7 +22,7 @@ lib.mkIf
       };
 
       # I don't require speechd, disable it.
-      services.speechd.enable = lib.mkForce false;
+      speechd.enable = lib.mkForce false;
     };
 
     environment.systemPackages = with pkgs; [
