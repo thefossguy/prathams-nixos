@@ -15,7 +15,6 @@ let
   commonChromiumFlags = lib.optionals config.customOptions.displayServer.waylandEnabled [
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
-    "--enable-features=UseOzonePlatform" # enable the Ozone Wayland thingy
   ];
 in
 {
