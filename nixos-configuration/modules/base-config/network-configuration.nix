@@ -33,7 +33,7 @@ in
     nameservers = domainNameServers;
     networkmanager.enable = true;
     nftables.enable = true;
-    tcpcrypt.enable = true;
+    tcpcrypt.enable = lib.mkForce false;
     useDHCP = lib.mkDefault true;
     wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
 
@@ -47,7 +47,4 @@ in
       useNetworkd = true;
     };
   };
-
-  users.users.tcpcryptd.group = "tcpcryptd";
-  users.groups.tcpcryptd = { };
 }
