@@ -72,7 +72,7 @@ let
     mozilla = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
       with pkgs;
       [
-        firefox-esr
+        #firefox-esr
         thunderbird
       ]
     );
