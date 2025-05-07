@@ -67,7 +67,7 @@
         "plymouth.enable=0"
         "rd.plymouth=0"
       ]
-      ++ lib.optionals pkgs.stdenv.isx86_64 [
+      ++ lib.optionals (pkgs.stdenv.isx86_64 && (!config.customOptions.isIso)) [
         "ia32_emulation=0" # Disable multilib/32-bit applications
       ]
       ++ lib.optionals (config.customOptions.x86CpuVendor == "amd") [
