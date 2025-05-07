@@ -84,6 +84,7 @@ in
       };
   };
 
+  isoImage.edition = if (config.customOptions.displayServer.guiSession == "unset") then "minimal" else config.customOptions.displayServer.guiSession;
   image.baseName = lib.mkForce "nixos-${config.isoImage.edition}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}-${config.boot.kernelPackages.kernel.version}-${nixosSystemConfig.kernelConfig.kernelVersion}";
   isoImage.squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
   #isoImage.squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.

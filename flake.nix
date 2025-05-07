@@ -289,6 +289,22 @@
             inherit system;
             kernelVersion = "longterm";
           };
+
+          mainline-cosmic = mkNixosIso {
+            inherit system;
+            kernelVersion = "mainline";
+            guiSession = "cosmic";
+          };
+          stable-cosmic = mkNixosIso {
+            inherit system;
+            kernelVersion = "stable";
+            guiSession = "cosmic";
+          };
+          longterm-cosmic = mkNixosIso {
+            inherit system;
+            kernelVersion = "longterm";
+            guiSession = "cosmic";
+          };
         }
       );
       apps = forEachSupportedUnixSystem (
