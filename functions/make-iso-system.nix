@@ -7,6 +7,7 @@
   system,
   nixBuildArgs,
   kernelVersion,
+  guiSession,
 }:
 
 let
@@ -41,7 +42,7 @@ let
     extraConfig = {
       systemType = nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = null;
-      inherit inputChannel nixBuildArgs;
+      inherit inputChannel nixBuildArgs guiSession;
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;

@@ -137,6 +137,7 @@
           system,
           kernelVersion,
           nixpkgsInputChannel ? "default",
+          guiSession ? "unset", # Value of `config.customOptions.displayServer.guiSession` NixOS option
         }:
         import ./functions/make-iso-system.nix {
           inherit
@@ -148,6 +149,7 @@
             ;
           inherit system kernelVersion;
           inherit nixpkgsInputChannel;
+          inherit guiSession;
         };
 
       mkNonNixosHomeManager =
