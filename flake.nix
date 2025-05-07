@@ -216,7 +216,7 @@
             ...
           }:
           {
-            nixosIso = pkgs.mkShellNoCC {
+            nixosInstaller = pkgs.mkShellNoCC {
               packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix { };
               shellHook = ''
                 if ! nix help 1>/dev/null 2>&1; then
