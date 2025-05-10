@@ -32,7 +32,7 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
         set -xuf -o pipefail
 
         # We do this for every ZFS pool imported in the system.
-        for importedZpoolName in $(sudo zpool list -H -o name); do
+        for importedZpoolName in $(zpool list -H -o name); do
             ZPOOL_DEVICES=( $(zpool list "''${importedZpoolName}" -v -H -P | grep '/dev/' | awk '{print $1}') )
 
             if zpool list "''${importedZpoolName}" -v -H -P -L | grep -q 'nvme'; then

@@ -28,7 +28,7 @@ lib.mkIf (nixosSystemConfig.kernelConfig.kernelVersion == "longterm") {
       script = ''
         set -xuf -o pipefail
 
-        for importedZpoolName in $(sudo zpool list -H -o name); do
+        for importedZpoolName in $(zpool list -H -o name); do
             zpool scrub -w "''${importedZpoolName}"
         done
       '';
