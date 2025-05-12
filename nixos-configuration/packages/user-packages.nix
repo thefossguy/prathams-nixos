@@ -66,7 +66,7 @@ let
         imagemagick
         inotify-tools
         rpm
-        ventoy
+        #ventoy
       ]
     );
     mozilla = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
