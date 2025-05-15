@@ -14,6 +14,7 @@ in
 {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+    (modulesPath + "/installer/netboot/netboot-minimal.nix")
     ../qemu/qemu-guest.nix
   ];
 
@@ -90,6 +91,7 @@ in
     else
       config.customOptions.displayServer.guiSession;
   image.baseName = lib.mkForce "nixos-${config.isoImage.edition}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}-${config.boot.kernelPackages.kernel.version}-${nixosSystemConfig.kernelConfig.kernelVersion}";
+  image.extension = lib.mkForce "iso";
   isoImage.squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
   #isoImage.squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
 }
