@@ -18,7 +18,7 @@ lib.mkIf
       displayManager.cosmic-greeter.enable = true;
       desktopManager.cosmic = {
         enable = true;
-        xwayland.enable = true;
+        xwayland.enable = lib.mkForce false;
       };
 
       # I don't require speechd, disable it.
