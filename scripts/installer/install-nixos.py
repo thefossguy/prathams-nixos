@@ -376,7 +376,7 @@ def mount_resolv_conf() -> None:
     return
 
 def pseudo_chroot_setup() -> None:
-    nix_eval_command = [ 'nix', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
+    nix_eval_command = [ 'nix', ] + nixExperimentalFlags + [ 'flakes', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
     nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, text=True)
     host_user_username = nix_eval_process.stdout[1:-2]
 
