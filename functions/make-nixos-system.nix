@@ -48,6 +48,7 @@ let
       ipv4PrefixLength = thisSystem.extraConfig.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
+      canAccessHomeCache = thisSystem.extraConfig.canAccessHomeCache or true;
       allServicesSet = import ./all-services-set.nix {
         systemType = nixosSystemConfig.extraConfig.systemType;
         systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;

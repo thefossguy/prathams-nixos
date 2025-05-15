@@ -42,6 +42,7 @@ let
     extraConfig = {
       systemType = nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = null;
+      canAccessMyNixCache = true; # Safe to always assume the Nix is reachable
       inherit inputChannel nixBuildArgs guiSession;
     };
     kernelConfig = {
