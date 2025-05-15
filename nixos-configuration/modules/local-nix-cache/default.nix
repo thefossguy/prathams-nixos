@@ -14,7 +14,7 @@
   ];
 
   nix.settings = {
-    extra-substituters = lib.optionals nixosSystemConfig.extraConfig.canAccessHomeCache [ "http://10.0.0.24" ];
+    extra-substituters = lib.optionals nixosSystemConfig.extraConfig.canAccessMyNixCache [ "http://10.0.0.24" ];
     extra-trusted-public-keys = [ "10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=" ];
   };
 }
