@@ -10,6 +10,7 @@
 {
   imports = [
     ../packages/system-packages.nix
+    ./autologin
     ./base-config
     ./cpu-microcode
     ./display-server
