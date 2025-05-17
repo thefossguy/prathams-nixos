@@ -9,7 +9,6 @@
 
 {
   imports = [
-    ../autologin
     ../services
     ./filesystem-configuration.nix
     ./podman.nix
