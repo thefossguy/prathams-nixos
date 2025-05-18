@@ -18,4 +18,7 @@
     virtualisation.enable = true;
     x86CpuVendor = "amd";
   };
+
+  # Enabling XWayland on a desktop that doesn't sleep is okay.
+  services.desktopManager.cosmic.xwayland.enable = lib.mkForce true;
 }
