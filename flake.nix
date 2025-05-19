@@ -307,6 +307,26 @@
           };
         }
       );
+
+      kexecTree = forEachSupportedLinuxSystem (
+        {
+          pkgs,
+          system,
+          ...
+        }:
+        {
+          default = self.kexecTree."${system}".minimal;
+          minimal = allInputChannels.default.nixpkgs.lib.nixosSystem {
+            modules = [
+              "${allInputChannels.default.nixpkgs}/nixos/modules/installer/netboot/netboot-minimal.nix"
+              ./nixos-configuration/modules/kexec-image/default.nix
+              { nixpkgs.hostPlatform.system = "${system}"; }
+            ];
+
+          };
+        }
+      );
+
       apps = forEachSupportedUnixSystem (
         {
           pkgs,
