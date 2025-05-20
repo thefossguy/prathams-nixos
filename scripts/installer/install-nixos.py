@@ -389,9 +389,7 @@ def mount_resolv_conf() -> None:
     return
 
 def pseudo_chroot_setup() -> None:
-    nix_eval_command = [ 'nix', ] + nixExperimentalFlags + [ 'flakes', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
-    debugPrint(nix_eval_command)
-    nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, text=True)
+    nix_eval_process = subprocess.run([ 'nix', ] + nixExperimentalFlags + [ 'flakes', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ], stdout=subprocess.PIPE, text=True)
     host_user_username = nix_eval_process.stdout[1:-2]
 
     # The `home-manager-$LOGNAME.service` not only reads but _executes_ the
