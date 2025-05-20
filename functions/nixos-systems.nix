@@ -71,6 +71,7 @@ in
         system = linuxSystems.x86_64;
       };
       extraConfig = {
+        useDHCP = true;
         systemType = systemTypes.laptop;
       };
     };
