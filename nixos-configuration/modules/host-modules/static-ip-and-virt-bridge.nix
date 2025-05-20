@@ -10,62 +10,49 @@
 let
   virtualBridgeConditional = config.customOptions.virtualisation.enableVirtualBridge;
   primaryNetIface = nixosSystemConfig.coreConfig.primaryNetIface;
-  staticIpConfig = {
-    # Fuck the DHCP, we ball
-    useDHCP = lib.mkForce false;
-    ipv4.addresses = [
-      {
-        address = nixosSystemConfig.coreConfig.ipv4Address;
-        prefixLength = nixosSystemConfig.extraConfig.ipv4PrefixLength;
-      }
-    ];
-  };
+  primaryNetIface' = "virbr0";
 in
 {
   # While I'd like some of this to go in the networking and virtualisation-specific
   # modules, it maybe belongs here? I don't know.
   environment.systemPackages = lib.optionals virtualBridgeConditional [ pkgs.bridge-utils ];
-  networking = {
-    defaultGateway = {
-      address = nixosSystemConfig.extraConfig.gatewayAddr;
-      interface = if virtualBridgeConditional then "virbr0" else primaryNetIface;
-    };
-
-    interfaces =
-      if virtualBridgeConditional then
-        {
-          "virbr0" = staticIpConfig;
-          "${primaryNetIface}" = {
-            useDHCP = lib.mkForce false; # slave to virbr0
-            ipv4.addresses = lib.mkForce [ ]; # empty because DHCP is disabled
-            ipv6.addresses = lib.mkForce [ ]; # empty because DHCP is disabled
-          };
-        }
-      else
-        {
-          "${primaryNetIface}" = staticIpConfig;
+  systemd.network = {
+    netdevs = {
+      "40-${primaryNetIface'}" = lib.attrsets.optionalAttrs virtualBridgeConditional {
+        netdevConfig = {
+          Name = primaryNetIface';
+          Kind = "bridge";
         };
-
-    bridges = lib.attrsets.optionalAttrs virtualBridgeConditional {
-      "virbr0" = {
-        rstp = lib.mkForce false;
-        interfaces = [ "${primaryNetIface}" ];
+        bridgeConfig = {
+          STP = lib.mkForce false;
+        };
       };
     };
-  };
-
-  systemd.network.networks = lib.attrsets.optionalAttrs virtualBridgeConditional {
-    "40-${primaryNetIface}" = {
-      matchConfig = {
-        Name = primaryNetIface;
-      };
-      linkConfig = {
-        Unmanaged = "yes";
-        ActivationPolicy = "manual";
-      };
-      networkConfig = {
-        LinkLocalAddressing = "no";
-        DHCP = "no";
+    networks = {
+      "40-${primaryNetIface'}" = {
+        matchConfig = {
+          Name = primaryNetIface';
+        };
+        linkConfig = lib.attrsets.optionalAttrs virtualBridgeConditional {
+          Unmanaged = "yes";
+          ActivationPolicy = "manual";
+        };
+        address = [ "${nixosSystemConfig.coreConfig.ipv4Address}/${nixosSystemConfig.extraConfig.ipv4PrefixLength}" ];
+        routes = [
+          {
+            Gateway = nixosSystemConfig.extraConfig.gatewayAddr;
+            # If set to true, the kernel does not have to check if the
+            # gateway is reachable directly by the current machine
+            # (i.e., attached to the local network), so that we can insert
+            # the route in the kernel table without it being complained about.
+            GatewayOnLink = (config.networking.hostName == "hans");
+          }
+        ];
+        networkConfig = {
+          LinkLocalAddressing = lib.mkIf virtualBridgeConditional "no";
+          DHCP = "no";
+          Bridge = lib.mkIf virtualBridgeConditional primaryNetIface;
+        };
       };
     };
   };
