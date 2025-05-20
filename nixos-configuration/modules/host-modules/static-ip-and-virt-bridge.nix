@@ -32,28 +32,29 @@ in
   # modules, it maybe belongs here? I don't know.
   environment.systemPackages = lib.optionals virtualBridgeConditional [ pkgs.bridge-utils ];
   systemd.network = {
-    networks = {
-      "10-${primaryNetIface}" = {
-        matchConfig = {
-          Name = primaryNetIface;
-        };
-        networkConfig = {
-          Bridge = lib.mkIf virtualBridgeConditional bridgeIface;
-          DHCP = lib.mkForce nixosSystemConfig.extraConfig.useDHCP;
-        };
-      } // lib.attrsets.optionalAttrs (!virtualBridgeConditional) staticIpConfig;
+    networks =
+      {
+        "10-${primaryNetIface}" = {
+          matchConfig = {
+            Name = primaryNetIface;
+          };
+          networkConfig = {
+            Bridge = lib.mkIf virtualBridgeConditional bridgeIface;
+            DHCP = lib.mkForce nixosSystemConfig.extraConfig.useDHCP;
+          };
+        } // lib.attrsets.optionalAttrs (!virtualBridgeConditional) staticIpConfig;
 
-      "30-${bridgeIface}" =
-        lib.attrsets.optionalAttrs virtualBridgeConditional {
+      }
+      // lib.attrsets.optionalAttrs virtualBridgeConditional {
+        "30-${bridgeIface}" = {
           matchConfig = {
             Name = bridgeIface;
           };
-        }
-        // staticIpConfig;
-    };
+        } // staticIpConfig;
+      };
 
-    netdevs = {
-      "20-${bridgeIface}" = lib.attrsets.optionalAttrs virtualBridgeConditional {
+    netdevs = lib.attrsets.optionalAttrs virtualBridgeConditional {
+      "20-${bridgeIface}" = {
         netdevConfig = {
           Name = bridgeIface;
           Kind = "bridge";
