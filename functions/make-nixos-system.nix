@@ -45,6 +45,7 @@ let
     };
     extraConfig = {
       gatewayAddr = thisSystem.extraConfig.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
+      useDHCP = thisSystem.extraConfig.useDHCP or false;
       ipv4PrefixLength = thisSystem.extraConfig.ipv4PrefixLength or nixosSystems.commonConfig.ipv4PrefixLength;
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
