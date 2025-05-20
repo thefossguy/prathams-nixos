@@ -39,7 +39,7 @@ in
         };
         networkConfig = {
           Bridge = lib.mkIf virtualBridgeConditional bridgeIface;
-          DHCP = lib.mkForce false;
+          DHCP = lib.mkForce nixosSystemConfig.extraConfig.useDHCP;
         };
       } // lib.attrsets.optionalAttrs (!virtualBridgeConditional) staticIpConfig;
 
