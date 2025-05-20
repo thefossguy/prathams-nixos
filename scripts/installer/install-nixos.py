@@ -195,7 +195,7 @@ def partition_target_disk_nozfs() -> None:
         'mkpart', 'primary', 'xfs',   '{}MiB'.format(varl_part_sizes[0]), '100%',
         'set', '1', 'esp', 'on',
     ]
-    debugPrint('{}'.format(parted_command))
+    debugPrint(parted_command)
     parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
     if parted_process.returncode != 0:
         errorPrint('The partitioning script failed with the following error:\n```\n{}\n```'.format(parted_process.stderr))
@@ -207,7 +207,7 @@ def partition_target_disk_nozfs() -> None:
     mkfs_varl_command = [ 'mkfs.xfs', '-f', '-L', 'nixvarp', varl_part_dev, '-m', 'uuid=' + varl_part_uuid ]
     mkfs_commands = [ mkfs_boot_command, mkfs_root_command, mkfs_home_command, mkfs_varl_command ]
     for mkfs_command in mkfs_commands:
-        debugPrint('{}'.format(mkfs_command))
+        debugPrint(mkfs_command)
         process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
         if process.returncode != 0:
             errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, process.stderr))
@@ -225,7 +225,7 @@ def partition_target_disk_nozfs() -> None:
     mount_varl_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', varl_part_dev, mount_path + '/var' ]
     mount_commands = [ mount_root_command, mount_boot_command, mount_home_command, mount_varl_command ]
     for mount_command in mount_commands:
-        debugPrint('{}'.format(mount_command))
+        debugPrint(mount_command)
         process = subprocess.run(mount_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL)
         if process.returncode != 0:
             errorPrint('The mount command `{}` command failed with the following error:\n```\n{}\n```'.format(mount_command, process.stderr))
@@ -252,11 +252,15 @@ def destroy_and_recreate_zpool() -> None:
         installer_variables['zpool_name'],
     ]
 
-    subprocess.run([ 'zpool', 'import', '-f', '-N', installer_variables['zpool_name']])
+    zpool_import_cmd = [ 'zpool', 'import', '-f', '-N', installer_variables['zpool_name']]
+    debugPrint(zpool_import_cmd)
+    subprocess.run(zpool_import_cmd)
     imported_zpools_command = [ 'zpool', 'list', '-H', '-o', 'name' ]
     imported_zpools_process = subprocess.run(imported_zpools_command, stdout=subprocess.PIPE, text=True)
     if installer_variables['zpool_name'] in imported_zpools_process.stdout:
-        subprocess.run(['zpool', 'destroy', '-f', installer_variables['zpool_name']], check=True)
+        zpool_destroy_cmd = ['zpool', 'destroy', '-f', installer_variables['zpool_name']]
+        debugPrint(zpool_destroy_cmd)
+        subprocess.run(zpool_destroy_cmd, check=True)
 
     if installer_variables['hostname'] == 'chaturvyas':
         zpool_create_command[zpool_create_command.index('ashift=12')] = 'ashift=13'
@@ -290,7 +294,9 @@ def destroy_and_recreate_zpool() -> None:
             errorPrint('zfs creation failed\n```\n{}\n```'.format(process.stderr))
             sys.exit(1)
 
-    subprocess.run(['zpool', 'export', installer_variables['zpool_name']], text=True, stderr=subprocess.PIPE, check=True)
+    zpool_export_cmd = ['zpool', 'export', installer_variables['zpool_name']]
+    debugPrint(zpool_export_cmd)
+    subprocess.run(zpool_export_cmd, text=True, stderr=subprocess.PIPE, check=True)
     return
 
 def partition_target_disk_zfs() -> None:
@@ -316,7 +322,7 @@ def partition_target_disk_zfs() -> None:
         sys.exit(1)
 
     mkfs_command = [ 'mkfs.fat', '-F', '32', '-n', 'nixboot', boot_part_dev, '-i', boot_part_uuid ]
-    debugPrint('{}'.format(mkfs_command))
+    debugPrint(mkfs_command)
     mkfs_process = subprocess.run(mkfs_command, stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True)
     if mkfs_process.returncode != 0:
         errorPrint('The mkfs command `{}` command failed with the following error:\n```\n{}\n```'.format(mkfs_command, mkfs_process.stderr))
@@ -324,8 +330,12 @@ def partition_target_disk_zfs() -> None:
 
     if '--destroy-zpool' in sys.argv:
         destroy_and_recreate_zpool()
-    subprocess.run(['zpool', 'import', '-f', installer_variables['zpool_name'], '-R', installer_variables['mount_path']], text=True, stderr=subprocess.PIPE, check=True)
-    subprocess.run(['mount', '-o', 'umask=077', '--mkdir', boot_part_dev, installer_variables['mount_path'] + '/boot'])
+    zpool_import_cmd = ['zpool', 'import', '-f', installer_variables['zpool_name'], '-R', installer_variables['mount_path']]
+    debugPrint(zpool_import_cmd)
+    subprocess.run(zpool_import_cmd, text=True, stderr=subprocess.PIPE, check=True)
+    mount_cmd = ['mount', '-o', 'umask=077', '--mkdir', boot_part_dev, installer_variables['mount_path'] + '/boot']
+    debugPrint(mount_cmd)
+    subprocess.run(mount_cmd)
     return
 
 def partition_target_disk() -> None:
@@ -361,6 +371,7 @@ def installer_pre_setup() -> None:
 def installer_run() -> None:
     debugPrint('Installing NixOS for system `{}`.'.format(installer_variables['hostname']))
     nixos_install_command = [ 'nice', '-n', '-20', 'nixos-install', '--max-jobs', '1', '--cores', '1', '--show-trace', '--root', installer_variables['mount_path'], '--no-root-password', '--flake', '.#' + installer_variables['hostname'] ]
+    debugPrint(nixos_install_command)
     nixos_install_process = subprocess.run(nixos_install_command, stdout=sys.stdout, stderr=sys.stderr)
     if nixos_install_process.returncode != 0:
         sys.exit(1)
@@ -369,7 +380,9 @@ def installer_run() -> None:
 
 def mount_resolv_conf() -> None:
     resolv_conf_path = '/etc/resolv.conf'
-    process = subprocess.run([ 'mount', '-o', 'bind', resolv_conf_path, installer_variables['mount_path'] + resolv_conf_path ], stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    mount_resolv_cmd = [ 'mount', '-o', 'bind', resolv_conf_path, installer_variables['mount_path'] + resolv_conf_path ]
+    debugPrint(mount_resolv_cmd)
+    process = subprocess.run(mount_resolv_cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
     if process.returncode != 0:
         errorPrint('Could not mount the `resolv.conf` file to the mount path.')
         sys.exit(1)
@@ -377,6 +390,7 @@ def mount_resolv_conf() -> None:
 
 def pseudo_chroot_setup() -> None:
     nix_eval_command = [ 'nix', ] + nixExperimentalFlags + [ 'flakes', 'eval', '.#nixosConfigurations.' + installer_variables['hostname'] + '._module.specialArgs.nixosSystemConfig.coreConfig.systemUser.username', ]
+    debugPrint(nix_eval_command)
     nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, text=True)
     host_user_username = nix_eval_process.stdout[1:-2]
 
@@ -394,6 +408,7 @@ def pseudo_chroot_setup() -> None:
         "-c",
         "su --login {} --command 'bash $HOME/chroot-user-setup.sh'".format(host_user_username)
     ]
+    debugPrint(chroot_command)
     subprocess.run(chroot_command, stdout=sys.stdout, stderr=sys.stderr)
 
     if installer_variables['zfs_in_use']:
@@ -404,6 +419,7 @@ def pseudo_chroot_setup() -> None:
             "zfs allow -u {} diff,rollback,mount,snapshot,send,hold {}".format(host_user_username, installer_variables['zpool_name'])
         ]
         debugPrint('Target system uses ZFS for rootfs. Allowing ZFS operations for `{}`.\nRunning: `{}`'.format(host_user_username, zfs_allow_command))
+        debugPrint(zfs_allow_command)
         subprocess.run(zfs_allow_command, stdout=sys.stdout, stderr=sys.stderr)
     return
 
@@ -413,9 +429,13 @@ def installer_post() -> None:
     debugPrint('Syncing disks, this may take a while or be stupid-fast.')
     for _ in range(0,4):
         subprocess.run(['sync'])
-    subprocess.run(['umount', '-vR', installer_variables['mount_path']], stdout=sys.stdout, stderr=sys.stderr)
+    umount_cmd = ['umount', '-vR', installer_variables['mount_path']]
+    debugPrint(umount_cmd)
+    subprocess.run(umount_cmd, stdout=sys.stdout, stderr=sys.stderr)
     if installer_variables['zfs_in_use']:
-        subprocess.run(['zpool', 'export', installer_variables['zpool_name']], stdout=sys.stdout, stderr=sys.stderr)
+        zpool_export_cmd = ['zpool', 'export', installer_variables['zpool_name']]
+        debugPrint(zpool_export_cmd)
+        subprocess.run(zpool_export_cmd, stdout=sys.stdout, stderr=sys.stderr)
 
     if installer_variables['system_arch'] == 'aarch64':
         debugPrint('\n\n')
