@@ -47,6 +47,7 @@ in
       bheem = "6cca5083";
       vaaman = "3c8077f9";
       vaayu = "d81cd923";
+      hans = "b531df6e";
     };
   };
 
@@ -221,6 +222,21 @@ in
         ipv4Address = "10.0.0.42";
         primaryNetIface = "end0"; # first one from the right
         system = linuxSystems.riscv64;
+      };
+    };
+
+    # Hetzner Ampere server (8GB; A76)
+    hans = {
+      coreConfig = {
+        hostname = "hans";
+        ipv4Address = "138.199.146.78";
+        primaryNetIface = "enx9600044c3a48";
+        system = linuxSystems.aarch64;
+      };
+      extraConfig = {
+        gatewayAddr = "172.31.1.1";
+        ipv4PrefixLength = 32;
+        canAccessMyNixCache = false;
       };
     };
   };
