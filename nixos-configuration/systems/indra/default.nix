@@ -21,6 +21,7 @@
     displayServer.guiSession = "cosmic";
     gpuSupport = [ "intel" ];
     virtualisation.enable = true;
+    virtualisation.enableVirtualBridge = lib.mkForce false;
     x86CpuVendor = "intel";
   };
 }
