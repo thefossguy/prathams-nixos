@@ -15,6 +15,8 @@
 
   boot.kernelParams = [ "console=tty" ];
 
+  services.nix-serve.secretKeyFile = lib.mkForce null;
+
   customOptions = {
     useMinimalConfig = lib.mkForce false;
     localCaching.servesNixDerivations = true;
