@@ -17,5 +17,6 @@
 
   customOptions = {
     useMinimalConfig = lib.mkForce false;
+    localCaching.servesNixDerivations = true;
   };
 }
