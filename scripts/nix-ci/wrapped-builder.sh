@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 # shellcheck disable=SC2207
-GIT_COMMITS=( $(git log --reverse --since='yesterday' --format='%H'  -- '*.nix' '*.patch') )
-
+GIT_COMMITS=($(git log --reverse --since='yesterday' --format='%H' -- '*.nix' '*.patch'))
 
 # This is the commit where I switched to Flakes. switch this commit because
 # the `flake.lock` will always be modified so checking out the very first

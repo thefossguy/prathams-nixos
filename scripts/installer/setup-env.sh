@@ -2,7 +2,7 @@
 set -euf -o pipefail
 set -x
 
-if ! command -v git >/dev/null 2>&1; then
+if ! command -v git > /dev/null 2>&1; then
     nix-env -iA nixos.git
 fi
 
