@@ -59,7 +59,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         popd
       '';
 
-      postStart = lib.strings.optionalString ''
+      postStart = lib.strings.optionalString (config.networking.hostName == "chaturvyas") ''
         nixResults=( $(find /etc/nixos -iname 'result*' -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
         nixHashes=( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
 
