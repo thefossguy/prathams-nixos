@@ -65,6 +65,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}" >/dev/null 2>&1 || \
              nix store repair "''${nixResults[@]}"
 
+        ${lib.strings.optionalString (config.networking.hostName == "chaturvyas") ''
+          nix copy --refresh --to 'ssh-ng://pratham@138.199.146.78?ssh-key=${config.customOptions.userHomeDir}/.ssh/ssh' $(find /etc/nixos -iname 'result*' -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath)
+        ''}
+
         for nixIndvHash in "''${nixHashes[@]}"; do
             echo "''${nixIndvHash}" | aws s3 cp - "s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/''${nixIndvHash}.narinfo"
         done
