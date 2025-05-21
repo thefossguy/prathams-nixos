@@ -219,6 +219,12 @@ def partition_target_disk_nozfs() -> None:
     else:
         rootfs_sync_or_async = "async"
 
+    # override devices to be mounted to use their UUIDs
+    boot_part_dev = '/dev/disk/by-uuid/' + boot_part_uuid
+    root_part_dev = '/dev/disk/by-uuid/' + root_part_uuid
+    home_part_dev = '/dev/disk/by-uuid/' + home_part_uuid
+    varl_part_dev = '/dev/disk/by-uuid/' + varl_part_uuid
+
     mount_root_command = [ 'mount', '-o', '{},lazytime,relatime'.format(rootfs_sync_or_async),            root_part_dev, mount_path + '/' ]
     mount_boot_command = [ 'mount', '-o', 'umask=077',               '--mkdir', boot_part_dev, mount_path + '/boot' ]
     mount_home_command = [ 'mount', '-o', 'async,lazytime,relatime', '--mkdir', home_part_dev, mount_path + '/home' ]
