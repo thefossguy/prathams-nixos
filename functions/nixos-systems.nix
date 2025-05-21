@@ -231,7 +231,7 @@ in
       coreConfig = {
         hostname = "hans";
         ipv4Address = "138.199.146.78";
-        primaryNetIface = "enx9600044c3a48";
+        primaryNetIface = "enx9600044fcb6e";
         system = linuxSystems.aarch64;
       };
       extraConfig = {
