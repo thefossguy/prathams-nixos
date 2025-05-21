@@ -32,28 +32,31 @@ nixos_systems = [
     ".#nixosConfigurations.vaayu",
 ]
 
+
 async def print_eval_val(nixosSystem, config) -> None:
     eval_string = nixosSystem + ".config." + config
-    nix_eval_cmd = [ 'nix', 'eval', eval_string ]
+    nix_eval_cmd = ["nix", "eval", eval_string]
     proc = await asyncio.get_event_loop().run_in_executor(
-        None,
-        lambda: subprocess.run(nix_eval_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+        None, lambda: subprocess.run(nix_eval_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
     )
     return [eval_string, proc.stdout.strip()]
 
+
 async def print_val(config):
-    tasks = [ print_eval_val(nixosSystem, config) for nixosSystem in nixos_systems ]
+    tasks = [print_eval_val(nixosSystem, config) for nixosSystem in nixos_systems]
     results = await asyncio.gather(*tasks)
     results.sort()
     for result in results:
         print("{}: {}".format(result[0], result[1]))
-    print('-' * 80)
+    print("-" * 80)
     return
+
 
 async def main():
     for config in sys.argv[1:]:
         await print_val(config)
     return
+
 
 if __name__ == "__main__":
     asyncio.run(main())
