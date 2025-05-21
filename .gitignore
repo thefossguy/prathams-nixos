@@ -4,6 +4,7 @@
 *.swp
 *template.nix*
 .direnv/*
+.ruff_cache
 flake.lock.old
 missing-result*
 nixos-configuration/modules/wg-vpn/*.priv
