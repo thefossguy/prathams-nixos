@@ -1,0 +1,43 @@
+diff --git a/scripts/installer/install-nixos.py b/scripts/installer/install-nixos.py
+index cb9effe..9294c42 100755
+--- a/scripts/installer/install-nixos.py
++++ b/scripts/installer/install-nixos.py
+@@ -125,7 +125,7 @@ def generate_partition_sizes() -> None:
+     boot_part_size = 1024
+ 
+     root_part_start = boot_part_start + boot_part_size
+-    root_part_size = 1024
++    root_part_size = 0
+     if target_disk_size == 64:
+         root_part_size *= 24
+     else:
+@@ -190,7 +190,6 @@ def partition_target_disk_nozfs() -> None:
+     parted_command = [ 'parted', '--script', '--fix', target_disk,
+         'mklabel', 'gpt',
+         'mkpart', 'primary', 'fat32', '{}MiB'.format(boot_part_sizes[0]), '{}MiB'.format(boot_part_sizes[1]),
+-        'mkpart', 'primary', 'xfs',   '{}MiB'.format(root_part_sizes[0]), '{}MiB'.format(root_part_sizes[1]),
+         'mkpart', 'primary', 'xfs',   '{}MiB'.format(home_part_sizes[0]), '{}MiB'.format(home_part_sizes[1]),
+         'mkpart', 'primary', 'xfs',   '{}MiB'.format(varl_part_sizes[0]), '100%',
+         'set', '1', 'esp', 'on',
+@@ -220,7 +219,7 @@ def partition_target_disk_nozfs() -> None:
+         rootfs_sync_or_async = "async"
+ 
+     # override devices to be mounted to use their UUIDs
+-    boot_part_dev = '/dev/disk/by-uuid/' + boot_part_uuid
++    boot_part_dev = '/dev/disk/by-uuid/' + boot_part_uuid[0:4] + '-' + boot_part_uuid[4:]
+     root_part_dev = '/dev/disk/by-uuid/' + root_part_uuid
+     home_part_dev = '/dev/disk/by-uuid/' + home_part_uuid
+     varl_part_dev = '/dev/disk/by-uuid/' + varl_part_uuid
+@@ -358,9 +357,9 @@ def partition_target_disk() -> None:
+     installer_variables['partition_suffix'] = partition_suffix
+ 
+     installer_variables['boot_part_dev'] = target_disk + partition_suffix + '1'
+-    installer_variables['root_part_dev'] = target_disk + partition_suffix + '2'
+-    installer_variables['home_part_dev'] = target_disk + partition_suffix + '3'
+-    installer_variables['varl_part_dev'] = target_disk + partition_suffix + '4'
++    installer_variables['root_part_dev'] = '/dev/sda'
++    installer_variables['home_part_dev'] = target_disk + partition_suffix + '2'
++    installer_variables['varl_part_dev'] = target_disk + partition_suffix + '3'
+ 
+     if installer_variables['zfs_in_use']:
+         partition_target_disk_zfs()
