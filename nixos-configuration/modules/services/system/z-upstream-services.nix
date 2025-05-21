@@ -68,6 +68,7 @@ in
       enable = true;
       ports = [ 22 ];
       openFirewall = true;
+      authorizedKeysFiles = [ "%h/.ssh/extra_authorized_keys" ];
 
       settings = {
         LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
