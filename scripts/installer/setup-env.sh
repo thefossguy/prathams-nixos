@@ -19,4 +19,4 @@ else
 fi
 popd
 
-nix --extra-experimental-features nix-command --extra-experimental-features flakes shell "${HOME}/prathams-nixos"#devShells."$(uname -m)-linux".nixosInstaller
+nix --extra-experimental-features nix-command --extra-experimental-features flakes develop "${HOME}/prathams-nixos"#devShells."$(uname -m)-linux".nixosInstaller
