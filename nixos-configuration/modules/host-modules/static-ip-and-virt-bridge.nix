@@ -31,7 +31,7 @@ in
   # While I'd like some of this to go in the networking and virtualisation-specific
   # modules, it maybe belongs here? I don't know.
   environment.systemPackages = lib.optionals virtualBridgeConditional [ pkgs.bridge-utils ];
-  systemd.network = {
+  systemd.network = lib.attrsets.optionalAttrs (!nixosSystemConfig.extraConfig.useDHCP) {
     networks =
       {
         "10-${primaryNetIface}" = {
