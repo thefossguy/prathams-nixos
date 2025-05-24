@@ -30,16 +30,18 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       fi
       mkdir -vp "''${EDKII_DIR_HOME}"
 
-      cp -v "''${EDKII_CODE_NIX}" "''${EDKII_DIR_HOME}/EDK2_CODE"
-      cp -v "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/EDK2_CODE_SECURE"
-      cp -v "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/EDK2_VARS"
+      [[ -f "''${EDKII_CODE_NIX}" ]] && cp -v "''${EDKII_CODE_NIX}" "''${EDKII_DIR_HOME}/EDK2_CODE"
+      [[ -f "''${EDKII_CODE_SEC_NIX}" ]] && cp -v "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/EDK2_CODE_SECURE"
+      [[ -f "''${EDKII_VARS_NIX}" ]] && cp -v "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/EDK2_VARS"
 
-      ln -s "''${EDKII_CODE_NIX}" "''${EDKII_DIR_HOME}/edk2_code"
-      ln -s "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/edk2_code_secure"
-      ln -s "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/edk2_vars"
+      [[ -f "''${EDKII_CODE_NIX}" ]] && ln -s "''${EDKII_CODE_NIX}" "''${EDKII_DIR_HOME}/edk2_code"
+      [[ -f "''${EDKII_CODE_SEC_NIX}" ]] && ln -s "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/edk2_code_secure"
+      [[ -f "''${EDKII_VARS_NIX}" ]] && ln -s "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/edk2_vars"
 
-      chown ${userUsername}:${userUsername} -v "''${EDKII_DIR_HOME}/EDK2_"*
-      chmod 644 -v "''${EDKII_DIR_HOME}/EDK2_"*
+      for zeFile in $(find "''${EDKII_DIR_HOME}/" ! -type d | tr '\n' ' '); do
+          chown ${userUsername}:${userUsername} -v "''${zeFile}"
+          chmod 644 -v "''${zeFile}"
+      done
     '';
   };
 
