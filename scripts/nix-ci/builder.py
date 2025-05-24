@@ -114,6 +114,9 @@ def get_supported_nixos_systems() -> None:
         "configs: builtins.mapAttrs (name: value: value.config.nixpkgs.hostPlatform.system) configs",
     ]
     nix_eval_process = subprocess.run(nix_eval_command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    if not nix_eval_process.stdout:
+        print('ERROR: Could not evaluate the nixosConfigurations')
+        cleanup(2)
 
     nixosSystems = json.loads(nix_eval_process.stdout)
     for hostname in nixosSystems:
