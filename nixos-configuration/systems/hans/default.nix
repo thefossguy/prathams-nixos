@@ -18,7 +18,8 @@
   services.nix-serve.secretKeyFile = lib.mkForce null;
 
   customOptions = {
-    useMinimalConfig = lib.mkForce false;
+    dhcpConfig = "ipv6";
     localCaching.servesNixDerivations = true;
+    useMinimalConfig = lib.mkForce false;
   };
 }

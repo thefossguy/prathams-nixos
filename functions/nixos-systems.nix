@@ -238,8 +238,7 @@ in
         gatewayAddr = "172.31.1.1";
         ipv4PrefixLength = 32;
         canAccessMyNixCache = false;
-        # I don't like messing with IPv6, set it to use using DHCP
-        useDHCP = "ipv6";
+        useDHCP = true;
       };
     };
   };

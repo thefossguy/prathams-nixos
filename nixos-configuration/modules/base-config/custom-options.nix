@@ -37,6 +37,17 @@ in
       default = "server";
     };
 
+    dhcpConfig = lib.mkOption {
+      description = "DHCP configuration.";
+      type = lib.types.enum [
+        "ipv4"
+        "ipv6"
+        "no"
+        "yes"
+      ];
+      default = if nixosSystemConfig.extraConfig.useDHCP then "yes" else "no";
+    };
+
     useMinimalConfig = lib.mkOption {
       description = "Install and configure as little stuff as possible. Defaults to `true`.";
       type = lib.types.bool;
