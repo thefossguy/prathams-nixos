@@ -7,14 +7,6 @@
   ...
 }:
 
-let
-  domainNameServers = [
-    "1.1.1.1"
-    "1.0.0.1"
-    "8.8.8.8"
-    "8.8.4.4"
-  ];
-in
 {
   systemd.network = {
     enable = true;
@@ -24,13 +16,19 @@ in
   environment.etc."resolv.conf".mode = "direct-symlink";
   services.resolved = {
     enable = true;
-    fallbackDns = domainNameServers;
+    fallbackDns = [
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
   };
 
   networking = {
     dhcpcd.persistent = true;
     enableIPv6 = false;
-    nameservers = domainNameServers;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
     networkmanager.enable = true;
     nftables.enable = true;
     tcpcrypt.enable = lib.mkForce false;
