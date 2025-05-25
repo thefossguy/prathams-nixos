@@ -13,25 +13,38 @@
 }:
 
 lib.mkIf ifaceEnabled {
-  customOptions.wireguardOptions.routes = [
-    "${pkgs.iproute2}/bin/ip route add ${wgEndpointIp}/${wgEndpiontCidr} via ${nixosSystemConfig.extraConfig.gatewayAddr} dev ${nixosSystemConfig.coreConfig.primaryNetIface}"
-  ];
-
-  networking.wireguard.interfaces = {
-    "${wgIfaceName}" = {
-      # If `networking.wireguard.useNetworkd` is enabled,
-      # the interface is **deleted** and brought up at said interval, not good.
-      dynamicEndpointRefreshSeconds = 0;
-      privateKeyFile = "${config.customOptions.wireguardOptions.wgPrivateKeyDir}/${wgIfaceName}.priv";
-      ips = [ "${wgLocalIp}/${wgEndpiontCidr}" ];
-
-      peers = [
+  systemd.network = {
+    networks."10-${wgIfaceName}" = {
+      matchConfig = {
+        Name = wgIfaceName;
+      };
+      networkConfig = {
+        Address = wgLocalIp;
+      };
+      routes = [
         {
-          publicKey = wgPublicKey;
-          endpoint = "${wgEndpointIp}:51820";
-          allowedIPs = [ "0.0.0.0/0" ];
+          Destination = "${wgEndpointIp}/${wgEndpiontCidr}";
+          Gateway = nixosSystemConfig.extraConfig.gatewayAddr;
         }
       ];
+    };
+
+    netdevs."10-${wgIfaceName}" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = wgIfaceName;
+      };
+      wireguardPeers = [
+        {
+          AllowedIPs = [ "0.0.0.0/0" ];
+          Endpoint = "${wgEndpointIp}:51820";
+          PublicKey = wgPublicKey;
+          PersistentKeepalive = 2;
+        }
+      ];
+      wireguardConfig = {
+        PrivateKeyFile = "${config.customOptions.wireguardOptions.wgPrivateKeyDir}/${wgIfaceName}.priv";
+      };
     };
   };
 }

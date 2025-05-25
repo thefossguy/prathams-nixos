@@ -14,7 +14,6 @@
     ./vpn-wg0x2.nix
   ];
 
-  networking.dhcpcd.runHook = lib.strings.concatStringsSep "\n" config.customOptions.wireguardOptions.routes;
   system.activationScripts = lib.attrsets.optionalAttrs (config.customOptions.wireguardOptions.enabledVPNs != [ ]) {
     checkWireguardPrivateKey.text = ''
       wireguardInterfaces=( ${
@@ -28,7 +27,7 @@
               _localstatus=1
           fi
 
-          chown root:root "''${privateKeyFilePath}"
+          chown systemd-network:systemd-network "''${privateKeyFilePath}"
           chmod 600 "''${privateKeyFilePath}"
       done
     '';
