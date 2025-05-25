@@ -38,7 +38,7 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       [[ -f "''${EDKII_CODE_SEC_NIX}" ]] && ln -s "''${EDKII_CODE_SEC_NIX}" "''${EDKII_DIR_HOME}/edk2_code_secure"
       [[ -f "''${EDKII_VARS_NIX}" ]] && ln -s "''${EDKII_VARS_NIX}" "''${EDKII_DIR_HOME}/edk2_vars"
 
-      for zeFile in $(find "''${EDKII_DIR_HOME}/" ! -type d | tr '\n' ' '); do
+      for zeFile in $(find "''${EDKII_DIR_HOME}/" -type f | tr '\n' ' '); do
           chown ${userUsername}:${userUsername} -v "''${zeFile}"
           chmod 644 -v "''${zeFile}"
       done
