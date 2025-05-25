@@ -32,6 +32,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         git
         gnused
         nix
+        openssh
+        openssl
         python3
       ];
 
