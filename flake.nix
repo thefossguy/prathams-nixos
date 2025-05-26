@@ -1,16 +1,16 @@
 {
   inputs = {
     # stable channel
-    nixpkgsStable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgsStable.url = "github:NixOS/nixpkgs/nixos-25.05";
     homeManagerStable = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgsStable";
     };
 
     # stable-small
-    nixpkgsStableSmall.url = "github:NixOS/nixpkgs/nixos-24.11-small";
+    nixpkgsStableSmall.url = "github:NixOS/nixpkgs/nixos-25.05-small";
     homeManagerStableSmall = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgsStableSmall";
     };
 
