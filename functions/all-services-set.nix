@@ -179,11 +179,6 @@ rec {
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 
-  getRedhatCsafVex = mkServiceConfig {
-    unitName = "get-redhat-csaf-vex";
-    onCalendar = systemdTime.Daily { hour = "05"; };
-  };
-
   manuallyAutostartLibvirtVms = mkServiceConfig {
     unitName = "manually-autostart-libvirt-vms";
     beforeUnits = [ "default.target" ];
