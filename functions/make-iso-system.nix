@@ -6,7 +6,6 @@
   fullUserSet,
   system,
   nixBuildArgs,
-  kernelVersion,
   guiSession,
 }:
 
@@ -47,7 +46,7 @@ let
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
-      inherit kernelVersion;
+      tree = "stable";
     };
   };
 in

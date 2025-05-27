@@ -135,7 +135,6 @@
       mkNixosIso =
         {
           system,
-          kernelVersion,
           nixpkgsInputChannel ? "default",
           guiSession ? "unset", # Value of `config.customOptions.displayServer.guiSession` NixOS option
         }:
@@ -147,7 +146,7 @@
             fullUserSet
             nixBuildArgs
             ;
-          inherit system kernelVersion;
+          inherit system;
           inherit nixpkgsInputChannel;
           inherit guiSession;
         };
@@ -277,32 +276,11 @@
           ...
         }:
         {
-          mainline = mkNixosIso {
+          minimal = mkNixosIso {
             inherit system;
-            kernelVersion = "mainline";
           };
-          stable = mkNixosIso {
+          cosmic = mkNixosIso {
             inherit system;
-            kernelVersion = "stable";
-          };
-          longterm = mkNixosIso {
-            inherit system;
-            kernelVersion = "longterm";
-          };
-
-          mainline-cosmic = mkNixosIso {
-            inherit system;
-            kernelVersion = "mainline";
-            guiSession = "cosmic";
-          };
-          stable-cosmic = mkNixosIso {
-            inherit system;
-            kernelVersion = "stable";
-            guiSession = "cosmic";
-          };
-          longterm-cosmic = mkNixosIso {
-            inherit system;
-            kernelVersion = "longterm";
             guiSession = "cosmic";
           };
         }

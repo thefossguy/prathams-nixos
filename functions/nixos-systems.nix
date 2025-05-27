@@ -84,7 +84,7 @@ in
         primaryNetIface = "enx9c6b002245ab";
         system = linuxSystems.x86_64;
       };
-      kernelConfig.kernelVersion = kernelVersions.longterm;
+      kernelConfig.tree = kernelVersions.longterm;
     };
 
     # Radxa X4 (12GB; N100)
@@ -95,7 +95,7 @@ in
         primaryNetIface = "enx1002b5860d8c";
         system = linuxSystems.x86_64;
       };
-      kernelConfig.kernelVersion = kernelVersions.mainline;
+      kernelConfig.tree = kernelVersions.mainline;
     };
 
     # x86 VM (24G; 12x Zen4) guest on `flameboi`
@@ -183,7 +183,7 @@ in
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588-friendlyelec-cm3588-nas.dtb";
-      kernelConfig.kernelVersion = kernelVersions.longterm;
+      kernelConfig.tree = kernelVersions.longterm;
     };
 
     # ARM64 VM (16G; 8x M4) guest on `bheem`

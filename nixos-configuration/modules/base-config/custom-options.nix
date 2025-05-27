@@ -11,6 +11,11 @@ let
   localStdenv = pkgs.stdenv // {
     isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
   };
+  kernelPackagesSet = {
+    mainline = pkgs.linux_testing;
+    stable = pkgs.linux_latest;
+    longterm = pkgs.linux_6_12;
+  };
 in
 
 {
@@ -274,6 +279,23 @@ in
       description = "Enable QEMU's foreign ISA emulation using binfmt.";
       type = lib.types.bool;
       default = config.customOptions.localCaching.servesNixDerivations;
+    };
+
+    kernelConfiguration = {
+      tree = lib.mkOption {
+        description = "The kernel tree to use.";
+        type = lib.types.enum [
+          "stable"
+          "longterm"
+          "mainline"
+        ];
+        default = nixosSystemConfig.kernelConfig.tree;
+      };
+      colonelPackages = lib.mkOption {
+        description = "The base kernel package to use from nixpkgs.";
+        type = lib.types.package;
+        default = kernelPackagesSet."${config.customOptions.kernelConfiguration.tree}";
+      };
     };
 
     kernelDevelopment = {

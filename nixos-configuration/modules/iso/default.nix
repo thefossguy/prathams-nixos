@@ -14,7 +14,6 @@ in
 {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
-    (modulesPath + "/installer/netboot/netboot-minimal.nix")
     ../qemu/qemu-guest.nix
   ];
 
@@ -27,6 +26,7 @@ in
   customOptions.autologinSettings.guiSession.enableAutologin = true;
   customOptions.displayServer.guiSession = nixosSystemConfig.extraConfig.guiSession;
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
+  system.nixos.tags = [ config.isoImage.edition ];
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${sysuser.username}".initialHashedPassword = lib.mkForce sysuser.hashedPassword;
   # Systems with memory less than 8G get an OOM kill on running `nixos-install`
@@ -85,12 +85,22 @@ in
       };
   };
 
+  specialisation = {
+    longterm.configuration = {
+      customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
+    };
+    mainline.configuration = {
+      customOptions.kernelConfiguration.tree = lib.mkForce "mainline";
+    };
+  };
+
+  isoImage.appendToMenuLabel = " Installer (${config.customOptions.kernelConfiguration.tree})";
   isoImage.edition =
     if (config.customOptions.displayServer.guiSession == "unset") then
       "minimal"
     else
       config.customOptions.displayServer.guiSession;
-  image.baseName = lib.mkForce "nixos-${config.isoImage.edition}-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}-${config.boot.kernelPackages.kernel.version}-${nixosSystemConfig.kernelConfig.kernelVersion}";
+  image.baseName = lib.mkForce "nixos-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}";
   image.extension = lib.mkForce "iso";
   isoImage.squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
   #isoImage.squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.

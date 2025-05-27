@@ -8,20 +8,14 @@
 }:
 
 let
-  colonelPackages = kernelPackagesSet."${nixosSystemConfig.kernelConfig.kernelVersion}";
-  kernelPackagesSet = {
-    mainline = pkgs.linux_testing;
-    stable = pkgs.linux_latest;
-    longterm = pkgs.linux_6_12;
-  };
-
+  colonelPackages = config.customOptions.kernelConfiguration.colonelPackages;
   supportedFileSystems = nixosSystemConfig.kernelConfig.supportedFilesystemsSansZfs // {
-    zfs = (nixosSystemConfig.kernelConfig.kernelVersion == "longterm");
+    zfs = (config.customOptions.kernelConfiguration.tree == "longterm");
   };
 
   enable16kPagesOnAarch64 = (pkgs.stdenv.isAarch64 && (!enable4kPagesOnAarch64));
   enable4kPagesOnAarch64 = (
-    (nixosSystemConfig.kernelConfig.kernelVersion == "longterm")
+    (config.customOptions.kernelConfiguration.tree == "longterm")
     || (config.customOptions.isIso)
     || (config.customOptions.socSupport.armSoc == "rpi4")
   );
