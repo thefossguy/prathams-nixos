@@ -11,7 +11,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   customOptions = {
-    gpuSupport = [ "nvidia" ];
     localCaching.buildsNixDerivations = true;
     useMinimalConfig = lib.mkForce false;
     virtualisation.enable = true;
