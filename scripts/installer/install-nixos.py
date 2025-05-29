@@ -310,7 +310,7 @@ def partition_target_disk_nozfs() -> None:
         rootfs_sync_or_async = "async"
 
     # override devices to be mounted to use their UUIDs
-    boot_part_dev = "/dev/disk/by-uuid/" + boot_part_uuid
+    boot_part_dev = '/dev/disk/by-uuid/' + boot_part_uuid[0:4] + '-' + boot_part_uuid[4:]
     root_part_dev = "/dev/disk/by-uuid/" + root_part_uuid
     home_part_dev = "/dev/disk/by-uuid/" + home_part_uuid
     varl_part_dev = "/dev/disk/by-uuid/" + varl_part_uuid
