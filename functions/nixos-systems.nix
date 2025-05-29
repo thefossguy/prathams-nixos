@@ -102,8 +102,8 @@ in
     aatman = {
       coreConfig = {
         hostname = "aatman";
-        ipv4Address = "10.0.0.144";
-        primaryNetIface = "enx525400000000";
+        ipv4Address = "10.0.0.85";
+        primaryNetIface = "enx525400000001";
         system = linuxSystems.x86_64;
       };
     };
