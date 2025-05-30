@@ -24,6 +24,19 @@ in
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
+      brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
+      chromium = prev.chromium.override {
+        commandLineArgs = commonChromiumFlags;
+        enableWideVine = false;
+      };
+      ungoogled-chromium = prev.ungoogled-chromium.override {
+        commandLineArgs = commonChromiumFlags;
+        enableWideVine = false;
+      };
+    })
+
+    /*
+    (final: prev: {
       # QEMU requires the `librados` library for Ceph support and I don't need
       # it. Plus, something is always going on in Python/Ceph space so disable
       # Ceph support outright.
@@ -47,17 +60,8 @@ in
           "x86_64-softmmu"
         ];
       };
-
-      brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
-      chromium = prev.chromium.override {
-        commandLineArgs = commonChromiumFlags;
-        enableWideVine = false;
-      };
-      ungoogled-chromium = prev.ungoogled-chromium.override {
-        commandLineArgs = commonChromiumFlags;
-        enableWideVine = false;
-      };
     })
+    */
 
     # Package overrides where no matter what, a given package is always used
     # from the stable channel, goes here.
