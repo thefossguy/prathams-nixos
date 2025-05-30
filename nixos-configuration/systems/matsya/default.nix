@@ -20,7 +20,7 @@
   customOptions = {
     enablePasswordlessSudo = true;
     gpuSupport = [ "intel" ];
-    #localCaching.buildsNixDerivations = true;
+    localCaching.buildsNixDerivations = true;
     socSupport.x86Soc = "n100";
     virtualisation.enable = true;
     x86CpuVendor = "intel";
