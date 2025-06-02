@@ -28,6 +28,8 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add flake.lock
           git commit -m 'update the flake lockfile'
+          curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
+          shasum --check flake.lock.shasum
 
       - name: Test if nixosConfigurations evaluate properly
         run: |
