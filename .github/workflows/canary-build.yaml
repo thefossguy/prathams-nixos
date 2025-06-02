@@ -22,14 +22,13 @@ jobs:
 
       - name: Update lockfile
         run: |
-          curl 'https://files.thefossguy.com/flake.lock' -o flake.lock.2
-          mv flake.lock.2 flake.lock
+          curl 'https://files.thefossguy.com/flake.lock' -o flake.lock
           git config --global user.email "githubactions@github.com"
           git config --global user.name "GitHub Actions"
           git add flake.lock
+          git status
           git commit -m 'update the flake lockfile'
-          curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
-          shasum --check flake.lock.shasum
+          curl 'https://files.thefossguy.com/flake.lock.shasum' | shasum --check
 
       - name: Test if nixosConfigurations evaluate properly
         run: |
