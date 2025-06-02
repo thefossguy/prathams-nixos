@@ -28,7 +28,9 @@ jobs:
           git add flake.lock
           git status
           git commit -m 'update the flake lockfile'
-          curl 'https://files.thefossguy.com/flake.lock.shasum' | shasum --check
+          curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
+          cat flake.lock.shasum
+          shasum --check flake.lock.shasum
 
       - name: Test if nixosConfigurations evaluate properly
         run: |
