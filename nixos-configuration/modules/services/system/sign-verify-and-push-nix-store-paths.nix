@@ -25,7 +25,6 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       requires = serviceConfig.requiredUnits;
 
       path = with pkgs; [
-        awscli2
         coreutils-full
         findutils
         gawk
@@ -35,6 +34,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         openssh
         openssl
         python3
+        rsync
       ];
 
       serviceConfig = {
@@ -72,7 +72,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
              nix store repair "''${nixResults[@]}"
 
         nix copy --refresh --to 'ssh-ng://pratham@138.199.146.78?ssh-key=${config.customOptions.userHomeDir}/.ssh/ssh' "''${nixResults[@]}"
-        aws s3 cp /etc/nixos/flake.lock s3://thefossguy-nix-cache-001-8c0d989b-44cf-4977-9446-1bf1602f0088/flake.lock
+        rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
+            -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
+            /etc/nixos/flake.lock \
+            pratham@138.199.146.78:/srv/thefossguy/ftp-files/flake.lock
       '';
     };
   };
