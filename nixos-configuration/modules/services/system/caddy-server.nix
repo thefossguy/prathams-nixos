@@ -46,7 +46,7 @@ lib.mkIf (config.networking.hostName == "hans") {
 
     serviceConfig = {
       User = "root";
-      Type = "notify";
+      Type = "exec";
       AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
     };
 
