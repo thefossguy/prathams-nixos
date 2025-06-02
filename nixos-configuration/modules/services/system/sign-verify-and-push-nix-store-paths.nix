@@ -75,11 +75,11 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}" >/dev/null 2>&1 || \
              nix store repair "''${nixResults[@]}"
 
-        nix copy --refresh --to 'ssh-ng://pratham@138.199.146.78?ssh-key=${config.customOptions.userHomeDir}/.ssh/ssh' "''${nixResults[@]}"
+        nix copy --refresh --to 'ssh-ng://pratham@hans' "''${nixResults[@]}"
         rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
             -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
             /etc/nixos/flake.lock /etc/nixos/flake.lock.shasum \
-            pratham@138.199.146.78:/srv/thefossguy/ftp-files/
+            pratham@hans:/srv/thefossguy/ftp-files/
       '';
     };
   };
