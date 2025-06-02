@@ -261,7 +261,7 @@ async def main():
                         nix_hash = eval_out_path[11:43]
                         nix_path_info_command = [
                             "curl",
-                            "http://138.199.146.78/{}.narinfo".format(nix_hash),
+                            "https://nix-cache.thefossguy.com/{}.narinfo".format(nix_hash),
                         ]
                         nix_path_info_process = subprocess.run(
                             nix_path_info_command,
