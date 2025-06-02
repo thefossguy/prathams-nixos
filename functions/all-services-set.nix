@@ -59,6 +59,16 @@ let
 in
 rec {
   # System services
+  caddyServer = mkServiceConfig {
+    unitName = "caddy-server";
+    afterUnits = [
+      "network.target"
+      "network-online.target"
+    ];
+    requiredUnits = [ "network-online.target" ];
+    wantedByUnits = [ "multi-user.target" ];
+  };
+
   continuousBuildAndPush = mkServiceConfig {
     unitName = "continuous-build-and-push";
     onCalendar = systemdTime.Hourly { };

@@ -9,6 +9,7 @@
 
 {
   imports = [
+    ./caddy-server.nix
     ./continuous-build-and-push.nix
     ./custom-nixos-upgrade.nix
     ./disable-intel-pstate.nix

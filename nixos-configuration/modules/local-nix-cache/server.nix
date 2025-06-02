@@ -7,6 +7,10 @@
   ...
 }:
 
+let
+  isCaddyServerEnabled = config.systemd.services.caddy-server.enable or false;
+in
+
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
   environment.systemPackages = with pkgs; [
     awscli2
@@ -21,10 +25,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     package = pkgs.nix-serve-ng;
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 ];
+  networking.firewall.allowedTCPPorts = lib.optionals isCaddyServerEnabled [ 80 ];
 
   services.nginx = {
-    enable = true;
+    enable = !isCaddyServerEnabled;
     recommendedProxySettings = true;
     virtualHosts = {
       "nixcache.${config.networking.hostName}.localhost" = {
