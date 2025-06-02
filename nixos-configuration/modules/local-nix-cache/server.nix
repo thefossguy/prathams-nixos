@@ -8,7 +8,7 @@
 }:
 
 let
-  isCaddyServerEnabled = config.systemd.services.caddy-server.enable or false;
+  isCaddyServerEnabled = (config.networking.hostName == "hans");
 in
 
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
