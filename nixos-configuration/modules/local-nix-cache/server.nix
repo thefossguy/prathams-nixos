@@ -7,15 +7,7 @@
   ...
 }:
 
-let
-  isCaddyServerEnabled = (config.networking.hostName == "hans");
-in
-
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
-  environment.systemPackages = with pkgs; [
-    awscli2
-  ];
-
   services.nix-serve = {
     enable = true;
     openFirewall = false; # Handled by Nginx
@@ -25,10 +17,10 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     package = pkgs.nix-serve-ng;
   };
 
-  networking.firewall.allowedTCPPorts = lib.optionals isCaddyServerEnabled [ 80 ];
+  networking.firewall.allowedTCPPorts = [ 80 ];
 
-  services.nginx = {
-    enable = !isCaddyServerEnabled;
+  services.nginx = lib.mkIf (config.networking.hostName != "hans") {
+    enable = true;
     recommendedProxySettings = true;
     virtualHosts = {
       "nixcache.${config.networking.hostName}.localhost" = {
