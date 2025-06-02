@@ -78,6 +78,50 @@ in
         PermitRootLogin = lib.mkForce "prohibit-password";
         Protocol = lib.mkForce 2;
         X11Forwarding = lib.mkForce false;
+
+        # `journalctl -b 0 -xeu sshd | grep Invalid\ user | awk '{print $8}' | sort | uniq`
+        DenyUsers = [
+          "admin"
+          "antoine"
+          "apache2"
+          "client"
+          "cron"
+          "dataiku"
+          "db_backup"
+          "dbadmin"
+          "dhcp"
+          "ernanir"
+          "fgu"
+          "ftp"
+          "galdanf"
+          "h"
+          "informes"
+          "ioana"
+          "jeff"
+          "jocelyn"
+          "kimmel"
+          "kms"
+          "michael"
+          "mlmb"
+          "myk"
+          "pokemongo"
+          "postgres"
+          "pradeep"
+          "qody"
+          "reboot"
+          "redmine"
+          "sinus"
+          "stones"
+          "susann"
+          "temp"
+          "test"
+          "upload"
+          "user"
+          "user1"
+          "vip"
+          "virginia"
+          "yamaha"
+        ];
       };
     };
   };
