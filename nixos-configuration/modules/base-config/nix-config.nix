@@ -32,6 +32,11 @@ in
         "nix-command"
         "flakes"
       ];
+      extra-trusted-public-keys = [ "10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=" ];
+      extra-substituters = lib.optionals (!(config.customOptions.localCaching.servesNixDerivations or false)) [
+        "${lib.strings.optionalString (nixosSystemConfig.extraConfig.canAccessMyNixCache) "http://10.0.0.24"}"
+        "https://nix-cache.thefossguy.com"
+      ];
       keep-going = false;
       log-lines = 9999;
       max-jobs = 1;

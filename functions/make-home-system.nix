@@ -38,6 +38,7 @@ let
     };
     extraConfig = {
       systemType = "server";
+      canAccessMyNixCache = false;
       allServicesSet = import ./all-services-set.nix {
         systemType = nixosSystemConfig.extraConfig.systemType;
         systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
