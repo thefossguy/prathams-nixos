@@ -24,6 +24,7 @@ in
     settings = {
       allowed-users = lib.mkForce trustedNixUsers;
       auto-optimise-store = true;
+      connect-timeout = 2;
       # Enabling `eval-cache` on ISOs helps a bit with dry building the NixOS
       # configuration that occurs before filesystem partitioning and formatting.
       # But disable on normal NixOS systems and home-manager. :)
