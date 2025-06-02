@@ -48,6 +48,16 @@ lib.mkIf (config.networking.hostName == "hans") {
       User = "root";
       Type = "exec";
       AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+      Restart = "on-failure";
+
+      # Limit system resources to keep an attack on the web server to
+      # cause wreckage to the rest of the system.
+      # systemd.resource-control(5)
+      CPUWeight = "10%";
+      CPUQuota = "10%";
+      IOWeight = "20%";
+      MemorySwapMax = 0;
+      MemoryMax = "256M";
     };
 
     preStart = ''
