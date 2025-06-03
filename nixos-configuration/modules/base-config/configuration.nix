@@ -36,6 +36,7 @@ in
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
+  services.dbus.implementation = "broker";
   services.lvm.enable = lib.mkOverride 60 false;
   system.stateVersion = "25.05";
 
