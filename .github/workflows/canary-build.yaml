@@ -22,13 +22,13 @@ jobs:
 
       - name: Update lockfile
         run: |
-          curl 'https://files.thefossguy.com/flake.lock' -o flake.lock
+          curl -A 'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0' 'https://files.thefossguy.com/flake.lock' -o flake.lock
           git config --global user.email "githubactions@github.com"
           git config --global user.name "GitHub Actions"
           git add flake.lock
           git status
           git commit -m 'update the flake lockfile'
-          curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
+          curl -A 'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0' 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
           cat flake.lock.shasum
           shasum --check flake.lock.shasum
 
