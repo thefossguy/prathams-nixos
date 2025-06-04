@@ -29,10 +29,14 @@
       "1.1.1.1"
       "1.0.0.1"
     ];
-    nftables.enable = true;
     tcpcrypt.enable = lib.mkForce false;
     useDHCP = lib.mkDefault true;
     wireless.enable = lib.mkForce false; # This enables `wpa_supplicant`, use `networkmanager` instead.
+
+    nftables = {
+      enable = lib.mkForce true;
+      checkRuleset = lib.mkForce true;
+    };
 
     networkmanager = {
       enable = true;
