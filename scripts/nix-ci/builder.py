@@ -206,17 +206,36 @@ def make_nix_build_command(nix_build_targets):
 
 
 async def get_outPath(nix_build_target) -> None:
-    proc = await asyncio.get_event_loop().run_in_executor(
-        None,
-        lambda: subprocess.run(
-            ["nix", "eval", nix_build_target + ".outPath"], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True
-        ),
-    )
+    outPath_get_cmd = ["nix", "eval", "--raw", nix_build_target + ".outPath"]
+
+    single_thread_eval = True
+    if os.uname().sysname.lower() == "linux":
+        with open("/proc/meminfo", "r") as meminfo_f:
+            for entry in meminfo_f:
+                if "MemTotal" in entry:
+                    fields = entry.split()
+                    mem_in_kb = int(fields[1])
+                    if (mem_in_kb / 1024 / 1024) > 8:
+                        single_thread_eval = False
+                    break
+    if "--single-thread-eval" in sys.argv:
+        single_thread_eval = True
+
+    print("AAAA: single_thread_eval: {}".format(single_thread_eval))
+    if single_thread_eval:
+        proc = subprocess.run(outPath_get_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    else:
+        proc = await asyncio.get_event_loop().run_in_executor(
+            None,
+            lambda: subprocess.run(outPath_get_cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True),
+        )
+
     # No need to error out if the stdout is empty because failure to evaluate
     # the `outPath` is more to do with fixing the build than what concerns the
     # binary cache.
-    if proc.stdout.strip() != "":
-        ci_variables["outPaths"][nix_build_target] = proc.stdout.strip().split('"')[1]
+    outPath = proc.stdout.strip()
+    if outPath != "":
+        ci_variables["outPaths"][nix_build_target] = outPath
     return
 
 
