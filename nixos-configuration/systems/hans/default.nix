@@ -9,6 +9,7 @@
 
 {
   imports = [
+    ../../modules/host-modules/firewall-rules.nix
     ../../modules/qemu/qemu-guest.nix
     ./hardware-configuration.nix
   ];
