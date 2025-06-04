@@ -71,12 +71,23 @@ in
       authorizedKeysFiles = [ "%h/.ssh/extra_authorized_keys" ];
 
       settings = {
+        AllowAgentForwarding = lib.mkForce false;
+        AllowTcpForwarding = lib.mkForce false;
+        AuthenticationMethods = lib.mkForce "publickey";
+        Banner = lib.mkForce false;
+        ChallengeResponseAuthentication = lib.mkForce false;
+        GSSAPIAuthentication = lib.mkForce false;
+        KbdInteractiveAuthentication = lib.mkForce false;
+        KerberosAuthentication = lib.mkForce false;
         LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
         MaxAuthTries = lib.mkForce 10;
         PasswordAuthentication = lib.mkForce false;
         PermitEmptyPasswords = lib.mkForce false;
         PermitRootLogin = lib.mkForce "prohibit-password";
+        PermitTunnel = lib.mkForce false;
+        PermitUserEnvironment = lib.mkForce false;
         Protocol = lib.mkForce 2;
+        PubkeyAuthentication = lib.mkForce true;
         X11Forwarding = lib.mkForce false;
 
         # `journalctl -b 0 -xeu sshd | grep Invalid\ user | awk '{print $8}' | sort | uniq`
