@@ -46,6 +46,7 @@
     firewall = {
       enable = true;
       checkReversePath = "loose";
+      logRefusedConnections = false;
     };
 
     wireguard = {
