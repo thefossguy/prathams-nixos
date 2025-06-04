@@ -15,8 +15,8 @@
   ];
 
   boot.kernelParams = [ "console=tty" ];
-
   services.nix-serve.secretKeyFile = lib.mkForce null;
+  zramSwap.enable = lib.mkForce false;
 
   customOptions = {
     dhcpConfig = "ipv6";
