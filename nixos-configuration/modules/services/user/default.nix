@@ -13,6 +13,7 @@
     ./dotfiles-pull.nix
     ./flatpak-manage.nix
     ./manually-autostart-libvirt-vms.nix
+    ./nvim-update-plugins-and-parsers.nix
     ./update-rust.nix
   ];
 }

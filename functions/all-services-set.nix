@@ -195,6 +195,11 @@ rec {
     wantedByUnits = manuallyAutostartLibvirtVms.beforeUnits;
   };
 
+  nvimUpdatePluginsAndParsers = mkServiceConfig {
+    unitName = "nvim-update-plugins-and-parsers";
+    onCalendar = systemdTime.Daily { hour = "05"; };
+  };
+
   updateRust = mkServiceConfig {
     unitName = "update-rust";
     onCalendar = systemdTime.Daily { hour = "05"; };
