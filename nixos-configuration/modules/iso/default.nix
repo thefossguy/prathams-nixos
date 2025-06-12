@@ -86,10 +86,10 @@ in
   };
 
   specialisation = {
-    longterm.configuration = {
+    longterm.configuration = { config, ... }: {
       customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
     };
-    mainline.configuration = {
+    mainline.configuration = { config, ... }: {
       customOptions.kernelConfiguration.tree = lib.mkForce "mainline";
     };
   };
