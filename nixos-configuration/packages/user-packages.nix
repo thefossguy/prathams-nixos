@@ -237,13 +237,14 @@ in
         [
           # language servers
           clang-tools # provides clangd
+          gcc
           lldb # provides lldb-vscode
           lua-language-server
           nil # language server for Nix
           nodePackages.bash-language-server
+          pyrefly
           ruff
           shellcheck
-          gcc
 
           # misc
           tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
