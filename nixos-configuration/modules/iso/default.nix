@@ -86,12 +86,16 @@ in
   };
 
   specialisation = {
-    longterm.configuration = { config, ... }: {
-      customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
-    };
-    mainline.configuration = { config, ... }: {
-      customOptions.kernelConfiguration.tree = lib.mkForce "mainline";
-    };
+    longterm.configuration =
+      { config, ... }:
+      {
+        customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
+      };
+    mainline.configuration =
+      { config, ... }:
+      {
+        customOptions.kernelConfiguration.tree = lib.mkForce "mainline";
+      };
   };
 
   isoImage.appendToMenuLabel = " Installer (${config.customOptions.kernelConfiguration.tree})";
