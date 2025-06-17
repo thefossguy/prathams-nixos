@@ -243,7 +243,6 @@ in
           nil # language server for Nix
           nodePackages.bash-language-server
           pyrefly
-          ruff
           shellcheck
 
           # misc
