@@ -7,6 +7,7 @@
 .ruff_cache
 .tmp/
 flake.lock.old
+flake.lock.shasum
 missing-result*
 nixos-configuration/modules/wg-vpn/*.priv
 result*
