@@ -24,6 +24,19 @@ in
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
+      rustup-bin = let
+        rustup = final.rustup; in pkgs.stdenv.mkDerivation {
+          inherit (rustup) pname version;
+
+          dontUnpack = true;
+          dontBuild = true;
+
+          installPhase = ''
+            mkdir -p $out/bin
+            ln -s ${rustup}/bin/rustup $out/bin/rustup
+          '';
+        };
+
       brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
       chromium = prev.chromium.override {
         commandLineArgs = commonChromiumFlags;
