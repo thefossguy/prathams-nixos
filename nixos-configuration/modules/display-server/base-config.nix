@@ -84,6 +84,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         "privacy.resistFingerprinting" = true;
         "reader.parse-on-load.enabled" = true;
         "services.sync.prefs.sync.extensions.activeThemeID" = true;
+        "sidebar.verticalTabs" = true;
         "ui.systemUsesDarkTheme" = true;
         "widget.non-native-theme.scrollbar.style" = 1;
         "widget.windows.overlay-scrollbars.enabled" = true;
