@@ -27,4 +27,11 @@ lib.mkIf
 
     environment.systemPackages = with pkgs; [
     ];
+
+    environment.cosmic.excludePackages = with pkgs; [
+      cosmic-edit
+      cosmic-player
+      cosmic-store
+      cosmic-term
+    ];
   }
