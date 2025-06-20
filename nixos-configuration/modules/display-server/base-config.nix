@@ -14,6 +14,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
   xdg.portal.enable = true;
 
   services.displayManager.hiddenUsers = [ "root" ];
+  services.orca.enable = lib.mkForce false;
   services.xserver = {
     enable = true;
     desktopManager.runXdgAutostartIfNone = true;
