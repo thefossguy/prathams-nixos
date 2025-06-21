@@ -208,14 +208,14 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         emojipick
         foliate # GNOME's book reader
         foot
-        fractal # matrix client
-        handbrake
-        mediainfo-gui
-        meld # GUI side-by-side git diff
+        #fractal # matrix client
+        #handbrake
+        #mediainfo-gui
+        #meld # GUI side-by-side git diff
         metadata-cleaner # exif removal
-        obsidian
+        #obsidian
         paper-clip # PDF editor
-        rpi-imager
+        #rpi-imager
         snapshot # camera
         ungoogled-chromium
         video-trimmer # https://gitlab.gnome.org/YaLTeR/video-trimmer
@@ -229,10 +229,10 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     )
     ++ (with pkgs.kdePackages; [
       filelight # visualize disk space
-      ghostwriter # markdown editor
-      kalk # calculator
+      #ghostwriter # markdown editor
+      #kalk # calculator
       kdeconnect-kde
-      okular # the universal document viewer (good for previews)
+      #okular # the universal document viewer (good for previews)
     ])
     ++ (with pkgsChannels.stable; [
       neovide # haz nice neovim animations
