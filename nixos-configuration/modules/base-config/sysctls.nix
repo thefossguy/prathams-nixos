@@ -50,6 +50,17 @@
     # Check every N centisecs if data needs to be committed to the disk or not.
     "vm.dirty_writeback_centisecs" = 1000;
 
+    # format for `kernel.printk`:
+    # 1. Console log-level (messages lower than X are printed)
+    # 2. Default log-level for messages without an explicit log-level specified
+    # 3. Lowest possible log-level (can't set X lower than this value)
+    # 4. Console log-level at boot-time
+    "kernel.printk" = let
+      # use `KERN_DEBUG` (7) log-level for VMs booting dev kernels
+      # use `KERN_INFO` (6) for everyone else
+      consoleLogLevel = if config.customOptions.kernelDevelopment.virt.enable then "7" else "6";
+    in "${consoleLogLevel} 4 3 7";
+
     # The Magic SysRq key is a key combo that allows users connected to the
     # system console of a Linux kernel to perform some low-level commands.
     # Disable it, since we don't need it, and is a potential security concern.
@@ -103,7 +114,6 @@
     "kernel.io_uring_disabled" = 1;
     "kernel.kexec_load_disabled" = 1;
     "kernel.kptr_restrict" = 2;
-    "kernel.printk" = "3 3 3 3";
     "kernel.randomize_va_space" = 2;
     "kernel.unprivileged_bpf_disabled" = 1;
     "kernel.yama.ptrace_scope" = 1;
