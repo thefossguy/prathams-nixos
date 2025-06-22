@@ -18,14 +18,19 @@ let
   ];
 in
 {
+  imports = [ ./tmp-fix-overlays.nix ];
+
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
       mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
       mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
 
-      rustup-bin = let
-        rustup = final.rustup; in pkgs.stdenv.mkDerivation {
+      rustup-bin =
+        let
+          rustup = final.rustup;
+        in
+        pkgs.stdenv.mkDerivation {
           inherit (rustup) pname version;
 
           dontUnpack = true;
