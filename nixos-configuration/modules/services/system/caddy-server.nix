@@ -19,7 +19,7 @@ let
     exec landrun \
         --log-level debug \
         --rox ${pkgs.caddy}/bin/caddy \
-        --rox $(nix-store --query --references ${pkgs.caddy} | grep glibc) \
+        --ldd \
         --ro ${srv_dir} \
         --bind-tcp 80,443 \
         --connect-tcp ${builtins.toString config.services.nix-serve.port}'';
