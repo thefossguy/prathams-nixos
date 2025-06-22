@@ -55,11 +55,13 @@
     # 2. Default log-level for messages without an explicit log-level specified
     # 3. Lowest possible log-level (can't set X lower than this value)
     # 4. Console log-level at boot-time
-    "kernel.printk" = let
-      # use `KERN_DEBUG` (7) log-level for VMs booting dev kernels
-      # use `KERN_INFO` (6) for everyone else
-      consoleLogLevel = if config.customOptions.kernelDevelopment.virt.enable then "7" else "6";
-    in "${consoleLogLevel} 4 3 7";
+    "kernel.printk" =
+      let
+        # use `KERN_DEBUG` (7) log-level for VMs booting dev kernels
+        # use `KERN_INFO` (6) for everyone else
+        consoleLogLevel = if config.customOptions.kernelDevelopment.virt.enable then "7" else "6";
+      in
+      "${consoleLogLevel} 4 3 7";
 
     # The Magic SysRq key is a key combo that allows users connected to the
     # system console of a Linux kernel to perform some low-level commands.
