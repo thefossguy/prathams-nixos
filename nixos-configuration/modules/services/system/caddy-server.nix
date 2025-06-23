@@ -39,6 +39,7 @@ lib.mkIf (config.networking.hostName == "hans") {
     path = with pkgs; [
       caddy
       gitMinimal
+      glibc
       gnugrep
       landrun
       nix
