@@ -31,7 +31,8 @@ in
           rustup = final.rustup;
         in
         pkgs.stdenv.mkDerivation {
-          inherit (rustup) pname version;
+          pname = "rustup-bin";
+          inherit (rustup) version;
 
           dontUnpack = true;
           dontBuild = true;
