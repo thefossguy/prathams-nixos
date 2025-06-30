@@ -120,6 +120,7 @@ in
       extraConfig = {
         gatewayAddr = "192.168.122.1";
         useDHCP = true;
+        canAccessMyNixCache = false;
       };
     };
 
