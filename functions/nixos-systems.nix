@@ -113,7 +113,7 @@ in
     jataayu = {
       coreConfig = {
         hostname = "jataayu";
-        ipv4Address = "192.168.122.45/24";
+        ipv4Address = "192.168.122.45";
         primaryNetIface = "enx525400452d89";
         system = linuxSystems.x86_64;
       };
