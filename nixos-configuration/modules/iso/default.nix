@@ -10,6 +10,7 @@
 
 let
   sysuser = nixosSystemConfig.coreConfig.systemUser;
+  sysuserGroup = config.users.users."${sysuser.username}".group;
 in
 {
   imports = [
@@ -34,56 +35,41 @@ in
   zramSwap.swapDevices = 2;
   nix.settings.cores = 1;
 
-  # I hate to have home-manager since it is not **necessary** but it is the only
-  # way that _I know_ how to create a file in $HOME in NixOS.
-  home-manager = {
-    useGlobalPkgs = true;
-    users."${sysuser.username}" =
-      {
-        config,
-        lib,
-        osConfig,
-        pkgs,
-        ...
-      }:
-      {
-        home.stateVersion = lib.versions.majorMinor lib.version;
-        home.file.".profile" = {
-          enable = true;
-          force = true;
-          executable = true;
-          text = ''
-            set -x
+  systemd.tmpfiles.rules =
+    let
+      setup_profile = "${pkgs.writeText ".profile" ''
+        set -x
 
-            if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
-                set +x
-                echo 'You do not appear to be connected to the internet.'
-                echo 'Please clone the following directories manually:'
-                echo ' 1. NixOS Configuration: https://gitlab.com/thefossguy/prathams-nixos.git'
-                echo ' 2. Dotfiles: https://gitlab.com/thefossguy/dotfiles.git'
-                exec bash
-            fi
-
-            NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
-            DOTFILES_DIR="$HOME/.dotfiles"
-
-            NIXOS_CONFIG_REPO_URL='https://gitlab.com/thefossguy/prathams-nixos.git'
-            DOTFILE_REPO_URL='https://gitlab.com/thefossguy/dotfiles.git'
-
-            git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR" || \
-                (rm -rf "$NIXOS_CONFIG_DIR" && git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR")
-
-            git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR" || \
-                (rm -rf "$DOTFILES_DIR" && git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR")
-
-            git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout -f
-            rm -rf "$HOME/.config/nvim"
+        if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
             set +x
+            echo 'You do not appear to be connected to the internet.'
+            echo 'Please clone the following directories manually:'
+            echo ' 1. NixOS Configuration: https://gitlab.com/thefossguy/prathams-nixos.git'
+            echo ' 2. Dotfiles: https://gitlab.com/thefossguy/dotfiles.git'
             exec bash
-          '';
-        };
-      };
-  };
+        fi
+
+        NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
+        DOTFILES_DIR="$HOME/.dotfiles"
+
+        NIXOS_CONFIG_REPO_URL='https://gitlab.com/thefossguy/prathams-nixos.git'
+        DOTFILE_REPO_URL='https://gitlab.com/thefossguy/dotfiles.git'
+
+        git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR" || \
+            (rm -rf "$NIXOS_CONFIG_DIR" && git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR")
+
+        git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR" || \
+            (rm -rf "$DOTFILES_DIR" && git clone --bare "$DOTFILE_REPO_URL" "$DOTFILES_DIR")
+
+        git --git-dir="$DOTFILES_DIR" --work-tree="$HOME" checkout -f
+        rm -rf "$HOME/.config/nvim"
+        set +x
+        exec bash
+      ''}";
+    in
+    [
+      "L+ ${config.customOptions.userHomeDir}/.profile 0755 ${sysuser.username} ${sysuserGroup} - ${setup_profile}"
+    ];
 
   specialisation = {
     longterm.configuration =
