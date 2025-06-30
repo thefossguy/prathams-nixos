@@ -36,6 +36,7 @@ in
       madhav = "102b6927";
       matsya = "3852eff0";
       aatman = "192bc1e8";
+      jataayu = "21e377df";
       sentinel = "041d6ae7";
       reddish = "996ccb68";
       mahadev = "c06c1a49";
@@ -105,6 +106,20 @@ in
         ipv4Address = "10.0.0.85";
         primaryNetIface = "enx525400000001";
         system = linuxSystems.x86_64;
+      };
+    };
+
+    # x86 VM (64G; 16x Coffee Lake) guest on my work server
+    jataayu = {
+      coreConfig = {
+        hostname = "jataayu";
+        ipv4Address = "192.168.122.45/24";
+        primaryNetIface = "enx525400452d89";
+        system = linuxSystems.x86_64;
+      };
+      extraConfig = {
+        gatewayAddr = "192.168.122.1";
+        useDHCP = true;
       };
     };
 
