@@ -13,6 +13,8 @@
     ../../modules/qemu/qemu-guest.nix
   ];
 
+  boot.kernelParams = [ "console=ttyS0" ];
+
   # Host has zramswap enabled, not necessary inside guest
   zramSwap.enable = lib.mkForce false;
 
