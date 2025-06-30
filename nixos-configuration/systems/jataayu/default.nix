@@ -24,6 +24,7 @@
     enablePasswordlessSudo = true;
     useMinimalConfig = lib.mkForce false;
     virtualisation.enable = true;
+    virtualisation.enableVirtualBridge = lib.mkForce false;
     x86CpuVendor = "intel";
   };
 }
