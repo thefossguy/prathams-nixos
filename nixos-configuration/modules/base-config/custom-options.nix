@@ -59,6 +59,12 @@ in
       default = config.customOptions.systemType == "server";
     };
 
+    useAlternativeSSHPort = lib.mkOption {
+      description = "Whether to use a different port (6922) instead for SSH.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     isIso = lib.mkOption {
       description = "An internal check to toggle options based on if a given NixOS system is an ISO.";
       type = lib.types.bool;
