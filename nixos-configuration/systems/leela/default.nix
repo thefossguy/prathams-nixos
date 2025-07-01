@@ -19,6 +19,7 @@
 
   customOptions = {
     dhcpConfig = "ipv6";
+    useAlternativeSSHPort = true;
     useMinimalConfig = lib.mkForce false;
   };
 }
