@@ -21,6 +21,7 @@
   customOptions = {
     dhcpConfig = "ipv6";
     localCaching.servesNixDerivations = true;
+    useAlternativeSSHPort = true;
     useMinimalConfig = lib.mkForce false;
   };
 }
