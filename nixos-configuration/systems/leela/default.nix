@@ -1,0 +1,24 @@
+{
+  config,
+  lib,
+  pkgs,
+  pkgsChannels,
+  nixosSystemConfig,
+  ...
+}:
+
+{
+  imports = [
+    ../../modules/host-modules/firewall-rules.nix
+    ../../modules/qemu/qemu-guest.nix
+    ./hardware-configuration.nix
+  ];
+
+  boot.kernelParams = [ "console=tty" ];
+  zramSwap.enable = lib.mkForce false;
+
+  customOptions = {
+    dhcpConfig = "ipv6";
+    useMinimalConfig = lib.mkForce false;
+  };
+}
