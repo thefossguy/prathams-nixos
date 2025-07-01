@@ -279,13 +279,16 @@ def partition_target_disk_nozfs() -> None:
         "esp",
         "on",
     ]
-    debugPrint(parted_command)
-    parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
-    if parted_process.returncode != 0:
-        errorPrint(
-            "The partitioning script failed with the following error:\n```\n{}\n```".format(parted_process.stderr)
-        )
-        sys.exit(1)
+    if "--skip-partitioning" in sys.argv:
+        debugPrint("Skipping partioning; not running `{}`".format(parted_command))
+    else:
+        debugPrint(parted_command)
+        parted_process = subprocess.run(parted_command, stderr=subprocess.PIPE)
+        if parted_process.returncode != 0:
+            errorPrint(
+                "The partitioning script failed with the following error:\n```\n{}\n```".format(parted_process.stderr)
+            )
+            sys.exit(1)
 
     mkfs_boot_command = ["mkfs.fat", "-F", "32", "-n", "nixboot", boot_part_dev, "-i", boot_part_uuid]
     mkfs_root_command = ["mkfs.xfs", "-f", "-L", "nixroot", root_part_dev, "-m", "uuid=" + root_part_uuid]
