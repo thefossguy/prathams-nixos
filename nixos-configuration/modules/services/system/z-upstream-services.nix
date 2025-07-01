@@ -66,7 +66,7 @@ in
 
     openssh = {
       enable = true;
-      ports = [ (if (config.networking.hostName == "hans") then 6922 else 22) ];
+      ports = [ (if config.customOptions.useAlternativeSSHPort then 6922 else 22) ];
       openFirewall = true;
       authorizedKeysFiles = [ "%h/.ssh/extra_authorized_keys" ];
 
