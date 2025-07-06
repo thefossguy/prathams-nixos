@@ -48,6 +48,7 @@ in
         commandLineArgs = commonChromiumFlags;
         enableWideVine = false;
       };
+      google-chrome = prev.google-chrome.override { commandLineArgs = commonChromiumFlags; };
       ungoogled-chromium = prev.ungoogled-chromium.override {
         commandLineArgs = commonChromiumFlags;
         enableWideVine = false;
