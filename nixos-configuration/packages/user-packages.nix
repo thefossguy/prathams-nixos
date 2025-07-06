@@ -98,6 +98,7 @@ let
   nixosPackages = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
     with pkgs;
     [
+      google-chrome
     ]
     ++ lib.optionals (osConfig.customOptions.virtualisation.enable or false) [ pykickstart ]
   );
