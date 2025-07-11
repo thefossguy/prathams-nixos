@@ -27,8 +27,9 @@ in
 
     kernelPackages = lib.mkForce (
       pkgs.linuxPackagesFor (
-        colonelPackages.override {
+        (colonelPackages.override {
           argsOverride = {
+            # Overriding the arguments passed to `buildLinux` goes here
 
             structuredExtraConfig =
               (colonelPackages.structuredExtraConfig or { })
@@ -42,8 +43,11 @@ in
                 #// lib.attrsets.optionalAttrs enable16kPagesOnAarch64 {
                 #  ARM64_16K_PAGES = lib.kernel.yes;
               };
+
           };
-        }
+        }).overrideAttrs (oldAttrs: {
+          # Overriding parts of the derivation like `postInstall` goes here
+        })
       )
     );
   };
