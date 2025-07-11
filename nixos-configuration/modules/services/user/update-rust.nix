@@ -15,6 +15,7 @@ let
   appendedPath = import ../../../../functions/append-to-path.nix {
     packages = with pkgs; [
       bash
+      coreutils-full
       git
       openssh
       openssl
