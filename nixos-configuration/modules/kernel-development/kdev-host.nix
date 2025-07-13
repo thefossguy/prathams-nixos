@@ -13,7 +13,7 @@ in
 lib.mkIf config.customOptions.kernelDevelopment.enable {
   environment = {
     variables = {
-      KMOD_BUILD_DIR = "${kernelPackage.dev}/lib/modules/${kernelPackage.modDirVersion}/build";
+      KDIR = "${kernelPackage.dev}/lib/modules/${kernelPackage.modDirVersion}/build";
     };
 
     systemPackages =
