@@ -55,7 +55,6 @@ in
       };
     })
 
-    /*
       (final: prev: {
         # QEMU requires the `librados` library for Ceph support and I don't need
         # it. Plus, something is always going on in Python/Ceph space so disable
@@ -81,7 +80,6 @@ in
           ];
         };
       })
-    */
 
     # Package overrides where no matter what, a given package is always used
     # from the stable channel, goes here.
