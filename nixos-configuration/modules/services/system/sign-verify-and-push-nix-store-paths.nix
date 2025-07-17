@@ -64,6 +64,11 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       postStart = lib.strings.optionalString (config.networking.hostName == "chaturvyas") ''
         set -xeuf -o pipefail
 
+        rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
+            -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
+            /etc/nixos/flake.lock /etc/nixos/flake.lock.shasum \
+            pratham@hans:/srv/thefossguy/ftp-files/
+
         pushd /etc/nixos
         sha512sum flake.lock > /etc/nixos/flake.lock.shasum
         popd
@@ -76,10 +81,6 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
              nix store repair "''${nixResults[@]}"
 
         nix copy --refresh --to 'ssh-ng://pratham@hans' "''${nixResults[@]}"
-        rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
-            -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
-            /etc/nixos/flake.lock /etc/nixos/flake.lock.shasum \
-            pratham@hans:/srv/thefossguy/ftp-files/
       '';
     };
   };
