@@ -73,6 +73,7 @@ rec {
     unitName = "continuous-build-and-push";
     onCalendar = systemdTime.Hourly { };
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
+    requiredUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
   };
 
   customNixosUpgrade = mkServiceConfig {
