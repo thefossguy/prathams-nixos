@@ -64,14 +64,13 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       postStart = lib.strings.optionalString (config.networking.hostName == "chaturvyas") ''
         set -xeuf -o pipefail
 
+        pushd /etc/nixos
+        sha512sum flake.lock > /etc/nixos/flake.lock.shasum
+        popd
         rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
             -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
             /etc/nixos/flake.lock /etc/nixos/flake.lock.shasum \
             pratham@hans:/srv/thefossguy/ftp-files/
-
-        pushd /etc/nixos
-        sha512sum flake.lock > /etc/nixos/flake.lock.shasum
-        popd
 
         nixResults=( $(find /etc/nixos -iname 'result*' -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
         nixHashes=( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
