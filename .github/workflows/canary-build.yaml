@@ -2,13 +2,15 @@ name: Canary Build
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 * * * *' # Hourly
+    - cron: '*/30 * * * *' # Every 30 minutes
 
 jobs:
   canary-build:
     name: Canary build
     runs-on: ubuntu-latest
     steps:
+      - run: TZ='Asia/Kolkata' date +'%Y-%m-%d-%H.%M.%S'
+
       - uses: actions/checkout@main
 
       - name: Setting up QEMU User Emulation
