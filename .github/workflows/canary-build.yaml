@@ -9,7 +9,7 @@ jobs:
     name: Canary build
     runs-on: ubuntu-latest
     steps:
-      - run: TZ='Asia/Kolkata' date +'%Y-%m-%d-%H.%M.%S'
+      - run: TZ='Asia/Kolkata' date +'%Y/%m/%d %H:%M:%S'
 
       - uses: actions/checkout@main
 
