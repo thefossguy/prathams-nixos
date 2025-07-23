@@ -3,7 +3,6 @@
     username = "pratham";
     fullname = "Pratham Patel";
     hashedPassword = "$y$j9T$dyQH1g6q6YjT.8lNruhJT.$xU2x3Phl3L6ey6tIWfmBlgHlCMrTnAxn9yD.a2/yS82";
-    enableLingering = true;
     isRealUser = true;
   };
 

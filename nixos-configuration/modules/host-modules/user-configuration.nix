@@ -81,7 +81,7 @@ in
       home = "/home/${systemUserUsername}";
       isNormalUser = true; # normal vs system is really about a "real" vs "builder" user, respectively
       isSystemUser = false;
-      linger = nixosSystemConfig.coreConfig.systemUser.enableLingering or false;
+      linger = (config.customOptions.systemType == "server");
       uid = 1000;
       useDefaultShell = true;
 
