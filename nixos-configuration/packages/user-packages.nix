@@ -13,7 +13,7 @@ let
   enableHomelabServices = (osConfig.customOptions.podmanContainers.enableHomelabServices or false);
 
   devPackages = {
-    generic = lib.optionals (!useMinimalConfig) (
+    kernel = lib.optionals (!useMinimalConfig && config.customOptions.kernelDevelopment.enable) (
       with pkgs;
       [
         b4
@@ -200,7 +200,7 @@ in
     ++ darwinPackages
     ++ commonPackagesMinimal
     ++ commonPackages
-    ++ devPackages.generic
+    ++ devPackages.kernel
     ++ devPackages.rust
     ++ packageSets.misc
     ++ packageSets.mozilla
