@@ -13,7 +13,7 @@ let
   enableHomelabServices = (osConfig.customOptions.podmanContainers.enableHomelabServices or false);
 
   devPackages = {
-    kernel = lib.optionals (!useMinimalConfig && config.customOptions.kernelDevelopment.enable) (
+    kernel = lib.optionals (!useMinimalConfig && (config.customOptions.kernelDevelopment.enable or false)) (
       with pkgs;
       [
         b4
