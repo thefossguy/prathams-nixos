@@ -136,6 +136,7 @@
         {
           system,
           nixpkgsInputChannel ? "default",
+          compressIso ? false,
           guiSession ? "unset", # Value of `config.customOptions.displayServer.guiSession` NixOS option
         }:
         import ./functions/make-iso-system.nix {
@@ -148,6 +149,7 @@
             ;
           inherit system;
           inherit nixpkgsInputChannel;
+          inherit compressIso;
           inherit guiSession;
         };
 
@@ -279,9 +281,18 @@
           minimal = mkNixosIso {
             inherit system;
           };
+          minimalCompressed = mkNixosIso {
+            inherit system;
+            compressIso = true;
+          };
           cosmic = mkNixosIso {
             inherit system;
             guiSession = "cosmic";
+          };
+          cosmicCompressed = mkNixosIso {
+            inherit system;
+            guiSession = "cosmic";
+            compressIso = true;
           };
         }
       );

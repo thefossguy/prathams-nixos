@@ -92,6 +92,6 @@ in
       config.customOptions.displayServer.guiSession;
   image.baseName = lib.mkForce "nixos-${config.system.nixos.label}-${pkgs.stdenv.hostPlatform.system}";
   image.extension = lib.mkForce "iso";
-  isoImage.squashfsCompression = "xz -Xdict-size 100%"; # Highest compression ratio.
+  isoImage.squashfsCompression = if nixosSystemConfig.extraConfig.compressIso then "xz -Xdict-size 100%" else null;
   #isoImage.squashfsCompression = "lz4 -b 32768"; # Lowest time to compress.
 }

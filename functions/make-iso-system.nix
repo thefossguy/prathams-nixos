@@ -6,6 +6,7 @@
   fullUserSet,
   system,
   nixBuildArgs,
+  compressIso,
   guiSession,
 }:
 
@@ -42,7 +43,12 @@ let
       systemType = nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = null;
       canAccessMyNixCache = true; # Safe to always assume the Nix is reachable
-      inherit inputChannel nixBuildArgs guiSession;
+      inherit
+        inputChannel
+        nixBuildArgs
+        compressIso
+        guiSession
+        ;
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
