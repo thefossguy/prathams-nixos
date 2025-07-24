@@ -55,31 +55,31 @@ in
       };
     })
 
-      (final: prev: {
-        # QEMU requires the `librados` library for Ceph support and I don't need
-        # it. Plus, something is always going on in Python/Ceph space so disable
-        # Ceph support outright.
-        qemu =
-          (prev.qemu.overrideAttrs (oldAttrs: {
-            configureFlags = (oldAttrs.configureFlags or [ ]) ++ [
-              "--disable-rbd"
-            ];
-          })).override
-            {
-              cephSupport = false;
-              ceph = null;
-            };
-
-        qemu_full = final.qemu.override {
-          # Since we're building qemu anyways, let's do it only for some ISAs
-          hostCpuTargets = [
-            "aarch64-softmmu"
-            "riscv64-softmmu"
-            "i386-softmmu" # not directly consumed but present for compatibility reasons
-            "x86_64-softmmu"
+    (final: prev: {
+      # QEMU requires the `librados` library for Ceph support and I don't need
+      # it. Plus, something is always going on in Python/Ceph space so disable
+      # Ceph support outright.
+      qemu =
+        (prev.qemu.overrideAttrs (oldAttrs: {
+          configureFlags = (oldAttrs.configureFlags or [ ]) ++ [
+            "--disable-rbd"
           ];
-        };
-      })
+        })).override
+          {
+            cephSupport = false;
+            ceph = null;
+          };
+
+      qemu_full = final.qemu.override {
+        # Since we're building qemu anyways, let's do it only for some ISAs
+        hostCpuTargets = [
+          "aarch64-softmmu"
+          "riscv64-softmmu"
+          "i386-softmmu" # not directly consumed but present for compatibility reasons
+          "x86_64-softmmu"
+        ];
+      };
+    })
 
     # Package overrides where no matter what, a given package is always used
     # from the stable channel, goes here.

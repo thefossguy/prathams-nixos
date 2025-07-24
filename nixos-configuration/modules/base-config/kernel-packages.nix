@@ -45,9 +45,10 @@ in
               };
 
           };
-        }).overrideAttrs (oldAttrs: {
-          # Overriding parts of the derivation like `postInstall` goes here
-        })
+        }).overrideAttrs
+          (oldAttrs: {
+            # Overriding parts of the derivation like `postInstall` goes here
+          })
       )
     );
   };
