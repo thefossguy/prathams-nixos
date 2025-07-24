@@ -247,6 +247,7 @@ in
 
           # misc
           tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
+          stylua
         ]
         ++ [ pkgsChannels.stable.dict ];
     };
