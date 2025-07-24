@@ -319,7 +319,7 @@
             program = "${pkgs.writeShellScript "treewide-nix-format.sh" ''
               set -euf -o pipefail
 
-              PATH=${pkgs.findutils}/bin:${pkgs.nixfmt-rfc-style}/bin:${pkgs.ruff}/bin:${pkgs.shfmt}/bin:$PATH
+              PATH=${pkgs.findutils}/bin:${pkgs.nixfmt}/bin:${pkgs.ruff}/bin:${pkgs.shfmt}/bin:$PATH
               export PATH
 
               find . -iname '*.nix' -type f -print0 | xargs --no-run-if-empty -0 nixfmt --width=120 --indent=2 --verify
