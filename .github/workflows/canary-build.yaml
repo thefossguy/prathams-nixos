@@ -2,7 +2,7 @@ name: Canary Build
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *' # Every 30 minutes
+    - cron: '30 * * * *' # Hourly
 
 jobs:
   canary-build:
