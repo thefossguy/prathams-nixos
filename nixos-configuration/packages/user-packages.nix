@@ -175,7 +175,7 @@ let
       sd
       tre-command
       unzip
-      wget2
+      #wget2
       zip
 
       # utilities specific to Nix
