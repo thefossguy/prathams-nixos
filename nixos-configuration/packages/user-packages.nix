@@ -158,7 +158,6 @@ let
       dash
       delta
       dig # provides `dig` and `nslookup`
-      dpkg
       du-dust
       dua
       fd
@@ -183,6 +182,9 @@ let
       nix-prefetch-git
       nix-prefetch-github
       nixpkgs-review
+    ]
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      dpkg
     ]
     ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) [
       ffmpeg
