@@ -27,10 +27,10 @@ lib.mkIf pkgs.stdenv.isLinux {
       Service = {
         Type = "oneshot";
         ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
-             set -xeuf -o pipefail
+          set -xeuf -o pipefail
 
-           ${config.programs.neovim.finalPackage}/bin/nvim --headless '+Lazy! sync' '+qa'
-          ${config.programs.neovim.finalPackage}/bin/nvim --headless '+TSUpdate all' '+qa'``
+          ${config.programs.neovim.finalPackage}/bin/nvim --headless '+Lazy! sync' '+qa'
+          ${config.programs.neovim.finalPackage}/bin/nvim --headless '+TSUpdate all' '+qa'
         ''}";
       };
     };
