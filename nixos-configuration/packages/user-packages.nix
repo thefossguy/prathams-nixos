@@ -250,6 +250,10 @@ in
           # misc
           tree-sitter # otherwise nvim complains that the binary 'tree-sitter' is not found
           stylua
+
+          # binaries from these packages get called from `/run/current-system/sw/bin`
+          coreutils-full # treesitter requires commands like `rm` to update any existing parsers
+          git # required by package manager (lazy)
         ]
         ++ [ pkgsChannels.stable.dict ];
     };
