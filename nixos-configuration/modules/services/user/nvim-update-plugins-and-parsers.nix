@@ -26,19 +26,12 @@ lib.mkIf pkgs.stdenv.isLinux {
     services."${serviceConfig.unitName}" = {
       Service = {
         Type = "oneshot";
-        ExecStart =
-          let
-            nvimCmds = "--headless '+Lazy! sync' '+TSUpdate all' '+qa'";
-          in
-          "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
-            set -euf -o pipefail
+        ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
+             set -xeuf -o pipefail
 
-            if [[ -x ${config.home.homeDirectory}/.nix-profile/bin/nvim ]]; then
-                ${config.home.homeDirectory}/.nix-profile/bin/nvim ${nvimCmds}
-            elif command -v nvim 1>/dev/null 2>&1; then
-                nvim ${nvimCmds}
-            fi
-          ''}";
+           ${config.programs.neovim.finalPackage}/bin/nvim --headless '+Lazy! sync' '+qa'
+          ${config.programs.neovim.finalPackage}/bin/nvim --headless '+TSUpdate all' '+qa'``
+        ''}";
       };
     };
   };
