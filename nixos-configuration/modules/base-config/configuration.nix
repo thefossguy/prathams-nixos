@@ -56,19 +56,19 @@ in
     # that we can hopefully still access it remotely.
     enableEmergencyMode = false;
 
-    # For more detail, see:
-    #   https://0pointer.de/blog/projects/watchdog.html
-    watchdog = {
-      # systemd will send a signal to the hardware watchdog at half
-      # the interval defined here, so every 300s.
-      # If the hardware watchdog does not get a signal for 600s,
-      # it will forcefully reboot the system.
-      runtimeTime = if config.customOptions.isIso then "1800s" else "600s";
-      # Forcefully reboot if the final stage of the reboot
-      # hangs without progress for more than 30s.
-      # For more info, see:
-      #   https://utcc.utoronto.ca/~cks/space/blog/linux/SystemdShutdownWatchdog
-      rebootTime = "30s";
+    settings = {
+      Manager = {
+        # systemd will send a signal to the hardware watchdog at half
+        # the interval defined here, so every 300s.
+        # If the hardware watchdog does not get a signal for 600s,
+        # it will forcefully reboot the system.
+        RuntimeWatchdogSec = if config.customOptions.isIso then "1800s" else "600s";
+        # Forcefully reboot if the final stage of the reboot
+        # hangs without progress for more than 30s.
+        # For more info, see:
+        #   https://utcc.utoronto.ca/~cks/space/blog/linux/SystemdShutdownWatchdog
+        RebootWatchdogSec = "30s";
+      };
     };
   };
 
