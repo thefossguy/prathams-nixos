@@ -19,9 +19,9 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
           VARS_ARCH='i386'
       fi
       CODE_ARCH="$(uname -m)"
-      EDKII_CODE_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${CODE_ARCH}-code.fd"
-      EDKII_CODE_SEC_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${CODE_ARCH}-secure-code.fd"
-      EDKII_VARS_NIX="${pkgs.qemu_full}/share/qemu/edk2-''${VARS_ARCH}-vars.fd"
+      EDKII_CODE_NIX="${pkgs.qemu}/share/qemu/edk2-''${CODE_ARCH}-code.fd"
+      EDKII_CODE_SEC_NIX="${pkgs.qemu}/share/qemu/edk2-''${CODE_ARCH}-secure-code.fd"
+      EDKII_VARS_NIX="${pkgs.qemu}/share/qemu/edk2-''${VARS_ARCH}-vars.fd"
 
       EDKII_DIR_HOME='${config.home.homeDirectory}/.local/share/edk2'
 

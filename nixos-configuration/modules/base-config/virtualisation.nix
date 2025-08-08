@@ -13,7 +13,7 @@ lib.mkIf config.customOptions.virtualisation.enable {
   programs.virt-manager.enable = true;
 
   environment.systemPackages = with pkgs; [
-    qemu_full
+    qemu
   ];
 
   virtualisation = {
@@ -23,7 +23,7 @@ lib.mkIf config.customOptions.virtualisation.enable {
       onShutdown = "shutdown";
 
       qemu = {
-        package = pkgs.qemu_full;
+        package = pkgs.qemu_kvm;
         swtpm.enable = true;
 
         ovmf = {
