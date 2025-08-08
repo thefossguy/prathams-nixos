@@ -1,28 +1,28 @@
 {
   inputs = {
     # stable channel
-    nixpkgsStable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgsStable.url = "https://nixos.org/channels/nixos-25.05/nixexprs.tar.xz";
     homeManagerStable = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgsStable";
     };
 
     # stable-small
-    nixpkgsStableSmall.url = "github:NixOS/nixpkgs/nixos-25.05-small";
+    nixpkgsStableSmall.url = "https://nixos.org/channels/nixos-25.05-small/nixexprs.tar.xz";
     homeManagerStableSmall = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgsStableSmall";
     };
 
     # unstable channel
-    nixpkgsUnstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgsUnstable.url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz";
     homeManagerUnstable = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgsUnstable";
     };
 
     # unstable-small
-    nixpkgsUnstableSmall.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgsUnstableSmall.url = "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz";
     homeManagerUnstableSmall = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgsUnstableSmall";
