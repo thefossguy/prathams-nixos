@@ -17,7 +17,4 @@ let
 in
 lib.mkIf config.customOptions.enableQemuBinfmt {
   boot.binfmt.emulatedSystems = emulatedSystems;
-  environment.systemPackages = with pkgs; [
-    qemu_full
-  ];
 }
