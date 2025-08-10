@@ -22,9 +22,28 @@
     ];
     plymouth.enable = lib.mkForce false;
 
-    # present in the initrd but only loaded on-demand
-    # **ONLY INCLUDE MODULES NECESSARY TO MOUNT ROT ROOT DEVICE**
-    # please do not use this for including drivers for non-storage hardware
+    # all kernel modules that are not essential for mounting the root
+    # device and root filesystem go here
+    kernelModules = [
+      "fan"
+      "kvm"
+      "thermal"
+      "watchdog"
+      "zram"
+    ]
+    ++ lib.optionals (config.customOptions.systemType != "server") [
+      "thunderbolt" # "muh security"
+    ]
+    ++ lib.optionals (config.customOptions.systemType == "laptop") [
+      "bluetooth"
+    ];
+
+    # these modules are present in the initrd.
+    # **THEY MUST BE NECESSARY TO MOUNT ROOT DEVICE (NVME) AND ROOT FILESYSTEM**
+    # since they increase the size of the initrd, making less kernels
+    # available at once, use as little as necessary
+    # other kernel modules go in the `boot.kernelModules` list directly
+    # above here
     initrd.availableKernelModules = [
       # Storage drivers
       "nvme"
