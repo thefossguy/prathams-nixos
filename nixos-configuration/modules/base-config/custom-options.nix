@@ -68,7 +68,7 @@ in
     isIso = lib.mkOption {
       description = "An internal check to toggle options based on if a given NixOS system is an ISO.";
       type = lib.types.bool;
-      default = ((config.isoImage.isoName or "") != "");
+      default = ((config.image.fileName or "") != "");
     };
 
     enableWlanPersistentNames = lib.mkOption {
