@@ -146,7 +146,7 @@ in
           let
             inputChannel = nixosSystemConfig.extraConfig.inputChannel;
             inputsToPreserve = builtins.concatStringsSep "' '" (
-              builtins.map (inputName: ''${inputChannel.inputName}:${inputName}'') (builtins.attrNames inputChannel)
+              builtins.map (inputName: ''${inputChannel.${inputName}}:${inputName}'') (builtins.attrNames inputChannel)
             );
           in
           ''
