@@ -51,6 +51,9 @@ in
       nix-tree
       nixfmt-rfc-style
       nvd # diff between NixOS generations
+
+      # misc
+      allInputChannels
     ]
     ++ lib.optionals (!useMinimalConfig) [
       # optional, misc packages

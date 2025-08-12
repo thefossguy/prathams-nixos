@@ -148,6 +148,9 @@ let
     nix-tree
     nixfmt-rfc-style
     nvd # diff between NixOS generations
+
+    # misc
+    allInputChannels
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (
     with pkgs;
