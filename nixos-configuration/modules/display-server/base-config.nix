@@ -212,7 +212,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         #handbrake
         #mediainfo-gui
         #meld # GUI side-by-side git diff
-        metadata-cleaner # exif removal
+        #metadata-cleaner # exif removal
         #obsidian
         paper-clip # PDF editor
         #rpi-imager
