@@ -172,6 +172,7 @@ let
       nload
       parallel
       picocom
+      presenterm # create minimalist presentations with markdown files
       procs
       python3
       sd
