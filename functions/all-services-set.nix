@@ -154,7 +154,7 @@ rec {
       "${zpoolMaintainenceWeekly.unitName}.service"
       "${zpoolMaintainenceMonthly.unitName}.service"
     ];
-    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
+    onCalendar = systemdTime.Daily { };
   };
 
   zpoolMaintainenceWeekly = mkServiceConfig {
