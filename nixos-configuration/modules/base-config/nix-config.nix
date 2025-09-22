@@ -21,6 +21,13 @@ in
     gc.options = "--delete-older-than 14d";
     package = pkgs.nix;
 
+    # disable all "suggested" registries
+    settings.flake-registry = lib.mkForce "";
+    # setup to pin the nixpkgs input for the nix3 commands
+    registry = lib.mkForce {
+      nixpkgs.flake = nixosSystemConfig.extraConfig.inputChannel.nixpkgs;
+    };
+
     settings = {
       allowed-users = lib.mkForce trustedNixUsers;
       auto-optimise-store = true;
