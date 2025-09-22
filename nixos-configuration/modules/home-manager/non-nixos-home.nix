@@ -22,5 +22,5 @@
     manpages.enable = lib.mkForce false; # The `--help` option works.
   };
 
-  nix.gc.dates = "Mon *-*-* 00:00:00";
+  nix.gc.dates = "weekly";
 }
