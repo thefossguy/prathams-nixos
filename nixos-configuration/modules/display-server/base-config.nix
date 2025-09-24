@@ -208,7 +208,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         emojipick
         foliate # GNOME's book reader
         foot
-        #fractal # matrix client
+        fluffychat # matrix client
         #handbrake
         #mediainfo-gui
         #meld # GUI side-by-side git diff
