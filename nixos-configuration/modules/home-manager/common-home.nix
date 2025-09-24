@@ -3,7 +3,7 @@
   lib,
   pkgs,
   osConfig ? { },
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:

@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
@@ -10,7 +10,7 @@
 {
   home-manager = {
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit pkgsChannels nixosSystemConfig; };
+    extraSpecialArgs = { inherit stablePkgs nixosSystemConfig; };
 
     users."${nixosSystemConfig.coreConfig.systemUser.username}" =
       {
@@ -18,7 +18,7 @@
         lib,
         osConfig,
         pkg,
-        pkgsChannels,
+        stablePkgs,
         nixosSystemConfig,
         ...
       }:

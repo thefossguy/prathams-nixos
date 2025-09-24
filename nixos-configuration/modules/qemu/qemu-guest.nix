@@ -3,7 +3,7 @@
   lib,
   modulesPath,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:

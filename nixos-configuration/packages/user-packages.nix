@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   osConfig ? { },
   ...
@@ -148,9 +148,6 @@ let
     nix-tree
     nixfmt-rfc-style
     nvd # diff between NixOS generations
-
-    # misc
-    allInputChannels
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (
     with pkgs;
@@ -237,7 +234,7 @@ in
 
     neovim = {
       enable = true;
-      package = pkgsChannels.unstable.neovim-unwrapped;
+      package = pkgs.neovim-unwrapped;
       extraPackages =
         with pkgs;
         [
@@ -259,7 +256,7 @@ in
           coreutils-full # treesitter requires commands like `rm` to update any existing parsers
           git # required by package manager (lazy)
         ]
-        ++ [ pkgsChannels.stable.dict ];
+        ++ [ stablePkgs.dict ];
     };
   };
 }

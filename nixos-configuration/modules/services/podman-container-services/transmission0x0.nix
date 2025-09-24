@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
@@ -147,7 +147,7 @@ lib.mkIf (builtins.elem serviceConfig.unitName config.customOptions.podmanContai
       lib,
       osConfig,
       pkg,
-      pkgsChannels,
+      stablePkgs,
       nixosSystemConfig,
       ...
     }:

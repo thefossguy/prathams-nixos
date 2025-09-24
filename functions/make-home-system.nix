@@ -1,36 +1,13 @@
 {
-  allInputChannels,
-  mkPkgs,
+  nixpkgs,
+  home-manager,
+  nixpkgs-stable,
   system,
   systemUser,
-  nixpkgsChannel ? "default",
   nixBuildArgs,
 }:
 let
-  inputChannel = allInputChannels."${nixpkgsChannel}";
-  pkgsChannels = {
-    pkgs = mkPkgs {
-      inherit system;
-      passedNixpkgs = inputChannel.nixpkgs;
-    };
-    stable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stable.nixpkgs;
-    };
-    unstable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstable.nixpkgs;
-    };
-    stableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
-    };
-    unstableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
-    };
-  };
-
+  stablePkgs = nixpkgs-stable.legacyPackages.${system};
   nixosSystemConfig = {
     coreConfig = {
       inherit system systemUser;
@@ -43,13 +20,13 @@ let
         systemType = nixosSystemConfig.extraConfig.systemType;
         systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
       };
-      inherit inputChannel nixBuildArgs;
+      inherit nixpkgs nixBuildArgs;
     };
   };
 in
-nixosSystemConfig.extraConfig.inputChannel.homeManager.lib.homeManagerConfiguration {
-  pkgs = pkgsChannels.pkgs;
+home-manager.lib.homeManagerConfiguration {
+  pkgs = nixpkgs.legacyPackages.${system};
   # nix eval .#homeConfigurations."${nixosSystemConfig.coreConfig.system}"."${nixosSystemConfig.coreConfig.systemUser.username}".options._module.specialArgs.value.nixosSystemConfig
-  extraSpecialArgs = { inherit pkgsChannels nixosSystemConfig; };
+  extraSpecialArgs = { inherit stablePkgs nixosSystemConfig; };
   modules = [ ../nixos-configuration/modules/home-manager/non-nixos-home.nix ];
 }

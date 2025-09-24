@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
@@ -234,7 +234,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
       kdeconnect-kde
       #okular # the universal document viewer (good for previews)
     ])
-    ++ (with pkgsChannels.stable; [
+    ++ (with stablePkgs; [
       neovide # haz nice neovim animations
     ]);
 

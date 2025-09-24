@@ -3,7 +3,7 @@
   lib,
   modulesPath,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
@@ -26,7 +26,7 @@ in
   customOptions.autologinSettings.getty.enableAutologin = true;
   customOptions.autologinSettings.guiSession.enableAutologin = true;
   customOptions.displayServer.guiSession = nixosSystemConfig.extraConfig.guiSession;
-  environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs pkgsChannels; };
+  environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs stablePkgs; };
   system.nixos.tags = [ config.isoImage.edition ];
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${sysuser.username}".initialHashedPassword = lib.mkForce sysuser.hashedPassword;

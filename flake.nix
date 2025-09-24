@@ -1,98 +1,30 @@
 {
   inputs = {
-    # stable channel
-    nixpkgsStable.url = "https://nixos.org/channels/nixos-25.05/nixexprs.tar.xz";
-    homeManagerStable = {
-      url = "https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgsStable";
-    };
-
-    # stable-small
-    nixpkgsStableSmall.url = "https://nixos.org/channels/nixos-25.05-small/nixexprs.tar.xz";
-    homeManagerStableSmall = {
-      url = "https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgsStableSmall";
-    };
-
-    # unstable channel
-    nixpkgsUnstable.url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz";
-    homeManagerUnstable = {
+    nixpkgs.url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz";
+    home-manager = {
       url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgsUnstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # unstable-small
-    nixpkgsUnstableSmall.url = "https://nixos.org/channels/nixos-unstable-small/nixexprs.tar.xz";
-    homeManagerUnstableSmall = {
-      url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgsUnstableSmall";
-    };
+    nixpkgs-stable.url = "https://nixos.org/channels/nixos-25.05/nixexprs.tar.xz";
   };
 
   outputs =
     {
-      nixpkgsStable,
-      homeManagerStable,
-      nixpkgsUnstable,
-      homeManagerUnstable,
-      nixpkgsStableSmall,
-      homeManagerStableSmall,
-      nixpkgsUnstableSmall,
-      homeManagerUnstableSmall,
+      nixpkgs,
+      home-manager,
+      nixpkgs-stable,
       self,
       ...
     }:
     let
-      libGenAttrs = allInputChannels.default.nixpkgs.lib.genAttrs;
-      libFilterAttrs = allInputChannels.default.nixpkgs.lib.filterAttrs;
-      allInputChannels = {
-        default = allInputChannels.unstable;
-        stable = {
-          nixpkgs = nixpkgsStable;
-          homeManager = homeManagerStable;
-        };
-        unstable = {
-          nixpkgs = nixpkgsUnstable;
-          homeManager = homeManagerUnstable;
-        };
-        stableSmall = {
-          nixpkgs = nixpkgsStableSmall;
-          homeManager = homeManagerStableSmall;
-        };
-        unstableSmall = {
-          nixpkgs = nixpkgsUnstableSmall;
-          homeManager = homeManagerUnstableSmall;
-        };
-      };
-
-      mkPkgs = { system, passedNixpkgs }: import passedNixpkgs { inherit system; };
-
       mkForEachSupportedSystem =
         supportedSystems: f:
-        libGenAttrs supportedSystems (
+        nixpkgs.lib.genAttrs supportedSystems (
           system:
           f {
             inherit system;
-            pkgs = mkPkgs {
-              inherit system;
-              passedNixpkgs = allInputChannels.default.nixpkgs;
-            };
-            pkgsStable = mkPkgs {
-              inherit system;
-              passedNixpkgs = allInputChannels.stable.nixpkgs;
-            };
-            pkgsUnstable = mkPkgs {
-              inherit system;
-              passedNixpkgs = allInputChannels.unstable.nixpkgs;
-            };
-            pkgsStableSmall = mkPkgs {
-              inherit system;
-              passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
-            };
-            pkgsUnstableSmall = mkPkgs {
-              inherit system;
-              passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
-            };
+            pkgs = nixpkgs.legacyPackages.${system};
           }
         );
 
@@ -123,8 +55,9 @@
         hostname:
         import ./functions/make-nixos-system.nix {
           inherit
-            allInputChannels
-            mkPkgs
+            nixpkgs
+            home-manager
+            nixpkgs-stable
             linuxSystems
             fullUserSet
             hostname
@@ -141,14 +74,13 @@
         }:
         import ./functions/make-iso-system.nix {
           inherit
-            allInputChannels
-            mkPkgs
+            nixpkgs
+            nixpkgs-stable
             linuxSystems
             fullUserSet
             nixBuildArgs
             ;
           inherit system;
-          inherit nixpkgsInputChannel;
           inherit compressIso;
           inherit guiSession;
         };
@@ -157,14 +89,13 @@
         {
           system,
           userSet,
-          nixpkgsChannel ? "default",
         }:
         import ./functions/make-home-system.nix {
           inherit
-            allInputChannels
-            mkPkgs
+            nixpkgs
+            home-manager
+            nixpkgs-stable
             system
-            nixpkgsChannel
             nixBuildArgs
             ;
           systemUser = userSet;
@@ -186,7 +117,7 @@
         # `userName` is the literal username that gets converted to a String as `${fullUserSet}.${userName}.hashedPassword`
         # `userSet` is the single-user subset, like `${userSubset}.hashedPassword`
         let
-          realUserSet = (libFilterAttrs (userName: userSet: userSet.isRealUser) fullUserSet);
+          realUserSet = (nixpkgs.lib.filterAttrs (userName: userSet: userSet.isRealUser) fullUserSet);
         in
         builtins.mapAttrs (
           userName: userSet:
@@ -200,10 +131,7 @@
         forEachSupportedUnixSystem (
           {
             pkgs,
-            pkgsStable,
-            pkgsUnstable,
             system,
-            ...
           }:
           {
           }
@@ -211,10 +139,7 @@
         // forEachSupportedLinuxSystem (
           {
             pkgs,
-            pkgsStable,
-            pkgsUnstable,
             system,
-            ...
           }:
           {
             nixosInstaller = pkgs.mkShellNoCC {
@@ -232,10 +157,7 @@
       packages = forEachSupportedUnixSystem (
         {
           pkgs,
-          pkgsStable,
-          pkgsUnstable,
           system,
-          ...
         }:
         {
         }
@@ -245,10 +167,7 @@
         forEachSupportedUnixSystem (
           {
             pkgs,
-            pkgsStable,
-            pkgsUnstable,
             system,
-            ...
           }:
           {
           }
@@ -256,10 +175,7 @@
         // forEachSupportedLinuxSystem (
           {
             pkgs,
-            pkgsStable,
-            pkgsUnstable,
             system,
-            ...
           }:
           {
             binfmtCheck = pkgs.writeShellApplication {
@@ -272,10 +188,7 @@
       isoImages = forEachSupportedLinuxSystem (
         {
           pkgs,
-          pkgsStable,
-          pkgsUnstable,
           system,
-          ...
         }:
         {
           minimal = mkNixosIso {
@@ -305,9 +218,9 @@
         }:
         {
           default = self.kexecTree."${system}".minimal;
-          minimal = allInputChannels.default.nixpkgs.lib.nixosSystem {
+          minimal = nixpkgs.lib.nixosSystem {
             modules = [
-              "${allInputChannels.default.nixpkgs}/nixos/modules/installer/netboot/netboot-minimal.nix"
+              "${nixpkgs}/nixos/modules/installer/netboot/netboot-minimal.nix"
               ./nixos-configuration/modules/kexec-image/default.nix
               { nixpkgs.hostPlatform.system = "${system}"; }
             ];
@@ -319,10 +232,7 @@
       apps = forEachSupportedUnixSystem (
         {
           pkgs,
-          pkgsStable,
-          pkgsUnstable,
           system,
-          ...
         }:
         {
           nixFormat = {

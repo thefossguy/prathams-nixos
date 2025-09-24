@@ -1,6 +1,7 @@
 {
-  allInputChannels,
-  mkPkgs,
+  nixpkgs,
+  home-manager,
+  nixpkgs-stable,
   linuxSystems,
   fullUserSet,
   hostname,
@@ -9,26 +10,7 @@
 let
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };
   thisSystem = nixosSystems.systems."${hostname}";
-  system = thisSystem.coreConfig.system;
-  inputChannel = allInputChannels."${thisSystem.extraConfig.inputChannel or "default"}";
-  pkgsChannels = {
-    stable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stable.nixpkgs;
-    };
-    unstable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstable.nixpkgs;
-    };
-    stableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
-    };
-    unstableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
-    };
-  };
+  stablePkgs = nixpkgs-stable.legacyPackages.${thisSystem.coreConfig.system};
 
   # this is the core building block for **EVERY** NixOS System
   nixosSystemConfig = {
@@ -54,7 +36,7 @@ let
         systemType = nixosSystemConfig.extraConfig.systemType;
         systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
       };
-      inherit inputChannel nixBuildArgs;
+      inherit nixpkgs nixBuildArgs;
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
@@ -62,9 +44,9 @@ let
     };
   };
 in
-nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
+nixpkgs.lib.nixosSystem {
   # nix eval .#nixosConfigurations."${nixosSystemConfig.coreConfig.hostname}"._module.specialArgs.nixosSystemConfig
-  specialArgs = { inherit pkgsChannels nixosSystemConfig; };
+  specialArgs = { inherit stablePkgs nixosSystemConfig; };
   modules = [
     # root of the NixOS System configuration for a normal system
     ../nixos-configuration/systems/${hostname}
@@ -72,7 +54,7 @@ nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
     ../nixos-configuration/modules/host-modules
 
     # third-party modules
-    inputChannel.homeManager.nixosModules.default
+    home-manager.nixosModules.default
     ../nixos-configuration/modules/home-manager/nixos-home.nix
   ];
 }

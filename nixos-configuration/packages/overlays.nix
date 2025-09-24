@@ -2,15 +2,12 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
 
 let
-  stablePkgs = pkgsChannels.stable;
-  unstablePkgs = pkgsChannels.unstable;
-
   # more chromium flags in ~/.local/scripts/other-common-scripts/flatpak-manage.sh
   commonChromiumFlags = lib.optionals config.customOptions.displayServer.waylandEnabled [
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
@@ -135,40 +132,6 @@ in
 
           set +x
         '';
-      };
-
-      allInputChannels = pkgs.stdenvNoCC.mkDerivation {
-        pname = "allInputChannels";
-        version = "0.1.0";
-        dontUnpack = true;
-
-        installPhase =
-          let
-            inputChannel = nixosSystemConfig.extraConfig.inputChannel;
-            inputsToPreserve = builtins.concatStringsSep "' '" (
-              builtins.map (inputName: ''${inputChannel.${inputName}}:${inputName}'') (builtins.attrNames inputChannel)
-            );
-          in
-          ''
-            mkdir -p $out/bin
-            mkdir -p $out/misc
-            inputsToPreserve=( '${inputsToPreserve}' )
-
-            cat << EOF > $out/bin/allInputChannels
-            #!${pkgs.bash}/bin/bash
-            set -euf -o pipefail
-
-            EOF
-
-            for inputToPreserve in "''${inputsToPreserve[@]}"; do
-                storePath="$(echo "''${inputToPreserve}" | awk -F ':' '{print $1}')"
-                inputName="$(echo "''${inputToPreserve}" | awk -F ':' '{print $2}')"
-
-                ln -s ''${storePath} $out/misc/''${inputName}
-                echo "echo \"''${inputToPreserve}\"" >> $out/bin/allInputChannels
-            done
-            chmod +x $out/bin/allInputChannels
-          '';
       };
     })
   ];

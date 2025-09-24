@@ -1,7 +1,6 @@
 {
-  allInputChannels,
-  nixpkgsInputChannel,
-  mkPkgs,
+  nixpkgs,
+  nixpkgs-stable,
   linuxSystems,
   fullUserSet,
   system,
@@ -11,28 +10,7 @@
 }:
 
 let
-  pkgsChannels = {
-    stable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stable.nixpkgs;
-    };
-    unstable = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstable.nixpkgs;
-    };
-    stableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.stableSmall.nixpkgs;
-    };
-    unstableSmall = mkPkgs {
-      inherit system;
-      passedNixpkgs = allInputChannels.unstableSmall.nixpkgs;
-    };
-  };
-
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };
-  inputChannel = allInputChannels."${nixpkgsInputChannel}";
-  # this is the core building block for **EVERY** NixOS System
   nixosSystemConfig = {
     coreConfig = {
       inherit system;
@@ -44,7 +22,7 @@ let
       dtbRelativePath = null;
       canAccessMyNixCache = true; # Safe to always assume the Nix is reachable
       inherit
-        inputChannel
+        nixpkgs
         nixBuildArgs
         compressIso
         guiSession
@@ -55,11 +33,12 @@ let
       tree = "stable";
     };
   };
+  stablePkgs = nixpkgs-stable.legacyPackages.${system};
 in
 
-nixosSystemConfig.extraConfig.inputChannel.nixpkgs.lib.nixosSystem {
+nixpkgs.lib.nixosSystem {
   # nix eval .#nixosConfigurations."${nixosSystemConfig.coreConfig.hostname}"._module.specialArgs.nixosSystemConfig
-  specialArgs = { inherit pkgsChannels nixosSystemConfig; };
+  specialArgs = { inherit stablePkgs nixosSystemConfig; };
   modules = [
     # root of the NixOS System configuration for a normal system
     ../nixos-configuration/modules/iso

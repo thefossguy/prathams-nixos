@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgsChannels,
+  stablePkgs,
   nixosSystemConfig,
   ...
 }:
@@ -25,7 +25,7 @@ in
     settings.flake-registry = lib.mkForce "";
     # setup to pin the nixpkgs input for the nix3 commands
     registry = lib.mkForce {
-      nixpkgs.flake = nixosSystemConfig.extraConfig.inputChannel.nixpkgs;
+      nixpkgs.flake = nixosSystemConfig.extraConfig.nixpkgs;
     };
 
     settings = {
