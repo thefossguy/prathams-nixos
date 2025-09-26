@@ -81,7 +81,7 @@ in
     htop.enable = true;
     iotop.enable = !useMinimalConfig;
     mtr.enable = !useMinimalConfig;
-    skim.fuzzyCompletion = !useMinimalConfig;
+    skim.enable = !useMinimalConfig;
     sniffnet.enable = !useMinimalConfig;
     tmux.enable = true;
     traceroute.enable = !useMinimalConfig;
