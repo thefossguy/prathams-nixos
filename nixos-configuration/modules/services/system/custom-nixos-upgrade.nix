@@ -43,13 +43,18 @@ in
       script = ''
         set -xeuf -o pipefail
 
-        ${lib.strings.optionalString (!config.customOptions.localCaching.buildsNixDerivations) ''
-          nixosToplevelOutPath="$(nix eval --raw 2>/dev/null /etc/nixos#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel || echo 'eval-failed')"
-          if [[ "''${nixosToplevelOutPath}" == 'eval-failed' ]]; then
-              echo 'Could not determine the outPath for your NixOS toplevel build derivation'
-              exit 1
-          fi
+        nixosToplevelOutPath="$(nix eval --raw 2>/dev/null /etc/nixos#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel || echo 'eval-failed')"
+        if [[ "''${nixosToplevelOutPath}" == 'eval-failed' ]]; then
+            echo 'Could not determine the outPath for your NixOS toplevel build derivation'
+            exit 1
+        fi
 
+        if [[ -d "''${nixosToplevelOutPath}" ]]; then
+            echo 'The latest NixOS generation is already built, exiting early'
+            exit 0
+        fi
+
+        ${lib.strings.optionalString (!config.customOptions.localCaching.buildsNixDerivations) ''
           nixosToplevelOutPathHash="$(echo "''${nixosToplevelOutPath}" | cut -c 12-43 || echo 'shouldnt-really-fail')"
           if [[ "''${nixosToplevelOutPathHash}" == 'shouldnt-really-fail' ]]; then
               echo 'Could not determine the hash for the outPath for your NixOS toplevel build derivation'
