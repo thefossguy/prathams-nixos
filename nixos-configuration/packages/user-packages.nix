@@ -73,7 +73,7 @@ let
       with pkgs;
       [
         #firefox-esr
-        thunderbird
+        #thunderbird
       ]
     );
     podman = lib.optionals enableHomelabServices (
