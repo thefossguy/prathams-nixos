@@ -138,7 +138,7 @@ let
     home-manager
     hydra-check
     jq
-    magic-wormhole # transfer files between PCs and also between Androids
+    magic-wormhole-rs # transfer files between PCs and also between Androids
     yq # like `jq` but for TOML, XML and YAML
 
     # utilities specific to Nix
