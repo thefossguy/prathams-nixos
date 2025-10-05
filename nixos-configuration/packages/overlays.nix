@@ -84,6 +84,19 @@ in
       google-cloud-sdk-gce = stablePkgs.google-cloud-sdk-gce;
     })
 
+
+    #(final: prev: {
+    #  greetd = prev.greetd.overrideAttrs (oldAttrs: {
+    #    postPatch = ''
+    #      ${oldAttrs.postPatch or ""}
+
+    #      substituteInPlace greetd/src/session/worker.rs --replace-fail \
+    #          '/bin/sh'
+    #          '${pkgs.bash}/bin/bash'
+    #    '';
+    #  });
+    #})
+
     # Custom (new) packages go here.
     (final: prev: {
       ubootRaspberryPiGeneric_64bit = prev.buildUBoot {
