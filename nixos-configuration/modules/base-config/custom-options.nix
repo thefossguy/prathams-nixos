@@ -72,15 +72,9 @@ in
     };
 
     enableWlanPersistentNames = lib.mkOption {
-      description = "Whether to enable persistent naming for wlan interfaces. Enable only when said iface has a `permaddr`.";
+      description = "Weather to enable persistent naming for wlan interfaces. Enable only when said iface has a `permaddr`.";
       type = lib.types.bool;
       default = false;
-    };
-
-    useFishShell = lib.mkOption {
-      description = "Whether to change default shell for the non-root user from bash to fish.";
-      type = lib.types.bool;
-      default = true;
     };
 
     socSupport = {

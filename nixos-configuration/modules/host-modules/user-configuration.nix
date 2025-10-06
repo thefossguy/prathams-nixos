@@ -83,8 +83,7 @@ in
       isSystemUser = false;
       linger = (config.customOptions.systemType == "server");
       uid = 1000;
-      useDefaultShell = (!config.customOptions.useFishShell);
-      shell = if (!config.customOptions.useFishShell) then pkgs.bash else pkgs.fish;
+      useDefaultShell = true;
 
       # Necessary for rootless Podman but no reason to keep it exclusive to it.
       subGidRanges = [
@@ -127,8 +126,6 @@ in
       ];
     };
   };
-
-  programs.fish.enable = config.customOptions.useFishShell;
 
   security = {
     polkit = {
