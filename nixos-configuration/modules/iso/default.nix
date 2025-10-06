@@ -27,6 +27,8 @@ in
   customOptions.autologinSettings.guiSession.enableAutologin = true;
   customOptions.displayServer.guiSession = nixosSystemConfig.extraConfig.guiSession;
   environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs stablePkgs; };
+  networking.hostId = "1fdc0c97";
+  networking.hostName = "installer";
   system.nixos.tags = [ config.isoImage.edition ];
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${sysuser.username}".initialHashedPassword = lib.mkForce sysuser.hashedPassword;
