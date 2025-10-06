@@ -71,7 +71,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}" >/dev/null 2>&1 || \
              nix store repair "''${nixResults[@]}"
 
-        nix copy --refresh --to 'ssh-ng://pratham@hans' "''${nixResults[@]}"
+        nix copy --substitute-on-destination --refresh --to 'ssh-ng://pratham@hans' "''${nixResults[@]}"
 
         pushd /etc/nixos
         sha512sum flake.lock > flake.lock.shasum
