@@ -134,6 +134,7 @@ in
         primaryNetIface = "enx9c6b0022442a";
         system = linuxSystems.x86_64;
       };
+      kernelConfig.tree = kernelVersions.longterm;
     };
 
     # Raspberry Pi 4 Model B (4GB)
