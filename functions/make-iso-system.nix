@@ -10,7 +10,7 @@
 }:
 
 let
-  nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };
+  nixosSystems = import ./nixos-systems.nix { inherit linuxSystems; };
   nixosSystemConfig = {
     coreConfig = {
       inherit system;

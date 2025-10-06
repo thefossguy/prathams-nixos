@@ -105,7 +105,7 @@
       nixosConfigurations =
         let
           # Stupidly genius :D
-          nixosHosts = (import ./functions/nixos-systems.nix { inherit linuxSystems fullUserSet; }).systems;
+          nixosHosts = (import ./functions/nixos-systems.nix { inherit linuxSystems ; }).systems;
         in
         builtins.mapAttrs (hostName: hostSet: mkNixosSystem "${hostName}") nixosHosts
         // {

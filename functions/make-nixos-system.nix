@@ -8,7 +8,7 @@
   nixBuildArgs,
 }:
 let
-  nixosSystems = import ./nixos-systems.nix { inherit linuxSystems fullUserSet; };
+  nixosSystems = import ./nixos-systems.nix { inherit linuxSystems; };
   thisSystem = nixosSystems.systems."${hostname}";
   stablePkgs = nixpkgs-stable.legacyPackages.${thisSystem.coreConfig.system};
 

@@ -1,4 +1,4 @@
-{ linuxSystems, fullUserSet }:
+{ linuxSystems }:
 let
   systemTypes = {
     server = "server";
