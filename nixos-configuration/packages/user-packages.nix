@@ -114,6 +114,16 @@ let
     ]
   );
 
+  nonNixosPackagesCheck = !nixosPackagesCheck;
+  nonNixosPackagesMinimal = lib.optionals nonNixosPackagesCheck (
+    with pkgs;
+    [
+      bash # always enable bash even when using fish so that `NIX_BUILD_SHELL` can be set
+      fish
+    ]
+  );
+  nonNixosPackages = lib.optionals nonNixosPackagesCheck (with pkgs; [ ]);
+
   darwinPackagesCheck = (pkgs.stdenv.isDarwin);
   darwinPackages = lib.optionals darwinPackagesCheck (
     with pkgs;
@@ -199,6 +209,8 @@ in
   home.packages =
     nixosPackagesMinimal
     ++ nixosPackages
+    ++ nonNixosPackagesMinimal
+    ++ nonNixosPackages
     ++ tuxPackagesMinimal
     ++ tuxPackages
     ++ darwinPackages

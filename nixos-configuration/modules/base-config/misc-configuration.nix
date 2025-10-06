@@ -61,6 +61,9 @@ in
     '';
 
     variables = {
+      # use bash for nix-shell
+      NIX_BUILD_SHELL = "${pkgs.bashInteractive}/bin/bash";
+
       # for 'sudo -e'
       EDITOR = "nvim";
       VISUAL = "nvim";
