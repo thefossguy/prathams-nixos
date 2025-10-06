@@ -33,24 +33,19 @@ lib.mkIf (!config.customOptions.localCaching.servesNixDerivations) {
 
       script = ''
         set -x
+        set +e
 
-        verificationCode=0
-        isBuilder=${if (config.customOptions.localCaching.buildsNixDerivations or false) then "1" else "0"}
-
-        nix store verify --all --recursive --sigs-needed 1 >/dev/null 2>&1 || verificationCode=$?
-
-        if [[ "''${verificationCode}" -eq 2 ]]; then
-            if [[ "''${isBuilder}" -eq 1 ]]; then
-                # Exit cleanly only if the `nix store verify` command exits
-                # with return code 2 on a builder.
-                exit 0
-            else
-                # Exit with the original return code
-                exit "''${verificationCode}"
-            fi
+        nix store verify --all --recursive >/dev/null 2>&1
+        returnCode=$?
+        if [[ "''${returnCode}" -ne 0 ]] || [[ "''${returnCode}" -ne 2 ]] || [[ "''${returnCode}" -ne 4 ]]; then
+            # 0 is successful
+            # 2 is untrusted (no signatures, probably built locally)
+            # 4 encountered I/O error
+            exit 0
         else
-            # Exit with the original return code
-            exit "''${verificationCode}"
+            echo 'Some nix store paths are corrupted, attempting to verify'
+            set -e
+            nix store repair --all --recursive
         fi
       '';
     };
