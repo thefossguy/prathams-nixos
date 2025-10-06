@@ -58,6 +58,7 @@ in
         "${config.customOptions.userHomeDir}/.nvim/undodir"
         "${config.customOptions.userHomeDir}/.prathams-nixos"
         "${config.customOptions.userHomeDir}/.rustup"
+        "${config.customOptions.userHomeDir}/.tmp"
         "${config.customOptions.userHomeDir}/.vms"
         "${config.customOptions.userHomeDir}/.zkbd"
         "/nix"
