@@ -151,8 +151,6 @@ rec {
       # `custom-nixos-upgrade` or `continuous-build-and-push` will start.
       "${nixGc.unitName}.service"
       "${scheduledReboots.unitName}.service"
-      "${zpoolMaintainenceWeekly.unitName}.service"
-      "${zpoolMaintainenceMonthly.unitName}.service"
     ];
     onCalendar = systemdTime.Daily { };
   };
