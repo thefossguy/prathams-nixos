@@ -37,6 +37,7 @@ in
       matsya = "3852eff0";
       aatman = "192bc1e8";
       jataayu = "21e377df";
+      abhimanyu = "0c8063d3";
       sentinel = "041d6ae7";
       reddish = "996ccb68";
       mahadev = "c06c1a49";
@@ -122,6 +123,16 @@ in
         gatewayAddr = "192.168.122.1";
         useDHCP = true;
         canAccessMyNixCache = false;
+      };
+    };
+
+    # home router (same H/W config as madhav)
+    abhimanyu = {
+      coreConfig = {
+        hostname = "abhimanyu";
+        ipv4Address = "10.0.0.33";
+        primaryNetIface = "enx9c6b0022442a";
+        system = linuxSystems.x86_64;
       };
     };
 
