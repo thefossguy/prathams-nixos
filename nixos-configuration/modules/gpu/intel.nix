@@ -12,7 +12,7 @@ lib.mkIf (builtins.elem "intel" config.customOptions.gpuSupport) {
     if ((builtins.elemAt config.customOptions.gpuSupport 0) == "intel") then (lib.mkBefore [ "xe" ]) else [ "xe" ];
   hardware.intel-gpu-tools.enable = true;
   hardware.graphics.extraPackages = with pkgs; [
-    intel-compute-runtime
+    #intel-compute-runtime # not really necessary unless OpenCL is in use
     intel-media-driver
     intel-vaapi-driver
     vpl-gpu-rt
