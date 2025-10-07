@@ -19,7 +19,7 @@ in
   };
 
   systemd.network.links = {
-    "10-use-mac-addr-in-ifnames-ether" = {
+    "20-use-mac-addr-in-ifnames-ether" = {
       enable = true;
       matchConfig = {
         Type = "ether";
@@ -31,7 +31,7 @@ in
       };
     };
 
-    "10-use-mac-addr-in-ifnames-wlan" = lib.mkIf config.customOptions.enableWlanPersistentNames {
+    "20-use-mac-addr-in-ifnames-wlan" = lib.mkIf config.customOptions.enableWlanPersistentNames {
       enable = true;
       matchConfig = {
         Type = "wlan";
