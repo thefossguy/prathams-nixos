@@ -86,7 +86,7 @@ in
     tmux.enable = true;
     traceroute.enable = !useMinimalConfig;
     trippy.enable = !useMinimalConfig;
-    usbtop.enable = !useMinimalConfig;
+    usbtop.enable = false; #!useMinimalConfig;
 
     bash = {
       completion.enable = true;
