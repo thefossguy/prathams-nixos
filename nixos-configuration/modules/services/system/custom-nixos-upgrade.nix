@@ -61,11 +61,6 @@ in
               exit 1
           fi
 
-          if [[ -d "''${nixosLatestGenOutPath}" ]]; then
-              echo 'This NixOS generation is already built, exiting early'
-              exit 0
-          fi
-
           if [[ ${isBuilder} == 'false' ]]; then
               nixosToplevelIsCached="$(nix path-info --store https://nix-cache.thefossguy.com "''${nixosLatestGenOutPath}" 2>/dev/null || echo 'not-cached')"
               if [[ "''${nixosToplevelIsCached}" == 'not-cached' ]]; then
