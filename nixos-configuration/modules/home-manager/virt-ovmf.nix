@@ -53,8 +53,8 @@ lib.mkIf nixosSystemConfig.coreConfig.isNixOS {
       text = ''
         nvram = [
           "${config.home.homeDirectory}/.local/share/edk2/EDK2_CODE:${config.home.homeDirectory}/.local/share/edk2/EDK2_VARS",
-          "/run/libvirt/nix-ovmf/AAVMF_CODE.fd:/run/libvirt/nix-ovmf/AAVMF_VARS.fd",
-          "/run/libvirt/nix-ovmf/OVMF_CODE.fd:/run/libvirt/nix-ovmf/OVMF_VARS.fd"
+          "/run/libvirt/nix-ovmf/edk2-aarch64-code.fd:/run/libvirt/nix-ovmf/edk2-arm-vars.fd",
+          "/run/libvirt/nix-ovmf/edk2-x86_64-code.fd:/run/libvirt/nix-ovmf/edk2-i386-vars.fd"
         ]
       '';
     };
