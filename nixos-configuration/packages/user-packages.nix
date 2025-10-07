@@ -55,8 +55,8 @@ let
       with pkgs;
       [
         #aerc
-        catimg # fur email (aerc); print image on ze terminal
-        protonmail-bridge
+        #catimg # fur email (aerc); print image on ze terminal
+        #protonmail-bridge
       ]
     );
     misc = lib.optionals (!useMinimalConfig && nixosPackagesCheck) (
