@@ -13,7 +13,7 @@ in
 {
   systemd.oomd = {
     enable = true;
-    extraConfig = {
+    settings.OOM = {
       SwapUsedLimit = "75%";
       DefaultMemoryPressureLimit = "50%";
       DefaultMemoryPressureDurationSec = 60;
