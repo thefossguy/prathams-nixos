@@ -49,13 +49,13 @@ in
               exit 1
           fi
 
-          nixosToplevelIsCached="$(nix path-info --store https://nix-cache.thefossguy.com "''${nixosLatestGenOutPath}" 2>/dev/null || echo 'not-cached')"
+          nixosToplevelIsCached="$(nix path-info --refresh --store https://nix-cache.thefossguy.com "''${nixosLatestGenOutPath}" 2>/dev/null || echo 'not-cached')"
           if [[ "''${nixosToplevelIsCached}" == 'not-cached' ]]; then
               echo 'This NixOS generation is not cached, yet'
               exit 1
           fi
 
-          nix build --no-link --max-jobs 0 "''${nixosLatestGenOutPath}"
+          nix build --refresh --no-link --max-jobs 0 "''${nixosLatestGenOutPath}"
 
           nixos-rebuild boot --show-trace --print-build-logs --flake /etc/nixos#${config.networking.hostName}
         '';
