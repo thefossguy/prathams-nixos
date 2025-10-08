@@ -139,6 +139,7 @@ let
     hydra-check
     jq
     magic-wormhole-rs # transfer files between PCs and also between Androids
+    sshfs # quickly mount remote directory over SSH
     yq # like `jq` but for TOML, XML and YAML
 
     # utilities specific to Nix
