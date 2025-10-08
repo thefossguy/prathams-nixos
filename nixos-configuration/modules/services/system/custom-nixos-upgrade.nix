@@ -39,19 +39,7 @@ in
       };
 
       script =
-        let
 
-          isBuilder =
-            if
-              config.customOptions.localCaching.buildsNixDerivations
-            # `builtins.toString true` results in `"1"` but
-            # `builtins.toString false` results in `""`
-            # so, assign values manually
-            then
-              "true"
-            else
-              "false";
-        in
         ''
           set -xeuf -o pipefail
 
@@ -61,13 +49,13 @@ in
               exit 1
           fi
 
-          if [[ ${isBuilder} == 'false' ]]; then
-              nixosToplevelIsCached="$(nix path-info --store https://nix-cache.thefossguy.com "''${nixosLatestGenOutPath}" 2>/dev/null || echo 'not-cached')"
-              if [[ "''${nixosToplevelIsCached}" == 'not-cached' ]]; then
-                  echo 'This NixOS generation is not cached, yet'
-                  exit 1
-              fi
+          nixosToplevelIsCached="$(nix path-info --store https://nix-cache.thefossguy.com "''${nixosLatestGenOutPath}" 2>/dev/null || echo 'not-cached')"
+          if [[ "''${nixosToplevelIsCached}" == 'not-cached' ]]; then
+              echo 'This NixOS generation is not cached, yet'
+              exit 1
           fi
+
+          nix build --no-link --max-jobs 0 "''${nixosLatestGenOutPath}"
 
           nixos-rebuild boot --show-trace --print-build-logs --flake /etc/nixos#${config.networking.hostName}
         '';
