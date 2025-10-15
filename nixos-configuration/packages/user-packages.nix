@@ -118,6 +118,7 @@ let
   darwinPackages = lib.optionals darwinPackagesCheck (
     with pkgs;
     [
+      bash # because darwin defaults to zsh
       coreutils-prefixed
       gawk
       gnugrep
