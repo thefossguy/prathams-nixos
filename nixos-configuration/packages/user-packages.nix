@@ -161,7 +161,7 @@ let
       dash
       delta
       dig # provides `dig` and `nslookup`
-      du-dust
+      dust
       dua
       fd
       fzf
