@@ -14,11 +14,6 @@ lib.mkIf (config.customOptions.systemType == "laptop") {
     "pm_debug_messages"
   ];
 
-  programs.coolercontrol = {
-    enable = true;
-    nvidiaSupport = (builtins.elem "nvidia" config.customOptions.gpuSupport);
-  };
-
   systemd.sleep.extraConfig = ''
     AllowHibernation=yes
     AllowHybridSleep=yes
