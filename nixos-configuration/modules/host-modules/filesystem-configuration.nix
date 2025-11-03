@@ -9,7 +9,6 @@
 
 let
   commonMountOptions = [
-    "async"
     "relatime"
     "lazytime"
   ];
@@ -21,25 +20,27 @@ let
   rootMountOptions = commonMountOptions ++ hardenedMountOptions;
   homeMountOptions = commonMountOptions ++ hardenedMountOptions;
   varlMountOptions = commonMountOptions ++ hardenedMountOptions;
+
+  addAsyncOption = mountPath: lib.optionals (config.fileSystems."${mountPath}".fsType != "zfs") [ "async" ];
 in
 {
   fileSystems."/boot" = {
     fsType = "vfat";
-    options = bootMountOptions;
+    options = bootMountOptions ++ addAsyncOption "/boot";
   };
 
   fileSystems."/" = {
     fsType = "xfs";
-    options = rootMountOptions;
+    options = rootMountOptions ++ addAsyncOption "/";
   };
 
   fileSystems."/home" = {
     fsType = "xfs";
-    options = homeMountOptions;
+    options = homeMountOptions ++ addAsyncOption "/home";
   };
 
   fileSystems."/var" = {
     fsType = "xfs";
-    options = varlMountOptions;
+    options = varlMountOptions ++ addAsyncOption "/var";
   };
 }
