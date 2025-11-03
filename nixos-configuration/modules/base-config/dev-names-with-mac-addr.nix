@@ -13,8 +13,8 @@ in
 
 {
   boot.initrd.extraFiles = {
-    "etc/systemd/network/10-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
-    "etc/systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source =
+    "etc/systemd/network/20-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
+    "etc/systemd/network/20-use-mac-addr-in-ifnames-wlan.link".source =
       if config.customOptions.enableWlanPersistentNames then pkgs.etherDevNamesWithMacAddr else emptyFile;
   };
 
@@ -55,8 +55,8 @@ in
           set -x
           mkdir -p $out
           cp ${
-            config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames-ether.link".source
-          } $out/10-use-mac-addr-in-ifnames-ether.link
+            config.environment.etc."systemd/network/20-use-mac-addr-in-ifnames-ether.link".source
+          } $out/20-use-mac-addr-in-ifnames-ether.link
           set +x
         '';
       };
@@ -70,8 +70,8 @@ in
           set -x
           mkdir -p $out
           cp ${
-            config.environment.etc."systemd/network/10-use-mac-addr-in-ifnames-wlan.link".source
-          } $out/10-use-mac-addr-in-ifnames-wlan.link
+            config.environment.etc."systemd/network/20-use-mac-addr-in-ifnames-wlan.link".source
+          } $out/20-use-mac-addr-in-ifnames-wlan.link
           set +x
         '';
       };
