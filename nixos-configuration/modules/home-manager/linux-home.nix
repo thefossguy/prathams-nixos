@@ -14,5 +14,5 @@ lib.mkIf pkgs.stdenv.isLinux {
   # home-manager is used as an environment manager, not another nixos
   # for the user, so disable this nonsense which also causes evaluation
   # errors on aarch64-linux
-  targets.genericLinux.gpu = lib.mkForce false;
+  targets.genericLinux.gpu.enable = lib.mkForce false;
 }
