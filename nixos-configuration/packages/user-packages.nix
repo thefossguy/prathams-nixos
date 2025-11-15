@@ -30,7 +30,7 @@ let
         #cargo-binstall # install Rust binaries instead of building them from src
         #cargo-bisect-rustc # find exactly which rustc commit/release-version which prevents your code from building now
         #cargo-bloat # find what takes the most space in the executable
-        cargo-cache # manage cargo cache (${CARGO_HOME}); print and remove dirs selectively
+        #cargo-cache # manage cargo cache (${CARGO_HOME}); print and remove dirs selectively
         #cargo-chef # for speeding up container builds using layer caching
         #cargo-dist # distribute on crates.io
         #cargo-flamegraph # flamegraphs without Perl or pipes
@@ -46,7 +46,7 @@ let
         cargo-watch # run cargo commands when the src changes
         rustup-bin
       ]
-      ++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ])
+      #++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ])
     );
   };
 
