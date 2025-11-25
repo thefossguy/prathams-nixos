@@ -47,7 +47,7 @@ in
       ];
       keep-going = false;
       log-lines = 9999;
-      max-jobs = 1;
+      max-jobs = if (nixosSystemConfig.coreConfig.systemUser.username == "thefossguy") then 10 else 1;
       sandbox = true;
       show-trace = true;
       trusted-users = lib.mkForce trustedNixUsers;
