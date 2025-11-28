@@ -106,6 +106,7 @@ let
   tuxPackagesMinimal = lib.optionals tuxPackagesCheck (
     with pkgs;
     [
+      file
     ]
   );
   tuxPackages = lib.optionals (!useMinimalConfig && tuxPackagesCheck) (
