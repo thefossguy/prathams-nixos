@@ -46,26 +46,24 @@ lib.mkIf (config.customOptions.isRouter or false) {
           name = "router-fw";
           family = "inet";
           content = ''
-            router-fw {
-                chain forward {
-                    # drop everything by default
-                    type filter hook forward priority filter; policy drop;
+            chain forward {
+                # drop everything by default
+                type filter hook forward priority filter; policy drop;
 
-                    # allow connections that are already established
-                    ct state { established, related } accept
+                # allow connections that are already established
+                ct state { established, related } accept
 
-                    # `trusted` <-> `wan`
-                    iifname "trusted" oifname "wan" accept
-                    iifname "wan" oifname "trusted" accept
+                # `trusted` <-> `wan`
+                iifname "trusted" oifname "wan" accept
+                iifname "wan" oifname "trusted" accept
 
-                    # `isolated` <-> `wan`
-                    iifname "isolated" oifname "wan" accept
-                    iifname "wan" oifname "isolated" accept
+                # `isolated` <-> `wan`
+                iifname "isolated" oifname "wan" accept
+                iifname "wan" oifname "isolated" accept
 
-                    # `trusted` ! `isolated`
-                    iifname "trusted" oifname "isolated" drop
-                    iifname "isolated" oifname "trusted" drop
-                }
+                # `trusted` ! `isolated`
+                iifname "trusted" oifname "isolated" drop
+                iifname "isolated" oifname "trusted" drop
             }
           '';
         };
