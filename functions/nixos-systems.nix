@@ -133,6 +133,7 @@ in
         primaryNetIface = "enx9c6b0022442a";
         system = linuxSystems.x86_64;
       };
+      extraConfig.canAccessMyNixCache = false;
       kernelConfig.tree = kernelVersions.longterm;
     };
 
