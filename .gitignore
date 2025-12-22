@@ -1,6 +1,7 @@
 *.iso
 *.iso.sha*
 *.log
+*.qcow2
 *.swp
 *template.nix*
 .direnv/*
