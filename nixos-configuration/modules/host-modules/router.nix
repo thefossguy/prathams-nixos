@@ -30,7 +30,13 @@ let
 in
 
 lib.mkIf (config.customOptions.isRouter or false) {
-  networking.firewall.checkReversePath = lib.mkForce false;
+  networking.firewall = {
+    allowedUDPPorts = [
+      67 # client discovery
+      68 # communication for DHCP configuration
+    ];
+    checkReversePath = lib.mkForce false;
+  };
 
   systemd.network = {
     links = {
@@ -113,12 +119,14 @@ lib.mkIf (config.customOptions.isRouter or false) {
         matchConfig.Name = "primary";
         address = [ "10.0.0.1/24" ];
         dhcpServerConfig.DNS = [ "10.0.0.1" ];
-      } // dhcpCommonConfig;
-      "45-guest" = {
+      }
+      // dhcpCommonConfig;
+      "46-guest" = {
         matchConfig.Name = "guest";
         address = [ "192.168.45.1/24" ];
         dhcpServerConfig.DNS = [ "192.168.45.1" ];
-      } // dhcpCommonConfig;
+      }
+      // dhcpCommonConfig;
     };
   };
 }
