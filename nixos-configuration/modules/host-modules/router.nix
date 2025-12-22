@@ -30,12 +30,47 @@ let
 in
 
 lib.mkIf (config.customOptions.isRouter or false) {
-  networking.firewall = {
-    allowedUDPPorts = [
-      67 # client discovery
-      68 # communication for DHCP configuration
-    ];
-    checkReversePath = lib.mkForce false;
+  networking = {
+    firewall = {
+      checkReversePath = lib.mkForce false;
+      allowedUDPPorts = [
+        67 # client discovery
+        68 # communication for DHCP configuration
+      ];
+    };
+
+    nftables = {
+      tables = {
+        "router-fw" = {
+          enable = true;
+          name = "router-fw";
+          family = "inet";
+          content = ''
+            router-fw {
+                chain forward {
+                    # drop everything by default
+                    type filter hook forward priority filter; policy drop;
+
+                    # allow connections that are already established
+                    ct state { established, related } accept
+
+                    # `trusted` <-> `wan`
+                    iifname "trusted" oifname "wan" accept
+                    iifname "wan" oifname "trusted" accept
+
+                    # `isolated` <-> `wan`
+                    iifname "isolated" oifname "wan" accept
+                    iifname "wan" oifname "isolated" accept
+
+                    # `trusted` ! `isolated`
+                    iifname "trusted" oifname "isolated" drop
+                    iifname "isolated" oifname "trusted" drop
+                }
+            }
+          '';
+        };
+      };
+    };
   };
 
   systemd.network = {
@@ -76,16 +111,16 @@ lib.mkIf (config.customOptions.isRouter or false) {
 
     # bridges
     netdevs = {
-      "30-primary" = {
+      "30-trusted" = {
         netdevConfig = {
-          Name = "primary";
+          Name = "trusted";
           Kind = "bridge";
         };
       };
-      "30-guest" = {
+      "30-isolated" = {
         bridgeConfig.DefaultPVID = "none"; # Disable MAC learning to prevent guest isolation bypass
         netdevConfig = {
-          Name = "guest";
+          Name = "isolated";
           Kind = "bridge";
         };
       };
@@ -95,34 +130,34 @@ lib.mkIf (config.customOptions.isRouter or false) {
       # add ifaces under bridges
       "41-lan0" = {
         matchConfig.Name = "lan0";
-        networkConfig.Bridge = "primary";
+        networkConfig.Bridge = "trusted";
         linkConfig.RequiredForOnline = "enslaved";
       };
       "42-lan1" = {
         matchConfig.Name = "lan1";
-        networkConfig.Bridge = "primary";
+        networkConfig.Bridge = "trusted";
         linkConfig.RequiredForOnline = "enslaved";
       };
       "43-guest0" = {
         matchConfig.Name = "guest0";
-        networkConfig.Bridge = "guest";
+        networkConfig.Bridge = "isolated";
         linkConfig.RequiredForOnline = "enslaved";
       };
       "44-guest1" = {
         matchConfig.Name = "guest1";
-        networkConfig.Bridge = "guest";
+        networkConfig.Bridge = "isolated";
         linkConfig.RequiredForOnline = "enslaved";
       };
 
-      # priamry+guest LANs' DHCP servers
-      "45-primary" = {
-        matchConfig.Name = "primary";
+      # trusted+isolated LANs' DHCP servers
+      "45-trusted" = {
+        matchConfig.Name = "trusted";
         address = [ "10.0.0.1/24" ];
         dhcpServerConfig.DNS = [ "10.0.0.1" ];
       }
       // dhcpCommonConfig;
-      "46-guest" = {
-        matchConfig.Name = "guest";
+      "46-isolated" = {
+        matchConfig.Name = "isolated";
         address = [ "192.168.45.1/24" ];
         dhcpServerConfig.DNS = [ "192.168.45.1" ];
       }
