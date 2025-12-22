@@ -187,6 +187,11 @@ rec {
     onCalendar = systemdTime.Daily { hour = "05"; };
   };
 
+  gitMirroring = mkServiceConfig {
+    unitName = "git-mirroring";
+    onCalendar = systemdTime.Hourly { minute = "00/10"; };
+  };
+
   manuallyAutostartLibvirtVms = mkServiceConfig {
     unitName = "manually-autostart-libvirt-vms";
     beforeUnits = [ "default.target" ];
