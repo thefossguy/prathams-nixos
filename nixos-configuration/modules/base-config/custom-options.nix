@@ -71,6 +71,12 @@ in
       default = ((config.image.fileName or "") != "");
     };
 
+    isRouter = lib.mkOption {
+      description = "If a given system is a router or not.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     enableWlanPersistentNames = lib.mkOption {
       description = "Weather to enable persistent naming for wlan interfaces. Enable only when said iface has a `permaddr`.";
       type = lib.types.bool;

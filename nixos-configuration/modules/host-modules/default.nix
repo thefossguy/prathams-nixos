@@ -12,6 +12,7 @@
     ../services
     ./filesystem-configuration.nix
     ./podman.nix
+    ./router.nix
     ./static-ip-and-virt-bridge.nix
     ./user-configuration.nix
   ];
