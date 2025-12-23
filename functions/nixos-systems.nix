@@ -61,6 +61,7 @@ in
         hostname = "flameboi";
         ipv4Address = "10.0.0.36";
         primaryNetIface = "enxb42e9998034e";
+        addrMAC = "B4:2E:99:98:03:4E";
         system = linuxSystems.x86_64;
       };
     };
@@ -71,6 +72,7 @@ in
         hostname = "indra";
         ipv4Address = "10.0.0.50";
         primaryNetIface = "wlp0s20f3";
+        addrMAC = null;
         system = linuxSystems.x86_64;
       };
       extraConfig = {
@@ -85,6 +87,7 @@ in
         hostname = "madhav";
         ipv4Address = "10.0.0.108";
         primaryNetIface = "enx9c6b002245ab";
+        addrMAC = "9C:6B:00:22:45:AB";
         system = linuxSystems.x86_64;
       };
       kernelConfig.tree = kernelVersions.longterm;
@@ -96,6 +99,7 @@ in
         hostname = "matsya";
         ipv4Address = "10.0.0.109";
         primaryNetIface = "enx1002b5860d8c";
+        addrMAC = "10:02:B5:86:0D:8C";
         system = linuxSystems.x86_64;
       };
     };
@@ -106,6 +110,7 @@ in
         hostname = "aatman";
         ipv4Address = "10.0.0.85";
         primaryNetIface = "enx525400000001";
+        addrMAC = "52:54:00:00:00:01";
         system = linuxSystems.x86_64;
       };
     };
@@ -116,6 +121,7 @@ in
         hostname = "jataayu";
         ipv4Address = "192.168.122.45";
         primaryNetIface = "enx525400452d89";
+        addrMAC = "52:54:00:45:2D:89";
         system = linuxSystems.x86_64;
       };
       extraConfig = {
@@ -131,6 +137,7 @@ in
         hostname = "abhimanyu";
         ipv4Address = "10.0.0.33";
         primaryNetIface = "enx9c6b0022442a";
+        addrMAC = "9C:6B:00:22:44:2A";
         system = linuxSystems.x86_64;
       };
       extraConfig.canAccessMyNixCache = false;
@@ -143,6 +150,7 @@ in
         hostname = "sentinel";
         ipv4Address = "10.0.0.14";
         primaryNetIface = "enxdca6322f1a7c";
+        addrMAC = "DC:A6:32:2F:1A:7C";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "broadcom/bcm2711-rpi-4-b.dtb";
@@ -154,6 +162,7 @@ in
         hostname = "reddish";
         ipv4Address = "10.0.0.19";
         primaryNetIface = "enxe45f015fa482";
+        addrMAC = "E4:5F:01:5F:A4:82";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "broadcom/bcm2711-rpi-4-b.dtb";
@@ -165,6 +174,7 @@ in
         hostname = "raajan";
         ipv4Address = "10.0.0.59";
         primaryNetIface = "end0";
+        addrMAC = null;
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "broadcom/bcm2712-rpi-5-b.dtb";
@@ -176,6 +186,7 @@ in
         hostname = "mahadev";
         ipv4Address = "10.0.0.21";
         primaryNetIface = "enP4p65s0";
+        addrMAC = "16:2E:58:3D:E1:4A";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588-rock-5b.dtb";
@@ -187,6 +198,7 @@ in
         hostname = "pawandev";
         ipv4Address = "10.0.0.22";
         primaryNetIface = "enx326a3f36cd7e";
+        addrMAC = "16:2E:58:3D:E1:4B";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588s-orangepi-5.dtb";
@@ -198,6 +210,7 @@ in
         hostname = "stuti";
         ipv4Address = "10.0.0.23";
         primaryNetIface = "enP4p65s0"; # second one from the right
+        addrMAC = "16:2E:58:3D:E1:4C";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588-nanopc-t6.dtb";
@@ -209,6 +222,7 @@ in
         hostname = "chaturvyas";
         ipv4Address = "10.0.0.24";
         primaryNetIface = "enP4p65s0";
+        addrMAC = "16:2E:58:3D:E1:46";
         system = linuxSystems.aarch64;
       };
       extraConfig.dtbRelativePath = "rockchip/rk3588-friendlyelec-cm3588-nas.dtb";
@@ -221,6 +235,7 @@ in
         hostname = "bhim";
         ipv4Address = "10.0.0.103";
         primaryNetIface = "enxcacf915df82c";
+        addrMAC = "16:2E:58:3D:E1:4D";
         system = linuxSystems.aarch64;
       };
     };
@@ -231,6 +246,7 @@ in
         hostname = "bheem";
         ipv4Address = "10.0.0.35";
         primaryNetIface = "";
+        addrMAC = "D0:11:E5:98:F1:B7";
         system = linuxSystems.aarch64;
       };
     };
@@ -241,6 +257,7 @@ in
         hostname = "hans";
         ipv4Address = "138.199.146.78";
         primaryNetIface = "enx9600044fcb6e";
+        addrMAC = "96:00:04:4F:CB:6E";
         system = linuxSystems.aarch64;
       };
       extraConfig = {
@@ -257,6 +274,7 @@ in
         hostname = "leela";
         ipv4Address = "49.13.63.122";
         primaryNetIface = "enx9600046d55df";
+        addrMAC = "96:00:04:6D:55:DF";
         system = linuxSystems.aarch64;
       };
       extraConfig = {
@@ -273,6 +291,7 @@ in
         hostname = "vaaman";
         ipv4Address = "10.0.0.41";
         primaryNetIface = "end0"; # first one from the right
+        addrMAC = null;
         system = linuxSystems.riscv64;
       };
     };
@@ -283,6 +302,7 @@ in
         hostname = "vaayu";
         ipv4Address = "10.0.0.42";
         primaryNetIface = "end0"; # first one from the right
+        addrMAC = null;
         system = linuxSystems.riscv64;
       };
     };

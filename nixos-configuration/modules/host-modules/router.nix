@@ -8,6 +8,21 @@
 }:
 
 let
+  nixosHosts =
+    (import ../../../functions/nixos-systems.nix {
+      linuxSystems = {
+        aarch64 = "aarch64-linux";
+        riscv64 = "riscv64-linux";
+        x86_64 = "x86_64-linux";
+      };
+    }).systems;
+  hostsInLAN = lib.filterAttrs (
+    name: value: ((value.extraConfig.canAccessMyNixCache or true) != false) && (value.coreConfig.addrMAC != null)
+  ) nixosHosts;
+  dhcpServerStaticLeases = lib.attrsets.mapAttrsToList (name: value: {
+    MACAddress = value.coreConfig.addrMAC;
+    Address = value.coreConfig.ipv4Address;
+  }) hostsInLAN;
   dhcpCommonConfig = {
     networkConfig = {
       ConfigureWithoutCarrier = true;
@@ -152,6 +167,7 @@ lib.mkIf (config.customOptions.isRouter or false) {
         matchConfig.Name = "trusted";
         address = [ "10.0.0.1/24" ];
         dhcpServerConfig.DNS = [ "10.0.0.1" ];
+        dhcpServerStaticLeases = dhcpServerStaticLeases;
       }
       // dhcpCommonConfig;
       "46-isolated" = {

@@ -33,7 +33,15 @@ in
   environment.systemPackages = lib.optionals virtualBridgeConditional [ pkgs.bridge-utils ];
   systemd.network = lib.attrsets.optionalAttrs (!nixosSystemConfig.extraConfig.useDHCP) {
     networks = {
-      "10-${primaryNetIface}" = {
+      "10-r8169-fixup" = lib.attrsets.optionalAttrs (nixosSystemConfig.coreConfig.addrMAC != null) {
+        matchConfig = {
+          Driver = "r8169";
+        };
+        linkConfig = {
+          MACAddress = nixosSystemConfig.coreConfig.addrMAC;
+        };
+      };
+      "11-${primaryNetIface}" = {
         matchConfig = {
           Name = primaryNetIface;
         };

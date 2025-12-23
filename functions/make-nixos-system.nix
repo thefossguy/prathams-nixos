@@ -19,6 +19,7 @@ let
         hostname
         ipv4Address
         primaryNetIface
+        addrMAC
         system
         ;
       isNixOS = true;
