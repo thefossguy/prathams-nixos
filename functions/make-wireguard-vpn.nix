@@ -5,7 +5,7 @@
   nixosSystemConfig,
   ifaceEnabled,
   wgEndpointIp,
-  wgEndpiontCidr,
+  wgEndpointCidr,
   wgIfaceName,
   wgLocalIp,
   wgPublicKey,
@@ -23,7 +23,7 @@ lib.mkIf ifaceEnabled {
       };
       routes = [
         {
-          Destination = "${wgEndpointIp}/${wgEndpiontCidr}";
+          Destination = "${wgEndpointIp}/${wgEndpointCidr}";
           Gateway = nixosSystemConfig.extraConfig.gatewayAddr;
         }
       ];
