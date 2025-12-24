@@ -79,6 +79,9 @@ lib.mkIf (config.customOptions.isRouter or false) {
                 # `trusted` ! `isolated`
                 iifname "trusted" oifname "isolated" drop
                 iifname "isolated" oifname "trusted" drop
+
+                # log traffic that was dropped
+                log prefix "router-fw-drop: " drop
             }
           '';
         };
