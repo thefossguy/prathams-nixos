@@ -16,6 +16,8 @@
   environment.etc."resolv.conf".mode = "direct-symlink";
   services.resolved = {
     enable = true;
+    dnssec = "true";
+    dnsovertls = "true";
     fallbackDns = [
       "8.8.8.8"
       "8.8.4.4"
