@@ -129,7 +129,7 @@ let
       nerd-fonts.overpass
       nerd-fonts.sauce-code-pro
       noto-fonts-color-emoji
-      qemu-kvm
+      qemu_kvm
       tmux # It is in `system-packages.nix` and `${scriptsDir}/other-common-scripts/unix-setup.sh`
       watch
     ]
