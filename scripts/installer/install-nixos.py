@@ -581,13 +581,22 @@ def installer_run() -> None:
         "nix",
         "eval",
         "--raw",
-        f".#nixosConfigurations.{installer_variables["hostname"]}.config.system.build.toplevel",
+        f".#nixosConfigurations.{installer_variables['hostname']}.config.system.build.toplevel",
     ]
     debugPrint(nixos_system_outPath)
-    nixos_system_outPath = subprocess.run(nixos_system_outPath, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    nixos_system_outPath = subprocess.run(
+        nixos_system_outPath, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True
+    )
     nixos_system_outPath = nixos_system_outPath.stdout
 
-    max_jobs = ["nix", "path-info", "--refresh", "--store", "https://nix-cache.thefossguy.com", nixos_system_outPath,]
+    max_jobs = [
+        "nix",
+        "path-info",
+        "--refresh",
+        "--store",
+        "https://nix-cache.thefossguy.com",
+        nixos_system_outPath,
+    ]
     debugPrint(max_jobs)
     max_jobs = subprocess.run(max_jobs, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     if max_jobs.returncode == 0:
