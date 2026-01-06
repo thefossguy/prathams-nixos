@@ -72,7 +72,6 @@ in
   );
 
   programs = {
-    adb.enable = !useMinimalConfig;
     bandwhich.enable = !useMinimalConfig;
     command-not-found.enable = !useMinimalConfig;
     dconf.enable = true;
