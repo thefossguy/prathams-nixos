@@ -152,7 +152,7 @@ let
     nix-output-monitor
     nix-top
     nix-tree
-    nixfmt-rfc-style
+    nixfmt
     nvd # diff between NixOS generations
   ];
   commonPackages = lib.optionals (!useMinimalConfig) (
