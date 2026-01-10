@@ -6,7 +6,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-stable.url = "https://nixos.org/channels/nixos-25.05/nixexprs.tar.xz";
+    nixpkgs-stable.url = "https://nixos.org/channels/nixos-25.11/nixexprs.tar.xz";
   };
 
   outputs =
