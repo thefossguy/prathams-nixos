@@ -1,12 +1,12 @@
 {
   inputs = {
-    nixpkgs.url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     home-manager = {
-      url = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+      url = "https://codeload.github.com/nix-community/home-manager/tar.gz/refs/heads/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-stable.url = "https://nixos.org/channels/nixos-25.11/nixexprs.tar.xz";
+    nixpkgs-stable.url = "https://channels.nixos.org/nixos-25.11/nixexprs.tar.xz";
   };
 
   outputs =
