@@ -31,10 +31,36 @@ in
     timesyncd = {
       enable = lib.mkForce true; # NTP
       servers = [
-        "0.in.pool.ntp.org"
-        "1.in.pool.ntp.org"
-        "2.in.pool.ntp.org"
-        "3.in.pool.ntp.org"
+        "192.46.215.60" # 0.in.pool.ntp.org
+        "192.46.211.253" # 0.in.pool.ntp.org
+
+        "162.159.200.123" # 1.in.pool.ntp.org
+        "95.216.144.226" # 1.in.pool.ntp.org
+
+        "142.93.213.206" # 2.in.pool.ntp.org
+        "192.46.215.60" # 2.in.pool.ntp.org
+
+        "162.159.200.1" # 3.in.pool.ntp.org
+        "217.217.249.232" # 3.in.pool.ntp.org
+      ];
+
+      fallbackServers = [
+        "139.59.55.93" # 0.in.pool.ntp.org
+        "103.82.208.166" # 0.in.pool.ntp.org
+
+        "95.216.192.15" # 1.in.pool.ntp.org
+        "3.111.45.100" # 1.in.pool.ntp.org
+
+        "103.82.208.166" # 2.in.pool.ntp.org
+        "40.81.94.65" # 2.in.pool.ntp.org
+
+        "103.136.36.100" # 3.in.pool.ntp.org
+        "15.207.248.194" # 3.in.pool.ntp.org
+
+        "216.239.35.4" # time.google.com
+        "216.239.35.0" # time.google.com
+        "216.239.35.8" # time.google.com
+        "216.239.35.12" # time.google.com
       ];
     };
 
