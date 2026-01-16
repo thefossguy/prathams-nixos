@@ -42,7 +42,12 @@
 
     networkmanager = {
       enable = true;
+      dns = "systemd-resolved";
       wifi.backend = "iwd";
+      connectionConfig = {
+        "ipv4.ignore-auto-dns" = true;
+        "ipv6.ignore-auto-dns" = true;
+      };
     };
 
     firewall = {
