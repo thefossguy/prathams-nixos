@@ -208,7 +208,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         emojipick
         foliate # GNOME's book reader
         foot
-        fluffychat # matrix client
+        #fluffychat # matrix client
         #handbrake
         #mediainfo-gui
         #meld # GUI side-by-side git diff
@@ -222,16 +222,16 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
       ]
       ++ lib.optionals config.customOptions.virtualisation.enable [ virt-viewer ]
       ++ lib.optionals pkgs.stdenv.isx86_64 [
-        kdePackages.kdenlive
+        #kdePackages.kdenlive
         mpv
         tor-browser
       ]
     )
     ++ (with pkgs.kdePackages; [
-      filelight # visualize disk space
+      #filelight # visualize disk space
       #ghostwriter # markdown editor
       #kalk # calculator
-      kdeconnect-kde
+      #kdeconnect-kde
       #okular # the universal document viewer (good for previews)
     ])
     ++ (with stablePkgs; [
