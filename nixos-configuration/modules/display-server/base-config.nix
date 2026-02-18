@@ -242,8 +242,11 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     fontDir.enable = true;
     fontDir.decompressFonts = true;
     enableDefaultPackages = true;
-    fontconfig.defaultFonts.emoji = [ "Noto Color Emoji" ];
-    fontconfig.defaultFonts.monospace = [ "SauceCodePro Nerd Font Mono" ];
+    fontconfig = {
+      enable = true;
+      defaultFonts.emoji = [ "Noto Color Emoji" ];
+      defaultFonts.monospace = [ "SauceCodePro Nerd Font Mono" ];
+    };
 
     packages = with pkgs; [
       nerd-fonts._0xproto
