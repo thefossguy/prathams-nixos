@@ -163,4 +163,10 @@ in
       };
     };
   };
+
+  programs.ssh.extraConfig = ''
+    Host *
+        ServerAliveInterval 60
+        ServerAliveCountMax 10
+  '';
 }
