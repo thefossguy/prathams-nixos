@@ -108,7 +108,7 @@ in
     info.enable = !useMinimalConfig || isIso;
     man = {
       enable = !useMinimalConfig || isIso;
-      generateCaches = !useMinimalConfig || isIso;
+      cache.enable = !useMinimalConfig || isIso;
     };
   };
 }
