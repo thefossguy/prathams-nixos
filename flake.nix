@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     home-manager = {
-      url = "https://codeload.github.com/nix-community/home-manager/tar.gz/refs/heads/master";
+      url = "github:nix-community/home-manager?ref=master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
