@@ -14,7 +14,7 @@ let
   kernelPackagesSet = {
     mainline = pkgs.linux_testing;
     stable = pkgs.linux_latest;
-    longterm = pkgs.linux_6_12;
+    longterm = pkgs.linux_6_18;
   };
 in
 
