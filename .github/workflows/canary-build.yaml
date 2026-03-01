@@ -24,6 +24,7 @@ jobs:
 
       - name: Update lockfile
         run: |
+          git checkout -b canary-build
           curl 'https://files.thefossguy.com/flake.lock' -o flake.lock
           git config --global user.email "githubactions@github.com"
           git config --global user.name "GitHub Actions"
