@@ -33,6 +33,7 @@ jobs:
           curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
           cat flake.lock.shasum
           shasum --check flake.lock.shasum
+          nix flake archive
 
       - name: Test if nixosConfigurations evaluate properly
         run: |
