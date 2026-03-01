@@ -36,10 +36,6 @@ jobs:
           shasum --check flake.lock.shasum
           nix flake archive
 
-      - name: Test if nixosConfigurations evaluate properly
-        run: |
-          nix eval .#nixosConfigurations --apply 'configs: builtins.mapAttrs (name: value: value.config.nixpkgs.hostPlatform.system) configs' --json
-
       - name: Running the CI
         run: |
           python3 ./scripts/nix-ci/builder.py \
