@@ -14,10 +14,10 @@ lib.mkIf (config.customOptions.systemType == "laptop") {
     "pm_debug_messages"
   ];
 
-  systemd.sleep.extraConfig = ''
-    AllowHibernation=yes
-    AllowHybridSleep=yes
-    AllowSuspend=yes
-    AllowSuspendThenHibernate=yes
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowHibernation = "yes";
+    AllowHybridSleep = "yes";
+    AllowSuspend = "yes";
+    AllowSuspendThenHibernate = "yes";
+  };
 }
