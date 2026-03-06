@@ -16,8 +16,8 @@ lib.mkIf (config.customOptions.systemType == "server") {
     "hibernate=no"
   ];
 
-  systemd.sleep.extraConfig = ''
-    AllowHibernation=no
-    AllowSuspend=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowHibernation = "no";
+    AllowSuspend = "no";
+  };
 }
