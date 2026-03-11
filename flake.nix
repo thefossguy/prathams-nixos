@@ -65,10 +65,13 @@
             ;
         };
 
+
+      mkNixosUncompressedIso = { system, guiSession ? "unset" }: mkNixosIso { inherit system guiSession; compressIso = false;
+      };
+      mkNixosCompressedIso = { system, guiSession ? "unset" }: mkNixosIso { inherit system guiSession; compressIso = true; };
       mkNixosIso =
         {
           system,
-          nixpkgsInputChannel ? "default",
           compressIso ? false,
           guiSession ? "unset", # Value of `config.customOptions.displayServer.guiSession` NixOS option
         }:
@@ -191,21 +194,28 @@
           system,
         }:
         {
-          minimal = mkNixosIso {
+          minimal = mkNixosCompressedIso {
             inherit system;
           };
-          minimalCompressed = mkNixosIso {
-            inherit system;
-            compressIso = true;
-          };
-          cosmic = mkNixosIso {
+          cosmic = mkNixosCompressedIso {
             inherit system;
             guiSession = "cosmic";
           };
-          cosmicCompressed = mkNixosIso {
+        }
+      );
+
+      isoImagesUncompressed = forEachSupportedLinuxSystem (
+        {
+          pkgs,
+          system,
+        }:
+        {
+          minimal = mkNixosUncompressedIso {
+            inherit system;
+          };
+          cosmic = mkNixosUncompressedIso {
             inherit system;
             guiSession = "cosmic";
-            compressIso = true;
           };
         }
       );
