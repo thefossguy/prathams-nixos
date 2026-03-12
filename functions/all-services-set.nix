@@ -78,7 +78,7 @@ rec {
 
   customNixosUpgrade = mkServiceConfig {
     unitName = "custom-nixos-upgrade";
-    onCalendar = if isLaptop then systemdTime.Hourly { } else (systemdTime.Daily { hour = "04"; });
+    onCalendar = systemdTime.Hourly { };
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
     requiredUnits = customNixosUpgrade.afterUnits;
   };
