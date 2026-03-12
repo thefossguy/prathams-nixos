@@ -117,8 +117,8 @@ rec {
     requiredUnits = scheduledReboots.afterUnits;
   };
 
-  signVerifyAndPushNixStorePaths = mkServiceConfig {
-    unitName = "sign-verify-and-push-nix-store-paths";
+  navyaCIServer = mkServiceConfig {
+    unitName = "navya-ci-server";
     afterUnits = [ "network.target" ];
     requiredUnits = [ "network-online.target" ];
     wantedByUnits = [ "multi-user.target" ];

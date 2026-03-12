@@ -8,8 +8,9 @@
 }:
 
 let
-  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.signVerifyAndPushNixStorePaths;
+  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.navyaCIServer;
 in
+
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
   systemd.services."${serviceConfig.unitName}" = {
     enable = true;
