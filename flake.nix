@@ -163,6 +163,7 @@
           system,
         }:
         {
+          navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix {};
         }
       );
 

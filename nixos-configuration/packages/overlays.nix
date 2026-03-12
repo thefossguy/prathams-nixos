@@ -52,6 +52,11 @@ in
       };
     })
 
+    # out of tree package definitions go here
+    (final: prev: {
+      navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix {};
+    })
+
     #(final: prev: {
     #  # QEMU requires the `librados` library for Ceph support and I don't need
     #  # it. Plus, something is always going on in Python/Ceph space so disable
