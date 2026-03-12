@@ -10,7 +10,7 @@
 {
   imports = [
     ./caddy-server.nix
-    ./continuous-build-and-push.nix
+    ./navya-ci-node.nix
     ./custom-nixos-upgrade.nix
     ./disable-intel-pstate.nix
     ./ensure-local-static-ip.nix

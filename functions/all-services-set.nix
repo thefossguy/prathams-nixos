@@ -69,8 +69,8 @@ rec {
     wantedByUnits = [ "multi-user.target" ];
   };
 
-  continuousBuildAndPush = mkServiceConfig {
-    unitName = "continuous-build-and-push";
+  navyaCINode = mkServiceConfig {
+    unitName = "navya-ci-node";
     afterUnits = [ "network.target" ];
     requiredUnits = [ "network-online.target" ];
     wantedByUnits = [ "multi-user.target" ];

@@ -8,7 +8,7 @@
 }:
 
 let
-  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.continuousBuildAndPush;
+  serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.navyaCINode;
 in
 
 lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
