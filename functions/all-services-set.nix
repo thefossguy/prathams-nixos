@@ -71,9 +71,9 @@ rec {
 
   continuousBuildAndPush = mkServiceConfig {
     unitName = "continuous-build-and-push";
-    onCalendar = systemdTime.Hourly { minute = "00,30"; }; # every 30 minutes
-    afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
-    requiredUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
+    afterUnits = [ "network.target" ];
+    requiredUnits = [ "network-online.target" ];
+    wantedByUnits = [ "multi-user.target" ];
   };
 
   customNixosUpgrade = mkServiceConfig {
