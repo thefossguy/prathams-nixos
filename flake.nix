@@ -65,10 +65,24 @@
             ;
         };
 
-
-      mkNixosUncompressedIso = { system, guiSession ? "unset" }: mkNixosIso { inherit system guiSession; compressIso = false;
-      };
-      mkNixosCompressedIso = { system, guiSession ? "unset" }: mkNixosIso { inherit system guiSession; compressIso = true; };
+      mkNixosUncompressedIso =
+        {
+          system,
+          guiSession ? "unset",
+        }:
+        mkNixosIso {
+          inherit system guiSession;
+          compressIso = false;
+        };
+      mkNixosCompressedIso =
+        {
+          system,
+          guiSession ? "unset",
+        }:
+        mkNixosIso {
+          inherit system guiSession;
+          compressIso = true;
+        };
       mkNixosIso =
         {
           system,
@@ -163,7 +177,7 @@
           system,
         }:
         {
-          navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix {};
+          navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
         }
       );
 

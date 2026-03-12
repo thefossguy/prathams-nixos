@@ -54,7 +54,7 @@ in
 
     # out of tree package definitions go here
     (final: prev: {
-      navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix {};
+      navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix { };
     })
 
     #(final: prev: {
