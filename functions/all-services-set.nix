@@ -97,6 +97,7 @@ rec {
 
   nixGc = mkServiceConfig {
     unitName = "nix-gc";
+    onCalendar = systemdTime.Hourly { };
     beforeUnits = customNixosUpgrade.afterUnits ++ [ "${customNixosUpgrade.unitName}.service" ];
     wantedUnits = nixGc.beforeUnits;
   };
