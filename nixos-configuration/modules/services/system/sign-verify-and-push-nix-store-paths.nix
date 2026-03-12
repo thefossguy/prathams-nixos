@@ -11,76 +11,50 @@ let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.signVerifyAndPushNixStorePaths;
 in
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
-  systemd = {
-    timers."${serviceConfig.unitName}" = {
-      enable = true;
-      requiredBy = [ "timers.target" ];
-      timerConfig.OnCalendar = serviceConfig.onCalendar;
-      timerConfig.Unit = "${serviceConfig.unitName}.service";
+  systemd.services."${serviceConfig.unitName}" = {
+    enable = true;
+    after = serviceConfig.afterUnits;
+    requires = serviceConfig.requiredUnits;
+    wantedBy = serviceConfig.wantedByUnits;
+
+    path = with pkgs; [
+      git
+      nix
+      openssh
+      openssl
+    ];
+
+    serviceConfig = {
+      User = "root";
+      Type = "simple";
+      Restart = "always";
+      RestartSec = "10";
     };
 
-    services."${serviceConfig.unitName}" = {
-      enable = true;
-      after = serviceConfig.afterUnits;
-      requires = serviceConfig.requiredUnits;
-
-      path = with pkgs; [
-        coreutils-full
-        findutils
-        gawk
-        git
-        gnused
-        nix
-        openssh
-        openssl
-        python3
-        rsync
-      ];
-
-      serviceConfig = {
-        User = "root";
-        Type = "oneshot";
-      };
-
-      preStart = "rm -vf /etc/nixos/*result*";
-
-      script = ''
-        set -xeuf -o pipefail
-
-        # Using the `--link-outPaths` option in the `scripts/nix-ci/builder.py` script
-        # creates a symlink for each expression that is to be built, but is built
-        # by the builders and is sent to the local cache. Therefore, it is
-        # like building the expressions, even for other `system`s, without
-        # actually building it. So instead of signing every store path, sign
-        # only the ones that are in /etc/nixos/result*. Reducing the time taken.
-        pushd /etc/nixos
-        python3 ./scripts/nix-ci/builder.py \
-            --nixosConfigurations --homeConfigurations --devShells --packages \
-            --exclusive-nix-system-aarch64-linux --exclusive-nix-system-x86_64-linux \
-            --evaluate-outPaths --link-outPaths
-        popd
-      '';
-
-      postStart = lib.strings.optionalString (config.networking.hostName == "chaturvyas") ''
-        set -xeuf -o pipefail
-
-        nixResults=( $(find /etc/nixos -iname 'result*' -type l | tr '\r\n' ' ' | xargs --no-run-if-empty realpath) )
-        nixHashes=( $(echo "''${nixResults[@]}" | xargs --no-run-if-empty --max-args 1 basename | awk -F '-' '{print $1}') )
-
-        nix store sign --recursive --key-file /my-nix-binary-cache/cache-priv-key.pem "''${nixResults[@]}"
-        nix store verify --recursive --sigs-needed 1 "''${nixResults[@]}" >/dev/null 2>&1 || \
-             nix store repair "''${nixResults[@]}"
-
-        nix copy --refresh --to 'ssh-ng://pratham@hans' "''${nixResults[@]}"
-
-        pushd /etc/nixos
-        sha512sum flake.lock > flake.lock.shasum
-        rsync --verbose --size-only --human-readable --progress --stats --itemize-changes --checksum \
-            -e 'ssh -i ${config.customOptions.userHomeDir}/.ssh/ssh' \
-            flake.lock flake.lock.shasum \
-            pratham@hans:/srv/thefossguy/ftp-files/
-        popd
-      '';
-    };
+    script = ''
+      ${pkgs.navya-ci}/bin/navya-ci \
+          --nix-system aarch64-linux \
+          --nix-system x86_64-linux \
+          --flake-path /etc/nixos \
+          --machine-role server \
+          --update-lockfile \
+          ${
+            lib.strings.optionalString (config.networking.hostName == "chaturvyas") "--nix-copy-machine 'ssh-ng://pratham@hans'"
+          } \
+          ${
+            lib.strings.optionalString (
+              config.networking.hostName == "chaturvyas"
+            ) "--signing-key-path /my-nix-binary-cache/cache-priv-key.pem"
+          } \
+          --flake-output-to-build apps \
+          --flake-output-to-build devShells \
+          --flake-output-to-build homeConfigurations \
+          --flake-output-to-build isoImagesUncompressed \
+          --flake-output-to-build kexecTree \
+          --flake-output-to-build miscPackages \
+          --flake-output-to-build nixosConfigurations \
+          --flake-output-to-build packages \
+          #EOF
+    '';
   };
 }

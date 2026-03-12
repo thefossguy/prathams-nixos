@@ -118,12 +118,9 @@ rec {
 
   signVerifyAndPushNixStorePaths = mkServiceConfig {
     unitName = "sign-verify-and-push-nix-store-paths";
-    onCalendar = systemdTime.Hourly { minute = "00,30"; }; # every 30 minutes
-    afterUnits = [
-      "${customNixosUpgrade.unitName}.service"
-      "${updateNixosFlakeInputs.unitName}.service"
-    ];
-    requiredUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
+    afterUnits = [ "network.target" ];
+    requiredUnits = [ "network-online.target" ];
+    wantedByUnits = [ "multi-user.target" ];
   };
 
   updateNixosFlakeInputs = mkServiceConfig {
