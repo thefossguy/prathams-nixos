@@ -11,8 +11,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
   src = fetchFromGitHub {
     owner = "thefossguy";
     repo = "navya-ci";
-    rev = "fa82594812de1f13b986fd9c13087ff19e734139";
-    hash = "sha256-BmXt1gkY5BZbZxY6Qh3G/5rn+e3VT2PWrSxgOwmAzPs=";
+    rev = "d1bc078338eb9ede07f886b7d53d680e143d88fa";
+    hash = "sha256-FNsL5NC/A3N910voRB/+PO3t/giFpzxa37dOVLd6nxg=";
   };
 
   cargoHash = "sha256-016K+WSpamEEizXQl4U2w2kaClkEV/fOuk8/e9N4Gfc=";
