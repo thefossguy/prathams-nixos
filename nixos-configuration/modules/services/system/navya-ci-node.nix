@@ -40,6 +40,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
           --update-lockfile \
           --nix-copy-machine 'ssh-ng://pratham@10.0.0.24?ssh-key=${config.customOptions.userHomeDir}/.ssh/ssh' \
           --copy-unsigned-paths \
+          --sleep-break 120 \
           --flake-output-to-build apps \
           --flake-output-to-build devShells \
           --flake-output-to-build homeConfigurations \
