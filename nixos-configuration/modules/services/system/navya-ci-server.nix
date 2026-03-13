@@ -47,6 +47,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
               config.networking.hostName == "chaturvyas"
             ) "--signing-key-path /my-nix-binary-cache/cache-priv-key.pem"
           } \
+          --sleep-break 120 \
           --flake-output-to-build apps \
           --flake-output-to-build devShells \
           --flake-output-to-build homeConfigurations \
