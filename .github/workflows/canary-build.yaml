@@ -25,15 +25,9 @@ jobs:
       - name: Update lockfile
         run: |
           git checkout -b canary-build
-          curl 'https://files.thefossguy.com/flake.lock' -o flake.lock
-          git config --global user.email "githubactions@github.com"
-          git config --global user.name "GitHub Actions"
+          nix flake update
           git add flake.lock
-          git status
           git commit -m 'update the flake lockfile'
-          curl 'https://files.thefossguy.com/flake.lock.shasum' -o flake.lock.shasum
-          cat flake.lock.shasum
-          shasum --check flake.lock.shasum
           nix flake archive
 
       - name: Running the CI
