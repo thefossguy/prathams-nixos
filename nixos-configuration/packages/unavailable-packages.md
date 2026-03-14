@@ -4,3 +4,5 @@
                  This package was removed (from Nixpkgs and all of my Nix
                  projects+configurations) because a third-party takeover was
                  attempted and source upstream is considered tainted.
+ - `cargo-watch`: This package is not maintained anymore. `bacon` is a good
+                  replacement.
