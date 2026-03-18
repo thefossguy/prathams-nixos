@@ -144,32 +144,23 @@
         ) realUserSet
       );
 
-      devShells =
-        forEachSupportedUnixSystem (
-          {
-            pkgs,
-            system,
-          }:
-          {
-          }
-        )
-        // forEachSupportedLinuxSystem (
-          {
-            pkgs,
-            system,
-          }:
-          {
-            nixosInstaller = pkgs.mkShellNoCC {
-              packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix { };
-              shellHook = ''
-                if ! nix help 1>/dev/null 2>&1; then
-                    export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
-                    alias nix="''${nix}"
-                fi
-              '';
-            };
-          }
-        );
+      devShells = forEachSupportedLinuxSystem (
+        {
+          pkgs,
+          system,
+        }:
+        {
+          nixosInstaller = pkgs.mkShellNoCC {
+            packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix { };
+            shellHook = ''
+              if ! nix help 1>/dev/null 2>&1; then
+                  export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
+                  alias nix="''${nix}"
+              fi
+            '';
+          };
+        }
+      );
 
       packages = forEachSupportedUnixSystem (
         {
@@ -180,28 +171,6 @@
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
         }
       );
-
-      miscPackages =
-        forEachSupportedUnixSystem (
-          {
-            pkgs,
-            system,
-          }:
-          {
-          }
-        )
-        // forEachSupportedLinuxSystem (
-          {
-            pkgs,
-            system,
-          }:
-          {
-            binfmtCheck = pkgs.writeShellApplication {
-              name = "binfmtCheck.sh";
-              text = "echo '${system}'";
-            };
-          }
-        );
 
       isoImages = forEachSupportedLinuxSystem (
         {
