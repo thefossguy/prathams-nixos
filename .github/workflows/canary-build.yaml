@@ -20,19 +20,24 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
         with:
-          extra-conf: "extra-platforms = aarch64-linux riscv64-linux x86_64-linux"
-
-      - name: Update lockfile
-        run: |
-          git checkout -b canary-build
-          nix flake update
-          git add flake.lock
-          git commit -m 'update the flake lockfile'
-          nix flake archive
+          extra-conf: |
+            extra-platforms = aarch64-linux riscv64-linux x86_64-linux
+            substituters = https://cache.nixos.org https://nix-cache.thefossguy.com
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
 
       - name: Running the CI
         run: |
-          python3 ./scripts/nix-ci/builder.py \
-              --nixosConfigurations --homeConfigurations --devShells --packages \
-              --evaluate-outPaths --github-ci-shortcut --no-print-missing-paths \
-              --exclusive-nix-system-x86_64-linux --exclusive-nix-system-aarch64-linux
+          nix run ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem).navya-ci" -- \
+              --flake-path "$(realpath .)" \
+              --machine-role quick_ci \
+              --nix-system aarch64-linux \
+              --nix-system x86_64-linux \
+              --update-lockfile \
+              --flake-output-to-build apps \
+              --flake-output-to-build devShells \
+              --flake-output-to-build homeConfigurations \
+              --flake-output-to-build isoImagesUncompressed \
+              --flake-output-to-build kexecTree \
+              --flake-output-to-build nixosConfigurations \
+              --flake-output-to-build packages \
+              #EOF
