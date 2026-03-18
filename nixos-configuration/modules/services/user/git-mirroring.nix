@@ -62,7 +62,7 @@ in
               for GIT_REMOTE in "''${GIT_MIRRORS[@]}"; do
                   for GIT_BRANCH in "''${LOCAL_BRANCHES[@]}"; do
                       echo "GIT_SSH_COMMAND=\"ssh -o ConnectTimeout=10 -i ''${HOME}/.ssh/''${GIT_REMOTE}\" git -C ''${GIT_REPO} push ''${GIT_REMOTE} ''${GIT_BRANCH}"
-                      GIT_SSH_COMMAND="ssh -o ConnectTimeout=10 -i ''${HOME}/.ssh/''${GIT_REMOTE}" git -C "''${GIT_REPO}" push "''${GIT_REMOTE}" "''${GIT_BRANCH}"
+                      GIT_SSH_COMMAND="ssh -o ConnectTimeout=10 -i ''${HOME}/.ssh/''${GIT_REMOTE}" git -C "''${GIT_REPO}" push "''${GIT_REMOTE}" "''${GIT_BRANCH}" --tags
                   done
               done
           done
