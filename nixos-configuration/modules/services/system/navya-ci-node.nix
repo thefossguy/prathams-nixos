@@ -46,7 +46,6 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
           --flake-output-to-build homeConfigurations \
           --flake-output-to-build isoImagesUncompressed \
           --flake-output-to-build kexecTree \
-          --flake-output-to-build miscPackages \
           --flake-output-to-build nixosConfigurations \
           --flake-output-to-build packages \
           #EOF
