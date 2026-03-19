@@ -26,10 +26,10 @@ jobs:
 
       - name: Running the CI
         run: |
+          nix flake update
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
               --machine-role quick_ci \
               --nix-system ${{ matrix.nixSystem }} \
-              --update-lockfile \
               --flake-output-to-build ${{ matrix.flakeOutput }} \
               #EOF
