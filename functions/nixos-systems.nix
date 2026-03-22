@@ -268,13 +268,13 @@ in
       };
     };
 
-    # TEMPORARY Hetzner Ampere server (8GB; A76) for hosting Hydra
+    # TEMPORARY Hetzner Ampere server (32GB; 16xA76) for hosting Hydra
     leela = {
       coreConfig = {
         hostname = "leela";
-        ipv4Address = "49.13.63.122";
-        primaryNetIface = "enx9600046d55df";
-        addrMAC = "96:00:04:6D:55:DF";
+        ipv4Address = "116.202.21.165";
+        primaryNetIface = "enx9200076b3878";
+        addrMAC = "92:00:07:6b:38:78";
         system = linuxSystems.aarch64;
       };
       extraConfig = {
