@@ -2,7 +2,7 @@
   pratham = {
     username = "pratham";
     fullname = "Pratham Patel";
-    hashedPassword = "$y$j9T$dyQH1g6q6YjT.8lNruhJT.$xU2x3Phl3L6ey6tIWfmBlgHlCMrTnAxn9yD.a2/yS82";
+    hashedPassword = "$y$j9T$S3vYlSr3Fc.Q4s3khoj5R0$.ZaDUNDFl1/./thA2AdilcvtzoVO1IafiC7AcgUAGC6";
     isRealUser = true;
   };
 
@@ -23,7 +23,7 @@
   # User for the NixOS ISO
   iso = {
     username = "nixos";
-    hashedPassword = "$y$j9T$22Zaxg0v1qrAceaTPmlCw1$X45iBxdEyuSN7ip36VNudgth48e1qhqzh5mijivsqR9";
+    hashedPassword = "$y$j9T$JHdlW4/3NS8UrjquQX6WE0$Y37cfGSMQS5QhIvJG02dtb96hzjrkr8HhsvuCwdznaA";
     isRealUser = false;
   };
 }
