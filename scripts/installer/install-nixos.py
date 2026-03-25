@@ -585,7 +585,7 @@ def installer_run() -> None:
         "-20",
         "nixos-install",
         "--max-jobs",
-        "0",
+        "1",
         "--cores",
         "1",
         "--show-trace",
