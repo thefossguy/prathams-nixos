@@ -49,6 +49,7 @@ in
       bheem = "6cca5083";
       hans = "b531df6e";
       leela = "fed2312a";
+      swaadhi = "2bd43591";
       vaaman = "3c8077f9";
       vaayu = "d81cd923";
     };
