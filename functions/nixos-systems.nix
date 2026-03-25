@@ -285,6 +285,17 @@ in
       };
     };
 
+    # ARM64 VM (16G; 8x M4) guest on work Mac
+    swaadhi = {
+      coreConfig = {
+        hostname = "swaadhi";
+        ipv4Address = "10.0.0.171";
+        primaryNetIface = "enxba8a89c5220a";
+        addrMAC = "ba:8a:89:c5:22:0a";
+        system = linuxSystems.aarch64;
+      };
+    };
+
     # StarFive VisionFive 2 (8GB; JH7110)
     vaaman = {
       coreConfig = {
