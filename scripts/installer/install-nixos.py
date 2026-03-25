@@ -578,46 +578,6 @@ def installer_pre_setup() -> None:
 
 
 def installer_run() -> None:
-    debugPrint("Determining if the NixOS system is cached or not.")
-
-    nixos_system_outPath = (
-        [
-            "nix",
-        ]
-        + nixExperimentalFlags
-        + [
-            "eval",
-            "--raw",
-            f".#nixosConfigurations.{installer_variables['hostname']}.config.system.build.toplevel",
-        ]
-    )
-    debugPrint(nixos_system_outPath)
-    nixos_system_outPath = subprocess.run(
-        nixos_system_outPath, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True
-    )
-    nixos_system_outPath = nixos_system_outPath.stdout
-
-    max_jobs = (
-        [
-            "nix",
-        ]
-        + nixExperimentalFlags
-        + [
-            "path-info",
-            "--refresh",
-            "--store",
-            "https://nix-cache.thefossguy.com",
-            nixos_system_outPath,
-        ]
-    )
-    debugPrint(max_jobs)
-    max_jobs = subprocess.run(max_jobs, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    if max_jobs.returncode == 0:
-        # NixOS system is cached, no need to build anything
-        max_jobs = 0
-    else:
-        max_jobs = 1
-
     debugPrint("Installing NixOS for system `{}`.".format(installer_variables["hostname"]))
     nixos_install_command = [
         "nice",
@@ -625,7 +585,7 @@ def installer_run() -> None:
         "-20",
         "nixos-install",
         "--max-jobs",
-        f"{max_jobs}",
+        "0",
         "--cores",
         "1",
         "--show-trace",
