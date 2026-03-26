@@ -34,3 +34,33 @@ jobs:
               --nix-system ${{ matrix.nixSystem }} \
               --flake-output-to-build ${{ matrix.flakeOutput }} \
               #EOF
+
+  canary-build-aftermath:
+    name: Canary build aftermath
+    runs-on: ubuntu-24.04
+    needs: canary-build
+    if: always()
+    steps:
+      - uses: actions/checkout@main
+      - uses: NixOS/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Upload artifact determination
+        run: |
+          nix flake update
+          FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
+          CANARY_BUILD_STATUS=${{ needs.canary-build.result }}
+          [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
+          if [[ "${CANARY_BUILD_STATUS}" == 'success' ]] || [[ "${CANARY_BUILD_STATUS}" == 'skipped' ]]; then
+              echo "${FLAKE_STORE_PATH}:true" > previous-job-info
+          elif [[ "${CANARY_BUILD_STATUS}" == 'failure' ]] || [[ "${CANARY_BUILD_STATUS}" == 'cancelled' ]]; then
+              echo "${FLAKE_STORE_PATH}:false" > previous-job-info
+          else
+              exit 1
+          fi
+
+      - uses: actions/upload-artifact@main
+        with:
+          name: previous-job-info
