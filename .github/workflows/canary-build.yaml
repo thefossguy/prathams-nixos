@@ -28,6 +28,7 @@ jobs:
       - name: Performing pre-setup
         id: pre-setup
         run: |
+          ls -alh
           touch previous-job-info
           cat previous-job-info
           echo "git_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -79,6 +80,7 @@ jobs:
           digest-mismatch: error
       - name: Running the CI
         run: |
+          ls -alh
           mv flake.lock.new flake.lock
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
