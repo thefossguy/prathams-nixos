@@ -2,13 +2,60 @@ name: Canary Build
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 * * * *' # Hourly
+    - cron: '0 * * * *' # Hourly
 
 jobs:
+  canary-build-pre-setup:
+    name: Canary build pre-setup
+    runs-on: ubuntu-24.04
+    outputs:
+      do_canary_build: ${{ steps.pre-setup.outputs.do_canary_build }}
+      git_commit_sha: ${{ steps.pre-setup.outputs.git_commit_sha }}
+    steps:
+      - uses: actions/checkout@main
+      - uses: NixOS/nix-installer-action@main
+        with:
+          installer-version: latest
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - uses: actions/download-artifact@main
+        continue-on-error: true
+        with:
+          name: previous-job-info
+          path: previous-job-info
+          digest-mismatch: error
+
+      - name: Performing pre-setup
+        id: pre-setup
+        run: |
+          touch previous-job-info
+          cat previous-job-info
+          echo "git_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          nix flake update
+          FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
+          [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
+          if grep -q "${FLAKE_STORE_PATH}:true" previous-job-info; then
+              echo "do_canary_build=false" >> "$GITHUB_OUTPUT"
+          else
+              echo "do_canary_build=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/upload-artifact@main
+        with:
+          path: flake.lock
+          name: flake.lock
+          if-no-files-found: error
+          overwrite: true
+          compression-level: 9
+          retention-days: 1
+
   canary-build:
     name: Canary build (${{ matrix.nixSystem }} | ${{ matrix.flakeOutput }})
     # https://github.com/actions/partner-runner-images/tree/main/images
     runs-on:  ${{ matrix.nixSystem == 'x86_64-linux' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
+    needs: canary-build-pre-setup
+    if: needs.canary-build-pre-setup.outputs.do_canary_build == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -18,6 +65,8 @@ jobs:
     steps:
       - run: TZ='Asia/Kolkata' date +'%Y/%m/%d %H:%M:%S'
       - uses: actions/checkout@main
+        with:
+          ref: ${{ needs.canary-build-pre-setup.outputs.git_commit_sha }}
       - uses: NixOS/nix-installer-action@main
         with:
           extra-conf: |
@@ -25,9 +74,14 @@ jobs:
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
             experimental-features = nix-command flakes
 
+      - uses: actions/download-artifact@main
+        with:
+          name: flake.lock
+          path: flake.lock.new
+          digest-mismatch: error
       - name: Running the CI
         run: |
-          nix flake update
+          mv flake.lock.new flake.lock
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
               --machine-role quick_ci \
@@ -42,22 +96,32 @@ jobs:
     if: always()
     steps:
       - uses: actions/checkout@main
+        with:
+          ref: ${{ needs.canary-build-pre-setup.outputs.git_commit_sha }}
       - uses: NixOS/nix-installer-action@main
         with:
           extra-conf: |
             experimental-features = nix-command flakes
 
+      - uses: actions/download-artifact@main
+        with:
+          name: flake.lock
+          path: flake.lock.new
+          digest-mismatch: error
       - name: Upload artifact determination
+        continue-on-error: true
         run: |
-          nix flake update
-          FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
           CANARY_BUILD_STATUS=${{ needs.canary-build.result }}
+          echo "${CANARY_BUILD_STATUS}"
+          mv flake.lock.new flake.lock
+          FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
           [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
           if [[ "${CANARY_BUILD_STATUS}" == 'success' ]] || [[ "${CANARY_BUILD_STATUS}" == 'skipped' ]]; then
               echo "${FLAKE_STORE_PATH}:true" | tee previous-job-info
           elif [[ "${CANARY_BUILD_STATUS}" == 'failure' ]] || [[ "${CANARY_BUILD_STATUS}" == 'cancelled' ]]; then
               echo "${FLAKE_STORE_PATH}:false" | tee previous-job-info
           else
+              echo "${FLAKE_STORE_PATH}:false" | tee previous-job-info
               exit 1
           fi
 
