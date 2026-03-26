@@ -11,6 +11,9 @@ jobs:
     outputs:
       do_canary_build: ${{ steps.pre-setup.outputs.do_canary_build }}
       git_commit_sha: ${{ steps.pre-setup.outputs.git_commit_sha }}
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
       - uses: actions/checkout@main
       - uses: NixOS/nix-installer-action@main
@@ -80,6 +83,9 @@ jobs:
       matrix:
         nixSystem: [ aarch64-linux, x86_64-linux, ]
         flakeOutput: [ apps, devShells, homeConfigurations, isoImagesUncompressed, kexecTree, nixosConfigurations, packages, ]
+    permissions:
+      id-token: "write"
+      contents: "read"
 
     steps:
       - uses: actions/checkout@main
@@ -113,6 +119,10 @@ jobs:
     runs-on: ubuntu-24.04
     needs: canary-build
     if: always()
+    permissions:
+      id-token: "write"
+      contents: "read"
+
     steps:
       - uses: actions/checkout@main
         with:
