@@ -63,4 +63,9 @@ jobs:
 
       - uses: actions/upload-artifact@main
         with:
+          path: previous-job-info
           name: previous-job-info
+          if-no-files-found: error
+          overwrite: true
+          compression-level: 9
+          retention-days: 1
