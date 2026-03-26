@@ -21,19 +21,40 @@ jobs:
 
       - name: Performing pre-setup
         id: pre-setup
+        continue-on-error: true
         run: |
-          ls -alh
-          touch previous-job-info
-          cat previous-job-info
-          echo "git_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          set -x
+          CURRENT_STEP_EXIT_CODE=0
+
+          # Always run this first because the last step in this job
+          # depends on an updated lockfile. Additionally, the last job
+          # also depends on an updated lockfile.
           nix flake update
+          echo "git_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          PREVIOUS_RUN_ID="$(gh run list --workflow=canary-build.yaml --limit 2 --json databaseId --jq '.[1].databaseId')"
+          if [[ -n "${PREVIOUS_RUN_ID}" ]] then
+              gh run download "${PREVIOUS_RUN_ID}" --name previous-job-info --dir $PWD
+          else
+              echo 'ERROR: Could not determine $PREVIOUS_RUN_ID for some reason'
+              touch previous-job-info
+              CURRENT_STEP_EXIT_CODE=1
+          fi
+          cat previous-job-info
+
           FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
-          [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
+          if [[ -n "${FLAKE_STORE_PATH}" ]]; then
+              echo 'ERROR: Could not determine $FLAKE_STORE_PATH for some reason'
+          else
+              CURRENT_STEP_EXIT_CODE=1
+          fi
           if grep -q "${FLAKE_STORE_PATH}:true" previous-job-info; then
               echo "do_canary_build=false" >> "$GITHUB_OUTPUT"
           else
               echo "do_canary_build=true" >> "$GITHUB_OUTPUT"
           fi
+
+          exit $CURRENT_STEP_EXIT_CODE
 
       - uses: actions/upload-artifact@v4
         with:
@@ -57,7 +78,6 @@ jobs:
         flakeOutput: [ apps, devShells, homeConfigurations, isoImagesUncompressed, kexecTree, nixosConfigurations, packages, ]
 
     steps:
-      - run: TZ='Asia/Kolkata' date +'%Y/%m/%d %H:%M:%S'
       - uses: actions/checkout@main
         with:
           ref: ${{ needs.canary-build-pre-setup.outputs.git_commit_sha }}
@@ -74,8 +94,8 @@ jobs:
           path: flake.lock.new
       - name: Running the CI
         run: |
-          ls -alh flake.lock.new/
-          mv flake.lock.new flake.lock
+          set -x
+          mv flake.lock.new/flake.lock flake.lock
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
               --machine-role quick_ci \
@@ -104,17 +124,18 @@ jobs:
       - name: Upload artifact determination
         continue-on-error: true
         run: |
+          set -x
           CANARY_BUILD_STATUS=${{ needs.canary-build.result }}
           echo "${CANARY_BUILD_STATUS}"
-          mv flake.lock.new flake.lock
+          touch previous-job-info
+          mv flake.lock.new/flake.lock flake.lock
           FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
           [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
           if [[ "${CANARY_BUILD_STATUS}" == 'success' ]] || [[ "${CANARY_BUILD_STATUS}" == 'skipped' ]]; then
               echo "${FLAKE_STORE_PATH}:true" | tee previous-job-info
           elif [[ "${CANARY_BUILD_STATUS}" == 'failure' ]] || [[ "${CANARY_BUILD_STATUS}" == 'cancelled' ]]; then
-              echo "${FLAKE_STORE_PATH}:false" | tee previous-job-info
+              echo "..."
           else
-              echo "${FLAKE_STORE_PATH}:false" | tee previous-job-info
               exit 1
           fi
 
