@@ -19,7 +19,7 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
 
-      - uses: actions/download-artifact@main
+      - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: previous-job-info
@@ -41,7 +41,7 @@ jobs:
               echo "do_canary_build=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/upload-artifact@main
+      - uses: actions/upload-artifact@v4
         with:
           path: flake.lock
           name: flake.lock.new
@@ -74,7 +74,7 @@ jobs:
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
             experimental-features = nix-command flakes
 
-      - uses: actions/download-artifact@main
+      - uses: actions/download-artifact@v4
         with:
           name: flake.lock.new
           digest-mismatch: error
@@ -103,7 +103,7 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
 
-      - uses: actions/download-artifact@main
+      - uses: actions/download-artifact@v4
         with:
           name: flake.lock.new
           digest-mismatch: error
@@ -124,7 +124,7 @@ jobs:
               exit 1
           fi
 
-      - uses: actions/upload-artifact@main
+      - uses: actions/upload-artifact@v4
         with:
           path: previous-job-info
           name: previous-job-info
