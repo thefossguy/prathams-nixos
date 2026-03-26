@@ -169,6 +169,13 @@
         }:
         {
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
+          non-buildable-package = pkgs.stdenv.mkDerivation {
+            pname = "non-buildable-package";
+            version = "0.1.0-unstable-2026-03-26";
+            dontUnpack = true;
+            dontBuild = true;
+            installPhase = "exit 1";
+          };
         }
       );
 
