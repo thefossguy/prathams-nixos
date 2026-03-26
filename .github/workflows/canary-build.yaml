@@ -22,6 +22,8 @@ jobs:
       - name: Performing pre-setup
         id: pre-setup
         continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -x
           CURRENT_STEP_EXIT_CODE=0
