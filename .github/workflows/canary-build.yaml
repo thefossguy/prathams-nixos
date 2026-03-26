@@ -18,6 +18,7 @@ jobs:
           installer-version: latest
           extra-conf: |
             experimental-features = nix-command flakes
+      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Performing pre-setup
         id: pre-setup
@@ -90,6 +91,7 @@ jobs:
             substituters = https://cache.nixos.org https://nix-cache.thefossguy.com
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
             experimental-features = nix-command flakes
+      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - uses: actions/download-artifact@v7
         with:
@@ -119,6 +121,7 @@ jobs:
         with:
           extra-conf: |
             experimental-features = nix-command flakes
+      - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - uses: actions/download-artifact@v7
         with:
