@@ -54,9 +54,9 @@ jobs:
           CANARY_BUILD_STATUS=${{ needs.canary-build.result }}
           [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
           if [[ "${CANARY_BUILD_STATUS}" == 'success' ]] || [[ "${CANARY_BUILD_STATUS}" == 'skipped' ]]; then
-              echo "${FLAKE_STORE_PATH}:true" > previous-job-info
+              echo "${FLAKE_STORE_PATH}:true" | tee previous-job-info
           elif [[ "${CANARY_BUILD_STATUS}" == 'failure' ]] || [[ "${CANARY_BUILD_STATUS}" == 'cancelled' ]]; then
-              echo "${FLAKE_STORE_PATH}:false" > previous-job-info
+              echo "${FLAKE_STORE_PATH}:false" | tee previous-job-info
           else
               exit 1
           fi
