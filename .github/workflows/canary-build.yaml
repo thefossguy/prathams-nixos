@@ -23,7 +23,6 @@ jobs:
         continue-on-error: true
         with:
           name: previous-job-info
-          path: previous-job-info
           digest-mismatch: error
 
       - name: Performing pre-setup
@@ -44,7 +43,7 @@ jobs:
       - uses: actions/upload-artifact@main
         with:
           path: flake.lock
-          name: flake.lock
+          name: flake.lock.new
           if-no-files-found: error
           overwrite: true
           compression-level: 9
@@ -76,8 +75,7 @@ jobs:
 
       - uses: actions/download-artifact@main
         with:
-          name: flake.lock
-          path: flake.lock.new
+          name: flake.lock.new
           digest-mismatch: error
       - name: Running the CI
         run: |
@@ -105,8 +103,7 @@ jobs:
 
       - uses: actions/download-artifact@main
         with:
-          name: flake.lock
-          path: flake.lock.new
+          name: flake.lock.new
           digest-mismatch: error
       - name: Upload artifact determination
         continue-on-error: true
