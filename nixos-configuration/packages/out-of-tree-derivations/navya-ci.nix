@@ -6,16 +6,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "navya-ci";
-  version = "0.2.8";
+  version = "0.3.0";
 
   src = fetchFromGitHub {
     owner = "thefossguy";
     repo = "navya-ci";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-GXxO3B754tx5NxCEC+mFjNpBMCjSMmLBh6LXLC993HY=";
+    hash = "sha256-El9bRjSeA71GJntbGRQf280grYoOxCX3PsNddSdMfto=";
   };
 
-  cargoHash = "sha256-k70gywG18u9Z928W9waSdGc81o4imOr/1twkTO6vhqI=";
+  cargoHash = "sha256-50QcU11nI3WcK6v7PmWSQi98V3lzqqQyHUZhQRJvrkk=";
 
   meta = {
     homepage = "https://codeberg.org/thefossguy/navya-ci";
