@@ -22,6 +22,10 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diff-store: true
+          use-flakehub: false
+          use-gha-cache: true
 
       - name: Performing pre-setup
         id: pre-setup
@@ -98,6 +102,10 @@ jobs:
             trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= 10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=
             experimental-features = nix-command flakes
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diff-store: true
+          use-flakehub: false
+          use-gha-cache: true
 
       - uses: actions/download-artifact@v7
         with:
@@ -132,6 +140,10 @@ jobs:
           extra-conf: |
             experimental-features = nix-command flakes
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          diff-store: true
+          use-flakehub: false
+          use-gha-cache: true
 
       - uses: actions/download-artifact@v7
         with:
