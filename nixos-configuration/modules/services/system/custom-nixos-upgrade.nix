@@ -28,6 +28,7 @@ in
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
         gitMinimal
+        jq
         nix
         nixos-rebuild
         systemd
@@ -43,7 +44,13 @@ in
         ''
           set -xeuf -o pipefail
 
-          nixosLatestGenOutPath="$(nix eval --raw /etc/nixos#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel 2>/dev/null || echo 'eval-failed')"
+          NIXOS_FLAKE_STORE_PATH="$(nix flake archive --json /etc/nixos 2>/dev/null | jq --raw-output '.path')"
+          if echo "''${NIXOS_FLAKE_STORE_PATH}" | grep null; then
+              echo 'Could not determine the nix store path for the flake'
+              exit 1
+          fi
+
+          nixosLatestGenOutPath="$(nix eval --raw "''${NIXOS_FLAKE_STORE_PATH}"#nixosConfigurations.${config.networking.hostName}.config.system.build.toplevel 2>/dev/null || echo 'eval-failed')"
           if [[ "''${nixosLatestGenOutPath}" == 'eval-failed' ]]; then
               echo 'Could not determine the outPath for this NixOS generation'
               exit 1
@@ -57,7 +64,8 @@ in
 
           nix build --refresh --no-link --max-jobs 0 "''${nixosLatestGenOutPath}"
 
-          nixos-rebuild boot --show-trace --print-build-logs --flake /etc/nixos#${config.networking.hostName}
+          nixos-rebuild boot --show-trace --print-build-logs --flake "''${NIXOS_FLAKE_STORE_PATH}"#${config.networking.hostName}
+          sync && sync && sync && sync
         '';
     };
   };
