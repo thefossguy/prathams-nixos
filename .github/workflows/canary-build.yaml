@@ -11,6 +11,7 @@ jobs:
     outputs:
       do_canary_build: ${{ steps.pre-setup.outputs.do_canary_build }}
       git_commit_sha: ${{ steps.pre-setup.outputs.git_commit_sha }}
+      flake_lockfile_hash: ${{ steps.pre-setup.outputs.flake_lockfile_hash }}
     permissions:
       id-token: "write"
       contents: "read"
@@ -41,10 +42,13 @@ jobs:
           # also depends on an updated lockfile.
           nix flake update
           echo "git_commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "flake_lockfile_hash=$(sha512sum flake.lock | awk '{print $1}')" >> "$GITHUB_OUTPUT"
 
           PREVIOUS_RUN_ID="$(gh run list --workflow=canary-build.yaml --limit 2 --json databaseId --jq '.[1].databaseId')"
           if [[ -n "${PREVIOUS_RUN_ID}" ]] then
-              gh run download "${PREVIOUS_RUN_ID}" --name previous-job-info --dir $PWD
+              if ! gh run download "${PREVIOUS_RUN_ID}" --name previous-job-info --dir $PWD; then
+                  echo 'Warning: Previous run did not upload an artifact named `previous-job-info`'
+              fi
           else
               echo 'ERROR: Could not determine $PREVIOUS_RUN_ID for some reason'
               touch previous-job-info
@@ -115,6 +119,10 @@ jobs:
         run: |
           set -x
           mv flake.lock.new/flake.lock flake.lock
+          if ! echo "${{ needs.canary-build-pre-setup.outputs.flake_lockfile_hash }}  flake.lock" | shasum --check; then
+              echo 'Error: Encountered flake lockfile hash mismatch'
+              exit 1
+          fi
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
               --machine-role quick_ci \
@@ -157,6 +165,10 @@ jobs:
           echo "${CANARY_BUILD_STATUS}"
           touch previous-job-info
           mv flake.lock.new/flake.lock flake.lock
+          if ! echo "${{ needs.canary-build-pre-setup.outputs.flake_lockfile_hash }}  flake.lock" | shasum --check; then
+              echo 'Error: Encountered flake lockfile hash mismatch'
+              exit 1
+          fi
           FLAKE_STORE_PATH="$(nix flake archive --json . 2>/dev/null | nix run github:nixos/nixpkgs?ref=nixos-unstable#jq 2>/dev/null -- --raw-output '.path' 2>/dev/null)"
           [[ -z "${FLAKE_STORE_PATH}" ]] && exit 1
           if [[ "${CANARY_BUILD_STATUS}" == 'success' ]] || [[ "${CANARY_BUILD_STATUS}" == 'skipped' ]]; then
