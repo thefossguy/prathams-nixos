@@ -3,5 +3,5 @@ set -euf -o pipefail
 set -x
 
 STAGED_FILES="$(git diff --name-only --staged)"
-nix run .#nixFormat
+nix run .#nix-format
 git add $(echo "${STAGED_FILES}" | tr '\n' ' ')

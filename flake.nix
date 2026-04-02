@@ -169,6 +169,31 @@
         }:
         {
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
+          nix-format = pkgs.stdenvNoCC.mkDerivation {
+            pname = "nix-format";
+            version = "0.1.0";
+            dontUnpack = true;
+            dontBuild = true;
+
+            installPhase =
+              let
+                nixFormatScript = "${pkgs.writeShellScript "nix-format" ''
+                  set -euf -o pipefail
+
+                  PATH=${pkgs.findutils}/bin:${pkgs.nixfmt}/bin:${pkgs.ruff}/bin:${pkgs.shfmt}/bin:$PATH
+                  export PATH
+
+                  find . -iname '*.nix' -type f -print0 | xargs --no-run-if-empty -0 nixfmt --width=120 --indent=2 --verify
+                  find . -iname '*.py' -type f -print0 | xargs --no-run-if-empty -0 ruff format --no-cache --line-length=120
+                  find . -iname '*.sh' -type f -print0 | xargs --no-run-if-empty -0 shfmt --write --indent 4 --case-indent --space-redirects
+                ''}";
+              in
+              ''
+                install -Dm777 ${nixFormatScript} $out/bin/nix-format
+              '';
+
+            meta.mainProgram = "nix-format";
+          };
         }
       );
 
@@ -218,31 +243,9 @@
               ./nixos-configuration/modules/kexec-image/default.nix
               { nixpkgs.hostPlatform.system = "${system}"; }
             ];
-
           };
         }
-      );
 
-      apps = forEachSupportedUnixSystem (
-        {
-          pkgs,
-          system,
-        }:
-        {
-          nixFormat = {
-            type = "app";
-            program = "${pkgs.writeShellScript "treewide-nix-format.sh" ''
-              set -euf -o pipefail
-
-              PATH=${pkgs.findutils}/bin:${pkgs.nixfmt}/bin:${pkgs.ruff}/bin:${pkgs.shfmt}/bin:$PATH
-              export PATH
-
-              find . -iname '*.nix' -type f -print0 | xargs --no-run-if-empty -0 nixfmt --width=120 --indent=2 --verify
-              find . -iname '*.py' -type f -print0 | xargs --no-run-if-empty -0 ruff format --no-cache --line-length=120
-              find . -iname '*.sh' -type f -print0 | xargs --no-run-if-empty -0 shfmt --write --indent 4 --case-indent --space-redirects
-            ''}";
-          };
-        }
       );
     };
 }
