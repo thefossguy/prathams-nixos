@@ -250,7 +250,7 @@ in
           lldb # provides lldb-vscode
           lua-language-server
           nil # language server for Nix
-          nodePackages.bash-language-server
+          bash-language-server
           pyrefly
           shellcheck
 
