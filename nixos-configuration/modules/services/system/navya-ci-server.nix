@@ -32,6 +32,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
       RestartSec = "10";
     };
 
+    preStart = "touch /etc/nixos/flake.lock";
     script = ''
       ${pkgs.navya-ci}/bin/navya-ci \
           --nix-system aarch64-linux \
