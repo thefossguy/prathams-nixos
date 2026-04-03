@@ -48,7 +48,6 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
             ) "--signing-key-path /my-nix-binary-cache/cache-priv-key.pem"
           } \
           --sleep-break 300 \
-          --flake-output-to-build apps \
           --flake-output-to-build devShells \
           --flake-output-to-build homeConfigurations \
           --flake-output-to-build isoImagesUncompressed \
