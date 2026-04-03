@@ -245,7 +245,16 @@
             ];
           };
         }
-
       );
+
+      apps = forEachSupportedUnixSystem (
+        {
+          pkgs,
+          system,
+        }:
+        {
+        }
+      );
+
     };
 }
