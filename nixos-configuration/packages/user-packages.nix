@@ -240,6 +240,8 @@ in
 
     neovim = {
       enable = true;
+      withPython3 = false;
+      withRuby = false;
       package = pkgs.neovim-unwrapped;
       extraPackages =
         with pkgs;
