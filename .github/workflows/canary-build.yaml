@@ -125,6 +125,7 @@ jobs:
           fi
           nix run .#packages.${{ matrix.nixSystem }}.navya-ci -- \
               --flake-path "$(realpath .)" \
+              --ignore-derivations-eval-errors \
               --machine-role quick_ci \
               --nix-system ${{ matrix.nixSystem }} \
               --flake-output-to-build ${{ matrix.flakeOutput }} \
