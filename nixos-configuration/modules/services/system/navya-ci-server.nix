@@ -38,6 +38,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
           --nix-system aarch64-linux \
           --nix-system x86_64-linux \
           --flake-path /etc/nixos \
+          --ignore-derivations-eval-errors \
           --machine-role server \
           --update-lockfile \
           ${
