@@ -37,6 +37,7 @@ lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
       ${pkgs.navya-ci}/bin/navya-ci \
           --nix-system ${config.nixpkgs.hostPlatform.system} \
           --flake-path /etc/nixos \
+          --ignore-derivations-eval-errors \
           --machine-role node \
           --update-lockfile \
           --nix-copy-machine 'ssh-ng://pratham@10.0.0.24?ssh-key=${config.customOptions.userHomeDir}/.ssh/ssh' \
