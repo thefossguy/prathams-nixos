@@ -144,7 +144,6 @@ let
       keka
       librewolf
       maccy
-      mpv
       neovide
       proton-pass
       proton-vpn
