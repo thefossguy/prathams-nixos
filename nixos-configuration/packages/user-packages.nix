@@ -132,7 +132,24 @@ let
       noto-fonts-color-emoji
       qemu_kvm
       tmux # It is in `system-packages.nix` and `${scriptsDir}/other-common-scripts/unix-setup.sh`
+      wakeonlan
       watch
+
+      # gui packages ("<Application>.app" thingies)
+      alacritty
+      bitwarden-desktop
+      brave
+      discord
+      firefox
+      keka
+      librewolf
+      maccy
+      mpv
+      neovide
+      proton-pass
+      proton-vpn
+      thunderbird
+      utm
     ]
   );
 
@@ -200,6 +217,14 @@ let
 in
 {
   imports = lib.optionals (!nixosSystemConfig.coreConfig.isNixOS) [ ./overlays.nix ];
+
+  nixpkgs.config.allowUnfreePredicate = lib.mkIf darwinPackagesCheck (
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "keka"
+      "discord"
+    ]
+  );
 
   home.packages =
     nixosPackagesMinimal
