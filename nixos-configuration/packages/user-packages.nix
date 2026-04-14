@@ -141,6 +141,7 @@ let
       brave
       discord
       firefox
+      google-chrome
       keka
       librewolf
       maccy
@@ -220,8 +221,9 @@ in
   nixpkgs.config.allowUnfreePredicate = lib.mkIf darwinPackagesCheck (
     pkg:
     builtins.elem (lib.getName pkg) [
-      "keka"
       "discord"
+      "google-chrome"
+      "keka"
     ]
   );
 
