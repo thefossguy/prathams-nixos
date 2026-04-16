@@ -218,15 +218,6 @@ in
 {
   imports = lib.optionals (!nixosSystemConfig.coreConfig.isNixOS) [ ./overlays.nix ];
 
-  nixpkgs.config.allowUnfreePredicate = lib.mkIf darwinPackagesCheck (
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "discord"
-      "google-chrome"
-      "keka"
-    ]
-  );
-
   home.packages =
     nixosPackagesMinimal
     ++ nixosPackages

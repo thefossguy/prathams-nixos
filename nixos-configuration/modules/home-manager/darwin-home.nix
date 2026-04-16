@@ -15,6 +15,15 @@ lib.mkIf pkgs.stdenv.isDarwin {
 
   home.homeDirectory = "/Users/${nixosSystemConfig.coreConfig.systemUser.username}";
 
+  nixpkgs.config.allowUnfreePredicate = (
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "discord"
+      "google-chrome"
+      "keka"
+    ]
+  );
+
   # Sourcing the bash completion offered by nixpkgs because macOS will not provide bash in the future.
   xdg.dataFile = {
     "nix-bash/bash_completion.sh" = {
