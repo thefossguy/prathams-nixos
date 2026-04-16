@@ -39,8 +39,6 @@ in
       experimental-features = [
         "nix-command"
         "flakes"
-
-        "no-url-literals"
       ];
       extra-trusted-public-keys = [ "10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=" ];
       extra-substituters = lib.optionals (!(config.customOptions.localCaching.servesNixDerivations or false)) [
