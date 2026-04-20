@@ -246,7 +246,7 @@ in
     tealdeer.enable = !useMinimalConfig;
     # I randomly select a server to "download" a big [set] of video file(s)
     # so enabling `yt-dlp` is necessary.
-    yt-dlp.enable = true;
+    #yt-dlp.enable = true;
     zoxide.enable = true;
 
     direnv = lib.attrsets.optionalAttrs (!useMinimalConfig) {
