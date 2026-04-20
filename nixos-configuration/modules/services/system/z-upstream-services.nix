@@ -101,7 +101,7 @@ in
         AllowAgentForwarding = lib.mkForce false;
         AllowTcpForwarding = lib.mkForce false;
         AuthenticationMethods = lib.mkForce "publickey";
-        Banner = lib.mkForce false;
+        Banner = lib.mkForce null;
         ChallengeResponseAuthentication = lib.mkForce false;
         GSSAPIAuthentication = lib.mkForce false;
         KbdInteractiveAuthentication = lib.mkForce false;
