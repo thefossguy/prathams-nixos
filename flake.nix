@@ -36,7 +36,6 @@
 
       darwinSystems = {
         aarch64 = "aarch64-darwin";
-        x86_64 = "x86_64-darwin";
       };
 
       supportedLinuxSystems = builtins.attrValues linuxSystems;
