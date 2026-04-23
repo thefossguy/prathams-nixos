@@ -259,6 +259,7 @@ in
       enable = true;
       withPython3 = false;
       withRuby = false;
+      sideloadInitLua = true;
       package = pkgs.neovim-unwrapped;
       extraPackages =
         with pkgs;
