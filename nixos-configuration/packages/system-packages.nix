@@ -73,6 +73,7 @@ in
 
   programs = {
     bandwhich.enable = !useMinimalConfig;
+    command-not-found.enable = lib.mkForce false;
     dconf.enable = true;
     git.enable = true; # Always enable git because it's used to manage the NixOS Configuration
     gnupg.agent.enable = !useMinimalConfig;

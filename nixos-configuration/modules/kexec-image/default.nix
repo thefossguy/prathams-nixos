@@ -25,12 +25,13 @@
     ];
 
     environment.systemPackages = pkgs.callPackage ../iso/packages.nix { inherit pkgs; };
+    programs.command-not-found.enable = lib.mkForce false;
     services.openssh.enable = true;
     users.users."root".initialHashedPassword = lib.mkForce config.users.users."root".hashedPassword;
     users.users."root".hashedPassword =
       lib.mkForce "$y$j9T$UWnNglmaKUq7/srkYYfl5/$mPq5GlbqmxRKuOMOYrgEa4O.M48g40OVIB0xpfftZhC";
-    nix = {
 
+    nix = {
       settings = {
         experimental-features = [
           "nix-command"
