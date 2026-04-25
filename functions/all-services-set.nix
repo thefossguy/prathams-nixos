@@ -75,7 +75,6 @@ rec {
     unitName = "custom-nixos-upgrade";
     onCalendar = systemdTime.Hourly { };
     afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
-    requiredUnits = customNixosUpgrade.afterUnits;
   };
 
   disableIntelPstate = mkServiceConfig {
