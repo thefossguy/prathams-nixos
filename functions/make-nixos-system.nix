@@ -33,10 +33,7 @@ let
       systemType = thisSystem.extraConfig.systemType or nixosSystems.commonConfig.systemTypes.server;
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
       canAccessMyNixCache = thisSystem.extraConfig.canAccessMyNixCache or true;
-      allServicesSet = import ./all-services-set.nix {
-        systemType = nixosSystemConfig.extraConfig.systemType;
-        systemUserUsername = nixosSystemConfig.coreConfig.systemUser.username;
-      };
+      allServicesSet = import ./all-services-set.nix;
       inherit nixpkgs nixBuildArgs;
     };
     kernelConfig = {

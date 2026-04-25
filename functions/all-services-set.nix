@@ -1,9 +1,4 @@
-{ systemType, systemUserUsername }:
 let
-  isServer = systemType == "server";
-  isDesktop = systemType == "desktop";
-  isLaptop = systemType == "laptop";
-
   systemdTime = {
     timeZone = "Asia/Kolkata";
     # systemd.time format: ${weekday:-} YYYY-MM-DD hour:minute:second
