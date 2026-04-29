@@ -15,6 +15,15 @@
     ./linux-home.nix
   ];
 
+  nixpkgs.config.allowUnfreePredicate = lib.mkIf pkgs.stdenv.isDarwin (
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "discord"
+      "google-chrome"
+      "keka"
+    ]
+  );
+
   news.display = "silent"; # I'll fix it when a build fails.
   manual = {
     html.enable = lib.mkForce false;

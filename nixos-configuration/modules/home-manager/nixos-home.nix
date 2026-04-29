@@ -8,15 +8,6 @@
 }:
 
 {
-  nixpkgs.config.allowUnfreePredicate = lib.mkIf pkgs.stdenv.isDarwin (
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "discord"
-      "google-chrome"
-      "keka"
-    ]
-  );
-
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = { inherit stablePkgs nixosSystemConfig; };
