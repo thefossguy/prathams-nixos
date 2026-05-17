@@ -45,6 +45,8 @@ in
 
         if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
             set +x
+            echo 'Set time with `sudo date -s $(date "+%Y-%m-%d %H:%M:%S") && sudo hwclock --systohc`'
+            echo
             echo 'You do not appear to be connected to the internet.'
             echo 'Please clone the following directories manually:'
             echo ' 1. NixOS Configuration: https://gitlab.com/thefossguy/prathams-nixos.git'
