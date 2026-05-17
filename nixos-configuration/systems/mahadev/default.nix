@@ -10,6 +10,7 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  boot.kernelModules = [ "panthor" ];
   hardware.bluetooth.enable = lib.mkForce false;
 
   customOptions = {
