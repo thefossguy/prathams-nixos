@@ -42,7 +42,7 @@ in
   system.stateVersion = "25.05";
 
   # Global defaults that _would_ be overridden from local modules go here.
-  boot.zfs.allowHibernation = lib.mkForce false;
+  boot.zfs.unsafeAllowHibernation = lib.mkForce false;
   boot.zfs.forceImportAll = lib.mkDefault false;
   boot.zfs.forceImportRoot = lib.mkDefault false;
   hardware.nvidia.modesetting.enable = lib.mkDefault false;
