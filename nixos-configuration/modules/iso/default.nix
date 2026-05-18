@@ -31,6 +31,7 @@ in
   networking.hostName = "installer";
   programs.command-not-found.enable = lib.mkForce false;
   system.nixos.tags = [ config.isoImage.edition ];
+  users.users."root".hashedPassword = lib.mkForce "$y$j9T$uQYmTvUCKJkXpXQk5bs8O.$3RF3xavb9vZ.0f6oT2k0ICsu7.sQIok5s8v3p1x0en1";
   # `initialHashedPassword` is used because that is what upstream (nixpkgs) sets and what should be overwritten.
   users.users."${sysuser.username}".initialHashedPassword = lib.mkForce sysuser.hashedPassword;
   # Systems with memory less than 8G get an OOM kill on running `nixos-install`
