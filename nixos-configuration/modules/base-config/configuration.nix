@@ -7,9 +7,6 @@
   ...
 }:
 
-let
-  disableSystemdInIinitrd = config.customOptions.isIso;
-in
 {
   # The `nixpkgs.buildPlatform.system` option must be set for cross compilation
   # to work. Now, since I wish to perform cross compilation from a Linux
@@ -28,7 +25,7 @@ in
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
   boot.initrd.systemd.emergencyAccess = config.users.users."root".hashedPassword;
-  boot.initrd.systemd.enable = !disableSystemdInIinitrd;
+  boot.initrd.systemd.enable = true;
   boot.runSize = "256m"; # Max so far is 32MB, so 256MB is a **long** shot
   boot.tmp.cleanOnBoot = true; # There really is no reason for /tmp to persist across boots
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;
@@ -36,7 +33,7 @@ in
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
-  security.lockKernelModules = lib.mkForce (!disableSystemdInIinitrd);
+  security.lockKernelModules = lib.mkForce (!config.customOptions.isIso);
   services.dbus.implementation = "broker";
   services.lvm.enable = lib.mkOverride 60 false;
   system.stateVersion = "25.05";
