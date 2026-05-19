@@ -106,6 +106,7 @@ rec {
       hour = "04";
     };
     afterUnits = [ "${customNixosUpgrade.unitName}.service" ];
+    wantedUnits = scheduledReboots.afterUnits;
   };
 
   navyaCIServer = mkServiceConfig {
