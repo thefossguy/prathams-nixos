@@ -59,7 +59,7 @@ in
           git -C /etc/nixos pull --no-rebase
 
           SECONDS_SINCE_EPOCH="$(date +'%s')"
-          LAST_MODIFIED_TIMESTAMP_IN_EPOCH_SECONDS="$(stat -c '%Y' flake.lock)"
+          LAST_MODIFIED_TIMESTAMP_IN_EPOCH_SECONDS="$(stat -c '%Y' /etc/nixos/flake.lock)"
           LAST_MODIFIED_TIMESTAMP_IN_MINUTES="$(( $(( SECONDS_SINCE_EPOCH - LAST_MODIFIED_TIMESTAMP_IN_EPOCH_SECONDS )) / 60 ))"
           if [[ "''${LAST_MODIFIED_TIMESTAMP_IN_MINUTES}" -gt 50 ]]; then
               nix flake update --flake /etc/nixos
