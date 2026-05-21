@@ -44,6 +44,29 @@ in
         ''
           set -xeuf -o pipefail
 
+          if ! git -C /etc/nixos status >/dev/null 2>&1; then
+              # So far, this can fail for two reasons:
+              # 1. The Git repository does not exist. In which case, nothing precious
+              #    was inside it that I would be sad losing.
+              # 2. Sometimes, the Git repository can get corrupted.
+              rm -rf /etc/nixos
+          fi
+
+          if [[ ! -d /etc/nixos ]]; then
+              git clone https://gitlab.com/thefossguy/prathams-nixos.git /etc/nixos
+          fi
+
+          git -C /etc/nixos pull --no-rebase
+
+          SECONDS_SINCE_EPOCH="$(date +'%s')"
+          LAST_MODIFIED_TIMESTAMP_IN_EPOCH_SECONDS="$(stat -c '%Y' flake.lock)"
+          LAST_MODIFIED_TIMESTAMP_IN_MINUTES="$(( $(( SECONDS_SINCE_EPOCH - LAST_MODIFIED_TIMESTAMP_IN_EPOCH_SECONDS )) / 60 ))"
+          if [[ "''${LAST_MODIFIED_TIMESTAMP_IN_MINUTES}" -gt 50 ]]; then
+              nix flake update --flake /etc/nixos
+          else
+              echo "Not updating flake.lock to be under GitHub's free rate limit."
+          fi
+
           NIXOS_FLAKE_STORE_PATH="$(nix flake archive --json /etc/nixos 2>/dev/null | jq --raw-output '.path')"
           if echo "''${NIXOS_FLAKE_STORE_PATH}" | grep null; then
               echo 'Could not determine the nix store path for the flake'
