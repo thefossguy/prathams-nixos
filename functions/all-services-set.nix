@@ -74,8 +74,6 @@ rec {
   customNixosUpgrade = mkServiceConfig {
     unitName = "custom-nixos-upgrade";
     onCalendar = systemdTime.Hourly { };
-    afterUnits = [ "${updateNixosFlakeInputs.unitName}.service" ];
-    wantedUnits = customNixosUpgrade.afterUnits;
   };
 
   disableIntelPstate = mkServiceConfig {
@@ -115,10 +113,6 @@ rec {
     afterUnits = [ "network.target" ];
     requiredUnits = [ "network-online.target" ];
     wantedByUnits = [ "multi-user.target" ];
-  };
-
-  updateNixosFlakeInputs = mkServiceConfig {
-    unitName = "update-nixos-flake-inputs";
   };
 
   updateQemuFirmwarePaths = mkServiceConfig {

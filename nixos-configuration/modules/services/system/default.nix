@@ -18,7 +18,6 @@
     ./nix-gc.nix
     ./reset-systemd-user-units.nix
     ./scheduled-reboots.nix
-    ./update-nixos-flake-inputs.nix
     ./update-qemu-firmware-paths.nix
     ./verify-nix-store-paths.nix
     ./z-upstream-services.nix
