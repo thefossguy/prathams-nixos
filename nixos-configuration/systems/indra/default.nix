@@ -27,6 +27,7 @@
 
   customOptions = {
     displayServer.guiSession = "cosmic";
+    enableYubikeySupport = true;
     gpuSupport = [ "intel" ];
     virtualisation.enable = true;
     virtualisation.enableVirtualBridge = lib.mkForce false;
