@@ -83,6 +83,12 @@ in
       default = false;
     };
 
+    enableYubikeySupport = lib.mkOption {
+      description = "Weather to enable support for Yubikey's FIDO keys.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     socSupport = {
       enabled = lib.mkOption {
         description = "An internal-only option.";
