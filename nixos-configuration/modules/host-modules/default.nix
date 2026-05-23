@@ -15,6 +15,7 @@
     ./router.nix
     ./static-ip-and-virt-bridge.nix
     ./user-configuration.nix
+    ./yubikey-fido.nix
   ];
 
   networking.hostId = nixosSystemConfig.coreConfig.hostId;
