@@ -28,6 +28,7 @@
     # all kernel modules that are not essential for mounting the root
     # device and root filesystem go here
     kernelModules = [
+      "af_packet"
       "fan"
       "kvm"
       "thermal"

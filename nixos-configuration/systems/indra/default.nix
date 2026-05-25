@@ -14,7 +14,6 @@
     blacklistedKernelModules = [ "snd_hda_codec_hdmi" ]; # we no wants sound over HDMI
     extraModprobeConfig = "options kvm_intel nested=1";
     kernelModules = [
-      "af_packet"
       "rfcomm"
       "snd_hrtimer"
       "snd_seq_dummy"
