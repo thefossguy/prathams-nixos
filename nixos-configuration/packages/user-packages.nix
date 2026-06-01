@@ -137,7 +137,6 @@ let
 
       # gui packages ("<Application>.app" thingies)
       alacritty
-      bitwarden-desktop
       brave
       discord
       firefox
