@@ -31,6 +31,7 @@
       "af_packet"
       "fan"
       "kvm"
+      "sd_mod"
       "thermal"
       "uas"
       "watchdog"
