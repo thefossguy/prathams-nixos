@@ -32,6 +32,7 @@
       "fan"
       "kvm"
       "thermal"
+      "uas"
       "watchdog"
       "zram"
     ]
