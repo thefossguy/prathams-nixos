@@ -51,6 +51,7 @@ in
       leela = "fed2312a";
       swaadhi = "2bd43591";
       surya = "87d9fdcb";
+      suryaa = "57b1bd95";
       vaaman = "3c8077f9";
       vaayu = "d81cd923";
     };
@@ -305,6 +306,17 @@ in
         ipv4Address = "10.0.0.181";
         primaryNetIface = "enx30c599b9f622";
         addrMAC = "30:c5:99:b9:f6:22";
+        system = linuxSystems.aarch64;
+      };
+    };
+
+    # ASUS Ascent GX10 (128G; 20x ARMv9 big.LITTLE)
+    suryaa = {
+      coreConfig = {
+        hostname = "suryaa";
+        ipv4Address = "10.0.0.182";
+        primaryNetIface = "enx30c599b9ea5b";
+        addrMAC = "30:c5:99:b9:ea:5b";
         system = linuxSystems.aarch64;
       };
     };
