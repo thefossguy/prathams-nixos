@@ -45,6 +45,7 @@ in
       setup_profile = "${pkgs.writeText ".profile" ''
         set -x
 
+        sleep 10 || true
         if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
             set +x
             echo 'Set time with `sudo date -s $(date "+%Y-%m-%d %H:%M:%S") && sudo hwclock --systohc`'
