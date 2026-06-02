@@ -8,7 +8,9 @@
 }:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
+  hardware.graphics.enable = true;
   hardware.graphics.extraPackages = with pkgs; [ nvidia-vaapi-driver ];
+  nixpkgs.config.cudaSupport = true;
   services.xserver.videoDrivers =
     if ((builtins.elemAt config.customOptions.gpuSupport 0) == "nvidia") then
       (lib.mkBefore [
