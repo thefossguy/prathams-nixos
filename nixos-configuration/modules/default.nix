@@ -16,6 +16,7 @@
     ./display-server
     ./gpu
     ./kernel-development
+    ./local-llm
     ./local-nix-cache
     ./qemu
     ./soc-support
