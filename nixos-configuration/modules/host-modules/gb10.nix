@@ -12,6 +12,10 @@ lib.mkIf (config.customOptions.socSupport.armSoc == "gb10") {
     "console=tty0"
   ];
 
+  environment.systemPackages = with pkgs; [
+    cudaPackages.cuda_nvcc
+  ];
+
   customOptions = {
     gpuSupport = [ "nvidia" ];
     enableLocalLLMSupport = true;
