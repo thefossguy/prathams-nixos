@@ -11,6 +11,7 @@
   imports = [
     ../services
     ./filesystem-configuration.nix
+    ./gb10.nix
     ./podman.nix
     ./router.nix
     ./static-ip-and-virt-bridge.nix

@@ -131,6 +131,7 @@ in
           "rpi4"
           "rpi5"
           "m4"
+          "gb10"
 
           "unset"
         ];
