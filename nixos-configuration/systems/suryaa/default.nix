@@ -10,8 +10,5 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions = {
-    gpuSupport = [ "nvidia" ];
-    enableLocalLLMSupport = true;
-  };
+  customOptions.socSupport.armSoc = "gb10";
 }
