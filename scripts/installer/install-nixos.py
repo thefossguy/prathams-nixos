@@ -578,6 +578,15 @@ def installer_pre_setup() -> None:
 
 
 def installer_run() -> None:
+    debugPrint("Building the NixOS generation before installing")
+    nix_build_nixos_gen = [ "nix" ] + nixExperimentalFlags + [ "build", "--refresh", ".#nixosConfigurations.{}.config.system.build.toplevel".format(installer_variables["hostname"]), ]
+    nix_build_nixos_gen_cached = nix_build_nixos_gen + [ "--max-jobs", "0",]
+    debugPrint(nix_build_nixos_gen_cached)
+    _ = subprocess.run(nix_build_nixos_gen_cached, check=True, text=True, stdout=sys.stdout, stderr=sys.stderr)
+    debugPrint(nix_build_nixos_gen)
+    _ = subprocess.run(nix_build_nixos_gen, check=True, text=True, stdout=sys.stdout, stderr=sys.stderr)
+
+
     debugPrint("Installing NixOS for system `{}`.".format(installer_variables["hostname"]))
     nixos_install_command = [
         "nice",
