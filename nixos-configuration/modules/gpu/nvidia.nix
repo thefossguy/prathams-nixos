@@ -8,7 +8,14 @@
 }:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
-  nixpkgs.config.cudaSupport = true;
+  nixpkgs = {
+    config.cudaSupport = true;
+    overlays = [
+      (final: prev: {
+        cudaPackages = final.cudaPackages_13;
+      })
+    ];
+  };
 
   hardware.graphics = {
     enable = true;
