@@ -106,7 +106,12 @@ in
       handleFirmwareUpdates = lib.mkOption {
         description = "If a given SoC requires NixOS to handle the firmware updates.";
         # TODO: Enable RISC-V support once nixpkgs has it too.
-        default = ((config.customOptions.socSupport.armSoc != "unset") && (config.customOptions.socSupport.armSoc != "m4"));
+        default =
+          !(builtins.elem config.customOptions.socSupport.armSoc [
+            "unset"
+            "m4"
+            "gb10"
+          ]);
         type = lib.types.bool;
       };
       disableIntelPstate = lib.mkOption {
