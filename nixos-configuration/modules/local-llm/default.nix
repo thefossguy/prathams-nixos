@@ -7,6 +7,6 @@
   ...
 }:
 
-lib.mkIf config.customOptions.enableLocalLLMSupport {
+{
   imports = [ ./packages.nix ];
 }
