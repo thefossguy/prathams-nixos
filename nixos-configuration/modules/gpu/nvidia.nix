@@ -17,7 +17,7 @@ lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
     ];
   };
 
-  environment.packages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
   ];
 
