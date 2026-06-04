@@ -17,6 +17,10 @@ lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
     ];
   };
 
+  environment.packages = with pkgs; [
+    nvtopPackages.nvidia
+  ];
+
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [ nvidia-vaapi-driver ];
