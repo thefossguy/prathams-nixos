@@ -69,6 +69,8 @@
       "init_on_alloc=1" # Initialize new pages with zeroes
       "init_on_free=1" # Fill freed pages with zeroes
       "iommu.passthrough=0" # Forces DMA to go through IOMMU
+      "iommu.strict=1" # DMA unmap operations invalidate IOMMU hardware TLBs synchronously
+      "iommu=force" # Force IOMMU isolation
       "mitigations=auto,nosmt" # Apply relevant CPU exploit mitigations
       "module.sig_enforce=1" # Load only signed modules
       "no_console_suspend" # Never suspend/hibernate the console
@@ -88,11 +90,6 @@
 
       "plymouth.enable=0"
       "rd.plymouth=0"
-    ]
-    # temporary workaround for GB10
-    ++ lib.optionals (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) [
-      "iommu.strict=1" # DMA unmap operations invalidate IOMMU hardware TLBs synchronously
-      "iommu=force" # Force IOMMU isolation
     ]
     ++ lib.optionals (pkgs.stdenv.isx86_64 && (!config.customOptions.isIso)) [
       "ia32_emulation=0" # Disable multilib/32-bit applications
