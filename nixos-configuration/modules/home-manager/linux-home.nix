@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.mkIf pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   home.homeDirectory = "/home/${nixosSystemConfig.coreConfig.systemUser.username}";
   targets.genericLinux.enable = true;
 

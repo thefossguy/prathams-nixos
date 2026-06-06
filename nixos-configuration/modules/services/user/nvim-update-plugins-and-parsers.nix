@@ -10,7 +10,7 @@
 let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.nvimUpdatePluginsAndParsers;
 in
-lib.mkIf pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   systemd.user = {
     timers."${serviceConfig.unitName}" = {
       Install = {

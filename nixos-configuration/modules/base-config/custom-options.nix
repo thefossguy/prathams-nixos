@@ -8,9 +8,6 @@
 }:
 # TODO: Remove this let-in block after RISC-V support is added to nixpkgs
 let
-  localStdenv = pkgs.stdenv // {
-    isRiscV64 = pkgs.stdenv.hostPlatform.isRiscV;
-  };
   kernelPackagesSet = {
     mainline = pkgs.linux_testing;
     stable = pkgs.linux_latest;
@@ -348,14 +345,14 @@ in
 
     ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
       {
-        assertion = pkgs.stdenv.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
+        assertion = pkgs.stdenv.hostPlatform.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
         message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
       }
     ]
 
     ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
       {
-        assertion = pkgs.stdenv.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
+        assertion = pkgs.stdenv.hostPlatform.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
         message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
       }
     ]
@@ -376,7 +373,7 @@ in
 
     ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
       {
-        assertion = localStdenv.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
+        assertion = pkgs.stdenv.hostPlatform.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
         message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
       }
     ];

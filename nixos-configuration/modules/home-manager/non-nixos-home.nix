@@ -15,7 +15,7 @@
     ./linux-home.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = lib.mkIf pkgs.stdenv.isDarwin (
+  nixpkgs.config.allowUnfreePredicate = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
     pkg:
     builtins.elem (lib.getName pkg) [
       "discord"

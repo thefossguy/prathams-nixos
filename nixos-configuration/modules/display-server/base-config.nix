@@ -215,7 +215,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         video-trimmer # https://gitlab.gnome.org/YaLTeR/video-trimmer
       ]
       ++ lib.optionals config.customOptions.virtualisation.enable [ virt-viewer ]
-      ++ lib.optionals pkgs.stdenv.isx86_64 [
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 [
         #kdePackages.kdenlive
         mpv
         tor-browser

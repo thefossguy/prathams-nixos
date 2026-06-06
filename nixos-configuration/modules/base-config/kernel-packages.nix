@@ -13,7 +13,7 @@ let
     zfs = (config.customOptions.kernelConfiguration.tree == "longterm");
   };
 
-  enable16kPagesOnAarch64 = (pkgs.stdenv.isAarch64 && (!enable4kPagesOnAarch64));
+  enable16kPagesOnAarch64 = (pkgs.stdenv.hostPlatform.isAarch64 && (!enable4kPagesOnAarch64));
   enable4kPagesOnAarch64 = (
     (config.customOptions.kernelConfiguration.tree == "longterm")
     || (config.customOptions.isIso)

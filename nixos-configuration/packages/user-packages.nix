@@ -46,7 +46,7 @@ let
         bacon # replacement for cargo-watch
         rustup-bin
       ]
-      #++ (lib.optionals (pkgs.stdenv.isLinux) [ cargo-valgrind ])
+      #++ (lib.optionals (pkgs.stdenv.hostPlatform.isLinux) [ cargo-valgrind ])
     );
   };
 
@@ -103,7 +103,7 @@ let
     ++ lib.optionals (osConfig.customOptions.virtualisation.enable or false) [ pykickstart ]
   );
 
-  tuxPackagesCheck = (pkgs.stdenv.isLinux && (!nixosSystemConfig.coreConfig.isNixOS));
+  tuxPackagesCheck = (pkgs.stdenv.hostPlatform.isLinux && (!nixosSystemConfig.coreConfig.isNixOS));
   tuxPackagesMinimal = lib.optionals tuxPackagesCheck (
     with pkgs;
     [
@@ -116,7 +116,7 @@ let
     ]
   );
 
-  darwinPackagesCheck = (pkgs.stdenv.isDarwin);
+  darwinPackagesCheck = (pkgs.stdenv.hostPlatform.isDarwin);
   darwinPackages = lib.optionals darwinPackagesCheck (
     with pkgs;
     [
@@ -206,10 +206,10 @@ let
       nix-prefetch-github
       nixpkgs-review
     ]
-    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+    ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
       dpkg
     ]
-    ++ lib.optionals ((pkgs.stdenv.isx86_64 && pkgs.stdenv.isLinux) || (pkgs.stdenv.isAarch64 && pkgs.stdenv.isDarwin)) [
+    ++ lib.optionals ((pkgs.stdenv.hostPlatform.isx86_64 && pkgs.stdenv.hostPlatform.isLinux) || (pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin)) [
       ffmpeg
     ]
   );
@@ -239,7 +239,7 @@ in
     aria2.enable = true;
     bat.enable = true;
     bottom.enable = !useMinimalConfig;
-    broot.enable = !useMinimalConfig && pkgs.stdenv.isx86_64;
+    broot.enable = !useMinimalConfig && pkgs.stdenv.hostPlatform.isx86_64;
     btop.enable = true;
     ripgrep.enable = true;
     tealdeer.enable = !useMinimalConfig;

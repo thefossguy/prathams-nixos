@@ -13,7 +13,7 @@ let
     if nixosSystemConfig.coreConfig.isNixOS then
       ((osConfig.customOptions.displayServer.guiSession or "unset") != "unset")
     else
-      pkgs.stdenv.isLinux;
+      pkgs.stdenv.hostPlatform.isLinux;
 
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.flatpakManage;
   scriptsDir = "${config.home.homeDirectory}/.local/scripts";

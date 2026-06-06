@@ -7,7 +7,7 @@
   ...
 }:
 
-lib.mkIf pkgs.stdenv.isDarwin {
+lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
   # TODO: Install the following with homebrew
   # - bash
   # - homebrew/cask/mpv
