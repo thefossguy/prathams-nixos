@@ -39,9 +39,9 @@ lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
       ];
 
   hardware.nvidia = {
-    modesetting.enable = true;
-    nvidiaSettings = true;
     open = lib.mkForce true;
+    nvidiaSettings = true;
+    modesetting.enable = true;
     nvidiaPersistenced = true;
 
     #package = config.boot.kernelPackages.nvidia_x11_vulkan_beta_open;
