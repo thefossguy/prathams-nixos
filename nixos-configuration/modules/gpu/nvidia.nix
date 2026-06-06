@@ -40,6 +40,7 @@ lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
 
   hardware.nvidia = {
     open = lib.mkForce true;
+    branch = lib.mkDefault "stable";
     nvidiaSettings = true;
     modesetting.enable = true;
     nvidiaPersistenced = true;
