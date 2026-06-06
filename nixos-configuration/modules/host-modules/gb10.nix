@@ -15,6 +15,11 @@ lib.mkIf (config.customOptions.socSupport.armSoc == "gb10") {
   # `nvidia-smi --query-gpu=compute_cap`
   nixpkgs.config.cudaCapabilities = [ "12.1" ];
 
+  hardware.nvidia = {
+    branch = "latest";
+    powerManagement.enable = false;
+  };
+
   environment.systemPackages = with pkgs; [
     cudaPackages.cuda_nvcc
   ];
