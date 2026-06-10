@@ -209,9 +209,15 @@ let
     ++ lib.optionals (!pkgs.stdenv.hostPlatform.isDarwin) [
       dpkg
     ]
-    ++ lib.optionals ((pkgs.stdenv.hostPlatform.isx86_64 && pkgs.stdenv.hostPlatform.isLinux) || (pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin)) [
-      ffmpeg
-    ]
+    ++
+      lib.optionals
+        (
+          (pkgs.stdenv.hostPlatform.isx86_64 && pkgs.stdenv.hostPlatform.isLinux)
+          || (pkgs.stdenv.hostPlatform.isAarch64 && pkgs.stdenv.hostPlatform.isDarwin)
+        )
+        [
+          ffmpeg
+        ]
   );
 in
 {

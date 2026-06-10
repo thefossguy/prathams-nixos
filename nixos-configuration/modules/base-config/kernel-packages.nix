@@ -45,11 +45,15 @@ in
                 #  ARM64_16K_PAGES = lib.kernel.yes;
               }
 
-              // lib.attrsets.optionalAttrs
-                (config.customOptions.socSupport.armSoc == "gb10" &&
-                (!colonelPackages.commonStructuredConfig.ARM_SMMU_V3_SVA.condition or false)) {
-                  ARM_SMMU_V3_SVA = lib.kernel.yes;
-              };
+              //
+                lib.attrsets.optionalAttrs
+                  (
+                    config.customOptions.socSupport.armSoc == "gb10"
+                    && (!colonelPackages.commonStructuredConfig.ARM_SMMU_V3_SVA.condition or false)
+                  )
+                  {
+                    ARM_SMMU_V3_SVA = lib.kernel.yes;
+                  };
 
           };
         }).overrideAttrs
