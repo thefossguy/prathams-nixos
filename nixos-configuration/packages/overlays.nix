@@ -51,29 +51,54 @@ in
         enableWideVine = false;
       };
 
-      pi-coding-agent = prev.stdenvNoCC.mkDerivation {
-        inherit (prev.pi-coding-agent) pname version meta;
+      pi-coding-agent =
+        let
+          env_PATH = lib.makeBinPath (
+            with prev;
+            [
+              # general-purpose tools
+              curl
+              fd
+              jq
+              ripgrep
+              wget
 
-        dontUnpack = true;
-        dontConfigure = true;
-        dontPatch = true;
-        dontBuild = true;
-        dontFixup = true;
+              # programming related tools
+              cargo
+              ruff
 
-        nativeBuildInputs = [ prev.makeWrapper ];
+              # git forge
+              forgejo-cli
+              gh
+              glab
+              tea
+            ]
+          );
+        in
+        prev.stdenvNoCC.mkDerivation {
+          inherit (prev.pi-coding-agent) pname version meta;
 
-        installPhase = ''
-          mkdir -p $out/bin
-          ln -s ${lib.getExe prev.pi-coding-agent} $out/bin/pi
-          wrapProgram $out/bin/pi \
-              --set PI_CODING_AGENT_DIR '~/.config/pi/agent' \
-              --set PI_OFFLINE 1 \
-              --set PI_SKIP_VERSION_CHECK 1 \
-              --set PI_TELEMETRY 0 \
-              --add-flags "--offline" \
-              #EOF
-        '';
-      };
+          dontUnpack = true;
+          dontConfigure = true;
+          dontPatch = true;
+          dontBuild = true;
+          dontFixup = true;
+
+          nativeBuildInputs = [ prev.makeWrapper ];
+
+          installPhase = ''
+            mkdir -p $out/bin
+            ln -s ${lib.getExe prev.pi-coding-agent} $out/bin/pi
+            wrapProgram $out/bin/pi \
+                --prefix PATH : ${env_PATH} \
+                --set PI_CODING_AGENT_DIR '~/.config/pi/agent' \
+                --set PI_OFFLINE 1 \
+                --set PI_SKIP_VERSION_CHECK 1 \
+                --set PI_TELEMETRY 0 \
+                --add-flags "--offline" \
+                #EOF
+          '';
+        };
     })
 
     # out of tree package definitions go here
