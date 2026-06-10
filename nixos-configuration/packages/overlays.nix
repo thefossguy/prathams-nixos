@@ -50,6 +50,30 @@ in
         commandLineArgs = commonChromiumFlags;
         enableWideVine = false;
       };
+
+      pi-coding-agent = prev.stdenvNoCC.mkDerivation {
+        inherit (prev.pi-coding-agent) pname version meta;
+
+        dontUnpack = true;
+        dontConfigure = true;
+        dontPatch = true;
+        dontBuild = true;
+        dontFixup = true;
+
+        nativeBuildInputs = [ prev.makeWrapper ];
+
+        installPhase = ''
+          mkdir -p $out/bin
+          ln -s ${lib.getExe prev.pi-coding-agent} $out/bin/pi
+          wrapProgram $out/bin/pi \
+              --set PI_CODING_AGENT_DIR "$HOME/.config/pi/agent" \
+              --set PI_OFFLINE 1 \
+              --set PI_SKIP_VERSION_CHECK 1 \
+              --set PI_TELEMETRY 0 \
+              --add-flags "--offline" \
+              #EOF
+        '';
+      };
     })
 
     # out of tree package definitions go here
