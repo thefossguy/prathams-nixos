@@ -66,7 +66,7 @@ in
           mkdir -p $out/bin
           ln -s ${lib.getExe prev.pi-coding-agent} $out/bin/pi
           wrapProgram $out/bin/pi \
-              --set PI_CODING_AGENT_DIR "$HOME/.config/pi/agent" \
+              --set PI_CODING_AGENT_DIR '$HOME/.config/pi/agent' \
               --set PI_OFFLINE 1 \
               --set PI_SKIP_VERSION_CHECK 1 \
               --set PI_TELEMETRY 0 \
