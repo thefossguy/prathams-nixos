@@ -167,6 +167,7 @@
           system,
         }:
         {
+          pi-coding-agent = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent { };
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
           nix-format = pkgs.stdenvNoCC.mkDerivation {
             pname = "nix-format";
