@@ -14,22 +14,22 @@
     "11-enx30c599b9ea5c" = {
       matchConfig.Name = "enx30c599b9ea5c";
       matchConfig.MACAddress = "30:c5:99:b9:ea:5c";
-      networkConfig.Addresses = [ "192.168.2.2/24" ];
+      address = [ "192.168.2.2/24" ];
     };
     "11-enx30c599b9ea60" = {
       matchConfig.Name = "enx30c599b9ea60";
       matchConfig.MACAddress = "30:c5:99:b9:ea:60";
-      networkConfig.Addresses = [ "192.168.3.2/24" ];
+      address = [ "192.168.3.2/24" ];
     };
     "11-enx30c599b9ea5d" = {
       matchConfig.Name = "enx30c599b9ea5d";
       matchConfig.MACAddress = "30:c5:99:b9:ea:5d";
-      networkConfig.Addresses = [ "192.168.4.1/24" ];
+      address = [ "192.168.4.1/24" ];
     };
     "11-enx30c599b9ea61" = {
       matchConfig.Name = "enx30c599b9ea61";
       matchConfig.MACAddress = "30:c5:99:b9:ea:61";
-      networkConfig.Addresses = [ "192.168.5.1/24" ];
+      address = [ "192.168.5.1/24" ];
     };
   };
 
