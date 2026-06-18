@@ -24,6 +24,13 @@ lib.mkIf (config.customOptions.socSupport.armSoc == "gb10") {
     cudaPackages.cuda_nvcc
   ];
 
+  networking.networkmanager.unmanaged = [
+    "interface-name:enp1s0f0np0"
+    "interface-name:enP2p1s0f0np0"
+    "interface-name:enp1s0f1np1"
+    "interface-name:enP2p1s0f1np1"
+  ];
+
   customOptions = {
     gpuSupport = [ "nvidia" ];
     enableLocalLLMSupport = true;
