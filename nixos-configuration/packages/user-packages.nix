@@ -142,7 +142,6 @@ let
       firefox
       google-chrome
       keka
-      librewolf
       maccy
       neovide
       proton-pass
