@@ -28,9 +28,9 @@ in
       requires = serviceConfig.requiredUnits;
       path = with pkgs; [
         gitMinimal
-        jq
         nix
         nixos-rebuild
+        python3Minimal
         systemd
       ];
 
