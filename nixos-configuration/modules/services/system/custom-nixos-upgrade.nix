@@ -26,6 +26,9 @@ in
       enable = true;
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
+      environment = {
+        NIXOS_MACHINE_HOSTNAME = config.networking.hostName;
+      };
       path = with pkgs; [
         gitMinimal
         nix
