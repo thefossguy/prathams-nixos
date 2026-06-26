@@ -20,8 +20,8 @@ def re_clone_nixos_config_repo() -> None:
         [
             "git",
             "clone",
-            nixos_config_repo_path,
             nixos_config_repo_url,
+            nixos_config_repo_path,
         ],
         check=False,
         stdout=subprocess.DEVNULL,
