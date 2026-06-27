@@ -15,5 +15,6 @@
     ./manually-autostart-libvirt-vms.nix
     ./nvim-update-plugins-and-parsers.nix
     ./update-rust.nix
+    ./user-nix-gc.nix
   ];
 }
