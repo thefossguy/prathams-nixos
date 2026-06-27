@@ -5,6 +5,7 @@
   fullUserSet,
   system,
   nixBuildArgs,
+  nixGcOptions,
   compressIso,
   guiSession,
 }:
@@ -24,6 +25,7 @@ let
       inherit
         nixpkgs
         nixBuildArgs
+        nixGcOptions
         compressIso
         guiSession
         ;

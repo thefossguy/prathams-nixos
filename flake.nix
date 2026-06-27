@@ -49,6 +49,7 @@
       fullUserSet = import ./functions/full-user-set.nix;
 
       nixBuildArgs = "--max-jobs 1 --print-build-logs --show-trace --verbose";
+      nixGcOptions =  "--delete-older-than 14d";
 
       mkNixosSystem =
         hostname:
@@ -61,6 +62,7 @@
             fullUserSet
             hostname
             nixBuildArgs
+            nixGcOptions
             ;
         };
 
@@ -95,6 +97,7 @@
             linuxSystems
             fullUserSet
             nixBuildArgs
+            nixGcOptions
             ;
           inherit system;
           inherit compressIso;
@@ -113,6 +116,7 @@
             nixpkgs-stable
             system
             nixBuildArgs
+            nixGcOptions
             ;
           systemUser = userSet;
         };

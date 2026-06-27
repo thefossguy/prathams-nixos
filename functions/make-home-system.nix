@@ -5,6 +5,7 @@
   system,
   systemUser,
   nixBuildArgs,
+  nixGcOptions,
 }:
 let
   stablePkgs = nixpkgs-stable.legacyPackages.${system};
@@ -17,7 +18,7 @@ let
       systemType = "server";
       canAccessMyNixCache = false;
       allServicesSet = import ./all-services-set.nix;
-      inherit nixpkgs nixBuildArgs;
+      inherit nixpkgs nixBuildArgs nixGcOptions;
     };
   };
 in

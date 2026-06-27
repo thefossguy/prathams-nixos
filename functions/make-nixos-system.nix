@@ -6,6 +6,7 @@
   fullUserSet,
   hostname,
   nixBuildArgs,
+  nixGcOptions,
 }:
 let
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems; };
@@ -34,7 +35,7 @@ let
       dtbRelativePath = thisSystem.extraConfig.dtbRelativePath or null;
       canAccessMyNixCache = thisSystem.extraConfig.canAccessMyNixCache or true;
       allServicesSet = import ./all-services-set.nix;
-      inherit nixpkgs nixBuildArgs;
+      inherit nixpkgs nixBuildArgs nixGcOptions;
     };
     kernelConfig = {
       inherit (nixosSystems.commonConfig) supportedFilesystemsSansZfs;
