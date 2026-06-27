@@ -31,6 +31,8 @@ lib.mkIf (config.customOptions.socSupport.armSoc == "gb10") {
     "interface-name:enP2p1s0f1np1"
   ];
 
+  services.openssh.settings.AllowTcpForwarding = lib.mkOverride 20 "local";
+
   customOptions = {
     gpuSupport = [ "nvidia" ];
     enableLocalLLMSupport = true;
