@@ -181,44 +181,39 @@ def main() -> None:
     )
     logging.info(f"Latest NixOS generation path: '{latest_nixos_generation_outpath}'")
 
-    if os.path.realpath("/nix/var/nix/profiles/system") == latest_nixos_generation_outpath:
-        logging.info(
-            f"`{latest_nixos_generation_outpath}` is already the latest NixOS generation, nothing to do",
+    nix_build_process = subprocess.run(
+        [
+            "nix",
+            "build",
+            "--no-link",
+            "--keep-going",
+            "--max-jobs",
+            "0",
+            latest_nixos_generation_outpath,
+        ],
+        check=False,
+        text=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if nix_build_process.returncode != 0:
+        logging.warning(
+            f"`{latest_nixos_generation_outpath}` is not fully cached yet",
         )
+        sys.exit(0)
     else:
-        nix_build_process = subprocess.run(
+        nixos_rebuild_process = subprocess.run(
             [
-                "nix",
-                "build",
-                "--no-link",
-                "--keep-going",
-                "--max-jobs",
-                "0",
-                latest_nixos_generation_outpath,
+                "nixos-rebuild",
+                "boot",
+                "--show-trace",
+                "--print-build-logs",
+                "--flake",
+                f"{flake_store_path}#{nixos_machine_hostname}",
             ],
             check=False,
-            text=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
         )
-        if nix_build_process.returncode != 0:
-            logging.warning(
-                f"`{latest_nixos_generation_outpath}` is not fully cached yet",
-            )
-            sys.exit(0)
-        else:
-            nixos_rebuild_process = subprocess.run(
-                [
-                    "nixos-rebuild",
-                    "boot",
-                    "--show-trace",
-                    "--print-build-logs",
-                    "--flake",
-                    f"{flake_store_path}#{nixos_machine_hostname}",
-                ],
-                check=False,
-            )
-            sys.exit(nixos_rebuild_process.returncode)
+        sys.exit(nixos_rebuild_process.returncode)
 
 
 if __name__ == "__main__":
