@@ -18,7 +18,7 @@ in
   nix = {
     checkConfig = true;
     gc.automatic = true;
-    gc.options = "--delete-older-than 14d";
+    gc.options = nixosSystemConfig.extraConfig.nixGcOptions;
     package = pkgs.nix;
 
     # disable all "suggested" registries
