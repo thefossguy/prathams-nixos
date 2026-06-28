@@ -95,6 +95,22 @@ in
 
     # Custom (new) packages go here.
     (final: prev: {
+      convertSafetensorsToGGUF =
+        let
+          env_PATH = lib.makeBinPath (
+            with prev.python3Packages;
+            [
+              python
+              torch
+              transformers
+            ]
+          );
+        in
+        prev.writeScript "convert-safetensors-to-gguf" ''
+          #!${lib.getExe prev.bash}
+          export PATH=${env_PATH}:$PATH
+          python3 ${prev.llama-cpp.src}/convert_hf_to_gguf.py "$@"
+        '';
       ubootRaspberryPiGeneric_64bit = prev.buildUBoot {
         defconfig = "rpi_arm64_defconfig";
         extraMeta.platforms = [ "aarch64-linux" ];
