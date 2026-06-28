@@ -8,7 +8,7 @@
 }:
 
 let
-  serviceConfig = lib.recursiveUpdate nixosSystemConfig.extraConfig.allServicesSet.nixGc ({unitName = "user-nix-gc";});
+  serviceConfig = lib.recursiveUpdate nixosSystemConfig.extraConfig.allServicesSet.nixGc ({ unitName = "user-nix-gc"; });
 in
 
 lib.mkIf pkgs.stdenv.hostPlatform.isLinux {

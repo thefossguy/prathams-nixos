@@ -49,7 +49,7 @@
       fullUserSet = import ./functions/full-user-set.nix;
 
       nixBuildArgs = "--max-jobs 1 --print-build-logs --show-trace --verbose";
-      nixGcOptions =  "--delete-older-than 14d";
+      nixGcOptions = "--delete-older-than 14d";
 
       mkNixosSystem =
         hostname:
