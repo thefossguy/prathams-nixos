@@ -106,7 +106,7 @@ in
             ]
           );
         in
-        prev.writeScript "convert-safetensors-to-gguf" ''
+        prev.writeScriptBin "convert-safetensors-to-gguf" ''
           #!${lib.getExe prev.bash}
           export PATH=${env_PATH}:$PATH
           python3 ${prev.llama-cpp.src}/convert_hf_to_gguf.py "$@"
