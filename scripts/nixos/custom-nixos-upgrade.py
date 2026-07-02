@@ -104,10 +104,14 @@ def pre_start_checks() -> None:
 
 
 def update_lockfile() -> None:
-    flake_lockfile_delta = time.time() - os.path.getmtime(
+    current_time = time.time()
+    flake_lockfile_delta = current_time - os.path.getmtime(
         f"{nixos_config_repo_path}/flake.lock",
     )
-    if flake_lockfile_delta > 55:
+    flake_file_delta = current_time - os.path.getmtime(
+        f"{nixos_config_repo_path}/flake.nix",
+    )
+    if flake_lockfile_delta > 55 or flake_file_delta < 120:
         nix_flake_update_process = subprocess.run(
             [
                 "nix",
