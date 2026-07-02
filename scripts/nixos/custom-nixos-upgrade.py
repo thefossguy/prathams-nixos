@@ -29,7 +29,7 @@ def re_clone_nixos_config_repo() -> None:
     )
     if git_clone_process.returncode != 0:
         logging.error(
-            f"Could not clone `{nixos_config_repo_url}` at `{nixos_config_repo_path}`\n{git_clone_process.stderr.strip()}"
+            f"Could not clone `{nixos_config_repo_url}` at `{nixos_config_repo_path}`\n{git_clone_process.stderr.strip()}",
         )
         sys.exit(1)
 
@@ -48,7 +48,7 @@ def ensure_nixos_config_repo_integrity() -> None:
     )
     if git_status_process.returncode != 0:
         logging.warning(
-            f"The NixOS configuration repository's (`{nixos_config_repo_path}`) status was not okay",
+            f"The NixOS configuration repository's (`{nixos_config_repo_path}`) status was not okay\n{git_status_process.stderr.strip()}",
         )
         try:
             shutil.rmtree(nixos_config_repo_path)
@@ -74,7 +74,7 @@ def pull_nixos_config_changes() -> None:
     )
     if git_pull_process.returncode != 0:
         logging.warning(
-            f"Could not pull changes for NixOS configuration repository (`{nixos_config_repo_path}`)",
+            f"Could not pull changes for NixOS configuration repository (`{nixos_config_repo_path}`)\n{git_pull_process.stderr.strip()}",
         )
         try:
             shutil.rmtree(nixos_config_repo_path)
@@ -121,7 +121,7 @@ def update_lockfile() -> None:
             stderr=subprocess.DEVNULL,
         )
         if nix_flake_update_process.returncode != 0:
-            logging.warning("Could not update the lockfile")
+            logging.warning(f"Could not update the lockfile\n{nix_flake_update_process.stderr.strip()}")
     else:
         logging.info("Not updating flake.lock to be under GitHub's free rate limit.")
 
@@ -138,7 +138,7 @@ def get_flake_store_path() -> str:
         flake_store_path = json.loads(nix_flake_archive_process.stdout).get("path")
     if not flake_store_path:
         logging.error(
-            f"Could not determine the flake store path of `{nixos_config_repo_path}`",
+            f"Could not determine the flake store path of `{nixos_config_repo_path}`\n{nix_flake_archive_process.stderr.strip()}",
         )
         sys.exit(1)
     else:
@@ -162,7 +162,7 @@ def evaluate_latest_nixos_generation_outpath(
     )
     if nix_eval_process.returncode != 0:
         logging.error(
-            f"Could not determine the derivation path for `{nixos_machine_hostname}`'s NixOS configuration",
+            f"Could not determine the derivation path for `{nixos_machine_hostname}`'s NixOS configuration\n{nix_eval_process.stderr.strip()}",
         )
         sys.exit(1)
     else:
