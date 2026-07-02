@@ -189,6 +189,7 @@ def main() -> None:
         [
             "nix",
             "build",
+            "--refresh",
             "--no-link",
             "--keep-going",
             "--max-jobs",
