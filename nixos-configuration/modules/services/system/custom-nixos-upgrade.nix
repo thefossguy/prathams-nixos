@@ -29,18 +29,20 @@ in
       environment = {
         NIXOS_MACHINE_HOSTNAME = config.networking.hostName;
       };
-      path = with pkgs; [
-        gitMinimal
-        nix
-        nixos-rebuild
-        python3Minimal
-        systemd
-      ];
 
       serviceConfig = {
         User = "root";
         Type = "oneshot";
-        ExecStart = "/etc/nixos/scripts/nixos/custom-nixos-upgrade.py";
+        ExecStart = pkgs.writeScript "custom-nixos-upgrade.sh" ''
+          set -xeuf -o pipefail
+
+          export PATH=${lib.makeBinPath pkgs.custom-nixos-upgrade.buildInputs}:$PATH
+          if [[ -x /etc/nixos/scripts/nixos/custom-nixos-upgrade.py ]]; then
+              exec /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
+          else
+              exec ${lib.getExe pkgs.custom-nixos-upgrade}
+          fi
+        '';
       };
     };
   };
