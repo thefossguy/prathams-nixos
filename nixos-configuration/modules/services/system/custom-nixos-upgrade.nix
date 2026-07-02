@@ -40,7 +40,7 @@ in
           if [[ -x /etc/nixos/scripts/nixos/custom-nixos-upgrade.py ]]; then
               exec /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
           else
-              exec ${lib.getExe pkgs.custom-nixos-upgrade}
+              exec ${lib.getExe pkgs.python3Minimal} ${lib.getExe pkgs.custom-nixos-upgrade}
           fi
         '';
       };
