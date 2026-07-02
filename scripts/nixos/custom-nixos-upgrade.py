@@ -29,7 +29,7 @@ def re_clone_nixos_config_repo() -> None:
     )
     if git_clone_process.returncode != 0:
         logging.error(
-            f"Could not clone `{nixos_config_repo_url}` at `{nixos_config_repo_path}`",
+            f"Could not clone `{nixos_config_repo_url}` at `{nixos_config_repo_path}`\n{git_clone_process.stderr.strip()}"
         )
         sys.exit(1)
 
