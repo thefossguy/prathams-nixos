@@ -42,7 +42,8 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
           --machine-role server \
           --update-lockfile \
           ${
-            lib.strings.optionalString (config.networking.hostName == "chaturvyas") "--nix-copy-machine 'ssh-ng://pratham@hans'"
+            lib.strings.optionalString (config.networking.hostName == "chaturvyas")
+              "--nix-copy-machine 'ssh-ng://pratham@hans' --nix-copy-machine 's3://nix-cache-thefossguy?endpoint=638311974dc10256cb5e899da03d1935.r2.cloudflarestorage.com'"
           } \
           ${
             lib.strings.optionalString (
