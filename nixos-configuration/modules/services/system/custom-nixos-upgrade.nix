@@ -37,7 +37,7 @@ in
           #!${lib.getExe pkgs.bash}
           set -xeuf -o pipefail
 
-          export PATH=${lib.makeBinPath pkgs.custom-nixos-upgrade.buildInputs}:$PATH
+          export PATH=${lib.makeBinPath (builtins.map (pkg: pkg.out or pkg) pkgs.custom-nixos-upgrade.buildInputs)}:$PATH
           if [[ -x /etc/nixos/scripts/nixos/custom-nixos-upgrade.py ]]; then
               exec ${lib.getExe pkgs.python3Minimal} /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
           else
