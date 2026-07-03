@@ -39,7 +39,9 @@ in
 
           export PATH=${lib.makeBinPath (builtins.map (pkg: pkg.out or pkg) pkgs.custom-nixos-upgrade.buildInputs)}:$PATH
           if [[ -x /etc/nixos/scripts/nixos/custom-nixos-upgrade.py ]]; then
-              exec ${lib.getExe pkgs.python3Minimal} /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
+              if ! ${lib.getExe pkgs.python3Minimal} /etc/nixos/scripts/nixos/custom-nixos-upgrade.py; then
+                  exec ${lib.getExe pkgs.python3Minimal} ${lib.getExe pkgs.custom-nixos-upgrade}
+              fi
           else
               exec ${lib.getExe pkgs.python3Minimal} ${lib.getExe pkgs.custom-nixos-upgrade}
           fi
