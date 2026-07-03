@@ -24,8 +24,8 @@ def re_clone_nixos_config_repo() -> None:
             nixos_config_repo_path,
         ],
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     if git_clone_process.returncode != 0:
         logging.error(
@@ -43,8 +43,8 @@ def ensure_nixos_config_repo_integrity() -> None:
             "status",
         ],
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     if git_status_process.returncode != 0:
         logging.warning(
@@ -69,8 +69,8 @@ def pull_nixos_config_changes() -> None:
             "--no-rebase",
         ],
         check=False,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
+        text=True,
     )
     if git_pull_process.returncode != 0:
         logging.warning(
@@ -121,8 +121,8 @@ def update_lockfile() -> None:
                 nixos_config_repo_path,
             ],
             check=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            capture_output=True,
+            text=True,
         )
         if nix_flake_update_process.returncode != 0:
             logging.warning(f"Could not update the lockfile\n{nix_flake_update_process.stderr.strip()}")
@@ -197,9 +197,6 @@ def main() -> None:
             latest_nixos_generation_outpath,
         ],
         check=False,
-        text=True,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
     )
     if nix_build_process.returncode != 0:
         logging.warning(
