@@ -44,7 +44,6 @@ in
       extra-substituters = lib.optionals (!(config.customOptions.localCaching.servesNixDerivations or false)) [
         "${lib.strings.optionalString (nixosSystemConfig.extraConfig.canAccessMyNixCache) "http://10.0.0.24"}"
         "https://nix-cache-r2.thefossguy.com"
-        "https://nix-cache.thefossguy.com"
       ];
       keep-going = false;
       log-lines = 9999;

@@ -12,7 +12,6 @@ import time
 nixos_machine_hostname = os.environ.get("NIXOS_MACHINE_HOSTNAME", None)
 nixos_config_repo_path = "/etc/nixos"
 nixos_config_repo_url = "https://gitlab.com/thefossguy/prathams-nixos.git"
-nix_cache = "https://nix-cache.thefossguy.com"
 
 
 def re_clone_nixos_config_repo() -> None:
