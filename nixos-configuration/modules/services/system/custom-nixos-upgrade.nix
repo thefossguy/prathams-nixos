@@ -34,11 +34,12 @@ in
         User = "root";
         Type = "oneshot";
         ExecStart = pkgs.writeScript "custom-nixos-upgrade.sh" ''
+          #!${lib.getExe pkgs.bash}
           set -xeuf -o pipefail
 
           export PATH=${lib.makeBinPath pkgs.custom-nixos-upgrade.buildInputs}:$PATH
           if [[ -x /etc/nixos/scripts/nixos/custom-nixos-upgrade.py ]]; then
-              exec /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
+              exec ${lib.getExe pkgs.python3Minimal} /etc/nixos/scripts/nixos/custom-nixos-upgrade.py
           else
               exec ${lib.getExe pkgs.python3Minimal} ${lib.getExe pkgs.custom-nixos-upgrade}
           fi
