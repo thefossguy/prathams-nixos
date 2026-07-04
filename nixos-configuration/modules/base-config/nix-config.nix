@@ -41,10 +41,10 @@ in
         "flakes"
       ];
       extra-trusted-public-keys = [ "10.0.0.24:g29fjBRU/VGj6kkIQqjm0o5sxWduZ1hNNLTnSeF/AAU=" ];
-      extra-substituters = lib.optionals (!(config.customOptions.localCaching.servesNixDerivations or false)) [
-        "${lib.strings.optionalString (nixosSystemConfig.extraConfig.canAccessMyNixCache) "http://10.0.0.24"}"
+      extra-substituters = [
         "https://nix-cache-r2.thefossguy.com"
-      ];
+      ]
+      ++ lib.lists.optionals nixosSystemConfig.extraConfig.canAccessMyNixCache [ "http://10.0.0.24" ];
       keep-going = false;
       log-lines = 9999;
       max-jobs = if (nixosSystemConfig.coreConfig.systemUser.username == "thefossguy") then 10 else 1;
