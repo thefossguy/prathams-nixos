@@ -7,14 +7,26 @@
   ...
 }:
 
+let
+  binaryCacheIface = "127.0.0.1";
+  binaryCachePort = "5000";
+in
+
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
-  services.nix-serve = {
-    enable = true;
-    openFirewall = false; # Handled by Nginx
-    port = 5000;
-    secretKeyFile = "/my-nix-binary-cache/cache-priv-key.pem";
-    extraParams = "--priority 10";
-    package = pkgs.nix-serve-ng;
+  services.harmonia = {
+    cache = {
+      enable = true;
+      settings = {
+        priority = 10;
+        enable_compression = true;
+        bind = "${binaryCacheIface}:${binaryCachePort}";
+        workers = 4; # all my machines have at least 4 cores.
+        max_connection_rate = "256";
+      };
+    };
+    daemon = {
+      enable = true;
+    };
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ];
@@ -24,7 +36,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
     recommendedProxySettings = true;
     virtualHosts = {
       "nixcache.${config.networking.hostName}.localhost" = {
-        locations."/".proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+        locations."/".proxyPass = "http://${binaryCacheIface}:${binaryCachePort}";
       };
     };
   };
