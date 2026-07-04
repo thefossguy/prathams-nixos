@@ -21,7 +21,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
         enable_compression = true;
         bind = "${binaryCacheIface}:${binaryCachePort}";
         workers = 4; # all my machines have at least 4 cores.
-        max_connection_rate = "256";
+        max_connection_rate = 256;
       };
     };
     daemon = {
