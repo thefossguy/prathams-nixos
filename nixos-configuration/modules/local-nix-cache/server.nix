@@ -31,7 +31,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
 
   networking.firewall.allowedTCPPorts = [ 80 ];
 
-  services.nginx = lib.mkIf (config.networking.hostName != "hans") {
+  services.nginx = {
     enable = true;
     recommendedProxySettings = true;
     virtualHosts = {
