@@ -184,20 +184,31 @@ def main() -> None:
     )
     logging.info(f"Latest NixOS generation path: '{latest_nixos_generation_outpath}'")
 
+    build_nixos_system_command = [
+        "nix",
+        "build",
+        "--no-link",
+        "--keep-going",
+        "--max-jobs",
+        "0",
+        latest_nixos_generation_outpath,
+    ]
+    build_nixos_system_process_status = False
     nix_build_process = subprocess.run(
-        [
-            "nix",
-            "build",
-            "--refresh",
-            "--no-link",
-            "--keep-going",
-            "--max-jobs",
-            "0",
-            latest_nixos_generation_outpath,
-        ],
+        build_nixos_system_command,
         check=False,
     )
-    if nix_build_process.returncode != 0:
+    build_nixos_system_process_status = nix_build_process.returncode == 0
+
+    if not build_nixos_system_process_status:
+        build_nixos_system_command.insert(2, "--refresh")
+        nix_build_retry_process = subprocess.run(
+            build_nixos_system_command,
+            check=False,
+        )
+        build_nixos_system_process_status = nix_build_retry_process.returncode == 0
+
+    if not build_nixos_system_process_status:
         logging.warning(
             f"`{latest_nixos_generation_outpath}` is not fully cached yet",
         )
