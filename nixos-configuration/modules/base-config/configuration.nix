@@ -72,6 +72,6 @@
 
   nix = {
     checkAllErrors = true;
-    gc.dates = "Mon *-*-* 00:00:00";
+    gc.dates = nixosSystemConfig.extraConfig.allServicesSet.nixGc.onCalendar;
   };
 }
