@@ -90,7 +90,7 @@ rec {
 
   nixGc = mkServiceConfig {
     unitName = "nix-gc";
-    onCalendar = systemdTime.Hourly { };
+    onCalendar = systemdTime.Daily { hour = "16"; };
   };
 
   resetSystemdUserUnits = mkServiceConfig {
