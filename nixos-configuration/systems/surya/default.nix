@@ -10,8 +10,6 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  environment.systemPackages = [ pkgs.run_inference_qwen_3_6__27b ];
-
   systemd.network.networks = {
     "11-enx30c599b9f623" = {
       matchConfig.Name = "enx30c599b9f623";
