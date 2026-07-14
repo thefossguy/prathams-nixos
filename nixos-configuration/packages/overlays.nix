@@ -20,8 +20,8 @@ in
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
-      mpv = prev.mpv.override { scripts = [ prev.mpvScripts.mpris ]; };
-      mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = prev.ffmpeg-full; };
+      mpv = prev.mpv.override { scripts = [ final.mpvScripts.mpris ]; };
+      mpv-unwrapped = prev.mpv-unwrapped.override { ffmpeg = final.ffmpeg-full; };
 
       rustup-bin =
         let
@@ -117,7 +117,7 @@ in
       convertSafetensorsToGGUF =
         let
           env_PATH = lib.makeBinPath (
-            with prev.python3Packages;
+            with final.python3Packages;
             [
               python
               torch
@@ -125,10 +125,10 @@ in
             ]
           );
         in
-        prev.writeScriptBin "convert-safetensors-to-gguf" ''
-          #!${lib.getExe prev.bash}
+        final.writeScriptBin "convert-safetensors-to-gguf" ''
+          #!${lib.getExe final.bash}
           export PATH=${env_PATH}:$PATH
-          python3 ${prev.llama-cpp.src}/convert_hf_to_gguf.py "$@"
+          python3 ${final.llama-cpp.src}/convert_hf_to_gguf.py "$@"
         '';
 
       run_inference_qwen_3_6__27b =
@@ -160,13 +160,13 @@ in
               #${fetched_qwen_3_6__27b_safetensors}
         '';
 
-      ubootRaspberryPiGeneric_64bit = prev.buildUBoot {
+      ubootRaspberryPiGeneric_64bit = final.buildUBoot {
         defconfig = "rpi_arm64_defconfig";
         extraMeta.platforms = [ "aarch64-linux" ];
         filesToInstall = [ "u-boot.bin" ];
       };
 
-      rpiUbootAndFirmware = prev.stdenvNoCC.mkDerivation {
+      rpiUbootAndFirmware = final.stdenvNoCC.mkDerivation {
         version = final.ubootRaspberryPiGeneric_64bit.version;
         name = "rpiUbootAndFirmware";
         dontUnpack = true;
@@ -176,7 +176,7 @@ in
           set -x
 
           mkdir $out
-          cp -r ${prev.raspberrypifw}/share/raspberrypi/boot/* $out
+          cp -r ${final.raspberrypifw}/share/raspberrypi/boot/* $out
           rm -vf $out/kernel*.img
           cp -r ${final.ubootRaspberryPiGeneric_64bit}/u-boot.bin $out/rpi-u-boot.bin
 
