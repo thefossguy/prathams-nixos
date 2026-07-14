@@ -114,22 +114,53 @@ in
 
     # Custom (new) packages go here.
     (final: prev: {
-      convertSafeTensorsToGGUF =
-        let
-          env_PATH = lib.makeBinPath (
-            with final.python3Packages;
-            [
-              python
-              torch
-              transformers
-            ]
-          );
-        in
-        final.writeScriptBin "convert-safetensors-to-gguf" ''
-          #!${lib.getExe final.bash}
-          export PATH=${env_PATH}:$PATH
-          python3 ${final.llama-cpp.src}/convert_hf_to_gguf.py "$@"
+      convertSafeTensorsToGGUF = final.stdenvNoCC.mkDerivation (finalAttrs: {
+        name = "convert-safe-tensors-to-gguf";
+        __structuredAttrs = true;
+        src = null;
+
+        dontUnpack = true;
+        dontPatch = true;
+        dontConfigure = true;
+        dontFixup = true;
+
+        nativeBuildInputs = with pkgs.python3Packages; [
+          python
+          torch
+          transformers
+        ];
+
+        buildPhase = ''
+          set -x
+          runHook preBuild
+
+          ${
+            if (finalAttrs.src == null) then
+              "touch model.gguf"
+            else
+              ''
+                python3 ${final.llama-cpp.src}/convert_hf_to_gguf.py \
+                    ${finalAttrs.src} \
+                    --model-name model \
+                    --outfile model.gguf \
+                    --verbose
+              ''
+          }
+
+          runHook postBuild
+          set +x
         '';
+
+        installPhase = ''
+          set -x
+          runHook preInstall
+
+          mv model.gguf $out
+
+          runHook postInstall
+          set +x
+        '';
+      });
 
       run_inference_qwen_3_6__27b =
         let
