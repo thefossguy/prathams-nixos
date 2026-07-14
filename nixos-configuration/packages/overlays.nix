@@ -130,6 +130,36 @@ in
           export PATH=${env_PATH}:$PATH
           python3 ${prev.llama-cpp.src}/convert_hf_to_gguf.py "$@"
         '';
+
+      run_inference_qwen_3_6__27b =
+        let
+          fetched_qwen_3_6__27b_safetensors = final.fetchgit {
+            url = "https://huggingface.co/Qwen/Qwen3.6-27B";
+            rev = "6a9e13bd6fc8f0983b9b99948120bc37f49c13e9";
+            hash = "sha256-7lWt9AeuSk9XIgpwVF2OnSoyW2+Tw/Kd46/KFG484Y8=";
+            fetchLFS = true;
+          };
+        in
+        final.writeScriptBin "run-inference-qwen3.6-27b" ''
+          #!${lib.getExe final.bash}
+
+          ${lib.getExe' final.llama-cpp "llama-server"} \
+              --host 0.0.0.0 \
+              --port ''${PORT:-8080} \
+              --n-gpu-layers all \
+              --alias Qwen/Qwen3.6-27B \
+              --model ${final.safeTensorsToGGUF fetched_qwen_3_6__27b_safetensors} \
+              --temperature 0.6 \
+              --top-p 0.95 \
+              --top-k 20 \
+              --min-p 0.0  \
+              --presence-penalty 0.0 \
+              --repeat-penalty 1.0 \
+              --reasoning off \
+              --ctx-size $(( 1024 * 256 )) \
+              #${fetched_qwen_3_6__27b_safetensors}
+        '';
+
       ubootRaspberryPiGeneric_64bit = prev.buildUBoot {
         defconfig = "rpi_arm64_defconfig";
         extraMeta.platforms = [ "aarch64-linux" ];
