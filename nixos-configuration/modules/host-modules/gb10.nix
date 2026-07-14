@@ -22,7 +22,6 @@ lib.mkIf (config.customOptions.socSupport.armSoc == "gb10") {
 
   environment.systemPackages = with pkgs; [
     cudaPackages.cuda_nvcc
-    convertSafetensorsToGGUF
   ];
 
   networking.networkmanager.unmanaged = [
