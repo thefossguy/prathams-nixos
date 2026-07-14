@@ -114,7 +114,7 @@ in
 
     # Custom (new) packages go here.
     (final: prev: {
-      convertSafetensorsToGGUF =
+      convertSafeTensorsToGGUF =
         let
           env_PATH = lib.makeBinPath (
             with final.python3Packages;
