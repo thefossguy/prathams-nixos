@@ -170,6 +170,9 @@ in
             hash = "sha256-7lWt9AeuSk9XIgpwVF2OnSoyW2+Tw/Kd46/KFG484Y8=";
             fetchLFS = true;
           };
+          gguf_model_qwen_3_6__27b = final.convertSafeTensorsToGGUF.overrideAttrs (oldAttrs: {
+            src = fetched_qwen_3_6__27b_safetensors;
+          });
         in
         final.writeScriptBin "run-inference-qwen3.6-27b" ''
           #!${lib.getExe final.bash}
@@ -179,7 +182,7 @@ in
               --port ''${PORT:-8080} \
               --n-gpu-layers all \
               --alias Qwen/Qwen3.6-27B \
-              --model ${final.safeTensorsToGGUF fetched_qwen_3_6__27b_safetensors} \
+              --model ${gguf_model_qwen_3_6__27b} \
               --temperature 0.6 \
               --top-p 0.95 \
               --top-k 20 \
