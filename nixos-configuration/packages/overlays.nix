@@ -191,7 +191,7 @@ in
               --repeat-penalty 1.0 \
               --reasoning off \
               --ctx-size $(( 1024 * 256 )) \
-              #${fetched_qwen_3_6__27b_safetensors}
+              #EOF
         '';
 
       ubootRaspberryPiGeneric_64bit = final.buildUBoot {
