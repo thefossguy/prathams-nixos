@@ -51,11 +51,9 @@ def ensure_nixos_config_repo_integrity() -> None:
         )
         try:
             shutil.rmtree(nixos_config_repo_path)
-        except (FileNotFoundError, NotADirectoryError):
-            raise
-        except Exception:
-            pass
-        re_clone_nixos_config_repo()
+        except Exception as e:
+            logging.error(f"{e}")
+            re_clone_nixos_config_repo()
 
 
 def pull_nixos_config_changes() -> None:
@@ -77,11 +75,9 @@ def pull_nixos_config_changes() -> None:
         )
         try:
             shutil.rmtree(nixos_config_repo_path)
-        except (FileNotFoundError, NotADirectoryError):
-            raise
-        except Exception:
-            pass
-        re_clone_nixos_config_repo()
+        except Exception as e:
+            logging.error(f"{e}")
+            re_clone_nixos_config_repo()
 
 
 def pre_start_checks() -> None:
