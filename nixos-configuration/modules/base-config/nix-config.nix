@@ -56,6 +56,7 @@ in
     extraOptions = lib.mkBefore ''
       require-sigs = true
       fallback = true
+      min-free = 10G
       ${fsyncStorePaths}
     '';
   };
