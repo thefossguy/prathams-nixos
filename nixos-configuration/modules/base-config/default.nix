@@ -20,6 +20,7 @@
     ./sudo-nopasswd.nix
     ./sysctls.nix
     ./virtualisation.nix
+    ./yubikey-fido.nix
     ./zfs.nix
     ./zram-swap.nix
   ];
