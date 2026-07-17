@@ -93,6 +93,8 @@ in
       };
   };
 
+  customOptions.enableYubikeySupport = true;
+
   isoImage.appendToMenuLabel = " Installer (${config.customOptions.kernelConfiguration.tree})";
   isoImage.edition =
     if (config.customOptions.displayServer.guiSession == "unset") then
