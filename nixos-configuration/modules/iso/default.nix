@@ -81,10 +81,10 @@ in
     ];
 
   specialisation = {
-    stable.configuration =
+    longterm.configuration =
       { config, ... }:
       {
-        customOptions.kernelConfiguration.tree = lib.mkForce "stable";
+        customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
       };
     mainline.configuration =
       { config, ... }:
@@ -94,7 +94,6 @@ in
   };
 
   customOptions.enableYubikeySupport = true;
-  customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
 
   isoImage.appendToMenuLabel = " Installer (${config.customOptions.kernelConfiguration.tree})";
   isoImage.edition =
