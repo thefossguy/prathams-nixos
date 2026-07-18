@@ -19,6 +19,7 @@ in
     systemTypes = systemTypes;
 
     supportedFilesystemsSansZfs = {
+      btrfs = true;
       cifs = true;
       ext4 = true;
       overlay = true;
