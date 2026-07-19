@@ -20,7 +20,7 @@
   # value of the target system, keeping the intentional derivation "pure."
   nixpkgs.buildPlatform.system = builtins.currentSystem or nixosSystemConfig.coreConfig.system;
 
-  boot.initrd.services.lvm.enable = lib.mkOverride 60 false;
+  boot.initrd.services.lvm.enable = lib.mkForce true;
   # Prevents a boot error that says:
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
@@ -35,7 +35,7 @@
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
   security.lockKernelModules = lib.mkForce (!config.customOptions.isIso);
   services.dbus.implementation = "broker";
-  services.lvm.enable = lib.mkOverride 60 false;
+  services.lvm.enable = lib.mkForce true;
   system.stateVersion = "25.05";
 
   # Global defaults that _would_ be overridden from local modules go here.
