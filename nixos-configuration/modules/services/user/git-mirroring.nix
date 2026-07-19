@@ -42,7 +42,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${pkgs.writeShellScript "${serviceConfig.unitName}-ExecStart.sh" ''
-          set -xeuf -o pipefail
+          set -xuf -o pipefail
 
           if [[ "$(id -un)" != 'git' ]]; then
               exit 0
