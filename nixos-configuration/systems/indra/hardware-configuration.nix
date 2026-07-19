@@ -8,19 +8,58 @@
 }:
 
 {
+  customOptions = {
+    fileSystems = {
+     UUIDs = {
+       boot = "2C9D-5832";
+       root = "28e0f5b3-b5c6-41bf-8b7c-2c6fd9aa1515";
+     };
+    };
+
+    luksDevice = {
+      UUID = "0529936e-2e31-47bf-918d-ee0c2f277c23";
+      bypassWorkqueues = true;
+      challengeString = "asdf";
+    };
+  };
+
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/2C9D-5832";
+    device = config.customOptions.fileSystems.devices.boot;
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/ee12bd22-12e0-4840-8f16-46a9540bfbac";
+    device = config.customOptions.fileSystems.devices.root;
+    fsType = lib.mkForce "btrfs";
+    options = [
+      "subvol=@"
+      "compress=zstd:15"
+    ];
+  };
+
+  fileSystems."/nix" = {
+    device = config.customOptions.fileSystems.devices.root;
+    fsType = lib.mkForce "btrfs";
+    options = [
+      "subvol=@nix"
+      "compress=zstd:15"
+    ];
   };
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/cffc2a40-66a3-4ae2-96f8-f6b9a55c12c7";
+    device = config.customOptions.fileSystems.devices.root;
+    fsType = lib.mkForce "btrfs";
+    options = [
+      "subvol=@home"
+      "compress=zstd:15"
+    ];
   };
 
   fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/e19a752e-92e8-476a-b5e7-a9c16373fde5";
+    device = config.customOptions.fileSystems.devices.root;
+    fsType = lib.mkForce "btrfs";
+    options = [
+      "subvol=@var"
+      "compress=zstd:15"
+    ];
   };
 }
