@@ -103,9 +103,7 @@ in
         AuthenticationMethods = lib.mkForce "publickey";
         Banner = lib.mkForce null;
         ChallengeResponseAuthentication = lib.mkForce false;
-        GSSAPIAuthentication = lib.mkForce false;
         KbdInteractiveAuthentication = lib.mkForce false;
-        KerberosAuthentication = lib.mkForce false;
         LoginGraceTime = 0; # CVE-2024-6387 “regreSSHion”
         MaxAuthTries = lib.mkForce 10;
         PasswordAuthentication = lib.mkForce false;
