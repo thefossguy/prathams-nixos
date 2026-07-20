@@ -53,7 +53,7 @@ lib.mkIf (config.customOptions.luksDevice.UUID != null) {
     script = ''
       set -xuf -o pipefail
 
-      for _ in $(seq 120); do
+      for _ in $(seq 60); do
           if ykinfo -2 >/dev/null 2>&1; then
               break
           else
