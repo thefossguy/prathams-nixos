@@ -16,7 +16,13 @@ let
     "nodev"
     "nosuid"
   ];
-  bootMountOptions = commonMountOptions ++ hardenedMountOptions ++ [ "noexec" "umask=0077" ];
+  bootMountOptions =
+    commonMountOptions
+    ++ hardenedMountOptions
+    ++ [
+      "noexec"
+      "umask=0077"
+    ];
   rootMountOptions = commonMountOptions ++ hardenedMountOptions;
   homeMountOptions = commonMountOptions ++ hardenedMountOptions;
   varlMountOptions = commonMountOptions ++ hardenedMountOptions;
