@@ -30,11 +30,25 @@ lib.mkIf (config.customOptions.luksDevice.UUID != null) {
     enable = true;
     description = "Derive ${config.customOptions.luksDevice.label} LUKS key from YubiKey challenge-response";
 
-    requiredBy = [ "sysroot.mount" "cryptsetup-pre.target" ];
-    wantedBy = [ "initrd.target" "systemd-cryptsetup@${config.customOptions.luksDevice.label}.service" ];
+    requiredBy = [
+      "sysroot.mount"
+      "cryptsetup-pre.target"
+    ];
+    wantedBy = [
+      "initrd.target"
+      "systemd-cryptsetup@${config.customOptions.luksDevice.label}.service"
+    ];
     wants = [ "cryptsetup-pre.target" ];
-    before = [ "cryptsetup-pre.target" "blockdev@${utils.escapeSystemdPath "/dev/mapper/${config.customOptions.luksDevice.label}"}.target" "systemd-cryptsetup@${config.customOptions.luksDevice.label}.service" "sysroot.mount" ];
-    after = [ "systemd-modules-load.service" "systemd-udev-trigger.service" ];
+    before = [
+      "cryptsetup-pre.target"
+      "blockdev@${utils.escapeSystemdPath "/dev/mapper/${config.customOptions.luksDevice.label}"}.target"
+      "systemd-cryptsetup@${config.customOptions.luksDevice.label}.service"
+      "sysroot.mount"
+    ];
+    after = [
+      "systemd-modules-load.service"
+      "systemd-udev-trigger.service"
+    ];
     requires = [ "${utils.escapeSystemdPath config.customOptions.luksDevice.blockDevice}.device" ];
 
     unitConfig.DefaultDependencies = "no";
