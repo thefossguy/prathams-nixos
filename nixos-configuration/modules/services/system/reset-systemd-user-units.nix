@@ -18,14 +18,14 @@ in
 
       unitConfig = {
         RequiresMountsFor = "${config.customOptions.userHomeDir}";
+        JobRunningTimeoutSec = "infinity";
+        JobTimeoutSec = "infinity";
       };
 
       serviceConfig = {
         User = "root";
         Type = "oneshot";
         RemainAfterExit = true;
-        JobTimeoutSec = "infinity";
-        JobRunningTimeoutSec = "infinity";
         ExecStart = "${pkgs.coreutils}/bin/true";
         ExecStop = "rm -rf ${config.customOptions.userHomeDir}/.config/systemd/user";
       };
