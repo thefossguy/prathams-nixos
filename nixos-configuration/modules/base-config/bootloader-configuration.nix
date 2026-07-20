@@ -107,7 +107,7 @@
       timeout = if (config.services.qemuGuest.enable && (!config.customOptions.isIso)) then 1 else 10;
       systemd-boot = {
         enable = lib.mkForce true;
-        editor = lib.mkForce false;
+        editor = lib.mkForce (config.networking.hostName == "indra");
       };
     };
   };
