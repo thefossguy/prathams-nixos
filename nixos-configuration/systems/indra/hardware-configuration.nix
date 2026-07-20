@@ -10,10 +10,10 @@
 {
   customOptions = {
     fileSystems = {
-     UUIDs = {
-       boot = "2C9D-5832";
-       root = "28e0f5b3-b5c6-41bf-8b7c-2c6fd9aa1515";
-     };
+      UUIDs = {
+        boot = "2C9D-5832";
+        root = "28e0f5b3-b5c6-41bf-8b7c-2c6fd9aa1515";
+      };
     };
 
     luksDevice = {
@@ -23,7 +23,10 @@
     };
   };
 
-  boot.kernelParams = [ "console=tty0" "console=ttyS0" ];
+  boot.kernelParams = [
+    "console=tty0"
+    "console=ttyS0"
+  ];
 
   fileSystems."/boot" = {
     device = config.customOptions.fileSystems.devices.boot;
