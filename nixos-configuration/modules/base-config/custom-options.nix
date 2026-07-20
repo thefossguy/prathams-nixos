@@ -410,50 +410,49 @@ in
     };
   };
 
-  config.assertions =
-    [
-      {
-        assertion = config.customOptions.fileSystems.UUIDs.boot != null;
-        message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
-      }
-      {
-        assertion = config.customOptions.fileSystems.UUIDs.root != null;
-        message = "`customOptions.fileSystems.UUIDs.root` must be set.";
-      }
-    ]
+  config.assertions = [
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.boot != null;
+      message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
+    }
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.root != null;
+      message = "`customOptions.fileSystems.UUIDs.root` must be set.";
+    }
+  ]
 
-    ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
-      }
-    ]
+  ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
+    }
+  ]
 
-    ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
-      }
-    ]
+  ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
+    }
+  ]
 
-    ++
-      lib.optionals
-        (
-          config.customOptions.socSupport.armSoc == "rk3588"
-          || config.customOptions.socSupport.armSoc == "rpi4"
-          || config.customOptions.socSupport.armSoc == "rpi5"
-        )
-        [
-          {
-            assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
-            message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
-          }
-        ]
+  ++
+    lib.optionals
+      (
+        config.customOptions.socSupport.armSoc == "rk3588"
+        || config.customOptions.socSupport.armSoc == "rpi4"
+        || config.customOptions.socSupport.armSoc == "rpi5"
+      )
+      [
+        {
+          assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
+          message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
+        }
+      ]
 
-    ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
-      }
-    ];
+  ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
+    }
+  ];
 }
