@@ -36,6 +36,7 @@ in
         RuntimeMaxUse=512M
         SystemKeepFree=1G
         RuntimeKeepFree=128M
+        ReadKMsg=true
       '';
     };
 
