@@ -21,6 +21,7 @@ lib.mkIf (!config.customOptions.localCaching.servesNixDerivations) {
 
     services."${serviceConfig.unitName}" = {
       enable = true;
+      after = serviceConfig.afterUnits;
       before = serviceConfig.beforeUnits;
       requiredBy = serviceConfig.requiredByUnits;
 

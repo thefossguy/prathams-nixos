@@ -124,10 +124,12 @@ rec {
   verifyNixStorePaths = mkServiceConfig {
     unitName = "verify-nix-store-paths";
     beforeUnits = [
-      "${nixGc.unitName}.service"
       "${scheduledReboots.unitName}.service"
       "${zpoolMaintainenceWeekly.unitName}.service"
       "${zpoolMaintainenceMonthly.unitName}.service"
+    ];
+    afterUnits = [
+      "${nixGc.unitName}.service"
     ];
     onCalendar = systemdTime.Daily { };
   };
