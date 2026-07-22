@@ -32,6 +32,10 @@ in
       extraConfig = ''
         Compress=true
         SplitMode=uid
+        SystemMaxUse=5G
+        RuntimeMaxUse=512M
+        SystemKeepFree=1G
+        RuntimeKeepFree=128M
       '';
     };
 
