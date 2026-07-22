@@ -31,6 +31,7 @@ in
       storage = "persistent";
       extraConfig = ''
         Compress=true
+        SplitMode=uid
       '';
     };
 
