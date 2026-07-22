@@ -28,6 +28,8 @@ in
     udisks2.enable = true;
 
     journald = {
+      remote.enable = lib.mkForce false;
+      upload.enable = lib.mkForce false;
       storage = "persistent";
       extraConfig = ''
         Compress=true
