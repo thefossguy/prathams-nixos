@@ -24,9 +24,15 @@ in
     earlyoom.enable = false;
     fstrim.enable = true;
     fwupd.enable = true;
-    journald.storage = "persistent";
     logrotate.enable = true;
     udisks2.enable = true;
+
+    journald = {
+      storage = "persistent";
+      extraConfig = ''
+        Compress=true
+      '';
+    };
 
     timesyncd = {
       enable = lib.mkForce true; # NTP
