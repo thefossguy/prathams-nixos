@@ -13,6 +13,7 @@ let
     "root"
     nixosSystemConfig.coreConfig.systemUser.username
   ];
+  minFree = lib.strings.optionalString (!config.customOptions.isIso) "min-free = 10G";
 in
 {
   nix = {
@@ -56,7 +57,7 @@ in
     extraOptions = lib.mkBefore ''
       require-sigs = true
       fallback = true
-      min-free = 10G
+      ${minFree}
       ${fsyncStorePaths}
     '';
   };
