@@ -23,6 +23,8 @@
     };
   };
 
+  boot.kernelParams = [ "console=tty0" "console=ttyS0" ];
+
   fileSystems."/boot" = {
     device = config.customOptions.fileSystems.devices.boot;
   };
