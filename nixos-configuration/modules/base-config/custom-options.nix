@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  utils,
   stablePkgs,
   nixosSystemConfig,
   ...
@@ -90,6 +91,75 @@ in
       description = "Weather to enable support for local LLM inferencing.";
       type = lib.types.bool;
       default = false;
+    };
+
+    fileSystems = {
+      UUIDs = {
+        boot = lib.mkOption {
+          description = "The UUID of the EFI filesystem that gets mounted to \"/boot\".";
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+        };
+        root = lib.mkOption {
+          description = "The UUID of the btrfs filesystem whose subvol(s) contain \"/\".";
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+        };
+      };
+
+      devices = {
+        boot = lib.mkOption {
+          description = "Internal option to store the device path of EFI filesystem that gets mounted to \"/boot\".";
+          type = lib.types.str;
+          default = "/dev/disk/by-uuid/${config.customOptions.fileSystems.UUIDs.boot}";
+        };
+        root = lib.mkOption {
+          description = "Internal option to store the device path of the btrfs filesystem whose subvol(s) contain \"/\".";
+          type = lib.types.str;
+          default = "/dev/disk/by-uuid/${config.customOptions.fileSystems.UUIDs.root}";
+        };
+      };
+
+    };
+
+    luksDevice = {
+      enable = lib.mkOption {
+        description = "Internal option to know whether to enable LUKS.";
+        type = lib.types.bool;
+        default = config.customOptions.luksDevice.UUID != null;
+      };
+      UUID = lib.mkOption {
+        description = "The UUID of the LUKS device to unlock/open.";
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+      };
+      label = lib.mkOption {
+        description = "Label of the LUKS device.";
+        type = lib.types.str;
+        default = if config.customOptions.luksDevice.enable then "crypted-${config.networking.hostName}" else "";
+      };
+      blockDevice = lib.mkOption {
+        description = "Block dev of the LUKS device.";
+        type = lib.types.str;
+        default =
+          if config.customOptions.luksDevice.enable then "/dev/disk/by-uuid/${config.customOptions.luksDevice.UUID}" else "";
+      };
+      challengeStringHex = lib.mkOption {
+        description = "The challenge string hex to use when unlocking the LUKS device.";
+        type = lib.types.str;
+        default = config.customOptions.luksDevice.label;
+      };
+
+      allowDiscards = lib.mkOption {
+        description = "Whether the LUKS device supports TRIM.";
+        type = lib.types.bool;
+        default = false;
+      };
+      bypassWorkqueues = lib.mkOption {
+        description = "Whether the LUKS device bypasses workqueues.";
+        type = lib.types.bool;
+        default = false;
+      };
     };
 
     socSupport = {
@@ -340,41 +410,49 @@ in
     };
   };
 
-  config.assertions =
-    [ ]
+  config.assertions = [
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.boot != null;
+      message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
+    }
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.root != null;
+      message = "`customOptions.fileSystems.UUIDs.root` must be set.";
+    }
+  ]
 
-    ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
-      }
-    ]
+  ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isx86_64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.x86Soc` can only be set on NixOS on x86_64.";
+    }
+  ]
 
-    ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
-      }
-    ]
+  ++ lib.optionals (config.customOptions.socSupport.armSoc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isAarch64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.armSoc` can only be set on NixOS on AArch64.";
+    }
+  ]
 
-    ++
-      lib.optionals
-        (
-          config.customOptions.socSupport.armSoc == "rk3588"
-          || config.customOptions.socSupport.armSoc == "rpi4"
-          || config.customOptions.socSupport.armSoc == "rpi5"
-        )
-        [
-          {
-            assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
-            message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
-          }
-        ]
+  ++
+    lib.optionals
+      (
+        config.customOptions.socSupport.armSoc == "rk3588"
+        || config.customOptions.socSupport.armSoc == "rpi4"
+        || config.customOptions.socSupport.armSoc == "rpi5"
+      )
+      [
+        {
+          assertion = nixosSystemConfig.extraConfig.dtbRelativePath != null;
+          message = "You need to provide a path relative to `dtbs/` for the device-tree binary for your board.";
+        }
+      ]
 
-    ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
-      {
-        assertion = pkgs.stdenv.hostPlatform.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
-        message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
-      }
-    ];
+  ++ lib.optionals (config.customOptions.socSupport.riscvSoc != "unset") [
+    {
+      assertion = pkgs.stdenv.hostPlatform.isRiscV64 && nixosSystemConfig.coreConfig.isNixOS;
+      message = "The option `customOptions.socSupport.riscvSoc` can only be set on NixOS on 64-bit RISC-V.";
+    }
+  ];
 }
