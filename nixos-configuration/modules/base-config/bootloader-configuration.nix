@@ -29,6 +29,7 @@
     # device and root filesystem go here
     kernelModules = [
       "af_packet"
+      "dm_crypt"
       "fan"
       "kvm"
       "sd_mod"
