@@ -14,20 +14,23 @@ let
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
   ];
 
-  addChromiumFlags = {chromiumDrv, final}: final.symlinkJoin {
-    inherit (chromiumDrv) pname version;
-    paths = [ chromiumDrv ];
+  addChromiumFlags =
+    { chromiumDrv, final }:
+    final.symlinkJoin {
+      inherit (chromiumDrv) pname version;
+      paths = [ chromiumDrv ];
 
-    nativeBuildInputs = [ final.makeWrapper ];
+      nativeBuildInputs = [ final.makeWrapper ];
 
-    postBuild = let
-      finalChromiumFlags = builtins.map (chromiumFlag: "--add-flags ${chromiumFlag}") commonChromiumFlags;
-    in
-    ''
-      wrapProgram $out/bin/${chromiumDrv.meta.mainProgram} \
-        ${builtins.concatStringsSep " " finalChromiumFlags}
-    '';
-  };
+      postBuild =
+        let
+          finalChromiumFlags = builtins.map (chromiumFlag: "--add-flags ${chromiumFlag}") commonChromiumFlags;
+        in
+        ''
+          wrapProgram $out/bin/${chromiumDrv.meta.mainProgram} \
+            ${builtins.concatStringsSep " " finalChromiumFlags}
+        '';
+    };
 in
 {
   imports = [ ./tmp-fix-overlays.nix ];
