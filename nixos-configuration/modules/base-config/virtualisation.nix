@@ -12,6 +12,14 @@ lib.mkIf config.customOptions.virtualisation.enable {
   # this exists in case a GUI session is not enabled
   programs.virt-manager.enable = true;
 
+  # libvirt uses systemd-creds for secret storage but, systemd-creds
+  # uses /etc/machine-id and that will be global so we can't have that.
+  # Either way, secrets' encryption/decryption is handled with a more
+  # sane approach and is also a secret. :P
+  environment.etc."libvirt/secret.conf".text = ''
+    encrypt_data = 0
+  '';
+
   environment.systemPackages = with pkgs; [
     qemu
   ];
