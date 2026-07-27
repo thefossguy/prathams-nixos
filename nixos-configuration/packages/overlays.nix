@@ -59,6 +59,10 @@ in
         chromiumDrv = prev.brave;
         inherit final;
       };
+      brave-origin = addChromiumFlags {
+        chromiumDrv = prev.brave-origin;
+        inherit final;
+      };
       chromium = addChromiumFlags {
         chromiumDrv = prev.chromium.override { enableWideVine = false; };
         inherit final;
