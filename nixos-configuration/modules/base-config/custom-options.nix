@@ -39,6 +39,12 @@ in
       default = "server";
     };
 
+    etcMachineID = lib.mkOption {
+      description = "The systemd machine-id for the given host.";
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
+
     dhcpConfig = lib.mkOption {
       description = "DHCP configuration.";
       type = lib.types.enum [
