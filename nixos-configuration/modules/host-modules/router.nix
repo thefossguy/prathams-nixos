@@ -51,6 +51,10 @@ lib.mkIf (config.customOptions.isRouter or false) {
       allowedUDPPorts = [
         67 # client discovery
         68 # communication for DHCP configuration
+        53 # local authoritative DNS
+      ];
+      allowedTCPPorts = [
+        53 # local authoritative DNS
       ];
     };
 
@@ -179,6 +183,34 @@ lib.mkIf (config.customOptions.isRouter or false) {
         dhcpServerConfig.DNS = [ "192.168.45.1" ];
       }
       // dhcpCommonConfig;
+    };
+  };
+
+  services.nsd = {
+    enable = true;
+    zones = {
+      "nixos-hosts.home.arpa" = {
+        data = ''
+          $ORIGIN nixos-hosts.home.arpa.
+          $TTL 300
+
+          @ IN SOA ns.nixos-hosts.home.arpa. hostmaster.nixos-hosts.home.arpa. (
+              2026072801 ; serial
+              3600       ; refresh
+              600        ; refresh
+              86400      ; expire
+              300        ; minimum TTL
+          )
+
+          @  IN NS ns.nixos-hosts.home.arpa.
+
+          ns IN A ${nixosSystemConfig.extraConfig.gatewayAddr}
+
+          aarch64-linux  IN A ${hostsInLAN.bhim.coreConfig.ipv4Address}
+          x86_64-linux  IN A ${hostsInLAN.matsya.coreConfig.ipv4Address}
+          local-cache  IN A ${hostsInLAN.chaturvyas.coreConfig.ipv4Address}
+        '';
+      };
     };
   };
 }
