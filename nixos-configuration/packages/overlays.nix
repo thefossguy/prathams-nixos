@@ -13,6 +13,21 @@ let
     "--disable-sync-preferences" # disable syncing chromium preferences with a sync account
     "--enable-features=TouchpadOverscrollHistoryNavigation" # enable two-finger swipe for forward/backward history navigation
   ];
+
+  addChromiumFlags = {chromiumDrv, final}: final.symlinkJoin {
+    inherit (chromiumDrv) pname version;
+    paths = [ chromiumDrv ];
+
+    nativeBuildInputs = [ final.makeWrapper ];
+
+    postBuild = let
+      finalChromiumFlags = builtins.map (chromiumFlag: "--add-flags ${chromiumFlag}") commonChromiumFlags;
+    in
+    ''
+      wrapProgram $out/bin/${chromiumDrv.meta.mainProgram} \
+        ${builtins.concatStringsSep " " finalChromiumFlags}
+    '';
+  };
 in
 {
   imports = [ ./tmp-fix-overlays.nix ];
@@ -40,15 +55,21 @@ in
           '';
         };
 
-      brave = prev.brave.override { commandLineArgs = commonChromiumFlags; };
-      chromium = prev.chromium.override {
-        commandLineArgs = commonChromiumFlags;
-        enableWideVine = false;
+      brave = addChromiumFlags {
+        chromiumDrv = prev.brave;
+        inherit final;
       };
-      google-chrome = prev.google-chrome.override { commandLineArgs = commonChromiumFlags; };
-      ungoogled-chromium = prev.ungoogled-chromium.override {
-        commandLineArgs = commonChromiumFlags;
-        enableWideVine = false;
+      chromium = addChromiumFlags {
+        chromiumDrv = prev.chromium.override { enableWideVine = false; };
+        inherit final;
+      };
+      google-chrome = addChromiumFlags {
+        chromiumDrv = prev.google-chrome;
+        inherit final;
+      };
+      ungoogled-chromium = addChromiumFlags {
+        chromiumDrv = prev.ungoogled-chromium.override { enableWideVine = false; };
+        inherit final;
       };
 
       pi-coding-agent = final.callPackage ./out-of-tree-derivations/pi-coding-agent {
