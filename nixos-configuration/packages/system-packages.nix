@@ -17,6 +17,7 @@ in
     [
       # should be already included in the base image
       #bzip2
+      cryptsetup
       #curl
       #dash
       file
