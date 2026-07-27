@@ -92,6 +92,9 @@
       "plymouth.enable=0"
       "rd.plymouth=0"
     ]
+    ++ lib.lists.optionals (config.customOptions.etcMachineID != null) [
+      "systemd.machine_id=${config.customOptions.etcMachineID}"
+    ]
     ++ lib.optionals (pkgs.stdenv.hostPlatform.isx86_64 && (!config.customOptions.isIso)) [
       "ia32_emulation=0" # Disable multilib/32-bit applications
     ]
