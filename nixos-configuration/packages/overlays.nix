@@ -87,7 +87,6 @@ in
     # out of tree package definitions go here
     (final: prev: {
       navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix { };
-      fetch-unsloth-quants = import ./out-of-tree-derivations/llm-weights/fetch-unsloth-quants.nix;
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
         src = ../../scripts/nixos/custom-nixos-upgrade.py;
@@ -143,6 +142,7 @@ in
 
     # Custom (new) packages go here.
     (final: prev: {
+      fetch-unsloth-quants = import ./out-of-tree-derivations/llm-weights/fetch-unsloth-quants.nix;
       convertSafeTensorsToGGUF = final.stdenvNoCC.mkDerivation (finalAttrs: {
         name = "convert-safe-tensors-to-gguf";
         __structuredAttrs = true;
