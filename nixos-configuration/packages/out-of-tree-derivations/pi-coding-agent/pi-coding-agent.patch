@@ -1,8 +1,8 @@
 diff --git a/packages/coding-agent/src/core/system-prompt.ts b/packages/coding-agent/src/core/system-prompt.ts
-index 7580782beb40..e53cdc53cfe7 100644
+index d34ff88da3cc..be1ae80c5c7a 100644
 --- a/packages/coding-agent/src/core/system-prompt.ts
 +++ b/packages/coding-agent/src/core/system-prompt.ts
-@@ -135,16 +135,7 @@ ${toolsList}
+@@ -126,16 +126,7 @@ ${toolsList}
  In addition to the tools above, you may have access to other custom tools depending on the project.
  
  Guidelines:
