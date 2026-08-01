@@ -194,6 +194,9 @@ in
       fetched_DeepSeek-V4-Flash-0731-GGUF-UD-Q8_K_XL =
         final.callPackage ./out-of-tree-derivations/llm-weights/DeepSeek-V4-Flash-0731-GGUF-UD-Q8_K_XL.nix
           { };
+      DeepSeek-V4-Flash-0731-GGUF-UD-UD-IQ1_S =
+        final.callPackage ./out-of-tree-derivations/llm-weights/DeepSeek-V4-Flash-0731-GGUF-UD-UD-IQ1_S.nix
+          { };
 
       run_inference_qwen_3_6__27b =
         let
