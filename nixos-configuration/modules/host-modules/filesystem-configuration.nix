@@ -68,7 +68,7 @@ in
               options = getMountOptions { inherit mountPoint fsType; };
             };
         }
-      ) { } config.customOptions.fileSystems.mountPathsOnRootDev)
+      ) { } config.customOptions.fileSystems.fileSystemsOnRootfsDevice)
     else
       {
 
