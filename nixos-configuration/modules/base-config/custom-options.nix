@@ -64,12 +64,11 @@ in
           default = "/dev/disk/by-uuid/${config.customOptions.fileSystems.UUIDs.root}";
         };
       };
-    };
-
-    rootFileSystem = lib.mkOption {
-      description = "The filesystem for /.";
-      type = lib.types.str;
-      default = "xfs";
+      rootFileSystem = lib.mkOption {
+        description = "The filesystem for /.";
+        type = lib.types.str;
+        default = "xfs";
+      };
     };
 
     etcMachineID = lib.mkOption {
@@ -380,6 +379,9 @@ in
   };
 
   config.assertions = [
+  ]
+
+  ++ lib.optionals (config.customOptions.fileSystems.rootFileSystem == "btrfs") [
     {
       assertion = config.customOptions.fileSystems.UUIDs.boot != null;
       message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
