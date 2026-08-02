@@ -24,29 +24,72 @@ let
       "umask=0077"
     ];
   rootMountOptions = commonMountOptions ++ hardenedMountOptions;
-  homeMountOptions = commonMountOptions ++ hardenedMountOptions;
-  varlMountOptions = commonMountOptions ++ hardenedMountOptions;
-
   addAsyncOption = mountPath: lib.optionals (config.fileSystems."${mountPath}".fsType != "zfs") [ "async" ];
+
+  getFsType = mountPoint: if (mountPoint == "/boot") then "vfat" else config.customOptions.fileSystems.rootFileSystem;
+  getMountOptions =
+    { mountPoint, fsType }:
+    let
+      mountPointLength = builtins.stringLength mountPoint;
+      fsMountPointWithoutLeadingForwardSlash = builtins.substring 1 (mountPointLength - 1) mountPoint;
+      btrfsSubvolumeOption = "subvolume=@${fsMountPointWithoutLeadingForwardSlash}";
+    in
+    {
+      vfat = bootMountOptions;
+      btrfs = [
+        "async"
+        "compress=zstd:15"
+        btrfsSubvolumeOption
+      ];
+      xfs = [ "async" ];
+      zfs = [ ];
+    }
+    .${fsType}
+    ++ rootMountOptions;
 in
 {
-  fileSystems."/boot" = {
-    fsType = "vfat";
-    options = bootMountOptions ++ addAsyncOption "/boot";
-  };
 
-  fileSystems."/" = {
-    fsType = config.customOptions.fileSystems.rootFileSystem;
-    options = rootMountOptions ++ addAsyncOption "/";
-  };
+  fileSystems =
+    if
 
-  fileSystems."/home" = {
-    fsType = config.customOptions.fileSystems.rootFileSystem;
-    options = homeMountOptions ++ addAsyncOption "/home";
-  };
+      (config.customOptions.fileSystems.rootFileSystem != "xfs")
+    then
+      (builtins.foldl' (
+        acc: mountPoint:
+        acc
+        // {
+          ${mountPoint} =
+            let
+              fsType = getFsType mountPoint;
+            in
 
-  fileSystems."/var" = {
-    fsType = config.customOptions.fileSystems.rootFileSystem;
-    options = varlMountOptions ++ addAsyncOption "/var";
-  };
+            {
+              inherit fsType;
+              options = getMountOptions { inherit mountPoint fsType; };
+            };
+        }
+      ) { } config.customOptions.fileSystems.mountPathsOnRootDev)
+    else
+      {
+
+        "/boot" = {
+          fsType = "vfat";
+          options = bootMountOptions ++ addAsyncOption "/boot";
+        };
+
+        "/" = {
+          fsType = config.customOptions.fileSystems.rootFileSystem;
+          options = rootMountOptions ++ addAsyncOption "/";
+        };
+
+        "/home" = {
+          fsType = config.customOptions.fileSystems.rootFileSystem;
+          options = rootMountOptions ++ addAsyncOption "/home";
+        };
+
+        "/var" = {
+          fsType = config.customOptions.fileSystems.rootFileSystem;
+          options = rootMountOptions ++ addAsyncOption "/var";
+        };
+      };
 }
