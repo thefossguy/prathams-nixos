@@ -27,6 +27,12 @@ let
   addAsyncOption = mountPath: lib.optionals (config.fileSystems."${mountPath}".fsType != "zfs") [ "async" ];
 
   getFsType = mountPoint: if (mountPoint == "/boot") then "vfat" else config.customOptions.fileSystems.rootFileSystem;
+  getDevice =
+    mountPoint:
+    if (mountPoint == "/boot") then
+      config.customOptions.fileSystems.devices.boot
+    else
+      config.customOptions.fileSystems.devices.root;
   getMountOptions =
     { mountPoint, fsType }:
     let
@@ -61,6 +67,7 @@ in
             in
             {
               inherit fsType;
+              device = getDevice mountPoint;
               options = getMountOptions { inherit mountPoint fsType; };
             };
         }
