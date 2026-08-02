@@ -396,6 +396,10 @@ in
       assertion = config.customOptions.fileSystems.UUIDs.root != null;
       message = "`customOptions.fileSystems.UUIDs.root` must be set.";
     }
+    {
+      assertion = config.customOptions.fileSystems.fileSystemsOnRootfsDevice != [ ];
+      message = "`customOptions.fileSystems.fileSystemsOnRootfsDevice` must be set.";
+    }
   ]
 
   ++ lib.optionals (config.customOptions.socSupport.x86Soc != "unset") [
