@@ -12,32 +12,34 @@ let
   binaryCachePort = "5000";
 in
 
-lib.mkIf (config.customOptions.localCaching.servesNixDerivations || config.customOptions.localCaching.buildsNixDerivations) {
-  services.harmonia = {
-    cache = {
-      enable = true;
-      settings = {
-        priority = 10;
-        enable_compression = true;
-        bind = "${binaryCacheIface}:${binaryCachePort}";
-        workers = 4; # all my machines have at least 4 cores.
-        max_connection_rate = 256;
+lib.mkIf
+  (config.customOptions.localCaching.servesNixDerivations || config.customOptions.localCaching.buildsNixDerivations)
+  {
+    services.harmonia = {
+      cache = {
+        enable = true;
+        settings = {
+          priority = 10;
+          enable_compression = true;
+          bind = "${binaryCacheIface}:${binaryCachePort}";
+          workers = 4; # all my machines have at least 4 cores.
+          max_connection_rate = 256;
+        };
+      };
+      daemon = {
+        enable = true;
       };
     };
-    daemon = {
+
+    networking.firewall.allowedTCPPorts = [ 80 ];
+
+    services.nginx = {
       enable = true;
-    };
-  };
-
-  networking.firewall.allowedTCPPorts = [ 80 ];
-
-  services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    virtualHosts = {
-      "nixcache.${config.networking.hostName}.localhost" = {
-        locations."/".proxyPass = "http://${binaryCacheIface}:${binaryCachePort}";
+      recommendedProxySettings = true;
+      virtualHosts = {
+        "nixcache.${config.networking.hostName}.localhost" = {
+          locations."/".proxyPass = "http://${binaryCacheIface}:${binaryCachePort}";
+        };
       };
     };
-  };
-}
+  }
