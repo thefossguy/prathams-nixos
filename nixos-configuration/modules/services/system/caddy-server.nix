@@ -13,16 +13,22 @@ let
   caddy_dir = "${srv_dir}/caddy";
   caddyfile = "${caddy_dir}/Caddyfile";
   ftp_dir = "${srv_dir}/ftp-files";
-  landrunCmd = ''
-    export XDG_CONFIG_HOME=${srv_dir}
+  sandboxedCaddy =
+    { scriptName, caddyCmd }:
+    pkgs.writeScript scriptName ''
+      #!${lib.getExe pkgs.caddy}
+      set -xeuf -o pipefail
 
-    exec landrun \
-        --log-level debug \
-        --rox ${pkgs.caddy}/bin/caddy \
-        --ldd \
-        --ro ${srv_dir} \
-        --bind-tcp 80,443 \
-        --connect-tcp ${builtins.toString config.services.nix-serve.port}'';
+      export XDG_CONFIG_HOME=${srv_dir}
+
+      exec ${lib.getExe' pkgs.util-linux "setpriv"} \
+          --landlock-access fs \
+          --landlock-rule "path-beneath:read-file,read-dir:${srv_dir}" \
+          $(${lib.getExe' pkgs.gnused "sed"} 's|^|--landlock-rule=path-beneath:execute,read-file,read-dir:|' ${
+            pkgs.writeClosure [ pkgs.caddy ]
+          }) \
+          -- ${caddyCmd}
+    '';
 in
 lib.mkIf (config.networking.hostName == "hans") {
   networking.firewall.allowedTCPPorts = [
@@ -35,15 +41,6 @@ lib.mkIf (config.networking.hostName == "hans") {
     after = serviceConfig.afterUnits;
     requires = serviceConfig.requiredUnits;
     wantedBy = serviceConfig.wantedByUnits;
-
-    path = with pkgs; [
-      caddy
-      gitMinimal
-      glibc
-      gnugrep
-      landrun
-      nix
-    ];
 
     serviceConfig = {
       User = "root";
@@ -59,6 +56,16 @@ lib.mkIf (config.networking.hostName == "hans") {
       IOWeight = "20";
       MemorySwapMax = 0;
       MemoryMax = "256M";
+
+      ExecStart = sandboxedCaddy {
+        scriptName = "caddy-exec-start";
+        caddyCmd = "${lib.getExe' pkgs.caddy} run --config ${caddyfile}";
+      };
+
+      ExecReload = sandboxedCaddy {
+        scriptName = "caddy-exec-reload";
+        caddyCmd = "${lib.getExe' pkgs.caddy} reload --force --config ${caddyfile}";
+      };
     };
 
     preStart = ''
@@ -74,25 +81,11 @@ lib.mkIf (config.networking.hostName == "hans") {
       fi
       chmod 600 ${caddy_dir}/ssl/private/thefossguy-priv.pem
       if [[ ! -f ${caddyfile} ]]; then
-          curl "https://gitlab.com/thefossguy/my-caddy-config/-/raw/master/Caddyfile" --output ${caddyfile} || exit 1
+          ${lib.getExe pkgs.curl} "https://gitlab.com/thefossguy/my-caddy-config/-/raw/master/Caddyfile" --output ${caddyfile} || exit 1
       fi
       chown ${nixosSystemConfig.coreConfig.systemUser.username}:root -vR /srv/thefossguy/ftp-files
 
       mkdir -vp ${ftp_dir}
-    '';
-
-    script = ''
-      set -xeuf -o pipefail
-
-      ${landrunCmd} \
-          caddy run --config ${caddyfile}
-    '';
-
-    reload = ''
-      set -xeuf -o pipefail
-
-      ${landrunCmd} \
-          caddy reload --force --config ${caddyfile}
     '';
   };
 }
