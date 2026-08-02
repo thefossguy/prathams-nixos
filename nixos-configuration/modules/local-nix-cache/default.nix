@@ -9,8 +9,8 @@
 
 {
   imports = [
-    ./binary-cache.nix
     ./builder.nix
+    ./harmonia.nix
     ./server.nix
   ];
 }
