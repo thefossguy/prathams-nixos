@@ -36,17 +36,17 @@ in
   };
 
   fileSystems."/" = {
-    fsType = "xfs";
+    fsType = config.customOptions.rootFileSystem;
     options = rootMountOptions ++ addAsyncOption "/";
   };
 
   fileSystems."/home" = {
-    fsType = "xfs";
+    fsType = config.customOptions.rootFileSystem;
     options = homeMountOptions ++ addAsyncOption "/home";
   };
 
   fileSystems."/var" = {
-    fsType = "xfs";
+    fsType = config.customOptions.rootFileSystem;
     options = varlMountOptions ++ addAsyncOption "/var";
   };
 }
