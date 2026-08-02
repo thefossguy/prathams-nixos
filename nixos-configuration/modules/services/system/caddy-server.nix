@@ -59,12 +59,12 @@ lib.mkIf (config.networking.hostName == "hans") {
 
       ExecStart = sandboxedCaddy {
         scriptName = "caddy-exec-start";
-        caddyCmd = "${lib.getExe' pkgs.caddy} run --config ${caddyfile}";
+        caddyCmd = "${lib.getExe' pkgs.caddy "caddy"} run --config ${caddyfile}";
       };
 
       ExecReload = sandboxedCaddy {
         scriptName = "caddy-exec-reload";
-        caddyCmd = "${lib.getExe' pkgs.caddy} reload --force --config ${caddyfile}";
+        caddyCmd = "${lib.getExe' pkgs.caddy "caddy"} reload --force --config ${caddyfile}";
       };
     };
 
