@@ -69,6 +69,12 @@ in
         type = lib.types.str;
         default = "xfs";
       };
+      mountPathsOnRootDev = lib.mkOption {
+        description = "List of filesystems and the mount paths found on `config.customOptions.fileSystems.devices.root`.";
+        type = lib.types.listOf lib.types.str;
+        default = [
+        ];
+      };
     };
 
     etcMachineID = lib.mkOption {
