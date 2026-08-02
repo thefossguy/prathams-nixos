@@ -50,10 +50,7 @@ in
 {
 
   fileSystems =
-    if
-
-      (config.customOptions.fileSystems.rootFileSystem != "xfs")
-    then
+    if (config.customOptions.fileSystems.rootFileSystem != "xfs") then
       (builtins.foldl' (
         acc: mountPoint:
         acc
@@ -62,7 +59,6 @@ in
             let
               fsType = getFsType mountPoint;
             in
-
             {
               inherit fsType;
               options = getMountOptions { inherit mountPoint fsType; };
@@ -71,7 +67,6 @@ in
       ) { } config.customOptions.fileSystems.fileSystemsOnRootfsDevice)
     else
       {
-
         "/boot" = {
           fsType = "vfat";
           options = bootMountOptions ++ addAsyncOption "/boot";
