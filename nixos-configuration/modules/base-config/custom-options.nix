@@ -39,6 +39,12 @@ in
       default = "server";
     };
 
+    rootFileSystem = lib.mkOption {
+      description = "The filesystem for /.";
+      type = lib.types.str;
+      default = "xfs";
+    };
+
     etcMachineID = lib.mkOption {
       description = "The systemd machine-id for the given host.";
       type = lib.types.nullOr lib.types.str;
