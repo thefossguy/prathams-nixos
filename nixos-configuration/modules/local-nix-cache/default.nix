@@ -9,6 +9,7 @@
 
 {
   imports = [
+    ./binary-cache.nix
     ./builder.nix
     ./server.nix
   ];
