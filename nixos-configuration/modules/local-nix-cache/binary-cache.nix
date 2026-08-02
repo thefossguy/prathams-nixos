@@ -12,7 +12,7 @@ let
   binaryCachePort = "5000";
 in
 
-{
+lib.mkIf (config.customOptions.localCaching.servesNixDerivations || config.customOptions.localCaching.buildsNixDerivations) {
   services.harmonia = {
     cache = {
       enable = true;

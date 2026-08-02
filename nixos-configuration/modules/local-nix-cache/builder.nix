@@ -8,8 +8,6 @@
 }:
 
 lib.mkIf config.customOptions.localCaching.buildsNixDerivations {
-  imports = [ ./binary-cache.nix ];
-
   nix = {
     extraOptions = lib.mkAfter ''
       keep-env-derivations = true

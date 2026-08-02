@@ -8,5 +8,4 @@
 }:
 
 lib.mkIf config.customOptions.localCaching.servesNixDerivations {
-  imports = [ ./binary-cache.nix ];
 }
