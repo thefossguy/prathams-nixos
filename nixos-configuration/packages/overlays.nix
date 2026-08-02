@@ -33,8 +33,6 @@ let
     };
 in
 {
-  imports = [ ./tmp-fix-overlays.nix ];
-
   nixpkgs.overlays = [
     # Actual overlays (package modifications) go here.
     (final: prev: {
@@ -57,6 +55,10 @@ in
             ln -s ${rustup}/bin/rustup $out/bin/rustup
           '';
         };
+
+      landrun = prev.landrun.overrideAttrs (oldAttrs: {
+        meta.broken = true;
+      });
 
       brave = addChromiumFlags {
         chromiumDrv = prev.brave;
