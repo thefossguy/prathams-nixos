@@ -188,6 +188,9 @@ lib.mkIf (config.customOptions.isRouter or false) {
 
   services.nsd = {
     enable = true;
+    # unbound -> 127.0.0.1:53
+    # nsd -> 10.0.0.1:53
+    interfaces = [ "10.0.0.1" ];
     zones = {
       "nixos-hosts.home.arpa" = {
         data = ''
