@@ -200,7 +200,7 @@ lib.mkIf (config.customOptions.isRouter or false) {
           @ IN SOA ns.nixos-hosts.home.arpa. hostmaster.nixos-hosts.home.arpa. (
               2026072801 ; serial
               3600       ; refresh
-              600        ; refresh
+              600        ; retry
               86400      ; expire
               300        ; minimum TTL
           )
