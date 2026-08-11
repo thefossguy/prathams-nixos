@@ -7,12 +7,20 @@
   ...
 }:
 
+let
+  cudaVersionsList = builtins.attrNames pkgs._cuda.manifests.cuda;
+  sortedCudaVersionsList = builtins.sort (v1: v2: v1 > v2) cudaVersionsList;
+  # second latest because the latest might not be supported
+  secondLatestCudaInNixpkgs = builtins.elemAt sortedCudaVersionsList 1;
+  cudaPackagesSetName = pkgs._cuda.lib.mkVersionedName "cudaPackages" (lib.versions.majorMinor secondLatestCudaInNixpkgs);
+in
+
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
   nixpkgs = {
     config.cudaSupport = true;
     overlays = [
       (final: prev: {
-        cudaPackages = final.cudaPackages_13;
+        cudaPackages = final.${cudaPackagesSetName};
       })
     ];
   };
