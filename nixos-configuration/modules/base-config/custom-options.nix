@@ -13,6 +13,23 @@ let
     stable = pkgs.linux_latest;
     longterm = pkgs.linux_6_18;
   };
+  cudaPackagesSet =
+    let
+      scopedPkgs = import nixosSystemConfig.extraConfig.nixpkgs { system = pkgs.stdenv.system; };
+      getCudaPackagesVersionedSet =
+        passedCudaVersion: pkgs._cuda.lib.mkVersionedName "cudaPackages" (lib.versions.majorMinor passedCudaVersion);
+
+      cudaVersionsList = builtins.attrNames scopedPkgs._cuda.manifests.cuda;
+      sortedCudaVersionsList = builtins.sort (v1: v2: v1 > v2) cudaVersionsList;
+      trueLatestCudaInNixpkgs = builtins.elemAt sortedCudaVersionsList 0;
+      stableLatestCudaInNixpkgs = builtins.elemAt sortedCudaVersionsList 1;
+      nixpkgsDefaultCudaInNixpkgs = scopedPkgs.cudaPackages.cudaMajorMinorPatchVersion;
+    in
+    {
+      trueLatest = getCudaPackagesVersionedSet trueLatestCudaInNixpkgs;
+      stableLatest = getCudaPackagesVersionedSet stableLatestCudaInNixpkgs;
+      nixpkgsDefault = getCudaPackagesVersionedSet nixpkgsDefaultCudaInNixpkgs;
+    };
 in
 
 {
@@ -362,6 +379,19 @@ in
         description = "The base kernel package to use from nixpkgs.";
         type = lib.types.package;
         default = kernelPackagesSet."${config.customOptions.kernelConfiguration.tree}";
+      };
+    };
+
+    cudaConfiguration = {
+      versionSet = lib.mkOption {
+        description = "The CUDA version set to use.";
+        type = lib.types.enum (builtins.attrNames cudaPackagesSet);
+        default = "stableLatest";
+      };
+      packageSetAttr = lib.mkOption {
+        description = "The `cudaPackages` package-set to use from nixpkgs.";
+        type = lib.types.str;
+        default = cudaPackagesSet."${config.customOptions.cudaConfiguration.versionSet}";
       };
     };
 
