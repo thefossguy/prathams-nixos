@@ -355,11 +355,7 @@ in
     kernelConfiguration = {
       tree = lib.mkOption {
         description = "The kernel tree to use.";
-        type = lib.types.enum [
-          "stable"
-          "longterm"
-          "mainline"
-        ];
+        type = lib.types.enum (builtins.attrNames kernelPackagesSet);
         default = nixosSystemConfig.kernelConfig.tree;
       };
       colonelPackages = lib.mkOption {
