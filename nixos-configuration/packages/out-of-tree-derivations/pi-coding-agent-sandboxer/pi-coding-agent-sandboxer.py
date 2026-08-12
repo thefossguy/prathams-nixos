@@ -22,7 +22,11 @@ LSM_RW_DIR_PERMS = {"make-dir", "remove-dir"} | LSM_RO_FILE_PERMS | LSM_RW_FILE_
 
 
 def make_landlock_lsm_rule(lsm_perms: set[str], path_to_sandbox: str) -> list[str]:
-    return ["--landlock-rule", f"path-beneath:{','.join(sorted(list(lsm_perms)))}:{path_to_sandbox}"]
+    if os.path.exists(path_to_sandbox):
+        return ["--landlock-rule", f"path-beneath:{','.join(sorted(list(lsm_perms)))}:{path_to_sandbox}"]
+    else:
+        print(f"Path '{path_to_sandbox}' does not exist")
+        return []
 
 
 def parse_cli_arguments() -> argparse.Namespace:
