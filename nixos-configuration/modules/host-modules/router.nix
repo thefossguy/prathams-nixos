@@ -192,12 +192,12 @@ lib.mkIf (config.customOptions.isRouter or false) {
     # nsd -> 10.0.0.1:53
     interfaces = [ "10.0.0.1" ];
     zones = {
-      "nixos-hosts.home.arpa" = {
+      "home.arpa" = {
         data = ''
-          $ORIGIN nixos-hosts.home.arpa.
+          $ORIGIN home.arpa.
           $TTL 300
 
-          @ IN SOA ns.nixos-hosts.home.arpa. hostmaster.nixos-hosts.home.arpa. (
+          @ IN SOA ns.home.arpa. hostmaster.home.arpa. (
               2026072801 ; serial
               3600       ; refresh
               600        ; retry
@@ -205,13 +205,13 @@ lib.mkIf (config.customOptions.isRouter or false) {
               300        ; minimum TTL
           )
 
-          @  IN NS ns.nixos-hosts.home.arpa.
+          @  IN NS ns.home.arpa.
 
           ns IN A ${nixosSystemConfig.extraConfig.gatewayAddr}
 
-          aarch64-linux  IN A ${hostsInLAN.bhim.coreConfig.ipv4Address}
-          x86_64-linux  IN A ${hostsInLAN.matsya.coreConfig.ipv4Address}
-          local-cache  IN A ${hostsInLAN.chaturvyas.coreConfig.ipv4Address}
+          aarch64-linux.nixos-hosts  IN A ${hostsInLAN.bhim.coreConfig.ipv4Address}
+          x86_64-linux.nixos-hosts  IN A ${hostsInLAN.matsya.coreConfig.ipv4Address}
+          local-cache.nixos-hosts  IN A ${hostsInLAN.chaturvyas.coreConfig.ipv4Address}
         '';
       };
     };
