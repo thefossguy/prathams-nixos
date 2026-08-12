@@ -88,6 +88,7 @@ def construct_landlock_sandbox(cli_args: argparse.Namespace) -> list[str]:
         + make_landlock_lsm_rule(LSM_EXEC_PERMS | LSM_RO_DIR_PERMS, f"{USER_HOME_DIR}/.local/state/nix/profiles")
         # pi-coding-agent
         + make_landlock_lsm_rule(LSM_RW_DIR_PERMS, f"{USER_HOME_DIR}/.config/pi")
+        + make_landlock_lsm_rule(LSM_RW_DIR_PERMS, f"{USER_HOME_DIR}/.pi")
         # git
         + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/gitconfig")
         + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/static/gitconfig")
