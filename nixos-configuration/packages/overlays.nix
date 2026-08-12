@@ -89,6 +89,7 @@ in
     # out of tree package definitions go here
     (final: prev: {
       navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix { };
+      sandboxed-pi-coding-agent = final.callPackage ./out-of-tree-derivations/sandboxed-pi-coding-agent.nix { };
       pi-coding-agent-sandboxer = final.callPackage ./out-of-tree-derivations/pi-coding-agent-sandboxer { };
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
