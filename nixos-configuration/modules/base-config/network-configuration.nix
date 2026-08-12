@@ -20,7 +20,7 @@
       forward-zone = lib.mkForce [ ]; # Enforce "full recursive mode" by assigning an empty list here
       stub-zone = lib.lists.optionals (builtins.hasAttr "gatewayAddr" nixosSystemConfig.extraConfig) [
         {
-          name = "nixos-hosts.home.arpa.";
+          name = "home.arpa.";
           stub-addr = nixosSystemConfig.extraConfig.gatewayAddr;
         }
       ];
