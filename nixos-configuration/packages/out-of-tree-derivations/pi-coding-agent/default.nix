@@ -1,13 +1,16 @@
 {
   pi-coding-agent,
   lib,
+
   curl,
   fd,
   jq,
   ripgrep,
   wget,
+
   cargo,
   ruff,
+
   forgejo-cli,
   gh,
   glab,
@@ -33,20 +36,22 @@ let
     glab
     tea
   ]);
+
+  upstreamPostFixup = ''
+    wrapProgram $out/bin/pi --prefix PATH : ${
+      lib.makeBinPath [
+        ripgrep
+        fd
+      ]
+    } \
+      --set-default PI_SKIP_VERSION_CHECK 1 \
+      --set-default PI_TELEMETRY 0
+  '';
 in
+
+assert pi-coding-agent.postFixup == upstreamPostFixup;
 
 (pi-coding-agent.overrideAttrs (oldAttrs: {
   patches = (oldAttrs.patches or [ ]) ++ [ ./pi-coding-agent.patch ];
-  postInstall = ''
-    ${oldAttrs.postInstall or ""}
-
-    wrapProgram $out/bin/pi \
-        --prefix PATH : ${env_PATH} \
-        --set PI_CODING_AGENT_DIR '~/.config/pi/agent' \
-        --set PI_OFFLINE 1 \
-        --set PI_SKIP_VERSION_CHECK 1 \
-        --set PI_TELEMETRY 0 \
-        --add-flags "--offline" \
-        #EOF
-  '';
+  postFixup = "wrapProgram $out/bin/pi --prefix PATH : ${env_PATH}";
 }))
