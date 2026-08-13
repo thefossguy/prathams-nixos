@@ -15,13 +15,15 @@
     ./linux-home.nix
   ];
 
-  nixpkgs.config.allowUnfreePredicate = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+  nixpkgs.config.allowUnfreePredicate = (
     pkg:
-    builtins.elem (lib.getName pkg) [
-      "discord"
-      "google-chrome"
-      "keka"
-    ]
+    builtins.elem (lib.getName pkg) (
+      lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+        "discord"
+        "google-chrome"
+        "keka"
+      ]
+    )
   );
 
   news.display = "silent"; # I'll fix it when a build fails.
