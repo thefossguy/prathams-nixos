@@ -90,6 +90,13 @@ def construct_landlock_sandbox(cli_args: argparse.Namespace) -> list[str]:
         + make_landlock_lsm_rule(LSM_EXEC_PERMS | LSM_RO_DIR_PERMS, f"{USER_HOME_DIR}/.nix-profile/bin")
         + make_landlock_lsm_rule(LSM_EXEC_PERMS | LSM_RO_DIR_PERMS, f"{USER_HOME_DIR}/.local/state/home-manager")
         + make_landlock_lsm_rule(LSM_EXEC_PERMS | LSM_RO_DIR_PERMS, f"{USER_HOME_DIR}/.local/state/nix/profiles")
+        # TLS
+        + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/pki/tls/certs/ca-bundle.crt")
+        + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/static/pki/tls/certs/ca-bundle.crt")
+        # DNS
+        + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/resolv.conf")
+        + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/resolvconf.conf")
+        + make_landlock_lsm_rule(LSM_RO_FILE_PERMS, "/etc/static/resolvconf.conf")
         # pi-coding-agent
         + make_landlock_lsm_rule(LSM_RW_DIR_PERMS, f"{USER_HOME_DIR}/.config/pi")
         + make_landlock_lsm_rule(LSM_RW_DIR_PERMS, f"{USER_HOME_DIR}/.pi")
