@@ -20,3 +20,16 @@ index 35f4ca40819c..be1ae80c5c7a 100644
  
  	if (appendSection) {
  		prompt += appendSection;
+diff --git a/packages/coding-agent/src/modes/interactive/interactive-mode.ts b/packages/coding-agent/src/modes/interactive/interactive-mode.ts
+index 720f9b0f9f71..64047eb71e98 100644
+--- a/packages/coding-agent/src/modes/interactive/interactive-mode.ts
++++ b/packages/coding-agent/src/modes/interactive/interactive-mode.ts
+@@ -1087,6 +1087,8 @@ export class InteractiveMode {
+ 			}
+ 		}
+ 
++        await this.handleOpenExternalEditor();
++
+ 		// Main interactive loop
+ 		while (true) {
+ 			const userInput = await this.getUserInput();
