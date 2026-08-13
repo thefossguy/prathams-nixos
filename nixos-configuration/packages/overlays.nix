@@ -81,7 +81,7 @@ in
         inherit final;
       };
 
-      pi-coding-agent = final.callPackage ./out-of-tree-derivations/pi-coding-agent {
+      pi-coding-agent = final.callPackage ./out-of-tree-derivations/pi-coding-agent.nix {
         pi-coding-agent = prev.pi-coding-agent;
       };
     })

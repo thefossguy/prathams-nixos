@@ -171,7 +171,7 @@
           system,
         }:
         let
-          pi-coding-agent = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent { };
+          pi-coding-agent = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent.nix { };
           pi-coding-agent-sandboxer =
             pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent-sandboxer
               { };
