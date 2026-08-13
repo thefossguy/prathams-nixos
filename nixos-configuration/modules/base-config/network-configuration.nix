@@ -35,7 +35,7 @@
         use-caps-for-id = false;
         hide-identity = true;
         hide-version = true;
-        username = "unbound";
+        username = lib.mkForce "unbound";
 
         # A `dig +dnssec DS fastly.net @1.1.1.1` shows that `NSEC3` is
         # being returned. Which is proof of non-existence [of DNSSEC].
