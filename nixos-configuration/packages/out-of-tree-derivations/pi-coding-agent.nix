@@ -78,7 +78,8 @@ assert pi-coding-agent.postFixup == upstreamPostFixup;
   postFixup = ''
     wrapProgram $out/bin/pi \
         --prefix PATH : ${env_PATH} \
-        --set NVIM_LOG_FILE : /dev/null \
-        --set PI_CODING_AGENT_DIR : '~/.config/pi/agent' \
+        --set NVIM_LOG_FILE /dev/null \
+        --set PI_CODING_AGENT_DIR '~/.config/pi/agent' \
+        #EOF
   '';
 }))
