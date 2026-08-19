@@ -57,21 +57,48 @@ def ensure_nixos_config_repo_integrity() -> None:
 
 
 def pull_nixos_config_changes() -> None:
-    git_pull_process = subprocess.run(
+    git_fetch_process = subprocess.run(
         [
             "git",
             "-C",
             nixos_config_repo_path,
-            "pull",
-            "--no-rebase",
+            "fetch",
+            "--all",
         ],
         check=False,
         capture_output=True,
         text=True,
     )
-    if git_pull_process.returncode != 0:
+    if git_fetch_process.returncode != 0:
+        return
+    git_branch_process = subprocess.run(
+        [
+            "git",
+            "-C",
+            nixos_config_repo_path,
+            "branch",
+            "--show-current",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    branch = git_branch_process.stdout.strip
+    git_merge_process = subprocess.run(
+        [
+            "git",
+            "-C",
+            nixos_config_repo_path,
+            "merge",
+            f"origin/{branch}",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if git_merge_process.returncode != 0:
         logging.warning(
-            f"Could not pull changes for NixOS configuration repository (`{nixos_config_repo_path}`)\n{git_pull_process.stderr.strip()}",
+            f"Could not merge changes for NixOS configuration repository (`{nixos_config_repo_path}`)\n{git_merge_process.stderr.strip()}",
         )
         try:
             shutil.rmtree(nixos_config_repo_path)
