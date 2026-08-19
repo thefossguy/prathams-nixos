@@ -133,8 +133,7 @@ def get_flake_store_path() -> str:
         text=True,
         capture_output=True,
     )
-    if nix_flake_archive_process.stdout:
-        flake_store_path = json.loads(nix_flake_archive_process.stdout).get("path")
+    flake_store_path = json.loads(nix_flake_archive_process.stdout).get("path")
     if not flake_store_path:
         logging.error(
             f"Could not determine the flake store path of `{nixos_config_repo_path}`\n{nix_flake_archive_process.stderr.strip()}",
