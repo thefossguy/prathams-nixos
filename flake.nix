@@ -172,15 +172,9 @@
         }:
         let
           pi-coding-agent = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent.nix { };
-          pi-coding-agent-sandboxer =
-            pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/pi-coding-agent-sandboxer
-              { };
         in
         {
-          inherit pi-coding-agent pi-coding-agent-sandboxer;
-          sandboxed-pi-coding-agent =
-            pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/sandboxed-pi-coding-agent.nix
-              { inherit pi-coding-agent pi-coding-agent-sandboxer; };
+          inherit pi-coding-agent;
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
           nix-format = pkgs.stdenvNoCC.mkDerivation {
             pname = "nix-format";
