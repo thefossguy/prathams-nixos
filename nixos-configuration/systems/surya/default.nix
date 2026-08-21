@@ -51,5 +51,7 @@
     "mac:30:c5:99:b9:f6:28"
   ];
 
+  networking.firewall.allowedTCPPorts = [ 8080 ];
+
   customOptions.socSupport.armSoc = "gb10";
 }
