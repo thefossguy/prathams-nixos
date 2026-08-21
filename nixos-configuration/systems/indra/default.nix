@@ -20,6 +20,10 @@
     ];
   };
 
+  environment.systemPackages = with pkgs; [
+    sandboxed-pi-coding-agent
+  ];
+
   # TODO: Remove this on a fresh install
   # Enable kwallet because that was used in my last setup with hyprland.
   security.pam.services.login.kwallet.enable = true;
