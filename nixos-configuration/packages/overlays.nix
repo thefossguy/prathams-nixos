@@ -89,6 +89,7 @@ in
     # out of tree package definitions go here
     (final: prev: {
       navya-ci = final.callPackage ./out-of-tree-derivations/navya-ci.nix { };
+      clanker-jail = final.callPackage ./out-of-tree-derivations/clanker-jail.nix { };
       sandboxed-pi-coding-agent = final.callPackage ./out-of-tree-derivations/sandboxed-pi-coding-agent.nix { };
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
