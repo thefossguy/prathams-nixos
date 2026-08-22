@@ -83,7 +83,7 @@ def pull_nixos_config_changes() -> None:
         capture_output=True,
         text=True,
     )
-    branch = git_branch_process.stdout.strip
+    branch = git_branch_process.stdout.strip()
     git_merge_process = subprocess.run(
         [
             "git",
