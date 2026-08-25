@@ -38,7 +38,7 @@ let
     let
       mountPointLength = builtins.stringLength mountPoint;
       fsMountPointWithoutLeadingForwardSlash = builtins.substring 1 (mountPointLength - 1) mountPoint;
-      btrfsSubvolumeOption = "subvolume=@${fsMountPointWithoutLeadingForwardSlash}";
+      btrfsSubvolumeOption = "subvol=@${fsMountPointWithoutLeadingForwardSlash}";
     in
     {
       vfat = bootMountOptions;
