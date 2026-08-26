@@ -60,6 +60,9 @@ assert pi-coding-agent.postFixup == upstreamPostFixup;
 
                 // Main interactive loop"
 
+    substituteInPlace packages/coding-agent/src/modes/interactive/interactive-mode.ts \
+      --replace-fail "this.settingsManager.setLastChangelogVersion(VERSION);" ""
+
     substituteInPlace packages/coding-agent/src/core/system-prompt.ts \
       --replace-fail \
       "{guidelines}
