@@ -1,14 +1,14 @@
 {
   lib,
   rustPlatform,
-  fetchFromGitHub,
+  fetchFromCodeberg,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "navya-ci";
   version = "0.3.0";
 
-  src = fetchFromGitHub {
+  src = fetchFromCodeberg {
     owner = "thefossguy";
     repo = "navya-ci";
     tag = "v${finalAttrs.version}";
