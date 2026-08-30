@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 (with pkgs; [
+  # installer
+  nixos-install-tfg
+
   # utilities necessary for installation
   dash
   hdparm
