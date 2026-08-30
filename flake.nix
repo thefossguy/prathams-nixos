@@ -253,6 +253,7 @@
             modules = [
               "${nixpkgs}/nixos/modules/installer/netboot/netboot-minimal.nix"
               ./nixos-configuration/modules/kexec-image/default.nix
+              ./nixos-configuration/packages/overlays.nix
               { nixpkgs.hostPlatform.system = "${system}"; }
             ];
           };
