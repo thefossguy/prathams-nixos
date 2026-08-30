@@ -1,6 +1,7 @@
 {
   rustPlatform,
   fetchFromCodeberg,
+  lib,
 }:
 
 rustPlatform.buildRustPackage {
@@ -16,5 +17,12 @@ rustPlatform.buildRustPackage {
 
   cargoHash = "sha256-+7lbQHuKWjRLtbsDKA0+m598XnIodOlwRgYXkT3cGdM=";
 
-  meta.mainProgram = "clanker-jail";
+  meta = {
+    homepage = "https://codeberg.org/thefossguy/clanker-jail";
+    description = "Jail a clanker";
+    mainProgram = "clanker-jail";
+    license = lib.licenses.gpl2Only;
+    maintainers = [ lib.maintainers.thefossguy ];
+    platforms = lib.platforms.linux;
+  };
 }
