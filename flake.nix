@@ -154,7 +154,9 @@
         }:
         {
           nixosInstaller = pkgs.mkShellNoCC {
-            packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix { };
+            packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix {
+              inherit (self.packages.${system}) nixos-install-tfg;
+            };
             shellHook = ''
               if ! nix help 1>/dev/null 2>&1; then
                   export nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes'
@@ -252,8 +254,7 @@
           minimal = nixpkgs.lib.nixosSystem {
             modules = [
               "${nixpkgs}/nixos/modules/installer/netboot/netboot-minimal.nix"
-              ./nixos-configuration/modules/kexec-image/default.nix
-              ./nixos-configuration/packages/overlays.nix
+              ./nixos-configuration/modules/kexec-image
               { nixpkgs.hostPlatform.system = "${system}"; }
             ];
           };

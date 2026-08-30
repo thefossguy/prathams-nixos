@@ -26,7 +26,7 @@ in
   customOptions.autologinSettings.getty.enableAutologin = true;
   customOptions.autologinSettings.guiSession.enableAutologin = true;
   customOptions.displayServer.guiSession = nixosSystemConfig.extraConfig.guiSession;
-  environment.systemPackages = pkgs.callPackage ./packages.nix { inherit pkgs stablePkgs; };
+  environment.systemPackages = pkgs.callPackage ./packages.nix { };
   networking.hostId = "1fdc0c97";
   networking.hostName = "installer";
   programs.command-not-found.enable = lib.mkForce false;

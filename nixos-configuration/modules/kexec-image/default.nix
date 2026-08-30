@@ -24,7 +24,9 @@
       "console=ttyS0"
     ];
 
-    environment.systemPackages = pkgs.callPackage ../iso/packages.nix { inherit pkgs; };
+    environment.systemPackages = pkgs.callPackage ../iso/packages.nix {
+      nixos-install-tfg = pkgs.callPackage ../../packages/out-of-tree-derivations/nixos-install-tfg.nix { };
+    };
     programs.command-not-found.enable = lib.mkForce false;
     services.openssh.enable = true;
     users.users."root".initialHashedPassword = lib.mkForce config.users.users."root".hashedPassword;
