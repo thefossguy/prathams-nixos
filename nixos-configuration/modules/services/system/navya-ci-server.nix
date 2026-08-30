@@ -43,7 +43,7 @@ lib.mkIf config.customOptions.localCaching.servesNixDerivations {
           --update-lockfile \
           ${
             lib.strings.optionalString (config.networking.hostName == "chaturvyas")
-              "--nix-copy-machine 's3://nix-cache-thefossguy?endpoint=638311974dc10256cb5e899da03d1935.r2.cloudflarestorage.com&multipart-upload=true'"
+              "--nix-copy-machine 's3://nix-cache-thefossguy?endpoint=638311974dc10256cb5e899da03d1935.r2.cloudflarestorage.com&compression=zstd&compression-level=19&parallel-compression=true&multipart-upload=true'"
           } \
           ${
             lib.strings.optionalString (
