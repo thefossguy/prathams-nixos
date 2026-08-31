@@ -95,6 +95,7 @@ in
           "/"
           "/home"
           "/nix"
+          "/nix/store"
           "/persistent/data"
           "/persistent/state"
           "/srv"
