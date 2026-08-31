@@ -98,6 +98,7 @@ in
           "/nix/store"
           "/persistent/data"
           "/persistent/state"
+          "/root"
           "/srv"
           "/tmp"
           "/var"
