@@ -90,6 +90,16 @@ in
         description = "List of filesystems and the mount paths found on `config.customOptions.fileSystems.devices.root`.";
         type = lib.types.listOf lib.types.str;
         default = [
+          "/boot"
+
+          "/"
+          "/home"
+          "/nix"
+          "/persistent/data"
+          "/persistent/state"
+          "/srv"
+          "/tmp"
+          "/var"
         ];
       };
     };
