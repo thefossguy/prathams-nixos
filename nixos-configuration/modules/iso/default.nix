@@ -47,22 +47,22 @@ in
         set -x
 
         sleep 10 || true
-        if ! ${pkgs.iputils}/bin/ping -c 5 'gitlab.com' 1>/dev/null 2>&1; then
+        if ! ${pkgs.iputils}/bin/ping -c 5 'codeberg.org' 1>/dev/null 2>&1; then
             set +x
             echo 'Set time with `sudo date -s $(date "+%Y-%m-%d %H:%M:%S") && sudo hwclock --systohc`'
             echo
             echo 'You do not appear to be connected to the internet.'
             echo 'Please clone the following directories manually:'
-            echo ' 1. NixOS Configuration: https://gitlab.com/thefossguy/prathams-nixos.git'
-            echo ' 2. Dotfiles: https://gitlab.com/thefossguy/dotfiles.git'
+            echo ' 1. NixOS Configuration: https://codeberg.org/thefossguy/prathams-nixos.git'
+            echo ' 2. Dotfiles: https://codeberg.org/thefossguy/dotfiles.git'
             exec bash
         fi
 
         NIXOS_CONFIG_DIR="$HOME/.prathams-nixos"
         DOTFILES_DIR="$HOME/.dotfiles"
 
-        NIXOS_CONFIG_REPO_URL='https://gitlab.com/thefossguy/prathams-nixos.git'
-        DOTFILE_REPO_URL='https://gitlab.com/thefossguy/dotfiles.git'
+        NIXOS_CONFIG_REPO_URL='https://codeberg.org/thefossguy/prathams-nixos.git'
+        DOTFILE_REPO_URL='https://codeberg.org/thefossguy/dotfiles.git'
 
         git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR" || \
             (rm -rf "$NIXOS_CONFIG_DIR" && git clone "$NIXOS_CONFIG_REPO_URL" "$NIXOS_CONFIG_DIR")

@@ -53,7 +53,7 @@ lib.mkIf (!nixosSystemConfig.coreConfig.isNixOS) {
           ${connectivityCheckScript}
 
           if [[ ! -d ${localNixosConfigDir} ]]; then
-              git clone https://gitlab.com/thefossguy/prathams-nixos.git ${localNixosConfigDir}
+              git clone https://codeberg.org/thefossguy/prathams-nixos.git ${localNixosConfigDir}
           fi
 
           pushd ${localNixosConfigDir} || exit 1
