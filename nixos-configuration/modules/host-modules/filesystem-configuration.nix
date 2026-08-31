@@ -90,15 +90,16 @@ in
       {
         description = "Rollback rootfs to a blank snapshot";
         wantedBy = [ "initrd.target" ];
-        before = [ "sysroot.mount" ];
+        requiredBy = [ "sysroot.mount" ];
         requires = [
           "${utils.escapeSystemdPath config.customOptions.fileSystems.devices.root}.device"
           "modprobe@${rootfsFileSystem}.service"
-          "systemd-udev-settle.service"
         ];
+        before = config.boot.initrd.systemd.services.rollback-root.requiredBy;
         after = config.boot.initrd.systemd.services.rollback-root.requires;
         unitConfig.DefaultDependencies = false;
         serviceConfig.Type = "oneshot";
+        serviceConfig.RemainAfterExit = true;
 
         inherit (rollbackScriptsSet.${rootfsFileSystem}) script;
       };
