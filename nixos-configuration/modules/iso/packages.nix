@@ -44,3 +44,7 @@
   tmux
   vim
 ]
+++ nixos-install-tfg.buildInputs
+++ nixos-install-tfg.nativeBuildInputs
+++ nixos-install-tfg.propagatedBuildInputs
+++ nixos-install-tfg.propagatedNativeBuildInputs
