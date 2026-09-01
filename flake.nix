@@ -155,7 +155,7 @@
         {
           nixosInstaller = pkgs.mkShellNoCC {
             packages = pkgs.callPackage ./nixos-configuration/modules/iso/packages.nix {
-              inherit (self.packages.${system}) nixos-install-tfg;
+              inherit (self.packages.${system}) nixos-install-tfg sandboxed-pi-coding-agent;
             };
             shellHook = ''
               if ! nix help 1>/dev/null 2>&1; then

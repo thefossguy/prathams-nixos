@@ -26,6 +26,10 @@
 
     environment.systemPackages = pkgs.callPackage ../iso/packages.nix {
       nixos-install-tfg = pkgs.callPackage ../../packages/out-of-tree-derivations/nixos-install-tfg.nix { };
+      sandboxed-pi-coding-agent = pkgs.callPackage ../../packages/out-of-tree-derivations/sandboxed-pi-coding-agent.nix {
+        pi-coding-agent = pkgs.callPackage ../../packages/out-of-tree-derivations/pi-coding-agent.nix { };
+        clanker-jail = pkgs.callPackage ../../packages/out-of-tree-derivations/clanker-jail { };
+      };
     };
     programs.command-not-found.enable = lib.mkForce false;
     services.openssh.enable = true;

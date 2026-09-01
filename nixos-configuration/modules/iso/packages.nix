@@ -1,6 +1,7 @@
 {
   # installer
   nixos-install-tfg,
+  sandboxed-pi-coding-agent,
 
   # utilities necessary for installation
   dash,
@@ -41,6 +42,7 @@
   python3
   ripgrep
   rsync
+  sandboxed-pi-coding-agent
   tmux
   vim
 ]
