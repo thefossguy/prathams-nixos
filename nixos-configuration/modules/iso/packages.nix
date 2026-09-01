@@ -1,5 +1,6 @@
 {
   # installer
+  gcc,
   nixos-install-tfg,
   sandboxed-pi-coding-agent,
 
@@ -31,6 +32,7 @@
   btop
   dash
   dmidecode
+  gcc
   git
   hdparm
   htop
