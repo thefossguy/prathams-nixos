@@ -34,9 +34,9 @@ let
       config.customOptions.fileSystems.devices.boot
     else if (config.customOptions.fileSystems.rootFileSystem == "zfs") then
       if (mountPoint == "/") then
-        "${config.customOptions.fileSystems.zpoolName}/root"
+        "${config.customOptions.fileSystems.zpoolName}/rootfs"
       else
-        "${config.customOptions.fileSystems.zpoolName}${mountPoint}"
+        "${config.customOptions.fileSystems.zpoolName}/rootfs${builtins.replaceStrings [ "/" ] [ "-" ] mountPoint}"
     else
       config.customOptions.fileSystems.devices.root;
   getMountOptions =
