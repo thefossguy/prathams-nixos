@@ -57,6 +57,11 @@ in
     };
 
     fileSystems = {
+      zpoolName = lib.mkOption {
+        description = "The name of the zpool containing the rootfs.";
+        type = lib.types.str;
+        default = "${config.networking.hostName}-zpool";
+      };
       UUIDs = {
         boot = lib.mkOption {
           description = "UUID of the device that gets mounted at /boot.";
