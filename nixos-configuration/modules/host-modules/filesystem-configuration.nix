@@ -66,7 +66,7 @@ let
         btrfsSubvolumeOption
       ];
       xfs = [ "async" ];
-      zfs = [ ];
+      zfs = [ "zfsutil" ];
     }
     .${fsType}
     ++ rootMountOptions;
