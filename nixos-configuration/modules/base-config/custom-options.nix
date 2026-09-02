@@ -434,7 +434,21 @@ in
   config.assertions = [
   ]
 
-  ++ lib.optionals (config.customOptions.fileSystems.rootFileSystem != "xfs") [
+  ++ lib.optionals (config.customOptions.fileSystems.rootFileSystem == "btrfs") [
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.boot != null;
+      message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
+    }
+    {
+      assertion = config.customOptions.fileSystems.UUIDs.root != null;
+      message = "`customOptions.fileSystems.UUIDs.root` must be set.";
+    }
+    {
+      assertion = config.customOptions.fileSystems.fileSystemsOnRootfsDevice != [ ];
+      message = "`customOptions.fileSystems.fileSystemsOnRootfsDevice` must be set.";
+    }
+  ]
+  ++ lib.optionals (config.customOptions.fileSystems.rootFileSystem == "zfs") [
     {
       assertion = config.customOptions.fileSystems.UUIDs.boot != null;
       message = "`customOptions.fileSystems.UUIDs.boot` must be set.";
@@ -442,12 +456,6 @@ in
     {
       assertion = config.customOptions.fileSystems.fileSystemsOnRootfsDevice != [ ];
       message = "`customOptions.fileSystems.fileSystemsOnRootfsDevice` must be set.";
-    }
-  ]
-  ++ lib.optionals (config.customOptions.fileSystems.rootFileSystem != "zfs") [
-    {
-      assertion = config.customOptions.fileSystems.UUIDs.root != null;
-      message = "`customOptions.fileSystems.UUIDs.root` must be set.";
     }
   ]
 
