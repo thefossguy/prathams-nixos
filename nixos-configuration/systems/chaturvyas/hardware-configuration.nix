@@ -8,7 +8,7 @@
 }:
 
 let
-  zpoolName = "${config.networking.hostName}-zpool";
+  zpoolName = config.customOptions.fileSystems.zpoolName;
 in
 {
   fileSystems."/boot" = {
