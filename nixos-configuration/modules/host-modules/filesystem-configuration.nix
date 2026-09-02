@@ -28,24 +28,35 @@ let
   addAsyncOption = mountPath: lib.optionals (config.fileSystems."${mountPath}".fsType != "zfs") [ "async" ];
 
   getFsType = mountPoint: if (mountPoint == "/boot") then "vfat" else config.customOptions.fileSystems.rootFileSystem;
+  makeSubFileSystemName =
+    { mountPoint, rootfsIsZfs }:
+    let
+      filesystemLabel = if rootfsIsZfs then "${config.customOptions.fileSystems.zpoolName}/rootfs" else "rootfs";
+    in
+    if (mountPoint == "/") then
+      filesystemLabel
+    else
+      "${filesystemLabel}${builtins.replaceStrings [ "/" ] [ "-" ] mountPoint}";
   getDevice =
     mountPoint:
     if (mountPoint == "/boot") then
       config.customOptions.fileSystems.devices.boot
     else if (config.customOptions.fileSystems.rootFileSystem == "zfs") then
-      if (mountPoint == "/") then
-        "${config.customOptions.fileSystems.zpoolName}/rootfs"
-      else
-        "${config.customOptions.fileSystems.zpoolName}/rootfs${builtins.replaceStrings [ "/" ] [ "-" ] mountPoint}"
+      makeSubFileSystemName {
+        inherit mountPoint;
+        rootfsIsZfs = true;
+      }
     else
       config.customOptions.fileSystems.devices.root;
   getMountOptions =
     { mountPoint, fsType }:
     let
-      mountPointLength = builtins.stringLength mountPoint;
-      fsMountPointWithoutLeadingForwardSlash = builtins.substring 1 (mountPointLength - 1) mountPoint;
-      btrfsSubvolumeName = builtins.replaceStrings [ "/" ] [ "-" ] fsMountPointWithoutLeadingForwardSlash;
-      btrfsSubvolumeOption = "subvol=@${btrfsSubvolumeName}";
+      btrfsSubvolumeOption = "subvol=@${
+        makeSubFileSystemName {
+          inherit mountPoint;
+          rootfsIsZfs = false;
+        }
+      }";
     in
     {
       vfat = bootMountOptions;
