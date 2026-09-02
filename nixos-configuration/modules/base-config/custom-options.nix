@@ -83,7 +83,11 @@ in
         root = lib.mkOption {
           description = "Internal option to store path of the device that gets mounted at /.";
           type = lib.types.str;
-          default = "/dev/disk/by-uuid/${config.customOptions.fileSystems.UUIDs.root}";
+          default =
+            if (config.customOptions.fileSystems.rootFileSystem == "zfs") then
+              config.customOptions.fileSystems.zpoolName
+            else
+              "/dev/disk/by-uuid/${config.customOptions.fileSystems.UUIDs.root}";
         };
       };
       rootFileSystem = lib.mkOption {
