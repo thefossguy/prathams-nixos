@@ -75,6 +75,26 @@ let
 in
 
 {
+  systemd.tmpfiles.settings = {
+    "00-systemd-defaults-overrides" = {
+      "/var/tmp".d = {
+        mode = "1777";
+        user = "root";
+        group = "root";
+      };
+      "/var/lib/portables".d = {
+        mode = "0777";
+        user = "root";
+        group = "root";
+      };
+      "/var/lib/machines".d = {
+        mode = "0777";
+        user = "root";
+        group = "root";
+      };
+    };
+  };
+
   fileSystems =
     if (config.customOptions.fileSystems.rootFileSystem != "xfs") then
       (builtins.foldl' (
