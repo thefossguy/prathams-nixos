@@ -69,7 +69,8 @@ let
       zfs = [ "zfsutil" ];
     }
     .${fsType}
-    ++ rootMountOptions;
+    ++ rootMountOptions
+    ++ lib.optionals (mountPoint == "/nix/store") [ "ro" ];
 
   rootfsFileSystem = config.fileSystems."/".fsType;
 in
