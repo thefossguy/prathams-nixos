@@ -75,52 +75,6 @@ let
 in
 
 {
-  boot.initrd.systemd.services = lib.mkIf (rootfsFileSystem == "btrfs") {
-    rollback-root =
-      let
-        rollbackScriptsSet = {
-          btrfs = {
-            script =
-              let
-                filteredMountOptions = builtins.filter (rootfsOption: rootfsOption != "subvol=@") config.fileSystems."/".options;
-                finalMountPointOptions = builtins.concatStringsSep "," ([ "subvolid=5" ] ++ filteredMountOptions);
-              in
-              ''
-                set -x
-
-                mkdir --verbose --parents /btrfs/old
-                mount --options ${finalMountPointOptions} ${config.customOptions.fileSystems.devices.root} /btrfs/old
-
-                if [ -d '/btrfs/old/@+fresh' ]; then
-                    btrfs subvolume delete '/btrfs/old/@'
-                    btrfs subvolume snapshot '/btrfs/old/@+fresh' '/btrfs/old/@'
-                else
-                    echo 'rollback-root: @+fresh snapshot not found, aborting rollback' >&2
-                fi
-
-                umount --verbose --recursive /btrfs/old
-              '';
-          };
-        };
-      in
-      {
-        description = "Rollback rootfs to a blank snapshot";
-        wantedBy = [ "initrd.target" ];
-        requiredBy = [ "sysroot.mount" ];
-        requires = [
-          "${utils.escapeSystemdPath config.customOptions.fileSystems.devices.root}.device"
-          "modprobe@${rootfsFileSystem}.service"
-        ];
-        before = config.boot.initrd.systemd.services.rollback-root.requiredBy;
-        after = config.boot.initrd.systemd.services.rollback-root.requires;
-        unitConfig.DefaultDependencies = false;
-        serviceConfig.Type = "oneshot";
-        serviceConfig.RemainAfterExit = true;
-
-        inherit (rollbackScriptsSet.${rootfsFileSystem}) script;
-      };
-  };
-
   fileSystems =
     if (config.customOptions.fileSystems.rootFileSystem != "xfs") then
       (builtins.foldl' (
