@@ -102,6 +102,7 @@ in
           "/boot"
 
           "/"
+          "/etc/nixos"
           "/home"
           "/nix"
           "/nix/store"
