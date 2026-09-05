@@ -7,6 +7,7 @@
   hostname,
   nixBuildArgs,
   nixGcOptions,
+  extraModulesToPass,
 }:
 let
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems; };
@@ -55,5 +56,6 @@ nixpkgs.lib.nixosSystem {
     # third-party modules
     home-manager.nixosModules.default
     ../nixos-configuration/modules/home-manager/nixos-home.nix
-  ];
+  ]
+  ++ extraModulesToPass;
 }
