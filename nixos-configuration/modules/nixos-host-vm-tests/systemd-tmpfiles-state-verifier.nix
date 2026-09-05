@@ -45,6 +45,8 @@ builtins.mapAttrs (
   nixosTestVM.pkgs.stdenvNoCC.mkDerivation {
     name = "systemd-tmpfiles-state-verifier-${nixosTestVM.config.networking.hostName}";
 
+    __contentAddressed = false;
+
     src = null;
     dontUnpack = true;
 
