@@ -30,16 +30,16 @@ in
     journald = {
       remote.enable = lib.mkForce false;
       upload.enable = lib.mkForce false;
-      storage = "persistent";
-      extraConfig = ''
-        Compress=true
-        SplitMode=uid
-        SystemMaxUse=5G
-        RuntimeMaxUse=512M
-        SystemKeepFree=1G
-        RuntimeKeepFree=128M
-        ReadKMsg=true
-      '';
+      settings.Journal = {
+        Storage = "persistent";
+        Compress = true;
+        SplitMode = "uid";
+        SystemMaxUse = "5G";
+        RuntimeMaxUse = "512M";
+        SystemKeepFree = "1G";
+        RuntimeKeepFree = "128M";
+        ReadKMsg = true;
+      };
     };
 
     timesyncd = {
