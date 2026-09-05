@@ -32,6 +32,7 @@
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true; # allow non-FOSS pkgs
+  nixpkgs.config.contentAddressedByDefault = lib.mkForce false;
   nixpkgs.hostPlatform.system = nixosSystemConfig.coreConfig.system;
   security.lockKernelModules = lib.mkForce (!config.customOptions.isIso);
   services.dbus.implementation = "broker";
