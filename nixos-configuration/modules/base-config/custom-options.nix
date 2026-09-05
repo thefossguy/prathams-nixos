@@ -157,6 +157,12 @@ in
       default = false;
     };
 
+    isNixOSVMTest = lib.mkOption {
+      description = "An internal check to toggle options based on if a given NixOS system is a NixOS VM test.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     enableWlanPersistentNames = lib.mkOption {
       description = "Weather to enable persistent naming for wlan interfaces. Enable only when said iface has a `permaddr`.";
       type = lib.types.bool;
