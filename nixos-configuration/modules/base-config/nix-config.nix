@@ -13,7 +13,9 @@ let
     "root"
     nixosSystemConfig.coreConfig.systemUser.username
   ];
-  minFree = lib.strings.optionalString (!(config.customOptions.isIso or false)) "min-free = 10G";
+  minFree = lib.strings.optionalString (
+    !(config.customOptions.isIso or false || config.customOptions.isNixOSVMTest)
+  ) "min-free = 10G";
 in
 {
   nix = {
