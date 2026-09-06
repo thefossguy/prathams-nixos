@@ -92,6 +92,9 @@ in
       nixos-install-tfg = final.callPackage ./out-of-tree-derivations/nixos-install-tfg.nix { };
       clanker-jail = final.callPackage ./out-of-tree-derivations/clanker-jail.nix { };
       sandboxed-pi-coding-agent = final.callPackage ./out-of-tree-derivations/sandboxed-pi-coding-agent.nix { };
+      systemd-tmpfiles-state-verifier = final.callPackage ./out-of-tree-derivations/systemd-tmpfiles-state-verifier.nix {
+        flakeStorePath = nixosSystemConfig.coreConfig.flakeStorePath;
+      };
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
         src = ../../scripts/nixos/custom-nixos-upgrade.py;
