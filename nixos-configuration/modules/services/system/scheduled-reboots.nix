@@ -15,14 +15,14 @@ in
 lib.mkIf (config.customOptions.systemType == "server") {
   systemd = {
     timers."${serviceConfig.unitName}" = {
-      enable = !config.customOptions.isNixOSVMTest;
+      enable = true;
       requiredBy = [ "timers.target" ];
       timerConfig.OnCalendar = serviceConfig.onCalendar;
       timerConfig.Unit = "${serviceConfig.unitName}.service";
     };
 
     services."${serviceConfig.unitName}" = {
-      enable = !config.customOptions.isNixOSVMTest;
+      enable = true;
       after = serviceConfig.afterUnits;
       requires = serviceConfig.requiredUnits;
 
