@@ -20,4 +20,6 @@
 
   networking.hostId = nixosSystemConfig.coreConfig.hostId;
   networking.hostName = nixosSystemConfig.coreConfig.hostname;
+
+  system.checks = [ pkgs.systemd-tmpfiles-state-verifier ];
 }
