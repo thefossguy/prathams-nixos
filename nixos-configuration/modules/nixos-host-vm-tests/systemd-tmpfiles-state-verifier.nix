@@ -64,7 +64,5 @@ builtins.mapAttrs (
       diff ${systemdTmpfilesState} "$SHARED_DIR/stdout"
       echo '${flakeStorePath}' > "$out"
     '';
-
-    passthru = { inherit nixosTestVM; };
   }
 ) nixosConfigurations
