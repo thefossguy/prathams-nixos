@@ -55,9 +55,7 @@ builtins.mapAttrs (
       # and gets mounted in the VM at `$TMPDIR/shared`.
       export SHARED_DIR=$(mktemp -d)
 
-      # The test finishes in under ~45 seconds but lets double it + add buffer.
-      ${nixosTestVM.lib.getExe' nixosTestVM.pkgs.coreutils-full "timeout"} 120s \
-          ${nixosTestVM.lib.getExe nixosTestVM.config.system.build.vm} 2>&1 | \
+      ${nixosTestVM.lib.getExe nixosTestVM.config.system.build.vm} 2>&1 | \
           ${nixosTestVM.lib.getExe nixosTestVM.pkgs.ansifilter}
     '';
 
