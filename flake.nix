@@ -52,10 +52,7 @@
       nixGcOptions = "--delete-older-than 14d";
 
       mkNixosSystem =
-        {
-          hostname,
-          extraModulesToPass ? [ ],
-        }:
+        hostname:
         import ./functions/make-nixos-system.nix {
           inherit
             nixpkgs
@@ -66,16 +63,8 @@
             hostname
             nixBuildArgs
             nixGcOptions
-            extraModulesToPass
             ;
         };
-
-      nixosHosts = (import ./functions/nixos-systems.nix { inherit linuxSystems; }).systems;
-
-      nixosHostVMTests = import ./nixos-configuration/modules/nixos-host-vm-tests {
-        flakeStorePath = "${self}";
-        nixosConfigurations = builtins.mapAttrs (hostname: _: mkNixosSystem { inherit hostname; }) nixosHosts;
-      };
 
       mkNixosUncompressedIso =
         {
@@ -134,19 +123,11 @@
     in
     {
       nixosConfigurations =
-        builtins.mapAttrs (
-          hostname: _:
-          mkNixosSystem {
-            inherit hostname;
-            extraModulesToPass = [
-              {
-                system.checks = builtins.map (subNixosHostVMTests: nixosHostVMTests.${subNixosHostVMTests}.${hostname}) (
-                  builtins.attrNames nixosHostVMTests
-                );
-              }
-            ];
-          }
-        ) nixosHosts
+        let
+          # Stupidly genius :D
+          nixosHosts = (import ./functions/nixos-systems.nix { inherit linuxSystems; }).systems;
+        in
+        builtins.mapAttrs (hostName: hostSet: mkNixosSystem "${hostName}") nixosHosts
         // {
           #hostName = mkNixosSystem "${hostName}";
         };
