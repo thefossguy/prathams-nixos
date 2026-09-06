@@ -19,29 +19,6 @@ let
               }
             ];
 
-            boot.zfs.extraPools = lib.mkForce [ ];
-            fileSystems =
-              let
-                mk9pFS = device: {
-                  inherit device;
-                  fsType = "9p";
-                  neededForBoot = true;
-                  options = [
-                    "trans=virtio"
-                    "version=9p2000.L"
-                  ];
-                };
-              in
-              lib.mkForce {
-                "/" = {
-                  device = "tmpfs";
-                  fsType = "tmpfs";
-                  options = [ "mode=0755" ];
-                };
-                "/nix/store" = mk9pFS "nix-store";
-                "/tmp/shared" = mk9pFS "tmp-shared";
-              };
-
             virtualisation.vmVariant.virtualisation = {
               diskImage = lib.mkForce null;
               useBootLoader = lib.mkForce false;
