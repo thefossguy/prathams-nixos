@@ -133,6 +133,7 @@
         };
     in
     {
+      inherit nixosHostVMTests;
       nixosConfigurations =
         builtins.mapAttrs (
           hostname: _:
