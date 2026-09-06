@@ -12,7 +12,7 @@ let
 in
 {
   systemd.services."${serviceConfig.unitName}" = {
-    enable = !config.customOptions.isNixOSVMTest;
+    enable = true;
     wantedBy = [ "basic.target" ];
     after = serviceConfig.afterUnits;
     requires = serviceConfig.requiredUnits;
