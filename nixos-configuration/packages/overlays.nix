@@ -95,6 +95,7 @@ in
       systemd-tmpfiles-state-verifier = final.callPackage ./out-of-tree-derivations/systemd-tmpfiles-state-verifier.nix {
         flakeStorePath = nixosSystemConfig.coreConfig.flakeStorePath;
       };
+      rollbacker = final.callPackage ./out-of-tree-derivations/rollbacker.nix { };
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
         src = ../../scripts/nixos/custom-nixos-upgrade.py;
