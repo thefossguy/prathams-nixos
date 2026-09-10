@@ -88,8 +88,7 @@ let
           ];
     }
     .${fsType}
-    ++ rootMountOptions
-    ++ lib.optionals (mountPoint == "/nix/store") [ "ro" ];
+    ++ rootMountOptions;
 
   rootfsFileSystem = config.fileSystems."/".fsType;
 in
