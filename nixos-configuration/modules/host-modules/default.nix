@@ -13,6 +13,7 @@
     ./filesystem-configuration.nix
     ./gb10.nix
     ./podman.nix
+    ./rollbacker.nix
     ./router.nix
     ./static-ip-and-virt-bridge.nix
     ./user-configuration.nix
