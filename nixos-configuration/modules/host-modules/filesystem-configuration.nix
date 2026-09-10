@@ -94,6 +94,8 @@ let
 in
 
 {
+  services.rollbacker.enable = true;
+
   systemd.tmpfiles.settings = {
     "00-systemd-defaults-overrides" = {
       "/var/tmp".d = {
