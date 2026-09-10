@@ -49,7 +49,11 @@ let
     else
       config.customOptions.fileSystems.devices.root;
   getMountOptions =
-    { mountPoint, fsType }:
+    {
+      mountPoint,
+      fsType,
+      device,
+    }:
     let
       btrfsSubvolumeOption = "subvol=@${
         makeSubFileSystemName {
@@ -66,7 +70,22 @@ let
         btrfsSubvolumeOption
       ];
       xfs = [ "async" ];
-      zfs = [ "zfsutil" ];
+      zfs = [
+        "zfsutil"
+      ]
+      ++
+        lib.optionals
+          (
+            device == makeSubFileSystemName {
+              inherit mountPoint;
+              rootfsIsZfs = true;
+            }
+          )
+          [
+            "x-systemd.before=zfs-mount.service"
+            "x-systemd.wanted-by=zfs-mount.service"
+            "x-systemd.required-by=zfs-mount.service"
+          ];
     }
     .${fsType}
     ++ rootMountOptions
@@ -105,11 +124,11 @@ in
           ${mountPoint} =
             let
               fsType = getFsType mountPoint;
+              device = getDevice mountPoint;
             in
             {
-              inherit fsType;
-              device = getDevice mountPoint;
-              options = getMountOptions { inherit mountPoint fsType; };
+              inherit fsType device;
+              options = getMountOptions { inherit mountPoint fsType device; };
             };
         }
       ) { } config.customOptions.fileSystems.fileSystemsOnRootfsDevice)
