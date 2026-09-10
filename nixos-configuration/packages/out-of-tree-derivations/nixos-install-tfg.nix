@@ -16,13 +16,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "nixos-install-tfg";
-  version = "0.1.0-unstable-2026-09-09";
+  version = "0.1.0-unstable-2026-09-10";
 
   src = fetchFromCodeberg {
     owner = "thefossguy";
     repo = "nixos-install-tfg";
-    rev = "69c210f72acb873afb2fa23beb4be3f84160b31a";
-    hash = "sha256-W89Mot1sMr48Muc6mBb9TlQqUUb5To4oHAaFFzu8nEA=";
+    rev = "4d8aac14743fd543e1a9a09a4a49ca63ea6ecb85";
+    hash = "sha256-BkbUlQ1BAwitUe3myLkjLkq6ByXx8VNnMbMnEmOnA2Y=";
   };
 
   cargoHash = "sha256-W+gPUQOZTxLfTG4kPUIjopHWAhvtLgQ3Ab6V2Pm2xLc=";
