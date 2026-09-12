@@ -32,7 +32,6 @@ in
 
     hostIds = {
       # generate the `hostId` using `head -c4 /dev/urandom | od -A none -t x4 | xargs`
-      flameboi = "20c95fe3";
       indra = "d92f6246";
       madhav = "102b6927";
       matsya = "3852eff0";
@@ -59,17 +58,6 @@ in
   };
 
   systems = {
-    # VM box (64GB; R9 3900XT; RTX 3070)
-    flameboi = {
-      coreConfig = {
-        hostname = "flameboi";
-        ipv4Address = "10.0.0.36";
-        primaryNetIface = "enxb42e9998034e";
-        addrMAC = "B4:2E:99:98:03:4E";
-        system = linuxSystems.x86_64;
-      };
-    };
-
     # Lenovo Yoga Slim 6 (16GB; i5-13500H; Iris Xe)
     indra = {
       coreConfig = {
