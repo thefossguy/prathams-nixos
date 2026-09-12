@@ -36,7 +36,6 @@ in
       indra = "d92f6246";
       madhav = "102b6927";
       matsya = "3852eff0";
-      aatman = "192bc1e8";
       jataayu = "21e377df";
       abhimanyu = "0c8063d3";
       sentinel = "041d6ae7";
@@ -105,17 +104,6 @@ in
         ipv4Address = "10.0.0.109";
         primaryNetIface = "enx1002b5860d8c";
         addrMAC = "10:02:B5:86:0D:8C";
-        system = linuxSystems.x86_64;
-      };
-    };
-
-    # x86 VM (24G; 12x Zen4) guest on `flameboi`
-    aatman = {
-      coreConfig = {
-        hostname = "aatman";
-        ipv4Address = "10.0.0.85";
-        primaryNetIface = "enx525400000001";
-        addrMAC = "52:54:00:00:00:01";
         system = linuxSystems.x86_64;
       };
     };
