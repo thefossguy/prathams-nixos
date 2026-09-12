@@ -8,19 +8,11 @@
 }:
 
 {
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/61A5-09DA";
-  };
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/584bb45a-cf2a-41ce-ad18-5465ade109ce";
-  };
-
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/21230fc0-6bdd-4572-bfea-55a0c6ec015d";
-  };
-
-  fileSystems."/var" = {
-    device = "/dev/disk/by-uuid/e8ec889d-45ad-4f83-9217-93c5fe9c13ef";
+  customOptions.fileSystems = {
+    rootFileSystem = "btrfs";
+    UUIDs = {
+      boot = "C49E-FA0F";
+      root = "1aa34cc7-0530-49e6-b948-e94db26bebcf";
+    };
   };
 }
