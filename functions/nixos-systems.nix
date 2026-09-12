@@ -47,7 +47,6 @@ in
       bhim = "03c38aa0";
       bheem = "6cca5083";
       hans = "b531df6e";
-      leela = "fed2312a";
       swaadhi = "2bd43591";
       surya = "87d9fdcb";
       suryaa = "57b1bd95";
@@ -239,23 +238,6 @@ in
         ipv4Address = "138.199.146.78";
         primaryNetIface = "enx9600044fcb6e";
         addrMAC = "96:00:04:4F:CB:6E";
-        system = linuxSystems.aarch64;
-      };
-      extraConfig = {
-        gatewayAddr = "172.31.1.1";
-        ipv4PrefixLength = 32;
-        canAccessMyNixCache = false;
-        useDHCP = true;
-      };
-    };
-
-    # TEMPORARY Hetzner Ampere server (32GB; 16xA76) for hosting Hydra
-    leela = {
-      coreConfig = {
-        hostname = "leela";
-        ipv4Address = "116.202.21.165";
-        primaryNetIface = "enx9200076b3878";
-        addrMAC = "92:00:07:6b:38:78";
         system = linuxSystems.aarch64;
       };
       extraConfig = {
