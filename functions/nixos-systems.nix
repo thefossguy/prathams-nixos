@@ -47,7 +47,6 @@ in
       bhim = "03c38aa0";
       bheem = "6cca5083";
       hans = "b531df6e";
-      swaadhi = "2bd43591";
       surya = "87d9fdcb";
       suryaa = "57b1bd95";
       suryaaa = "790e3576";
@@ -245,17 +244,6 @@ in
         ipv4PrefixLength = 32;
         canAccessMyNixCache = false;
         useDHCP = true;
-      };
-    };
-
-    # ARM64 VM (16G; 8x M4) guest on work Mac
-    swaadhi = {
-      coreConfig = {
-        hostname = "swaadhi";
-        ipv4Address = "10.0.0.171";
-        primaryNetIface = "enxba8a89c5220a";
-        addrMAC = "ba:8a:89:c5:22:0a";
-        system = linuxSystems.aarch64;
       };
     };
 
