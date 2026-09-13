@@ -96,6 +96,7 @@ in
         flakeStorePath = nixosSystemConfig.coreConfig.flakeStorePath;
       };
       rollbacker = final.callPackage ./out-of-tree-derivations/rollbacker.nix { };
+      update-nixos-tfg = final.callPackage ./out-of-tree-derivations/update-nixos-tfg.nix { };
       custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
         name = "custom-nixos-upgrade";
         src = ../../scripts/nixos/custom-nixos-upgrade.py;
