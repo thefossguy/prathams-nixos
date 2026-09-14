@@ -25,6 +25,9 @@
     9001 # Transmission torrent comm port (UDP)
   ];
 
-  customOptions.podmanContainers.enableHomelabServices = true;
-  customOptions.socSupport.armSoc = "rpi4";
+  customOptions = {
+    persistence.enable = true;
+    podmanContainers.enableHomelabServices = true;
+    socSupport.armSoc = "rpi4";
+  };
 }
