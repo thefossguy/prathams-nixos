@@ -19,6 +19,7 @@
     ./nix-config.nix
     ./sudo-nopasswd.nix
     ./sysctls.nix
+    ./systemd-tmpfiles.nix
     ./virtualisation.nix
     ./yubikey-fido.nix
     ./zfs.nix
