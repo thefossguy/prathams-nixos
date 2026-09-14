@@ -15,6 +15,7 @@
 
   customOptions = {
     displayServer.guiSession = "cosmic";
+    persistence.enable = true;
     socSupport.armSoc = "rk3588";
   };
 }
