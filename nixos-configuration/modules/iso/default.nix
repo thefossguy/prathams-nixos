@@ -41,7 +41,7 @@ in
   zramSwap.swapDevices = 2;
   nix.settings.cores = 1;
 
-  systemd.tmpfiles.rules =
+  systemd.user.tmpfiles.users."${sysuser.username}".rules =
     let
       setup_profile = "${pkgs.writeText ".profile" ''
         set -x
@@ -76,9 +76,7 @@ in
         exec bash
       ''}";
     in
-    [
-      "L+ ${config.customOptions.userHomeDir}/.profile 0755 ${sysuser.username} ${sysuserGroup} - ${setup_profile}"
-    ];
+    [ "L+ %h/.profile 0755 ${sysuser.username} ${sysuserGroup} - ${setup_profile}" ];
 
   specialisation = {
     longterm.configuration =
