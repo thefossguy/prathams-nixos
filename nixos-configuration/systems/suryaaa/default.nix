@@ -51,5 +51,8 @@
     "mac:30:c5:99:b9:ea:6a"
   ];
 
-  customOptions.socSupport.armSoc = "gb10";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "gb10";
+  };
 }
