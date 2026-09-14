@@ -9,4 +9,8 @@
 
 {
   imports = [ ./hardware-configuration.nix ];
+
+  customOptions = {
+    persistence.enable = true;
+  };
 }
