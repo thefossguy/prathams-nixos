@@ -10,5 +10,8 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions.socSupport.armSoc = "rpi5";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "rpi5";
+  };
 }
