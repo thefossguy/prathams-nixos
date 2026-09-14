@@ -53,5 +53,8 @@
 
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
-  customOptions.socSupport.armSoc = "gb10";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "gb10";
+  };
 }
