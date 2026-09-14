@@ -19,10 +19,10 @@
     };
     user.tmpfiles.users."${nixosSystemConfig.coreConfig.systemUser.username}".rules = [
       "D %h/.tmp/gc-roots 0755 %u %u - -"
+    ]
+    ++ [
+      "D %h/.tmp 0700 %u %u - -"
+
     ];
   };
-
-  systemd.user.tmpfiles.users."${nixosSystemConfig.coreConfig.systemUser.username}".rules = [
-    "D %h/.tmp 0700 %u %u - -"
-  ];
 }
