@@ -10,5 +10,8 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions.socSupport.armSoc = "rk3588";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "rk3588";
+  };
 }
