@@ -122,6 +122,12 @@ in
       default = null;
     };
 
+    persistence.enable = lib.mkOption {
+      description = "Whether to use non-generic persistence related settings.";
+      type = lib.types.bool;
+      default = false;
+    };
+
     dhcpConfig = lib.mkOption {
       description = "DHCP configuration.";
       type = lib.types.enum [

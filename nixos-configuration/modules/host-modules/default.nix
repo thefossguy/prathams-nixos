@@ -12,6 +12,7 @@
     ../services
     ./filesystem-configuration.nix
     ./gb10.nix
+    ./persistence.nix
     ./podman.nix
     ./rollbacker.nix
     ./router.nix
