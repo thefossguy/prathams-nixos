@@ -23,6 +23,7 @@
     autologinSettings.guiSession.enableAutologin = true;
     enablePasswordlessSudo = true;
     kernelDevelopment.enable = true;
+    persistence.enable = true;
     useMinimalConfig = lib.mkForce false;
     virtualisation.enable = true;
     virtualisation.enableVirtualBridge = lib.mkForce false;
