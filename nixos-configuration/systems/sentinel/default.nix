@@ -10,5 +10,8 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  customOptions.socSupport.armSoc = "rpi4";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "rpi4";
+  };
 }
