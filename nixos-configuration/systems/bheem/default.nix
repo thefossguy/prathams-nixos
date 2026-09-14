@@ -15,5 +15,8 @@
     "hid_apple.swap_opt_cmd=1"
   ];
 
-  customOptions.socSupport.armSoc = "m4";
+  customOptions = {
+    persistence.enable = true;
+    socSupport.armSoc = "m4";
+  };
 }
