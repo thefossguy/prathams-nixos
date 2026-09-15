@@ -54,6 +54,7 @@
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
   customOptions = {
+    etcMachineID = "f0c320c83e6f45f1ba1df172c48058c7";
     persistence.enable = true;
     socSupport.armSoc = "gb10";
   };
