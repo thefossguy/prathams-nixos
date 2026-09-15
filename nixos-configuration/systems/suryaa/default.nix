@@ -52,6 +52,7 @@
   ];
 
   customOptions = {
+    etcMachineID = "f29a2b70c0e8411aaf9432c3be2b5d6d";
     persistence.enable = true;
     socSupport.armSoc = "gb10";
   };
