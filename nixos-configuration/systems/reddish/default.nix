@@ -26,6 +26,7 @@
   ];
 
   customOptions = {
+    etcMachineID = "f72c35841d1446e7a3eec310a1725971";
     persistence.enable = true;
     podmanContainers.enableHomelabServices = true;
     socSupport.armSoc = "rpi4";
