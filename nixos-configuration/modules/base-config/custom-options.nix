@@ -480,6 +480,13 @@ in
     }
   ]
 
+  ++ lib.optionals config.customOptions.persistence.enable [
+    {
+      assertion = config.customOptions.etcMachineID != null;
+      message = "When `config.customOptions.persistence.enable` is set, `config.customOptions.etcMachineID` must be too.";
+    }
+  ]
+
   ++
     lib.optionals
       (
