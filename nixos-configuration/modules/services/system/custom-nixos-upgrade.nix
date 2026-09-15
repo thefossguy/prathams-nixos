@@ -33,16 +33,7 @@ in
       serviceConfig = {
         User = "root";
         Type = "oneshot";
-        ExecStart = pkgs.writeScript "custom-nixos-upgrade.sh" ''
-          #!${lib.getExe pkgs.bash}
-          set -xeuf -o pipefail
-
-          export PATH=${lib.makeBinPath (builtins.map (pkg: pkg.out or pkg) pkgs.custom-nixos-upgrade.buildInputs)}:$PATH
-
-          if ! ${lib.getExe pkgs.update-nixos-tfg}; then
-              exec ${lib.getExe pkgs.python3Minimal} ${lib.getExe pkgs.custom-nixos-upgrade}
-          fi
-        '';
+        ExecStart = lib.getExe pkgs.update-nixos-tfg;
       };
     };
   };
