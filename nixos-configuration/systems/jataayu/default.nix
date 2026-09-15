@@ -22,6 +22,7 @@
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
     enablePasswordlessSudo = true;
+    etcMachineID = "fd2c9d0a4a2e4798b654b2ee80c30ea1";
     kernelDevelopment.enable = true;
     persistence.enable = true;
     useMinimalConfig = lib.mkForce false;
