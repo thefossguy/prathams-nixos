@@ -1,9 +1,11 @@
 {
   rustPlatform,
   fetchFromCodeberg,
+  makeWrapper,
   lib,
 
-  # buildInputs
+  # PATH
+  bash,
   btrfs-progs,
   dosfstools,
   git,
@@ -27,16 +29,24 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-W+gPUQOZTxLfTG4kPUIjopHWAhvtLgQ3Ab6V2Pm2xLc=";
 
-  buildInputs = [
-    btrfs-progs
-    dosfstools
-    git
-    nix
-    nixos-install
-    parted
-    systemd
-    util-linux
-  ];
+  nativeBuildInputs = [ makeWrapper ];
+
+  postFixup = ''
+    wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          bash
+          btrfs-progs
+          dosfstools
+          git
+          nix
+          nixos-install
+          parted
+          systemd
+          util-linux
+        ]
+      }
+  '';
 
   meta = {
     homepage = "https://codeberg.org/thefossguy/nixos-install-tfg";
