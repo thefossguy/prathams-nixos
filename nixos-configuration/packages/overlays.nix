@@ -97,25 +97,6 @@ in
       };
       rollbacker = final.callPackage ./out-of-tree-derivations/rollbacker.nix { };
       update-nixos-tfg = final.callPackage ./out-of-tree-derivations/update-nixos-tfg.nix { };
-      custom-nixos-upgrade = final.stdenvNoCC.mkDerivation {
-        name = "custom-nixos-upgrade";
-        src = ../../scripts/nixos/custom-nixos-upgrade.py;
-
-        buildInputs = with pkgs; [
-          gitMinimal
-          nix
-          nixos-rebuild
-          python3Minimal
-          systemd
-        ];
-
-        dontUnpack = true;
-        dontBuild = true;
-
-        installPhase = "install -Dm 755 $src $out/bin/custom-nixos-upgrade.py";
-
-        meta.mainProgram = "custom-nixos-upgrade.py";
-      };
     })
 
     #(final: prev: {
