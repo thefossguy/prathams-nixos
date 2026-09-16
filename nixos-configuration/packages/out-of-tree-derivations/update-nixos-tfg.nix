@@ -1,9 +1,10 @@
 {
   rustPlatform,
   fetchFromCodeberg,
+  makeWrapper,
   lib,
 
-  # buildInputs
+  # PATH
   git,
   hostname-debian,
   nixos-rebuild-ng,
@@ -23,12 +24,19 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-/ML5So4h7xLgdOAzTvNAWiNeTPVmWdK7T5zUBfoCM8k=";
 
-  buildInputs = [
-    git
-    hostname-debian
-    nixos-rebuild-ng
-    util-linux
-  ];
+  nativeBuildInputs = [ makeWrapper ];
+
+  postFixup = ''
+    wrapProgram $out/bin/${finalAttrs.meta.mainProgram} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          git
+          hostname-debian
+          nixos-rebuild-ng
+          util-linux
+        ]
+      }
+  '';
 
   meta = {
     homepage = "https://codeberg.org/thefossguy/update-nixos-tfg";
