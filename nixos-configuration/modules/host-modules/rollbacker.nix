@@ -88,10 +88,7 @@ in
                     wantedBy = [ "initrd.target" ] ++ systemdDeviceMountPoints;
                     requiredBy = systemdDeviceMountPoints;
 
-                    path = [
-                      pkgs.rollbacker
-                      pkgs.btrfs-progs
-                    ];
+                    path = [ pkgs.rollbacker ];
 
                     unitConfig.DefaultDependencies = false;
                     serviceConfig.Type = "oneshot";
@@ -126,10 +123,7 @@ in
                     ++ systemdDeviceMountPoints;
                     requiredBy = systemdDeviceMountPoints;
 
-                    path = [
-                      pkgs.rollbacker
-                      config.boot.kernelPackages.${pkgs.zfs.kernelModuleAttribute}.userspaceTools
-                    ];
+                    path = [ pkgs.rollbacker ];
 
                     unitConfig.DefaultDependencies = false;
                     serviceConfig.Type = "oneshot";

@@ -95,7 +95,13 @@ in
       systemd-tmpfiles-state-verifier = final.callPackage ./out-of-tree-derivations/systemd-tmpfiles-state-verifier.nix {
         flakeStorePath = nixosSystemConfig.coreConfig.flakeStorePath;
       };
-      rollbacker = final.callPackage ./out-of-tree-derivations/rollbacker.nix { };
+      rollbacker = final.callPackage ./out-of-tree-derivations/rollbacker.nix {
+        zfsUserspaceTools =
+          if config.boot.supportedFilesystems.zfs then
+            config.boot.kernelPackages.${pkgs.zfs.kernelModuleAttribute}.userspaceTools
+          else
+            null;
+      };
       update-nixos-tfg = final.callPackage ./out-of-tree-derivations/update-nixos-tfg.nix { };
     })
 
