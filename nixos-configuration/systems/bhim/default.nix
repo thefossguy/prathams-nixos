@@ -18,7 +18,6 @@
   customOptions = {
     autologinSettings.getty.enableAutologin = true;
     autologinSettings.guiSession.enableAutologin = true;
-    enablePasswordlessSudo = true;
     etcMachineID = "fdc6fec191404e99af873d9e081b0ea8";
     #kernelDevelopment.enable = true;
     localCaching.buildsNixDerivations = true;
