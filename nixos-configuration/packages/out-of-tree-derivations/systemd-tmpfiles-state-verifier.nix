@@ -8,7 +8,6 @@
   gawk,
   gnugrep,
   gitMinimal,
-  flakeStorePath,
 }:
 
 let
@@ -44,9 +43,9 @@ let
       nodes.machine = { ... }: { };
 
       testScript = ''
-        # Do this so that we build every single time the flake is
+        # Do this so that we build every single time nixpkgs is
         # updated. Regardless of _what_ was modified.
-        # flake-store-path: ${flakeStorePath}
+        # nixpkgs-path: ${pkgs.path}
 
         machine.wait_for_unit("multi-user.target")
         machine.succeed("${innerTestScript}")

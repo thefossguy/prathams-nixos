@@ -64,7 +64,6 @@
             nixBuildArgs
             nixGcOptions
             ;
-          flakeStorePath = "${self}";
         };
 
       mkNixosUncompressedIso =

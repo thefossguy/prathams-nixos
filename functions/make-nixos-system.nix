@@ -7,7 +7,6 @@
   hostname,
   nixBuildArgs,
   nixGcOptions,
-  flakeStorePath,
 }:
 let
   nixosSystems = import ./nixos-systems.nix { inherit linuxSystems; };
@@ -27,7 +26,6 @@ let
       isNixOS = true;
       hostId = nixosSystems.commonConfig.hostIds."${hostname}";
       systemUser = thisSystem.coreConfig.systemUser or fullUserSet.pratham;
-      inherit flakeStorePath;
     };
     extraConfig = {
       gatewayAddr = thisSystem.extraConfig.gatewayAddr or nixosSystems.commonConfig.gatewayAddr;
