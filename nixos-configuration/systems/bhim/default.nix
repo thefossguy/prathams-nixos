@@ -21,6 +21,7 @@
     enablePasswordlessSudo = true;
     #kernelDevelopment.enable = true;
     localCaching.buildsNixDerivations = true;
+    persistence.enable = true;
     useMinimalConfig = lib.mkForce false;
   };
 }
