@@ -18,7 +18,6 @@
   hardware.bluetooth.enable = lib.mkForce false;
 
   customOptions = {
-    enablePasswordlessSudo = true;
     etcMachineID = "f8917c4eb4d0475ba44388451989cba0";
     gpuSupport = [ "intel" ];
     localCaching.buildsNixDerivations = true;
