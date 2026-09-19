@@ -7,6 +7,7 @@
   # PATH
   git,
   hostname-debian,
+  nix,
   nixos-rebuild-ng,
   util-linux,
 }:
@@ -32,6 +33,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
         lib.makeBinPath [
           git
           hostname-debian
+          nix
           nixos-rebuild-ng
           util-linux
         ]
