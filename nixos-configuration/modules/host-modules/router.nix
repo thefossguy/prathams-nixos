@@ -181,7 +181,7 @@ lib.mkIf (config.customOptions.isRouter or false) {
         matchConfig.Name = "trusted";
         address = [
           "10.0.0.1/24"
-          "fd00::/9"
+          "fd00::1/9"
         ];
         dhcpServerConfig.DNS = [
           "10.0.0.1"
