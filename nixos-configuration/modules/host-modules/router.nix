@@ -172,15 +172,27 @@ lib.mkIf (config.customOptions.isRouter or false) {
       # trusted+isolated LANs' DHCP servers
       "45-trusted" = {
         matchConfig.Name = "trusted";
-        address = [ "10.0.0.1/24" ];
-        dhcpServerConfig.DNS = [ "10.0.0.1" ];
+        address = [
+          "10.0.0.1/24"
+          "fd00::/9"
+        ];
+        dhcpServerConfig.DNS = [
+          "10.0.0.1"
+          "fd00::1"
+        ];
         dhcpServerStaticLeases = dhcpServerStaticLeases;
       }
       // dhcpCommonConfig;
       "46-isolated" = {
         matchConfig.Name = "isolated";
-        address = [ "192.168.45.1/24" ];
-        dhcpServerConfig.DNS = [ "192.168.45.1" ];
+        address = [
+          "192.168.45.1/24"
+          "fd80::/9"
+        ];
+        dhcpServerConfig.DNS = [
+          "192.168.45.1"
+          "fd80::1"
+        ];
       }
       // dhcpCommonConfig;
     };
@@ -189,8 +201,11 @@ lib.mkIf (config.customOptions.isRouter or false) {
   services.nsd = {
     enable = true;
     # unbound -> 127.0.0.1:53
-    # nsd -> 10.0.0.1:53
-    interfaces = [ "10.0.0.1" ];
+    # nsd -> 10.0.0.1:53 and [fd00::1]:53
+    interfaces = [
+      "10.0.0.1"
+      "fd00::1"
+    ];
     zones = {
       "home.arpa" = {
         data = ''
