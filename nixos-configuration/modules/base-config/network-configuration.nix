@@ -36,12 +36,6 @@
         hide-identity = true;
         hide-version = true;
         username = lib.mkForce "unbound";
-
-        # A `dig +dnssec DS fastly.net @1.1.1.1` shows that `NSEC3` is
-        # being returned. Which is proof of non-existence [of DNSSEC].
-        # And yes, this isn't handled by the `harden-dnssec-stripped`
-        # option.
-        domain-insecure = "fastly.net";
       };
     };
   };
