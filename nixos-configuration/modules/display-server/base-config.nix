@@ -140,7 +140,7 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
         StartDownloadsInTempDirectory = false;
 
         DNSOverHTTPS = {
-          Enabled = true;
+          Enabled = false;
           Fallback = true;
           Locked = true;
           # https://github.com/curl/curl/wiki/DNS-over-HTTPS#publicly-available-servers
