@@ -65,28 +65,22 @@ let
 in
 
 lib.mkIf config.customOptions.socSupport.handleFirmwareUpdates {
-  boot = {
-    kernelParams = [
-      "custom_options.uboot_version=${selectedUbootPackage.version}"
-    ];
+  boot.loader.systemd-boot.extraInstallCommands = ''
+    # ----[ cut ]----
+    # U-Boot upgrade script starts here
+    set -xeuf -o pipefail
 
-    loader.systemd-boot.extraInstallCommands = ''
-      # ----[ cut ]----
-      # U-Boot upgrade script starts here
-      set -xeuf -o pipefail
+    ${appendedPath}
+    export PATH
 
-      ${appendedPath}
-      export PATH
+    if grep --quiet --text '^${selectedUbootPackage.version}' '/proc/device-tree/chosen/u-boot,version'; then
+        exit 0
+    fi
 
-      if grep -q 'custom_options.uboot_version=${selectedUbootPackage.version}' /proc/cmdline; then
-          exit 0
-      fi
+    ${rpiUpdateScript}
+    ${rk3588UpdateScript}
 
-      ${rpiUpdateScript}
-      ${rk3588UpdateScript}
-
-      echo 'The script finished but could not flash U-Boot.'
-      exit 1
-    '';
-  };
+    echo 'The script finished but could not flash U-Boot.'
+    exit 1
+  '';
 }
