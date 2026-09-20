@@ -30,7 +30,6 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
     pipewire = {
       enable = true;
       alsa.enable = true;
-      alsa.support32Bit = true;
       pulse.enable = true;
     };
   };
