@@ -37,6 +37,12 @@
   security.lockKernelModules = lib.mkForce (!config.customOptions.isIso);
   services.dbus.implementation = "broker";
   services.lvm.enable = lib.mkForce true;
+  system.autoUpgrade = {
+    # we disable the systemd service that NixOS ships because we have our own "special sauce"
+    enable = lib.mkForce false;
+    channel = lib.mkForce null;
+  };
+
   system.stateVersion = "25.05";
 
   # Global defaults that _would_ be overridden from local modules go here.
@@ -72,6 +78,7 @@
   };
 
   nix = {
+    channel.enable = lib.mkForce false;
     checkAllErrors = true;
     gc.dates = nixosSystemConfig.extraConfig.allServicesSet.nixGc.onCalendar;
   };

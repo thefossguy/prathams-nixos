@@ -30,6 +30,7 @@ in
   networking.hostId = "1fdc0c97";
   networking.hostName = "installer";
   programs.command-not-found.enable = lib.mkForce false;
+  system.installer.channel.enable = lib.mkForce false;
   system.nixos.tags = [ config.isoImage.edition ];
   users.users."root".hashedPassword =
     lib.mkForce "$y$j9T$uQYmTvUCKJkXpXQk5bs8O.$3RF3xavb9vZ.0f6oT2k0ICsu7.sQIok5s8v3p1x0en1";

@@ -11,9 +11,6 @@ let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.customNixosUpgrade;
 in
 {
-  # we disable the systemd service that NixOS ships because we have our own "special sauce"
-  system.autoUpgrade.enable = lib.mkForce false;
-
   systemd = {
     timers."${serviceConfig.unitName}" = {
       enable = true;
