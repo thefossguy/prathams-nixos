@@ -183,6 +183,13 @@
               { inherit pi-coding-agent clanker-jail; };
           nixos-install-tfg = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/nixos-install-tfg.nix { };
           navya-ci = pkgs.callPackage ./nixos-configuration/packages/out-of-tree-derivations/navya-ci.nix { };
+          flake-inputs-meta =
+            let
+              mappedInputs = builtins.mapAttrs (inputName: inputAttr: "${inputName}: ${inputAttr.outPath}") self.inputs;
+              storePathsToReference = (builtins.attrValues mappedInputs) ++ [ "self: ${self.outPath}" ];
+              stringContents = builtins.concatStringsSep "\n" storePathsToReference;
+            in
+            pkgs.writeText "self" stringContents;
           nix-format = pkgs.stdenvNoCC.mkDerivation {
             pname = "nix-format";
             version = "0.1.0";
