@@ -102,6 +102,7 @@ in
             null;
       };
       update-nixos-tfg = final.callPackage ./out-of-tree-derivations/update-nixos-tfg.nix { };
+      update-uboot-tfg = final.callPackage ./out-of-tree-derivations/update-uboot-tfg.nix { };
     })
 
     #(final: prev: {
