@@ -50,9 +50,7 @@ in
 
 lib.mkIf config.customOptions.socSupport.handleFirmwareUpdates {
   boot.loader.systemd-boot.extraInstallCommands = ''
-    #!/usr/bin/env bash
-
-    if [[ "$(cat /proc/sys/kernel/hostname)" != '${config.networking.hostName}' ]]; then
+    if [[ "$(${lib.getExe' pkgs.coreutils-full "cat"} /proc/sys/kernel/hostname)" != '${config.networking.hostName}' ]]; then
         echo 'Refusing to proceed further because'
         echo '1. The NixOS System is being built in a CI and updating U-Boot'
         echo '   will actually cause damage.'
