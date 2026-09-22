@@ -12,16 +12,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "update-uboot-tfg";
-  version = "0.1.2";
+  version = "0.1.3";
 
   src = fetchFromCodeberg {
     owner = "thefossguy";
     repo = "update-uboot-tfg";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-y0aWBB9haJs3Y508lPFTmB3DGQyUeaskWA0jp8ovP94=";
+    hash = "sha256-IBFQwxHFtaMMWzvvQQqF4Gqf1nZr6Res+FxXI7eK77Q=";
   };
 
-  cargoHash = "sha256-yGE9FKAWxupYxPpm33u+aPGhlL+F5gesNiQck2haxNE=";
+  cargoHash = "sha256-pS4u1zyERFSjTpcfVyAHT3F3RT8DoAk5BvlCUpnU/Wc=";
 
   nativeBuildInputs = [ makeWrapper ];
 
