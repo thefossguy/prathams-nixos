@@ -4,18 +4,18 @@
   lib,
 }:
 
-rustPlatform.buildRustPackage {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "clanker-jail";
-  version = "0.1.0-unstable-2026-09-05-672d03";
+  version = "0.1.1";
 
   src = fetchFromCodeberg {
     owner = "thefossguy";
     repo = "clanker-jail";
-    rev = "672d037d8f3889f4b8142a83a0f7c5838a4b6f91";
-    hash = "sha256-P8OY7RN4IO3deTNyxNMI2ffKgns14/gRKctVnv5M6Cg=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-MT0dCYhtLEoTsgPsiD9/K3yKlLBlsXsjCBRheILggDI=";
   };
 
-  cargoHash = "sha256-+7lbQHuKWjRLtbsDKA0+m598XnIodOlwRgYXkT3cGdM=";
+  cargoHash = "sha256-cu6INMWAIaFYrV7gLsuSEGoAlEsjB0ntACnVqZbvdek=";
 
   meta = {
     homepage = "https://codeberg.org/thefossguy/clanker-jail";
@@ -25,4 +25,4 @@ rustPlatform.buildRustPackage {
     maintainers = [ lib.maintainers.thefossguy ];
     platforms = lib.platforms.linux;
   };
-}
+})
