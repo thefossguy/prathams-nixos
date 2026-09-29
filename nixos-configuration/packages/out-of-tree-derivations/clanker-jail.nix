@@ -6,16 +6,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "clanker-jail";
-  version = "0.1.1";
+  version = "0.1.2";
 
   src = fetchFromCodeberg {
     owner = "thefossguy";
     repo = "clanker-jail";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-MT0dCYhtLEoTsgPsiD9/K3yKlLBlsXsjCBRheILggDI=";
+    hash = "sha256-c2Z4UxjJmxGx8Nq2HItLlF9wEtQLPobKUa7uDAIka08=";
   };
 
-  cargoHash = "sha256-cu6INMWAIaFYrV7gLsuSEGoAlEsjB0ntACnVqZbvdek=";
+  cargoHash = "sha256-c6JIaJs9UVyyQSZXWN0ALrd6xCFPnwaXkz77Epq9oZ0=";
 
   meta = {
     homepage = "https://codeberg.org/thefossguy/clanker-jail";
