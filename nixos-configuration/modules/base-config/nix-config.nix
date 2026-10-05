@@ -54,7 +54,7 @@ in
       keep-env-derivations = true;
       keep-going = true;
       log-lines = 9999;
-      max-jobs = if (nixosSystemConfig.coreConfig.systemUser.username == "thefossguy") then 10 else 1;
+      max-jobs = if (nixosSystemConfig.coreConfig.systemUser.username == "thefossguy") then 2 else 1;
       max-substitution-jobs = 128;
       require-sigs = true;
       sandbox = lib.mkForce true;
