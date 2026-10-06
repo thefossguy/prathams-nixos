@@ -6,8 +6,14 @@
 callPackage fetch-unsloth-quants {
   modelOwner = "unsloth";
   modelName = "DeepSeek-V4-Flash-0731-GGUF";
-  revision = "109848da2469efe1f1aab9e11acea08a065ccd4f";
+  revision = "fbbb5b93fb787c21338159b0af3318bb3f4d9768";
   quantName = "UD-IQ1_M";
+  extraFiles = [
+    {
+      name = "dspark-DeepSeek-V4-Flash-0731-Q8_0.gguf";
+      hash = "sha256-LHrFSwtkqZ3x8Tmp8TcaABmCZeHWphS3dZfSCmVaQkk=";
+    }
+  ];
   ggufSetList = [
     {
       name = "DeepSeek-V4-Flash-0731-UD-IQ1_M-00001-of-00003.gguf";
