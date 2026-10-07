@@ -11,7 +11,7 @@
   imports = [
     ../../modules/host-modules/firewall-rules.nix
     ../../modules/qemu/qemu-guest.nix
-    ../../modules/services/user/git-mirroring.nix
+    ../../modules/services/user-manager/git-mirroring.nix
     ./hardware-configuration.nix
   ];
 
