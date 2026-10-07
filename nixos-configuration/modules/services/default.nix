@@ -12,6 +12,6 @@
   # the home-manager configurations.
   imports = [
     ./podman-container-services
-    ./system
+    ./system-manager
   ];
 }
