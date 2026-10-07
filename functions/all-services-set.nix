@@ -30,7 +30,7 @@ let
   mkServiceConfig =
     {
       unitName,
-      onCalendar ? "",
+      onCalendar ? null,
       afterUnits ? [ ],
       wantedUnits ? [ ],
       requiredUnits ? [ ],
