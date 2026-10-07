@@ -110,7 +110,7 @@ in
 
           TasksMax = 4096;
         }
-        // lib.attrset.optionalAttrs (builtins.elem "nvidia" config.customOptions.gpuSupport) {
+        // lib.attrsets.optionalAttrs (builtins.elem "nvidia" config.customOptions.gpuSupport) {
           PrivateDevices = false;
           DevlicePolicy = "closed";
           DeviceAllow = builtins.map (devNode: "${devNode} rw") [
@@ -121,7 +121,7 @@ in
           ];
           SupplementaryGroups = [ "video" ];
         }
-        // lib.attrset.optionalAttrs (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) {
+        // lib.attrsets.optionalAttrs (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) {
           ProcSubset = "pid";
         };
       };
