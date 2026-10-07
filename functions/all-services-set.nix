@@ -64,6 +64,10 @@ rec {
     wantedByUnits = [ "multi-user.target" ];
   };
 
+  inferenceDSv4FlashSingleNode = mkServiceConfig {
+    unitName = "inference-dsv4-flash-single-node";
+  };
+
   navyaCINode = mkServiceConfig {
     unitName = "navya-ci-node";
     afterUnits = [ "network.target" ];
