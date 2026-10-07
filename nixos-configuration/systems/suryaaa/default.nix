@@ -8,7 +8,10 @@
 }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./../../modules/services/system-manager/inference-dsv4-flash-single-node.nix
+  ];
 
   systemd.network.networks = {
     "11-enx30c599b9ea65" = {
