@@ -22,7 +22,7 @@ in
 {
   imports = [
     ../../packages/user-packages.nix
-    ../services/user
+    ../services/user-manager
   ];
 
   home.stateVersion = "25.05";
