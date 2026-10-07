@@ -8,6 +8,8 @@
 }:
 
 lib.mkIf (builtins.elem "nvidia" config.customOptions.gpuSupport) {
+  boot.kernelModules = lib.lists.optionals (builtins.elem "nvidia" config.customOptions.gpuSupport) [ "nvidia_uvm" ];
+
   nixpkgs = {
     config.cudaSupport = true;
     overlays = [
