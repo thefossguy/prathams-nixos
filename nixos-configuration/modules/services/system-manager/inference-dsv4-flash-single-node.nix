@@ -47,7 +47,7 @@ in
           SyslogIdentifier = "%n";
           DynamicUser = true;
           Type = "exec";
-          ExecStart = builtins.concatStringSep " " [
+          ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' pkgs.llama-cpp "llama-server")
 
             # llama.cpp itself
