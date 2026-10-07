@@ -19,7 +19,7 @@ let
       hash,
     }:
     fetchurl {
-      url = "https://huggingface.co/${owner}}/${name}/resolve/${rev}/${asset}";
+      url = "https://huggingface.co/${owner}/${name}/resolve/${rev}/${asset}";
       inherit hash;
     };
 
