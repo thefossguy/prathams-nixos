@@ -8,10 +8,10 @@
   owner,
   name,
   rev,
-  filesToFetch,
+  assetsToFetch,
 }:
 
-assert (filesToFetch != [ ]);
+assert (assetsToFetch != [ ]);
 
 let
   fetchFromHuggingFace' =
@@ -24,13 +24,13 @@ let
       inherit hash;
     };
 
-  mkFetchedAsset = fileToFetchSet: {
-    "${fileToFetchSet.target or fileToFetchSet.asset}" = fetchFromHuggingFace' {
-      inherit (fileToFetchSet) asset hash;
+  mkFetchedAsset = assetToFetchSet: {
+    "${assetToFetchSet.target or assetToFetchSet.asset}" = fetchFromHuggingFace' {
+      inherit (assetToFetchSet) asset hash;
     };
   };
 
-  fetchedAssets = builtins.map (fileToFetchSet: mkFetchedAsset fileToFetchSet) filesToFetch;
+  fetchedAssets = builtins.map (assetToFetchSet: mkFetchedAsset assetToFetchSet) assetsToFetch;
 
   linkFarmSet = builtins.foldl' lib.attrsets.unionOfDisjoint { } fetchedAssets;
 in
