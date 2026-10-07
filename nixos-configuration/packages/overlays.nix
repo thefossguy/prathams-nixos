@@ -140,6 +140,9 @@ in
     # Custom (new) packages go here.
     (final: prev: {
       fetch-unsloth-quants = import ./out-of-tree-derivations/llm-weights/fetch-unsloth-quants.nix;
+      fetch-from-hugging-face =
+        final.callPackage ./nixos-configuration/packages/out-of-tree-derivations/fetch-from-hugging-face.nix
+          { };
       convertSafeTensorsToGGUF = final.stdenvNoCC.mkDerivation (finalAttrs: {
         name = "convert-safe-tensors-to-gguf";
         __structuredAttrs = true;
