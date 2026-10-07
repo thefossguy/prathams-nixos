@@ -1,4 +1,5 @@
 {
+  lib,
   fetchurl,
   linkFarm,
 }:
@@ -30,6 +31,8 @@ let
   };
 
   fetchedAssets = builtins.map (fileToFetchSet: mkFetchedAsset fileToFetchSet) filesToFetch;
+
+  linkFarmSet = builtins.foldl' lib.attrsets.unionOfDisjoint { } fetchedAssets;
 in
 
-linkFarm "${owner}-${name}-${rev}" fetchedAssets
+linkFarm "${owner}-${name}-${rev}" linkFarmSet
