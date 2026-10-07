@@ -6,7 +6,7 @@
 
 {
   owner,
-  name,
+  model,
   rev,
   assetsToFetch,
 }:
@@ -20,7 +20,7 @@ let
       hash,
     }:
     fetchurl {
-      url = "https://huggingface.co/${owner}/${name}/resolve/${rev}/${asset}";
+      url = "https://huggingface.co/${owner}/${model}/resolve/${rev}/${asset}";
       inherit hash;
     };
 
@@ -35,4 +35,4 @@ let
   linkFarmSet = builtins.foldl' lib.attrsets.unionOfDisjoint { } fetchedAssets;
 in
 
-linkFarm "${owner}-${name}-${rev}" linkFarmSet
+linkFarm "${owner}-${model}-${rev}" linkFarmSet
