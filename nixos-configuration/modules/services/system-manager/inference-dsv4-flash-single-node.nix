@@ -16,7 +16,7 @@ in
 {
   systemd = {
     sockets = {
-      "${serviceConfig.unitName}-base" = {
+      "${serviceConfig.unitName}-proxy" = {
         enable = true;
         wantedBy = [ "sockets.target" ];
         listenStreams = [ "0.0.0.0:${servicePortStr}" ];
@@ -26,10 +26,10 @@ in
     services = {
       "${serviceConfig.unitName}-proxy" = {
         enable = true;
-        requires = [ "${serviceConfig.unitName}-base.service" ];
-        after = [ "${serviceConfig.unitName}-base.service" ];
+        requires = [ "${serviceConfig.unitName}.service" ];
+        after = [ "${serviceConfig.unitName}.service" ];
 
-        unitConfig.JoinsNamespaceOf = [ "${serviceConfig.unitName}-base.service" ];
+        unitConfig.JoinsNamespaceOf = [ "${serviceConfig.unitName}.service" ];
 
         serviceConfig = {
           ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 0.0.0.0:${servicePortStr}";
@@ -39,7 +39,7 @@ in
         };
       };
 
-      "${serviceConfig.unitName}-base" = {
+      "${serviceConfig.unitName}" = {
         enable = true;
         wantedBy = [ "multi-user.target" ];
 
@@ -86,11 +86,10 @@ in
 
           # networking hardening
           PrivateNetwork = true;
-          RestrictAddressFamilies = "AF_NET";
+          RestrictAddressFamilies = [ "AF_NET" ];
 
           # process, IPC, kernel hardening
           ProtectProc = "invisible";
-          ProcSubset = "pid";
           PrivateIPC = true;
           ProtectHostname = true;
           ProtectKernelTunables = true;
@@ -120,6 +119,8 @@ in
             "/dev/nvidiactl"
           ];
           SupplementaryGroups = [ "video" ];
+
+          RestrictAddressFamilies = [ "AF_UNIX" ];
         }
         // lib.attrsets.optionalAttrs (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) {
           ProcSubset = "pid";
