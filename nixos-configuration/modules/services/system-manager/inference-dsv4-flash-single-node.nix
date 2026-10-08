@@ -79,7 +79,6 @@ in
           # filesystem hardening
           LimitCORE = "0";
           ProtectHome = "tmpfs";
-          BindReadOnlyPaths = pkgs.fetched_DeepSeek-V4-Flash-0731-GGUF-UD-IQ3_XXS;
           PrivateDevices = true;
           NoExecPaths = [ "/" ];
           ExecPaths = [ "/nix/store" ];
