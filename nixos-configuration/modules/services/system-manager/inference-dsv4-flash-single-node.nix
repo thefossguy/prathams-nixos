@@ -34,7 +34,7 @@ in
         serviceConfig = {
           ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 0.0.0.0:${servicePortStr}";
           DynamicUser = true;
-          RestrictAddressFamilies = "AF_NET";
+          RestrictAddressFamilies = "AF_INET";
           PrivateNetwork = true;
         };
       };
@@ -112,7 +112,7 @@ in
         }
         // lib.attrsets.optionalAttrs (builtins.elem "nvidia" config.customOptions.gpuSupport) {
           PrivateDevices = false;
-          DevlicePolicy = "closed";
+          DevicePolicy = "closed";
           DeviceAllow = builtins.map (devNode: "${devNode} rw") [
             "/dev/nvidia-uvm"
             "/dev/nvidia-uvm-tools"
