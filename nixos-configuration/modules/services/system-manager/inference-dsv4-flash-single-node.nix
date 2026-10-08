@@ -39,7 +39,7 @@ in
         };
       };
 
-      "${serviceConfig.unitName}" = {
+      "${serviceConfig.unitName}" = lib.attrsets.recursiveUpdate {
         enable = true;
         wantedBy = [ "multi-user.target" ];
 
@@ -73,8 +73,6 @@ in
             "--n-gpu-layers-draft all"
           ];
           ExecStartPost = "${lib.getExe pkgs.bash} -c 'until (: >/dev/tcp/0.0.0.0/${servicePortStr}) 2>/dev/null; do sleep 1; done'";
-          Restart = "on-failure";
-          RestartSec = "5s";
 
           # filesystem hardening
           LimitCORE = "0";
@@ -123,6 +121,15 @@ in
         }
         // lib.attrsets.optionalAttrs (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) {
           ProcSubset = "pid";
+        };
+      } {
+        unitConfig = {
+          StartLimitIntervalSec = 600;
+          StartLimitBurst = 3;
+        };
+        serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = 30;
         };
       };
     };
