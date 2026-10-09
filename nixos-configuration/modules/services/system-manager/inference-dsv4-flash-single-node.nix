@@ -85,7 +85,10 @@ in
 
               # networking hardening
               PrivateNetwork = true;
-              RestrictAddressFamilies = [ "AF_NET" ];
+              RestrictAddressFamilies = [
+                "AF_NET"
+              ]
+              ++ lib.lists.optionals (builtins.elem "nvidia" config.customOptions.gpuSupport) [ "AF_UNIX" ];
 
               # process, IPC, kernel hardening
               ProtectProc = "invisible";
@@ -118,8 +121,6 @@ in
                 "/dev/nvidiactl"
               ];
               SupplementaryGroups = [ "video" ];
-
-              RestrictAddressFamilies = [ "AF_UNIX" ];
             }
             // lib.attrsets.optionalAttrs (!(builtins.elem "nvidia" config.customOptions.gpuSupport)) {
               ProcSubset = "pid";
