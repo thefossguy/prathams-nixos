@@ -11,7 +11,7 @@ let
   serviceConfig = nixosSystemConfig.extraConfig.allServicesSet.inferenceDSv4FlashSingleNode;
   servicePortInt = 8080;
   servicePortStr = builtins.toString servicePortInt;
-  contextSize = 1024 * 256;
+  contextSize = 1024 * 128;
 in
 {
   systemd = {
