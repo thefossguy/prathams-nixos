@@ -86,7 +86,7 @@ in
               # networking hardening
               PrivateNetwork = true;
               RestrictAddressFamilies = [
-                "AF_NET"
+                "AF_INET"
               ]
               ++ lib.lists.optionals (builtins.elem "nvidia" config.customOptions.gpuSupport) [ "AF_UNIX" ];
 
