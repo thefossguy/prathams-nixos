@@ -79,7 +79,6 @@ in
     git.enable = true; # Always enable git because it's used to manage the NixOS Configuration
     gnupg.agent.enable = !useMinimalConfig;
     htop.enable = true;
-    iotop.enable = !useMinimalConfig;
     mtr.enable = !useMinimalConfig;
     skim.enable = !useMinimalConfig;
     sniffnet.enable = !useMinimalConfig;
