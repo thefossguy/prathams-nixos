@@ -27,6 +27,10 @@ in
 
     settings = {
       accept-flake-config = lib.mkForce false;
+      allow-dirty-locks = lib.mkForce false;
+      allow-import-from-derivation = lib.mkForce false;
+      allow-new-privileges = lib.mkForce false;
+      allow-unsafe-native-code-during-evaluation = lib.mkForce false;
       allowed-users = lib.mkForce trustedNixUsers;
       always-allow-substitutes = true;
       auto-optimise-store = true;
@@ -37,6 +41,7 @@ in
       # But disable on normal NixOS systems and home-manager. :)
       eval-cache = config.customOptions.isIso or false;
       experimental-features = [
+        "configurable-impure-env"
         "flakes"
         "nix-command"
       ];
@@ -49,6 +54,7 @@ in
       flake-registry = lib.mkForce ""; # disable all "suggested" registries
       fsync-metadata = lib.mkForce true;
       fsync-store-paths = lib.mkForce true;
+      impure-env = lib.mkForce false;
       keep-build-log = true;
       keep-derivations = true;
       keep-env-derivations = true;
@@ -56,7 +62,11 @@ in
       log-lines = 9999;
       max-jobs = if (nixosSystemConfig.coreConfig.systemUser.username == "thefossguy") then 2 else 1;
       max-substitution-jobs = 128;
-      require-sigs = true;
+      narinfo-cache-negative-ttl = 60; # 60 seconds
+      narinfo-cache-positive-ttl = (24 * 60 * 60) * 7; # 7 days
+      pure-eval = lib.mkForce true;
+      require-sigs = lib.mkForce true;
+      restrict-eval = lib.mkForce true;
       sandbox = lib.mkForce true;
       sandbox-fallback = lib.mkForce false;
       show-trace = true;
