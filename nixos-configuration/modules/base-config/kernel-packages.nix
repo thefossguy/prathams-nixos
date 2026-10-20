@@ -31,7 +31,7 @@ in
           argsOverride = {
             # Overriding the arguments passed to `buildLinux` goes here
 
-            ignoreConfigErrors = lib.mkForce false;
+            ignoreConfigErrors = false;
 
             structuredExtraConfig =
               (colonelPackages.structuredExtraConfig or { })
