@@ -73,7 +73,7 @@
       "iommu.strict=1" # DMA unmap operations invalidate IOMMU hardware TLBs synchronously
       "iommu=force" # Force IOMMU isolation
       "mitigations=auto,nosmt" # Apply relevant CPU exploit mitigations
-      "module.sig_enforce=1" # Load only signed modules
+      "module.sig_enforce=0"
       "no_console_suspend" # Never suspend/hibernate the console
       "page_alloc.shuffle=1" # Enable page randomisation
       "pti=on" # Mitigates Meltdown, some KASLR bypasses
