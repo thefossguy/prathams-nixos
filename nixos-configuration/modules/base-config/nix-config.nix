@@ -64,7 +64,6 @@ in
       max-substitution-jobs = 128;
       narinfo-cache-negative-ttl = 60; # 60 seconds
       narinfo-cache-positive-ttl = (24 * 60 * 60) * 7; # 7 days
-      pure-eval = lib.mkForce true;
       require-sigs = lib.mkForce true;
       sandbox = lib.mkForce true;
       sandbox-fallback = lib.mkForce false;
