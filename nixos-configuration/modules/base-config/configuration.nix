@@ -25,7 +25,6 @@
   # Cannot open access to console, the root account is locked.
   # See sulogin(8) man page for more details.
   boot.initrd.systemd.emergencyAccess = lib.mkForce config.users.users."root".hashedPassword;
-  boot.initrd.systemd.enable = true;
   boot.runSize = "256m"; # Max so far is 32MB, so 256MB is a **long** shot
   boot.tmp.cleanOnBoot = true; # There really is no reason for /tmp to persist across boots
   customOptions.systemType = nixosSystemConfig.extraConfig.systemType;

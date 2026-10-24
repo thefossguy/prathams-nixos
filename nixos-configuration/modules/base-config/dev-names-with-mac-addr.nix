@@ -12,9 +12,8 @@ let
 in
 
 {
-  boot.initrd.extraFiles = {
-    "etc/systemd/network/20-use-mac-addr-in-ifnames-ether.link".source = pkgs.etherDevNamesWithMacAddr;
-    "etc/systemd/network/20-use-mac-addr-in-ifnames-wlan.link".source =
+  boot.initrd.systemd.contents = {
+    "/etc/systemd/network/20-use-mac-addr-in-ifnames-wlan.link".source =
       if config.customOptions.enableWlanPersistentNames then pkgs.etherDevNamesWithMacAddr else emptyFile;
   };
 
