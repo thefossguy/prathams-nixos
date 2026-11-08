@@ -137,7 +137,7 @@ let
 
       # gui packages ("<Application>.app" thingies)
       alacritty
-      brave
+      #brave
       discord
       firefox
       google-chrome

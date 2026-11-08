@@ -196,8 +196,8 @@ lib.mkIf (config.customOptions.displayServer.guiSession != "unset") {
       [
         alacritty
         authenticator # alt to Google Authenticator on iOS/Android
-        brave
-        brave-origin
+        #brave
+        #brave-origin
         desktop-file-utils
         emojipick
         foliate # GNOME's book reader
