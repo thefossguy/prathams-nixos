@@ -18,6 +18,7 @@
       "rfcomm"
       "snd_hrtimer"
       "snd_seq_dummy"
+      "uhid"
     ];
   };
 
