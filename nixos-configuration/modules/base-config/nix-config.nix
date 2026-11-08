@@ -29,7 +29,6 @@ in
       accept-flake-config = lib.mkForce false;
       allow-dirty-locks = lib.mkForce false;
       allow-import-from-derivation = lib.mkForce false;
-      allow-new-privileges = lib.mkForce false;
       allow-unsafe-native-code-during-evaluation = lib.mkForce false;
       allowed-users = lib.mkForce trustedNixUsers;
       always-allow-substitutes = true;
@@ -71,6 +70,7 @@ in
       sync-before-registering = lib.mkForce true;
       trusted-users = lib.mkForce trustedNixUsers;
     }
+    // lib.optionalAttrs (!(pkgs.stdenv.hostPlatform.isDarwin)) { allow-new-privileges = lib.mkForce false; }
     // lib.optionalAttrs (!(config.customOptions.isIso or false)) { min-free = "10G"; };
   };
 }
