@@ -85,13 +85,11 @@ in
       {
         customOptions.kernelConfiguration.tree = lib.mkForce "longterm";
       };
-    /*
     mainline.configuration =
       { config, ... }:
       {
         customOptions.kernelConfiguration.tree = lib.mkForce "mainline";
       };
-    */
   };
 
   customOptions.enableYubikeySupport = true;
