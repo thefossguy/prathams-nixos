@@ -269,7 +269,7 @@ in
           lua-language-server
           nil # language server for Nix
           bash-language-server
-          #pyrefly
+          pyrefly
           shellcheck
 
           # misc
