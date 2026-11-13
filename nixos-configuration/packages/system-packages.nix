@@ -81,7 +81,7 @@ in
     htop.enable = true;
     mtr.enable = !useMinimalConfig;
     skim.enable = !useMinimalConfig;
-    #sniffnet.enable = !useMinimalConfig;
+    sniffnet.enable = !useMinimalConfig;
     tmux.enable = true;
     traceroute.enable = !useMinimalConfig;
     trippy.enable = !useMinimalConfig;
