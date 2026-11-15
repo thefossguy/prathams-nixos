@@ -23,6 +23,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    nix-eval-jobs
     sandboxed-pi-coding-agent
   ];
 
